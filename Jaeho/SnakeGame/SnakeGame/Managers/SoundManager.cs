@@ -16,7 +16,9 @@ namespace ConsoleGame
             _soundPlayers = new Dictionary<string, SoundPlayer>();
 
 
-            AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "MyDearest.wav")));
+            //AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "MyDearest.wav")));
+            //AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "Nostalgia.wav")));
+            AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "쇄월.wav")));
             AddSound("EndingBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "우마우마.wav")));
             LoadSound();
         }
@@ -43,6 +45,11 @@ namespace ConsoleGame
             {
                 _soundPlayers[name].Play();
             }
+        }
+
+        public void EffectSoundPlay(string name)
+        { 
+            Task.Factory.StartNew(() => { _soundPlayers[name].Play(); });
         }
 
         public void Stop(string name)

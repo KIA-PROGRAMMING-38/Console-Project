@@ -24,12 +24,9 @@ namespace ConsoleGame
             // Load MapData
             mapInfo = GameDataManager.Instance.ReadMapFile("Stage_1");
 
-            // 클리어 필요 개수 설정
-            GameDataManager.Instance.NeedClearFeedCount = mapInfo.NeedFeedCount;
-            GameDataManager.Instance.CurrentFeedCount = 0;
 
-            // Set MapSize Data
-            GameDataManager.Instance.SetMapInfo(mapInfo);
+            // Set Map Data
+            GameDataManager.Instance.SetData(mapInfo);
 
             player = new Player();
             player.Position = mapInfo.PlayerPosition;
@@ -61,6 +58,11 @@ namespace ConsoleGame
         public override void Render()
         {
             RenderManager.Instance.Render();
+
+            //todo 수정
+            string ui = $"{GameDataManager.Instance.CurrentFeedCount} / {GameDataManager.Instance.NeedClearFeedCount}";
+            Console.SetCursorPosition(GameDataManager.MAP_MIN_X + (GameDataManager.MAP_MAX_X - GameDataManager.MAP_MIN_X)/2 - ui.Length/2, 5);
+            Console.WriteLine(ui);
         }
 
  

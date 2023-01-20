@@ -36,8 +36,8 @@ namespace ConsoleGame
         public static int _mapMaxY = 0;
 
 
-        public const int ANCHOR_LEFT = 5;
-        public const int ANCHOR_TOP = 5;
+        public const int ANCHOR_LEFT = 30;
+        public const int ANCHOR_TOP = 7;
 
         public static int MAP_MAX_X { get { return ANCHOR_LEFT + _mapMaxX; } }
         public static int MAP_MIN_X { get  { return ANCHOR_LEFT + _mapMinX; } }
@@ -45,12 +45,14 @@ namespace ConsoleGame
         public static int MAP_MAX_Y { get  { return ANCHOR_TOP + _mapMaxY; } }
         public static int MAP_MIN_Y { get { return ANCHOR_TOP + _mapMinY; } }
 
-        public void SetMapInfo(MapInfo mapInfo)
+        public void SetData(MapInfo mapInfo)
         {
             _mapMaxX = mapInfo.Max_X;
             _mapMinX = mapInfo.Min_X;
             _mapMaxY = mapInfo.Max_Y;
             _mapMinY = mapInfo.Min_Y;
+            _needStageClearFeedCount = mapInfo.NeedFeedCount;
+            _currentFeedCount = 0;
         }
 
         public MapInfo ReadMapFile(string fileName)

@@ -22,7 +22,7 @@ namespace ConsoleGame.Managers
             SceneManager.Instance.AddScene("TitleScene", new TitleScene("Stage_1"));
             SceneManager.Instance.AddScene("EndingScene", new EndingScene("TitleScene"));
             SceneManager.Instance.AddScene("Stage_1", new StageOne("Stage_2"));
-            SceneManager.Instance.AddScene("Stage_2", new StageTwo("Stage_2"));
+            SceneManager.Instance.AddScene("Stage_2", new StageTwo("EndingScene"));
             SceneManager.Instance.SetCurrentScene("TitleScene");
             SceneManager.Instance.Start();
         }
