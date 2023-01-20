@@ -11,7 +11,6 @@ namespace Packman
         public enum Kind
         {
             Empty,
-            Empty_NoGold,
             Block
         }
 

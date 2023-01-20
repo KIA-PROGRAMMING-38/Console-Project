@@ -25,15 +25,12 @@ namespace Packman
             //
             //File.WriteAllLines( path, lines );
 
-            string asd = "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
-            Console.WriteLine( asd.Length );
-
-            //if ( true == Game.Instance.Initialize() )
-            //{
-            //    Game.Instance.Run();
-            //
-            //    Game.Instance.Release();
-            //}
+            if ( true == Game.Instance.Initialize() )
+            {
+                Game.Instance.Run();
+            
+                Game.Instance.Release();
+            }
         }
 
         //static void Main( string[] args )

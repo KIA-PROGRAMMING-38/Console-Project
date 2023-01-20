@@ -79,7 +79,7 @@ namespace Packman
             Console.CursorVisible = false;
 
             // 인코딩은 UTF8로 설정..
-            Console.OutputEncoding = Encoding.UTF8;
+            //Console.OutputEncoding = Encoding.UTF8;
 
             return true;
         }

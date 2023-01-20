@@ -1,4 +1,4 @@
-0, 2, 70 30
+0 2 70 30
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 W                                                                    W
 W   WWWWWWWW     WWWWWWWWW       WWWWWWWWWWW     WW        WW        W

@@ -84,7 +84,7 @@ namespace Packman
 
                     break;
                 case SceneKind.Stage:
-                    newScene = new StageScene();
+                    newScene = new StageScene( 1 );
 
                     break;
                 default:

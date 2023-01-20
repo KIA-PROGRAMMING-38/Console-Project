@@ -9,7 +9,7 @@ namespace Packman
     internal static class Constants
     {
         // Image 관련 상수들..
-        public const string PLAYER_IMAGE = "⊙";
+        public const string PLAYER_IMAGE = "♣";
         public const string MONSTER_IMAGE = "♨";
         public const string MONEY_IMAGE = "㉾";
 

@@ -10,11 +10,16 @@ namespace Packman
 {
     internal class StageScene : Scene
     {
+        int _stageNum = 0;
+
+        public StageScene( int stageNum )
+        {
+            _stageNum = stageNum;
+        }
+
         public override bool Initialize()
         {
-            Debug.Assert( true == InitMap( 0, 0, 70, 30 ) );
-            Debug.Assert( true == InitPlayer( 10, 2 ) );
-            Debug.Assert( true == InitMonster() );
+            FileLoader.Load( $"Stage{_stageNum:D2}", "txt" );
 
             return true;
         }
