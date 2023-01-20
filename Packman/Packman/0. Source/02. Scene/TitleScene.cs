@@ -18,8 +18,8 @@ namespace Packman
 
         public override bool Initialize()
         {
-            Debug.Assert( false == InitializeTitleText() );
-            Debug.Assert( false == InitializeSelectUI() );
+            Debug.Assert( true == InitializeTitleText() );
+            Debug.Assert( true == InitializeSelectUI() );
 
             return true;
         }
