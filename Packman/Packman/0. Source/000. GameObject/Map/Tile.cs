@@ -11,6 +11,7 @@ namespace Packman
         public enum Kind
         {
             Empty,
+            Empty_NoGold,
             Block
         }
 
@@ -33,6 +34,24 @@ namespace Packman
                     _image = "■";
                     break;
             }
+        }
+
+        public override void Update()
+        {
+            if ( _kind == Kind.Empty )
+                return;
+
+            base.Update();
+        }
+
+        public override void Render()
+        {
+            base.Render();
+        }
+
+        public bool IsCanPassTile()
+        {
+            return _kind != Kind.Block;
         }
     }
 }

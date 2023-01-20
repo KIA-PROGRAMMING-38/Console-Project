@@ -10,7 +10,7 @@ namespace Packman
     internal class TimeManager : SingletonBase<TimeManager>
     {
         // 타이머 관련..
-        private Stopwatch stopwatch;
+        private Stopwatch stopwatch = null;
 
         private float frameInterval = 0.0f;
         private float deltaTime = 0.0f;
@@ -61,8 +61,8 @@ namespace Packman
             // 현재 흘러간 시간이 프레임 간격보다 크다면..
             if ( frameInterval <= deltaTime )
             {
-                //deltaTime -= frameInterval;
-                deltaTime = 0.0f;
+                deltaTime -= frameInterval;
+                //deltaTime = 0.0f;
                 return true;
             }
 

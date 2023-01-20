@@ -25,6 +25,10 @@ namespace Packman
 
         private bool _isActive;
 
+        // ===================================== Property.. ===================================== //
+        public int X { get { return _x; } }
+        public int Y { get { return _y; } }
+
         public GameObject()
         {
             _timer = TimeManager.Instance;
@@ -97,7 +101,13 @@ namespace Packman
 
         public virtual void Render()
         {
+            ConsoleColor tempColor = Console.ForegroundColor;
 
+            Console.SetCursorPosition( (int)_x, (int)_y );
+            Console.ForegroundColor = _color;
+            Console.Write( _image );
+
+            Console.ForegroundColor = tempColor;
         }
 
         public virtual void Release()
@@ -112,9 +122,9 @@ namespace Packman
         /// <typeparam name="T"> 리턴받을 컴포넌트의 타입 </typeparam>
         /// <param name="componentId"> 찾을 컴포넌트의 ID </param>
         /// <returns> 찾은 컴포넌트를 T 타입으로 반환합니다.. </returns>
-        public T GetComponent<T>(string componentId) where T : Component
+        public T? GetComponent<T>(string componentId) where T : Component
         {
-            Component findComponent = null;
+            Component? findComponent = null;
 
             // 컴포넌트를 찾고 있다면 반환, 없다면 null 반환..
             if( components.TryGetValue(componentId, out findComponent) )

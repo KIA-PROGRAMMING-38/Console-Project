@@ -63,7 +63,7 @@ namespace Packman
 
                 pressKeyState[index] = false;
 
-                pressKeyEvents[index].events[PRESS_EVENT_DEFAULT]?.Invoke();
+                pressKeyEvents?[index].events[PRESS_EVENT_DEFAULT]?.Invoke();
             }
         }
 

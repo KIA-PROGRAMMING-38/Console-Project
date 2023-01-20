@@ -1,4 +1,5 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Packman
 {
@@ -6,12 +7,33 @@ namespace Packman
     {
         static void Main()
         {
-            if ( true == Game.Instance.Initialize() )
-            {
-                Game.Instance.Run();
+            //string path = Path.Combine( "../../../Resources", "Data", "Stage1.txt" );
+            //
+            //string[] lines = File.ReadAllLines( path );
+            //
+            //for( int i = 0; i < lines.Length; ++i )
+            //{
+            //    char[] charArray = lines[i].ToCharArray();
+            //    for( int j = 0; j < charArray.Length; ++j )
+            //    {
+            //        if( 'w' == charArray[j] )
+            //            charArray[j] = 'W';
+            //    }
+            //
+            //    lines[i] = new string( charArray );
+            //}
+            //
+            //File.WriteAllLines( path, lines );
 
-                Game.Instance.Release();
-            }
+            string asd = "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
+            Console.WriteLine( asd.Length );
+
+            //if ( true == Game.Instance.Initialize() )
+            //{
+            //    Game.Instance.Run();
+            //
+            //    Game.Instance.Release();
+            //}
         }
 
         //static void Main( string[] args )

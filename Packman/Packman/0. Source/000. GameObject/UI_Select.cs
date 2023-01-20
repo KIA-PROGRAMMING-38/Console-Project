@@ -76,6 +76,9 @@ namespace Packman._0._Source._000._GameObject
             RemoveKeyPressEvent();
         }
 
+        /// <summary>
+        /// Key 입력 이벤트를 추가해줍니다.
+        /// </summary>
         private void AddKeyPressEvent()
         {
             InputManager.Instance.AddEvent( ConsoleKey.UpArrow, this.OnPressUpArrowKey );
@@ -83,6 +86,9 @@ namespace Packman._0._Source._000._GameObject
             InputManager.Instance.AddEvent( ConsoleKey.Enter, this.OnPressEnterKey );
         }
 
+        /// <summary>
+        /// Key 입력 이벤트를 제거해줍니다.
+        /// </summary>
         private void RemoveKeyPressEvent()
         {
             InputManager.Instance.RemoveEvent( ConsoleKey.UpArrow, this.OnPressUpArrowKey );
@@ -90,16 +96,41 @@ namespace Packman._0._Source._000._GameObject
             InputManager.Instance.RemoveEvent( ConsoleKey.Enter, this.OnPressEnterKey );
         }
 
+        /// <summary>
+        /// 위 화살표 키가 눌렸을 때 호출됩니다( 이벤트 함수 )..
+        /// </summary>
         private void OnPressUpArrowKey()
         {
-            _curSelectPoint = Math.Max( _curSelectPoint - 1, 0 );
+            SetSelectPoint( Math.Max( _curSelectPoint - 1, 0 ) );
         }
 
+        /// <summary>
+        /// 아래 화살표 키가 눌렸을 때 호출됩니다( 이벤트 함수 )..
+        /// </summary>
         private void OnPressDownArrowKey()
         {
-            _curSelectPoint = Math.Min( _curSelectPoint + 1, _maxSelectPointCount - 1 );
+            SetSelectPoint( Math.Min( _curSelectPoint + 1, _maxSelectPointCount - 1 ) );
         }
 
+        /// <summary>
+        /// 현재 가리키고 있는 선택 지점을 변경합니다.
+        /// </summary>
+        /// <param name="newSelectPoint"> 변경할 선택 지점 </param>
+        private void SetSelectPoint( int newSelectPoint )
+        {
+            if ( _curSelectPoint == newSelectPoint )
+            {
+                return;
+            }
+
+            RenderManager.Instance.ReserveRenderRemove( _x - 4, _y + _curSelectPoint, 2 );
+
+            _curSelectPoint = newSelectPoint;
+        }
+
+        /// <summary>
+        /// 유저가 선택했을 때 호출되는 함수( 외부에서 받아온 함수를 호출합니다, Callback 함수 )..
+        /// </summary>
         private void OnPressEnterKey()
         {
             _selectInfoes[_curSelectPoint].Event?.Invoke();
