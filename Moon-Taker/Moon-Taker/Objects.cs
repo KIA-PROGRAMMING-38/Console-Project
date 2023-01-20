@@ -8,5 +8,16 @@ namespace Moon_Taker
 {
     internal class Objects
     {
+        struct Player
+        {
+            int X;
+            int Y;
+        }
+        struct Enemy
+        {
+            int X;
+            int Y;
+        }
+        
     }
 }

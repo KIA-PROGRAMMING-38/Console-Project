@@ -6,7 +6,11 @@ namespace Moon_Taker
     {
         static void Main()
         {
-            Console.WriteLine("Hello, World!");
+            
+            Functions.InitialSettings();
+            Functions.Render("\n\n Press e to start game.");
+            Functions.StartGame(out GameRules.isGameStarted);
+            
         }
     }
 }

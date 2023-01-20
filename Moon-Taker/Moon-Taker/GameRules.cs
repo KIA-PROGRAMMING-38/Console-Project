@@ -8,5 +8,6 @@ namespace Moon_Taker
 {
     internal class GameRules
     {
+        public static bool isGameStarted = false;
     }
 }
