@@ -6,18 +6,39 @@ using System.Threading.Tasks;
 
 namespace Moon_Taker
 {
-    internal class Objects
+    public class Player
     {
-        struct Player
-        {
-            int X;
-            int Y;
-        }
-        struct Enemy
-        {
-            int X;
-            int Y;
-        }
-        
+        public int X;
+        public int Y;
+    }
+    public class Wall
+    {
+        public int X;
+        public int Y;
+    }
+    public class Enemy
+    {
+        public int X;
+        public int Y;
+    }
+    public class Block
+    {
+        public int X;
+        public int Y;
+    }
+    public class Moon
+    {
+        public int X;
+        public int Y;
+    }
+    public class Key
+    {
+        public int X;
+        public int Y;
+    }
+    public class Door
+    {
+        public int X;
+        public int Y;
     }
 }
