@@ -57,7 +57,8 @@ namespace ConsoleGame
 
         public MapInfo ReadMapFile(string fileName)
         {
-            using (StreamReader textMapDataReader = new StreamReader(Path.Combine("Assets", "MapData", fileName + ".txt")))
+            string resourcePath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+            using (StreamReader textMapDataReader = new StreamReader(Path.Combine(resourcePath,"Assets", "MapData", fileName + ".txt")))
             {
                 MapInfo mapInfo = new MapInfo();
                 mapInfo.NeedFeedCount = int.Parse(textMapDataReader.ReadLine());

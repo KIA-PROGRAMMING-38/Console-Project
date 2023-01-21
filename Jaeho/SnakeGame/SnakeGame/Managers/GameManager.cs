@@ -34,10 +34,10 @@ namespace ConsoleGame.Managers
                 Console.Clear();
                 TimeManager.Instance.Update();
                 if (IsGameSet == true) break;
-
+                //SceneManager.Instance.Render();
                 SceneManager.Instance.Update();
                 SceneManager.Instance.Render();
-                Thread.Sleep(TimeManager.DeltaTime);
+                Thread.Sleep(TimeManager.MS_PER_FRAME);
             }
         }
 

@@ -1,7 +1,4 @@
-﻿
-using ConsoleGame;
-using ConsoleGame.Managers;
-using System.Text;
+﻿using ConsoleGame.Managers;
 
 class GameMain
 {

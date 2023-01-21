@@ -1,11 +1,4 @@
-﻿using ConsoleGame;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleGame
+﻿namespace ConsoleGame
 {
     public class RandomManager : Singleton<RandomManager>
     {

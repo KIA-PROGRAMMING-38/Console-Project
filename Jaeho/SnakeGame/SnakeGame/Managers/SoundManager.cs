@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Media;
+﻿using System.Media;
 
 
 namespace ConsoleGame
@@ -16,24 +11,20 @@ namespace ConsoleGame
             _soundPlayers = new Dictionary<string, SoundPlayer>();
 
 
+            string resourcePath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
             //AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "MyDearest.wav")));
             //AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "Nostalgia.wav")));
-            AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "쇄월.wav")));
-            AddSound("EndingBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "우마우마.wav")));
-            LoadSound();
+            AddSound("TitleBackgroundMusic",  new SoundPlayer(Path.Combine(resourcePath,"Assets", "Sound", "쇄월.wav")));
+            AddSound("EndingBackgroundMusic", new SoundPlayer(Path.Combine(resourcePath, "Assets", "Sound", "우마우마.wav")));
+            
         }
+
         private SoundPlayer _currentSoundName;
 
-        private void LoadSound()
-        {
-            foreach(var soundPlayer in _soundPlayers.Values)
-            {
-                soundPlayer.Load();
-            }
-        }
         public void AddSound(string name, SoundPlayer sound)
         {
             _soundPlayers.Add(name, sound);
+            sound.Load();
         }
         public void Play(string name, bool loop = false)
         {

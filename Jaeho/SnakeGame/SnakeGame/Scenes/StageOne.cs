@@ -60,7 +60,7 @@ namespace ConsoleGame
             RenderManager.Instance.Render();
 
             //todo 수정
-            string ui = $"{GameDataManager.Instance.CurrentFeedCount} / {GameDataManager.Instance.NeedClearFeedCount}";
+            string ui = $"{GameDataManager.Instance.CurrentFeedCount :D2} / {GameDataManager.Instance.NeedClearFeedCount:D2}";
             Console.SetCursorPosition(GameDataManager.MAP_MIN_X + (GameDataManager.MAP_MAX_X - GameDataManager.MAP_MIN_X)/2 - ui.Length/2, 5);
             Console.WriteLine(ui);
         }
