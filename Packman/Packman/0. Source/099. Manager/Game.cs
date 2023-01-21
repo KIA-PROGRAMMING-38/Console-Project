@@ -32,8 +32,11 @@ namespace Packman
         /// </summary>
         public void Run()
         {
+            // 쓰는 싱긍톤 인스턴스들은 미리 변수에 저장..
             TimeManager timeManagerInstance = TimeManager.Instance;
             InputManager inputManagerInstance = InputManager.Instance;
+            EventManager eventManagerInstance = EventManager.Instance;
+            SceneManager sceneManagerInstance = SceneManager.Instance;
 
             while ( true )
             {
@@ -42,10 +45,10 @@ namespace Packman
                 if ( true == timeManagerInstance.UpdatePassFrameInterval() )
                 {
                     inputManagerInstance.Update();
-                    EventManager.Instance.Update();
+                    eventManagerInstance.Update();
 
-                    SceneManager.Instance.Update();
-                    SceneManager.Instance.Render();
+                    sceneManagerInstance.Update();
+                    sceneManagerInstance.Render();
                 }
             }
         }

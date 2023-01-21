@@ -10,6 +10,8 @@ namespace Packman
     {
         private List<KeyValuePair<string, GameObject>> _gameObjects = new List<KeyValuePair<string, GameObject>>();
 
+        private LinkedList<KeyValuePair<string, GameObject>> _removeObjects = new LinkedList<KeyValuePair<string, GameObject>>();
+
         public bool AddGameObject( string objectId, GameObject objectInstance )
         {
             // 이미 objectId를 사용하는 GameObject 인스턴스가 있는지 검사..
@@ -23,14 +25,28 @@ namespace Packman
             return true;
         }
 
+        /// <summary>
+        /// 등록된 오브젝트들 갱신..
+        /// </summary>
         public void Update()
         {
+            // 삭제할 오브젝트들 제거작업..
+            foreach ( var gameobject in _removeObjects )
+            {
+                _gameObjects.Remove( gameobject );
+            }
+            _removeObjects.Clear();
+
+            // 현재 오브젝트들 갱신..
             foreach ( var gameobject in _gameObjects )
             {
                 gameobject.Value.Update();
             }
         }
 
+        /// <summary>
+        /// 그려야 할 오브젝트들 Render 작업 개시..
+        /// </summary>
         public void Render()
         {
             RenderManager.Instance.Render();
@@ -47,7 +63,22 @@ namespace Packman
             {
                 if( gameobject.Key == objectID )
                 {
-                    _gameObjects.Remove( gameobject );
+                    _removeObjects.AddLast( gameobject );
+                    //_gameObjects.Remove( gameobject );
+
+                    return;
+                }
+            }
+        }
+
+        public void RemoveObject(GameObject removeGameObject)
+        {
+            foreach ( var gameobject in _gameObjects )
+            {
+                if ( gameobject.Value == removeGameObject )
+                {
+                    _removeObjects.AddLast( gameobject );
+                    //_gameObjects.Remove( gameobject );
 
                     return;
                 }
@@ -101,6 +132,42 @@ namespace Packman
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 모든 T 타입인 GameObject를 찾습니다.
+        /// </summary>
+        /// <typeparam name="T"> 찾으려는 타입 </typeparam>
+        /// <returns></returns>
+        public T[] GetAllGameObject<T>() where T : GameObject
+        {
+            Type findType = typeof(T);  // 찾으려는 타입..
+            LinkedList<T> findTypeInstanceList = new LinkedList<T>();
+
+            // 모든 오브젝트들 순회하면서 값 담아둠..
+            foreach ( var gameobject in _gameObjects )
+            {
+                if ( gameobject.Value.GetType() == findType )
+                {
+                    findTypeInstanceList.AddLast( (T)gameobject.Value );
+                }
+            }
+
+            // 만약 찾은게 없다면..
+            if(findTypeInstanceList.Count <= 0)
+            {
+                return null;
+            }
+
+            // 찾은게 있다면 배열에 담아서 리턴..
+            T[] returnArray = new T[findTypeInstanceList.Count];
+            int arrayIndex = 0;
+            foreach(T instance in findTypeInstanceList )
+            {
+                returnArray[arrayIndex++] = instance;
+            }
+
+            return returnArray;
         }
     }
 }

@@ -15,11 +15,12 @@ namespace Packman
         }
 
         private Kind _kind;
+        
+        public Kind MyKind { get { return _kind; } }
 
         public Tile( int x, int y, Kind kind, ConsoleColor color )
+            : base( x, y, Constants.TILE_RENDER_ORDER )
         {
-            _x = x;
-            _y = y;
             _kind = kind;
             _color = color;
 

@@ -10,9 +10,14 @@ namespace Packman.Source
     {
         RenderManager renderManager = RenderManager.Instance;
 
-        private int renderOrder;
+        private int _renderOrder;
 
-        public int RenderOrder { get { return renderOrder; } set { renderOrder = value; } }
+        public int RenderOrder { get { return _renderOrder; } set { _renderOrder = value; } }
+
+        public Renderer(int renderOrder)
+        {
+            _renderOrder = renderOrder;
+        }
 
         public override void UpdateComponent()
         {
@@ -23,7 +28,7 @@ namespace Packman.Source
 
         public void Render()
         {
-            gameobject?.Render();
+            gameObject?.Render();
         }
     }
 }

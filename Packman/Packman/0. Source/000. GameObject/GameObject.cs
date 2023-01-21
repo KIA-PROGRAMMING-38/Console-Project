@@ -16,7 +16,7 @@ namespace Packman
 
         // 현재 GameObject가 가지고 있는 Component 들..
         private Dictionary<string, Component> _components = new Dictionary<string, Component>();
-        protected Renderer _renderer = new Renderer();
+        protected Renderer _renderer;
 
         protected int _x = 0;
         protected int _y = 0;
@@ -29,21 +29,22 @@ namespace Packman
         public int X { get { return _x; } }
         public int Y { get { return _y; } }
 
-        public GameObject()
+        public GameObject( int renderOrder )
         {
             _timer = TimeManager.Instance;
             _objectManager = ObjectManager.Instance;
+            _renderer = new Renderer( renderOrder );
         }
 
-        public GameObject( int x, int y )
-            : this()
+        public GameObject( int x, int y, int renderOrder )
+            : this( renderOrder )
         {
             _x = x;
             _y = y;
         }
 
-        public GameObject( int x, int y, string image, ConsoleColor color )
-            : this( x, y )
+        public GameObject( int x, int y, string image, ConsoleColor color, int renderOrder )
+            : this( x, y, renderOrder )
         {
             _image = image;
             _color = color;
@@ -156,7 +157,8 @@ namespace Packman
             }
 
             // 컴포넌트의 gameobject 를 나(현재 GameObject 인스턴스)로 바꾸고 추가합니다..
-            component.gameobject = this;
+            component.GameObject = this;
+            component.Initialize();
             _components.Add( componentId, component );
 
             return true;

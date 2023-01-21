@@ -8,12 +8,16 @@ namespace Packman
 {
     internal class Character : GameObject
     {
-        protected RenderManager _renderManager;
+        public Action<Character> OnMoveCharacterEvent;
 
-        public Character( int x, int y, string image, ConsoleColor color )
-            : base( x, y, image, color )
+        protected RenderManager _renderManager;
+        protected Map _map;
+
+        public Character( int x, int y, string image, ConsoleColor color, int renderOrder )
+            : base( x, y, image, color, renderOrder )
         {
             _renderManager = RenderManager.Instance;
+            _map = _objectManager.GetGameObject<Map>();
         }
 
         public override void Update()
@@ -29,10 +33,17 @@ namespace Packman
                 return;
             }
 
-            _renderManager.ReserveRenderRemove( _x, _y, 1 );
+            int moveDestinationX = _x + dirX;
+            int moveDestinationY = _y + dirY;
 
-            _x += dirX;
-            _y += dirY;
+            Tile.Kind curPosTileKind = _map.GetTileKind( moveDestinationX, moveDestinationY );
+            if( Tile.Kind.Empty == curPosTileKind )
+            {
+                _renderManager.ReserveRenderRemove( _x, _y, 1 );
+
+                _x = moveDestinationX;
+                _y = moveDestinationY;
+            }
         }
     }
 }

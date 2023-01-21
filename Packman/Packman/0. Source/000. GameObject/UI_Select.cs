@@ -22,7 +22,7 @@ namespace Packman._0._Source._000._GameObject
         int _curSelectPoint = 0;
 
         public UI_Select( int x, int y )
-            : base( x, y )
+            : base( x, y, 2000 )
         {
 
         }

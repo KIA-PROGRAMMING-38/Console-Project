@@ -10,6 +10,10 @@ namespace Packman
 {
     internal class StageScene : Scene
     {
+        // 많이 사용하는 싱글톤들은 미리 멤버로 받아두기..
+        private CollisionManager _collisionManager = CollisionManager.Instance;
+        private StageManager _stageManager = StageManager.Instance;
+
         int _stageNum = 0;
 
         public StageScene( int stageNum )
@@ -27,6 +31,9 @@ namespace Packman
         public override void Update()
         {
             base.Update();
+
+            _collisionManager.Update();
+            _stageManager.Update();
         }
 
         public override void Render()

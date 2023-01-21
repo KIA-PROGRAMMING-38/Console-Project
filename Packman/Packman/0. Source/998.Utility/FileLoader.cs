@@ -59,6 +59,7 @@ namespace Packman
             string[] playerFileMetadata = lines[1].Split(' ');
             string[] MonsterFileMetadata = lines[2].Split(' ');
 
+            // 각 파일별로 파싱 진행..
             PasingMapData( mapFileMetadata[0], mapFileMetadata[1] );
             PasingPlayerData( playerFileMetadata[0], playerFileMetadata[1] );
             PasingMonsterData( MonsterFileMetadata[0], MonsterFileMetadata[1] );
@@ -89,30 +90,53 @@ namespace Packman
                 for ( int x = 0; x < mapWidth; ++x )
                 {
                     Tile.Kind curTileKind = Tile.Kind.Empty;
+                    bool isCreateGoldObject = false;
+
+                    int curIndexX = x;
+                    int curIndexY = y - 1;
 
                     switch ( lines[y][x] )
                     {
                         case '0':
                             curTileKind = Tile.Kind.Empty;
+                            isCreateGoldObject = false;
+
                             break;
                         case 'W':
                             curTileKind = Tile.Kind.Block;
+                            isCreateGoldObject = false;
+
                             break;
                         case ' ':
                             curTileKind = Tile.Kind.Empty;
+                            isCreateGoldObject = true;
+
                             break;
                         default:
                             Debug.Assert( false );
                             return;
                     }
 
-                    tileKind[y - 1, x] = curTileKind;
+                    tileKind[curIndexY, curIndexX] = curTileKind;
+
+                    if( true == isCreateGoldObject )
+                    {
+                        Gold gold = new Gold(curIndexX + mapPosX, curIndexY + mapPosY);
+                        Debug.Assert( gold.Initialize() );
+
+                        Debug.Assert( ObjectManager.Instance.AddGameObject( $"Gold{x:D2}{y:D2}", gold ) );
+                    }
                 }
             }
 
+            // Map 초기화 및 ObjectManager 에 넣어주기..
             Debug.Assert( map.Initialize( mapWidth, mapHeight, tileKind ) );
-
             ObjectManager.Instance.AddGameObject( "Map", map );
+
+            // Gold Group 객체 생성 및 ObjectManager 에 넣어주기..
+            GoldGroup goldGroup = new GoldGroup(mapWidth, mapHeight);
+            goldGroup.Initialize();
+            ObjectManager.Instance.AddGameObject( "GoldGroup", goldGroup );
         }
 
         /// <summary>
@@ -133,7 +157,7 @@ namespace Packman
             Player player = new Player(playerX, playerY);
             Debug.Assert( player.Initialize() );
 
-            ObjectManager.Instance.AddGameObject( "Player", player );
+            Debug.Assert( ObjectManager.Instance.AddGameObject( "Player", player ) );
         }
 
         /// <summary>

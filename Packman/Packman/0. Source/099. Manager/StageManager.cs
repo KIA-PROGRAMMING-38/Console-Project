@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Packman
 {
-    internal class Gold : Item
+    internal class StageManager : SingletonBase<StageManager>
     {
-        public Gold(int x, int y)
-            : base( x, y )
+        public void Update()
         {
 
         }

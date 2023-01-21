@@ -17,7 +17,7 @@ namespace Packman
         public int Height { get { return _height; } }
 
         public Map(int x, int y)
-            : base( x, y )
+            : base( x, y, 0 )
         {
 
         }
@@ -81,6 +81,11 @@ namespace Packman
         public Tile GetTile(int x, int y)
         {
             return _tiles[y - _y, x - _x];
+        }
+
+        public Tile.Kind GetTileKind(int x, int y)
+        {
+            return _tiles[y - _y, x - _x].MyKind;
         }
     }
 }

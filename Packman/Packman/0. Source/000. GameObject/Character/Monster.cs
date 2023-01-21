@@ -28,7 +28,7 @@ namespace Packman
         
 
         public Monster( int x, int y, Map map )
-            : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR )
+            : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER )
         {
             _curState = State.Idle;
             _mapObject = map;

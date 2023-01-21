@@ -9,10 +9,10 @@ namespace Packman
     internal class Component
     {
         // ===================================== Field.. ===================================== //
-        private GameObject? gameObject = null;
+        protected GameObject? gameObject = null;
 
         // ===================================== Property.. ===================================== //
-        public GameObject? gameobject
+        public GameObject? GameObject
         {
             get { return gameObject; }
             set
@@ -25,9 +25,9 @@ namespace Packman
         }
 
         // ===================================== Function.. ===================================== //
-        public bool Initialize()
+        public virtual void Initialize()
         {
-            return false;
+
         }
 
         public virtual void UpdateComponent()

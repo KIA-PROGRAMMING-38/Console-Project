@@ -14,6 +14,7 @@ namespace Packman
         int _titleStartY = 0;
 
         public TitleText( string[] titleText, int titleStartX, int titleStartY )
+            : base( 0 )
         {
             _titleText = titleText;
             _titleStartX = titleStartX;

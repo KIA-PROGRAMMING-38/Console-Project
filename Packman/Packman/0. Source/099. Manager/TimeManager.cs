@@ -12,10 +12,12 @@ namespace Packman
         // 타이머 관련..
         private Stopwatch stopwatch = null;
 
+        // 시간 계산에 관련된 변수들..
         private float frameInterval = 0.0f;
+        private float prevRunTime = 0.0f;
+        // 시간과 관련된 값들을 실질적으로 들고있는 변수들..
         private float deltaTime = 0.0f;
         private float runTime = 0.0f;
-        private float prevRunTime = 0.0f;
 
         public float ElaspedTime { get { return frameInterval; } }
 

@@ -1,31 +1,21 @@
-0 2 70 30
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W                                                                    W
-W   WWWWWWWW     WWWWWWWWW       WWWWWWWWWWW     WW        WW        W
-W   WW0000WW     WW00000WW       WWWWWWWWWWW     WW      WW          W
-W   WW0000WW     WW00000WW       WW              WW    WW            W
-W   WW0000WW     WW00000WW       WW              WW  WW              W
-W   WWWWWWWW     WW00000WW       WW              WWWW                W
-W   WW           WWWWWWWWW       WW              WWWW                W
-W   WW           WWWWWWWWW       WW              WW  WW              W
-W   WW           WW     WW       WW              WW    WW            W
-W   WW           WW     WW       WW              WW      WW          W
-W   WW           WW     WW       WWWWWWWWWWW     WW        WW        W
-W   WW           WW     WW       WWWWWWWWWWW     WW          WW      W
-W                                                                    W
-W                                                                    W
-W                                                                    W
-W                                                                    W
-W   WWWWWWWWWWWWWW        WWWWWWWWW      WWWWW          WW           W
-W   WWWWWWWWWWWWWW        WW00000WW      WWW WW         WW           W
-W   WW    WW    WW        WW00000WW      WWW  WW        WW           W
-W   WW    WW    WW        WW00000WW      WWW   WW       WW           W
-W   WW    WW    WW        WW00000WW      WWW    WW      WW           W
-W   WW    WW    WW        WWWWWWWWW      WWW     WW     WW           W
-W   WW    WW    WW        WWWWWWWWW      WWW      WW    WW           W
-W   WW    WW    WW        WW     WW      WWW       WW   WW           W
-W   WW    WW    WW        WW     WW      WWW        WW  WW           W
-W   WW    WW    WW        WW     WW      WWW         WW WW           W
-W   WW    WW    WW        WW     WW      WWW          WWWW           W
-W                                                                    W
-WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+0 2 60 20
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+W                                                          W
+W  WWWWWWWW     WWWWW     WWWWWWWW     WW      WW          W
+W  WW0000WW     W000W     WWWWWWWW     WW    WW            W
+W  WW0000WW     W000W     WW           WW  WW              W
+W  WW0000WW     WWWWW     WW           WWWW                W
+W  WWWWWWWW     W   W     WW           WW  WW              W
+W  WW           W   W     WWWWWWWW     WW    WW            W
+W  WW           W   W     WWWWWWWW     WW      WW          W
+W  WW                                                      W
+W                                                          W
+W  WWWWWWWWWW        WWWWWWW       WW      WW              W
+W  WWWWWWWWWW        W00000W       WWW     WW              W
+W  W   W    W        W00000W       WW W    WW              W
+W  W   W    W        WWWWWWW       WW  W   WW              W
+W  W   W    W        W     W       WW   W  WW              W
+W  W   W    W        W     W       WW    W WW              W
+W  W   W    W        W     W       WW     WWW              W
+W                                                          W
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

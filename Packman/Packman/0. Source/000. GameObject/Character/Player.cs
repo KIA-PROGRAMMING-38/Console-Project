@@ -20,7 +20,7 @@ namespace Packman
         private const ConsoleKey moveDownKey = ConsoleKey.DownArrow;
 
         public Player( int x, int y )
-            : base( x, y, Constants.PLAYER_IMAGE, Constants.PLAYER_COLOR )
+            : base( x, y, Constants.PLAYER_IMAGE, Constants.PLAYER_COLOR, Constants.PLAYER_RENDER_ORDER )
         {
         }
 
