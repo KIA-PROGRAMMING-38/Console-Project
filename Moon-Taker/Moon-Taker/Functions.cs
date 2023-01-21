@@ -152,11 +152,38 @@ namespace Moon_Taker
             }
         }
 
+        public static void ShowSynopsis()
+        {
+            Console.Clear();
+            Render("시놉시스\n\n\n" +
+                   "경일게임아카데미 프로그래밍 38기의 교수 최선문은 그의 학생 유재광의 집에서 곱창파티를 하고 있었다.\n" +
+                   "파티가 한창 이어지던 중, 곱창 기름이 재광의 손에 튀었고, 기름기를 닦기 위해 재광은 화장실로 갔다.\n" +
+                   "그러나 손에 묻은 기름기 때문인지, 실수로 비누를 떨어뜨렸고, 이를 선문이 목격했다.\n" +
+                   "겁에 질린 선문은 재광의 집에서 도망쳐 나왔고,\n" +
+                   "곱창을 먹으며 물어볼 것이 산더미였던 재광은 교수님의 흔적을 쫓아 가기 시작했다...\n\n\n" +
+                   "계속하려면 E를 누르세요.");
+            WaitForNextInput(ConsoleKey.E);
+        }
+        public static void ShowGameRules()
+        {
+            Console.Clear();
+            Render("게임 규칙\n\n\n" +
+                   "이 게임은 3개의 스테이지로 구성되어 있습니다.\n" +
+                   "재광은 앞에 있는 적과 블록은 발로 찰 수 있습니다.\n" +
+                   "적은 어딘가에 부딪히면 부서집니다.\n" +
+                   "각 스테이지는 별도의 행동횟수가 주어지며, 움직이거나 무언가를 찰 때 1씩 감소합니다.\n" +
+                   "행동횟수가 0이 되었는데도 교수님의 흔적을 찾지 못하면 실패입니다.\n" +
+                   "가시 트랩은 재광이 움직일 때 마다 상태가 바뀌며,\n돌출된 가시를 밟으면 행동점수가 2 감소합니다.\n" +
+                   "문은 열쇠가 없으면 열리지 않습니다. 열쇠를 찾아 문을 여세요\n" +
+                   "행운을 빕니다!\n\n\n" +
+                   "계속하려면 E를 누르세요.");
+            WaitForNextInput(ConsoleKey.E);
+        }
         public static void EnterGameOverScene(int playerMovePoint)
         {
 
             Console.Clear();
-            Render("당신은 흔적을 열심히 쫓았지만, 마음이 꺾였습니다.\nR키를 눌러 스테이지를 재시작하세요.", ConsoleColor.Green);
+            Render("재광은 흔적을 열심히 쫓았지만, 마음이 꺾였습니다.\nR키를 눌러 스테이지를 재시작하세요.", ConsoleColor.Green);
             WaitForNextInput(ConsoleKey.R, StageReseted);
         }
 
@@ -228,12 +255,12 @@ namespace Moon_Taker
                        "|  /  \\ \\   | |   | (___) || )  \\  |\r\n" +
                        "|_/    \\/   \\_/   (_______)|/    )_)\r\n" +
                        "                                    \r\n", RandomColor());
-                string Message = "교수님의 축복이 당신을 감쌉니다. 다음 스테이지로 넘어가려면 E를 눌러주세요!";
-                for (int i = 0; i < Message.Length; i++)
-                {
-                    Console.ForegroundColor = RandomColor();
-                    Console.Write(Message[i]);
-                }
+                string Message = "과거에 들었던 교수님의 목소리가 재광을 감쌉니다.\n" +
+                                 "재광은 따스한 온기를 느꼈습니다.\n" +
+                                 "힘을 낸 재광은 교수님의 흔적을 단번에 찾았습니다.\n\n\n" +
+                                 "다음 스테이지로 넘어가려면 E를 눌러주세요!";
+
+                Render(Message);
                 StageSettings.isBlessed = true;
                 WaitForNextInput(ConsoleKey.E, StageClear);
                 return;
@@ -242,12 +269,14 @@ namespace Moon_Taker
         public static void EnterGameClearScene()
         {
             Console.Clear();
-            string gameClear = "축하합니다! 당신은 훌륭하게 교수님의 흔적을 쫓아 교수님을 포획하는데 성공했습니다! \n잡힌 교수님은 재광의 집에서 행복하게 교안을 작성했습니다!";
-            for (int i = 0; i < gameClear.Length; ++i)
-            {
-                Console.ForegroundColor = RandomColor(13, 15);
-                Console.Write(gameClear[i]);
-            }
+            string gameClear = "당신덕에 재광은 교수님의 흔적을 쫓아 교수님을 포획하는데 성공했습니다!\n" +
+                               "재광은 교수님께 해명하는 것을 성공한 뒤 질문폭탄을 보냈고,\n" +
+                               "잡힌 교수님은 재광의 집에서 행복하게 교안을 작성했습니다!\n\n\n" +
+                               "ESC를 눌러 ";
+            Render("축하합니다!\n\n",RandomColor());
+            Render(gameClear);
+            Render("둘만의 시간", ConsoleColor.Yellow);
+            Render("을 갖게 해줍시다.");
             WaitForNextInput(ConsoleKey.Escape, GameClear);
         }
         public static void ExitWithError(string errorMessage, int errorCode)
@@ -277,11 +306,44 @@ namespace Moon_Taker
             }
         }
 
+        public static void WaitForNextInput(ConsoleKey someKey)
+        {
+            Console.WriteLine();
+            while (true)
+            {
+                ConsoleKey input = Console.ReadKey().Key;
+                if (input == someKey)
+                { 
+
+                    return;
+                }
+                else
+                {
+                    Console.Write("\b \b");
+                }
+            }
+        }
+
         public static ConsoleColor RandomColor(int a = 0, int b = 15)
         {
             Random random = new Random();
             int colorIndex = random.Next(a, b);
             return LookUpTable.consoleColor[colorIndex];
+        }
+
+        public static void ResetStageSetting(bool isKeyNull, int playerMovePoint)
+        {
+            StageSettings.isStageReseted = false;
+            StageSettings.isBlessed = false;
+            ObjectStatus.playerMovePoint = playerMovePoint;
+            ObjectStatus.isTrapToggled = true;
+            StageSettings.isKeyNull = isKeyNull;
+            if (false == isKeyNull)
+            {
+                ObjectStatus.hasKey = false;
+                ObjectStatus.isDoorOpened = false;
+            }
+            return;
         }
 
         public static Action GameStart = () => StageSettings.isGameStarted = true;
@@ -293,6 +355,5 @@ namespace Moon_Taker
             ++StageSettings.currentStage;
             StageSettings.isStageReseted = true;
         };
-
     }
 }

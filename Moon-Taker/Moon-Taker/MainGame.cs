@@ -37,58 +37,23 @@ namespace Moon_Taker
 
             string[] advices = Functions.LoadAdvice();
             Functions.ParseAdvice(advices, out advice);
-
+            Functions.ShowSynopsis();
+            Functions.ShowGameRules();
+            
             while (StageSettings.isGameStarted)
             {
                 Console.Clear();
 
-                if (StageSettings.currentStage == 1 && StageSettings.isStageReseted)
+                if (StageSettings.isStageReseted)
                 {
-                    string[] Stage1Reset = Functions.LoadStage(1);
+                    string[] Stage1Reset = Functions.LoadStage(StageSettings.currentStage);
 
-                    for (int i = 0; i < Stage[1].Length - 1; ++i)
+                    for (int i = 0; i < Stage[StageSettings.currentStage].Length - 1; ++i)
                     {
-                        Console.WriteLine(Stage[1][i]);
+                        Console.WriteLine(Stage[StageSettings.currentStage][i]);
                     }
-
-                    Functions.ParseStage(Stage[1], out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
-                    StageSettings.isStageReseted = false;
-                    StageSettings.isKeyNull = true;
-                    StageSettings.isBlessed = false;
-                    ObjectStatus.playerMovePoint = 23;
-                    ObjectStatus.isTrapToggled = true;
-                }
-                else if (StageSettings.currentStage == 2 && StageSettings.isStageReseted)
-                {
-                    string[] Stage2Reset = Functions.LoadStage(2);
-
-                    for (int i = 0; i < Stage[2].Length - 1; ++i)
-                    {
-                        Console.WriteLine(Stage[2][i]);
-                    }
-
-                    Functions.ParseStage(Stage[2], out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
-                    StageSettings.isStageReseted = false;
-                    StageSettings.isKeyNull = true;
-                    StageSettings.isBlessed = false;
-                    ObjectStatus.playerMovePoint = 18;
-                    ObjectStatus.isTrapToggled = true;
-                }
-                else if (StageSettings.currentStage == 3 && StageSettings.isStageReseted)
-                {
-                    string[] Stage3Reset = Functions.LoadStage(3);
-
-                    for (int i = 0; i < Stage[3].Length - 1; ++i)
-                    {
-                        Console.WriteLine(Stage[3][i]);
-                    }
-
-                    Functions.ParseStage(Stage[3], out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
-                    StageSettings.isStageReseted = false;
-                    StageSettings.isKeyNull = false;
-                    StageSettings.isBlessed = false;
-                    ObjectStatus.playerMovePoint = 33;
-                    ObjectStatus.isTrapToggled = true;
+                    Functions.ParseStage(Stage[StageSettings.currentStage], out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
+                    Functions.ResetStageSetting(StageSettings.isStageKeyNull[StageSettings.currentStage], StageSettings.stageMovePoint[StageSettings.currentStage]);
                 }
 
                     for (int wallId = 0; wallId < walls.Length; ++wallId)
