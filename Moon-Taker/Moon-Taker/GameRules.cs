@@ -12,7 +12,5 @@ namespace Moon_Taker
         public static int stageNum = 0;
         public static int stageSettingNum;
 
-        public static Enum.Direction playerMoveDirection;
-        public static bool enemyAlive = true;
     }
 }

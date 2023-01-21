@@ -122,7 +122,7 @@ namespace Moon_Taker
                             ++wallId;
                             break;
                         case Constants.enemy:
-                            enemy[enemyId] = new Enemy { X = x, Y = y };
+                            enemy[enemyId] = new Enemy { X = x, Y = y, IsAlive = true };
                             ++enemyId;
                             break;
                         case Constants.block:

@@ -21,6 +21,7 @@ namespace Moon_Taker
     {
         public int X;
         public int Y;
+        public bool IsAlive;
     }
     public class Block
     {
@@ -43,16 +44,6 @@ namespace Moon_Taker
         public int Y;
     }
     public class MapSize
-    {
-        public int X;
-        public int Y;
-    }
-    public class PreviousPlayer
-    {
-        public int X;
-        public int Y;
-    }
-    public class PreviousEnemy
     {
         public int X;
         public int Y;
