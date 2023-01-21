@@ -69,6 +69,51 @@
                 MapExtent(126, 15, "▶ " + "Check");
                 MapExtent(126, 18, "▶ " + "Fold");
 
+                //딜러 카드
+                for(int i = 0; i < 12; ++i)
+                {
+                    MapExtent(36, 8, "< Dealer >");
+                    MapExtent(50 + i, 8, "-");
+                    MapExtent(50 + i, 16, "-");
+                    MapExtent(65 + i, 8, "-");
+                    MapExtent(65 + i, 16, "-");
+                    MapExtent(80 + i, 8, "-");
+                    MapExtent(80 + i, 16, "-");
+                }
+                
+                for(int i = 0; i < 9; ++i)
+                {
+                    MapExtent(50, 8 + i, "I");
+                    MapExtent(62, 8 + i, "I");
+                    MapExtent(65, 8 + i, "I");
+                    MapExtent(77, 8 + i, "I");
+                    MapExtent(80, 8 + i, "I");
+                    MapExtent(92, 8 + i, "I");
+                }
+
+                //플레이어 카드
+                for(int i = 0; i < 12; ++i)
+                {
+                    MapExtent(36, 23, "< player >");
+                    MapExtent(50 + i, 23, "-");
+                    MapExtent(50 + i, 31, "-");
+                    MapExtent(65 + i, 23, "-");
+                    MapExtent(65 + i, 31, "-");
+                    MapExtent(80 + i, 23, "-");
+                    MapExtent(80 + i, 31, "-");
+                    
+                }
+
+                for(int i = 0; i < 9; ++i)
+                {
+                    MapExtent(50, 23 + i, "I");
+                    MapExtent(62, 23 + i, "I");
+                    MapExtent(65, 23 + i, "I");
+                    MapExtent(77, 23 + i, "I");
+                    MapExtent(80, 23 + i, "I");
+                    MapExtent(92, 23 + i, "I");
+                }
+
                 //------------------------------------ProcessInput ----------------------------
                 ConsoleKeyInfo keyinfo = Console.ReadKey();
                 ConsoleKey key = keyinfo.Key;
