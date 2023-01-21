@@ -28,6 +28,11 @@ namespace Moon_Taker
         public int X;
         public int Y;
     }
+    public class Trap
+    {
+        public int X;
+        public int Y;
+    }
     public class Moon
     {
         public int X;
@@ -47,5 +52,11 @@ namespace Moon_Taker
     {
         public int X;
         public int Y;
+    }
+
+    public class Advice
+    {
+        public string name;
+        public string advice;
     }
 }

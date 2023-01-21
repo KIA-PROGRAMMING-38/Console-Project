@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Moon_Taker
 {
-    internal class GameSettings
+    internal class StageSettings
     {
         public static bool isGameStarted = false;
-        public static int stageNum = 0;
-        public static int stageSettingNum;
-
+        public static bool isStageStarted = false;
+        public static bool isStageReseted = true;
+        public static int stageNum = 1;
     }
 }

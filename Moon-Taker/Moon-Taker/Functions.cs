@@ -9,6 +9,9 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
+using System.Transactions;
+using System.Runtime.Serialization.Json;
 
 namespace Moon_Taker
 {
@@ -56,10 +59,9 @@ namespace Moon_Taker
                 if (((int)key >= 48 && (int)key <= 57) || ((int)key >= 65 && (int)key <= 90))
                 {
                     Console.Write("\b \b");
-                    if(key == ConsoleKey.E)
+                    if (key == ConsoleKey.E)
                     {
                         isStageStarted = true;
-                        ++stageNum;
                         return;
                     }
                     continue;
@@ -68,7 +70,7 @@ namespace Moon_Taker
         }
 
         public static string[] LoadStage(int stageNumber, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Moon moon, out Key key, out Door door)
+            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, out Key key, out Door door)
         {
             string stageFilePath = Path.Combine("Assets", "Stage", $"Stage{stageNumber}.txt");
             Debug.Assert(File.Exists(stageFilePath));
@@ -77,6 +79,7 @@ namespace Moon_Taker
             wall = null;
             enemy = null;
             block = null;
+            trap = null;
             moon = null;
             key = null;
             door = null;
@@ -85,13 +88,14 @@ namespace Moon_Taker
         }
 
         public static void ParseStage(string[] stage, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Moon moon, out Key key, out Door door, out MapSize mapSize)
+            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, out Key key, out Door door, out MapSize mapSize)
         {
             string[] objectNums = stage[stage.Length - 1].Split(" ");
-            
+
             wall = new Wall[int.Parse(objectNums[0])];
             enemy = new Enemy[int.Parse(objectNums[1])];
             block = new Block[int.Parse(objectNums[2])];
+            trap = new Trap[int.Parse(objectNums[3])];
             player = null;
             moon = null;
             key = null;
@@ -101,17 +105,18 @@ namespace Moon_Taker
             int wallId = 0;
             int enemyId = 0;
             int blockId = 0;
+            int trapId = 0;
 
             for (int y = 0; y < stage.Length - 1; ++y)
             {
-                for(int x = 0; x < stage[y].Length; ++x)
+                for (int x = 0; x < stage[y].Length; ++x)
                 {
                     switch (stage[y][x])
                     {
                         case Constants.player:
                             player = new Player { X = x, Y = y };
                             break;
-                            case Constants.wall:
+                        case Constants.wall:
                             wall[wallId] = new Wall { X = x, Y = y };
                             ++wallId;
                             break;
@@ -122,6 +127,10 @@ namespace Moon_Taker
                         case Constants.block:
                             block[blockId] = new Block { X = x, Y = y };
                             ++blockId;
+                            break;
+                        case Constants.trap:
+                            trap[trapId] = new Trap { X = x, Y = y };
+                            ++trapId;
                             break;
                         case Constants.moon:
                             moon = new Moon { X = x, Y = y };
@@ -146,26 +155,57 @@ namespace Moon_Taker
 
         public static void EnterGameOverScene(int playerMovePoint)
         {
-            if (playerMovePoint == 0)
+
+            Console.Clear();
+            Console.WriteLine("Game Over! Press R to restart. Press ESC to Exit Game.");
+            while (true)
             {
-                Console.Clear();
-                Console.WriteLine("Game Over! Press R to restart!");
-                while (true)
+                ConsoleKey resetKey = Console.ReadKey().Key;
+                if (resetKey == ConsoleKey.R)
                 {
-                    ConsoleKey resetKey = Console.ReadKey().Key;
-                    if (resetKey == ConsoleKey.R)
-                    {
-                        GameSettings.stageSettingNum = GameSettings.stageNum;
-                        break;
-                    }
+                    StageSettings.isStageReseted = true;
+                    break;
+                }
+                else if (resetKey == ConsoleKey.Escape)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+                else
+                {
+                    Console.Write("\b \b");
+                }
+            }
+
+        }
+
+        public static void EnterStageClearScene(ref int stageNumber)
+        {
+            Console.Clear();
+            Console.WriteLine("Stage Clear! Press E to goto next Stage");
+            while (true)
+            {
+                ConsoleKey resetKey = Console.ReadKey().Key;
+                if (resetKey == ConsoleKey.E)
+                {
+                    ++StageSettings.stageNum;
+                    StageSettings.isStageReseted = true;
+                    break;
+                }
+                else
+                {
+                    Console.Write("\b \b");
                 }
             }
         }
 
-        public static void EnterStageClearScene()
+        public static void WriteAdvice(Advice[] someAdvice, MapSize mapSize)
         {
-            Console.Clear();
-            Console.WriteLine("Stage Clear!");
+            Random random = new Random();
+            int adviceNum = random.Next(0, someAdvice.Length - 1);
+            string advice = $"{someAdvice[adviceNum].name}: {someAdvice[adviceNum].advice}";
+            Console.SetCursorPosition(0, mapSize.Y + 3);
+            Console.Write(advice);
         }
     }
 }

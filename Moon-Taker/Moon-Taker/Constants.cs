@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Moon_Taker
         public const char wall = '#';
         public const char enemy = 'e';
         public const char block = 'b';
+        public const char trap = 'w';
         public const char moon = 'm';
         public const char key = 'k';
         public const char door = 'X';

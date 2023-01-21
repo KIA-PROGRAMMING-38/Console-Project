@@ -15,47 +15,62 @@ namespace Moon_Taker
             Functions.InitialSettings();
             Console.SetCursorPosition(6, 14);
             Functions.Render("Press e to start game.");
-            Functions.StartStage(out GameSettings.isGameStarted, ref GameSettings.stageNum);
+            Functions.StartStage(out StageSettings.isGameStarted, ref StageSettings.stageNum);
 
             Player player = new Player();
             Wall[] walls;
             Enemy[] enemies;
             Block[] blocks;
+            Trap[] traps;
             Moon moon;
             Key key;
             Door door;
             MapSize mapSize = new MapSize();
-            GameSettings.stageSettingNum = GameSettings.stageNum;
-
-            string[] Stage1 = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out moon, out key, out door);
-
-            for (int i = 0; i < Stage1.Length - 1; ++i)
+            Advice[] advice = new Advice[5]
             {
-                Console.WriteLine(Stage1[i]);
-            }
+                new Advice {name = "김윤하", advice = "이기지 못하면 합류하라"},
+                new Advice {name = "김도익", advice = "최고의 가라는 FM이다"},
+                new Advice {name = "엄종하", advice = "헉"},
+                new Advice {name = "김창연", advice = "(블루투스 동글이를 빼간다)"},
+                new Advice {name = "김규법", advice = "겐지가 함께한다"},
+            };
 
-            Functions.ParseStage(Stage1, out player, out walls, out enemies, out blocks, out moon, out key, out door, out mapSize);
+            string[] Stage1 = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
+            string[] Stage2 = Functions.LoadStage(2, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
+       
 
-            ++GameSettings.stageSettingNum;
-            Status.playerMovePoint = 23;
-
-            while (GameSettings.stageNum == 1)
+            while (StageSettings.isGameStarted)
             {
                 Console.Clear();
 
-                if (GameSettings.stageSettingNum == 1)
+                if (StageSettings.stageNum == 1 && StageSettings.isStageReseted)
                 {
-                    string[] Stage1Reset = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out moon, out key, out door);
+                    string[] Stage1Reset = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
 
                     for (int i = 0; i < Stage1.Length - 1; ++i)
                     {
                         Console.WriteLine(Stage1[i]);
                     }
 
-                    Functions.ParseStage(Stage1, out player, out walls, out enemies, out blocks, out moon, out key, out door, out mapSize);
-                    Status.playerMovePoint = 23;
+                    Functions.ParseStage(Stage1, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
+                    StageSettings.isStageReseted = false;
+                    ObjectsStatus.playerMovePoint = 23;
+                    ObjectsStatus.isTrapToggled = true;
+                }
 
-                    ++GameSettings.stageSettingNum;
+                else if (StageSettings.stageNum == 2 && StageSettings.isStageReseted)
+                {
+                    string[] Stage2Reset = Functions.LoadStage(2, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
+
+                    for (int i = 0; i < Stage2.Length - 1; ++i)
+                    {
+                        Console.WriteLine(Stage2[i]);
+                    }
+
+                    Functions.ParseStage(Stage2, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
+                    StageSettings.isStageReseted = false;
+                    ObjectsStatus.playerMovePoint = 24;
+                    ObjectsStatus.isTrapToggled = true;
                 }
 
                 Functions.RenderObject(player.X, player.Y, Constants.player);
@@ -72,31 +87,50 @@ namespace Moon_Taker
                 {
                     Functions.RenderObject(blocks[blockId].X, blocks[blockId].Y, Constants.block);
                 }
+                for (int trapId = 0; trapId < traps.Length; ++trapId)
+                {
+                    if (ObjectsStatus.isTrapToggled)
+                    {
+                        Functions.RenderObject(traps[trapId].X, traps[trapId].Y, Constants.trap);
+                    }
+                }
                 Functions.RenderObject(moon.X, moon.Y, Constants.moon);
                 Console.SetCursorPosition(Stage1[0].Length + 3, Stage1.Length / 2);
-                Functions.Render($"Your Move Point : {Status.playerMovePoint}");
+                Functions.Render($"Your Move Point : {ObjectsStatus.playerMovePoint}");
+                if (ObjectsStatus.isAdviceToggled)
+                {
+                    Functions.WriteAdvice(advice, mapSize);
+                    ObjectsStatus.isAdviceToggled = false;
+                }
                 ConsoleKey Input = Console.ReadKey().Key;
 
                 switch (Input)
                 {
                     case ConsoleKey.RightArrow:
-                        Actions.MovePlayerToRight(ref player.X, mapSize.X, Status.playerMoveDirection);
-                        --Status.playerMovePoint;
+                        Actions.MovePlayerToRight(ref player.X, mapSize.X, ObjectsStatus.playerMoveDirection);
+                        --ObjectsStatus.playerMovePoint;
+                        ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
                     case ConsoleKey.LeftArrow:
-                        Actions.MovePlayerToLeft(ref player.X, mapSize.X, Status.playerMoveDirection);
-                        --Status.playerMovePoint;
+                        Actions.MovePlayerToLeft(ref player.X, mapSize.X, ObjectsStatus.playerMoveDirection);
+                        --ObjectsStatus.playerMovePoint;
+                        ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
                     case ConsoleKey.DownArrow:
-                        Actions.MovePlayerToDown(ref player.Y, mapSize.Y, Status.playerMoveDirection);
-                        --Status.playerMovePoint;
+                        Actions.MovePlayerToDown(ref player.Y, mapSize.Y, ObjectsStatus.playerMoveDirection);
+                        --ObjectsStatus.playerMovePoint;
+                        ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
                     case ConsoleKey.UpArrow:
-                        Actions.MovePlayerToUp(ref player.Y, mapSize.Y, Status.playerMoveDirection);
-                        --Status.playerMovePoint;
+                        Actions.MovePlayerToUp(ref player.Y, mapSize.Y, ObjectsStatus.playerMoveDirection);
+                        --ObjectsStatus.playerMovePoint;
+                        ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
                     case ConsoleKey.R:
-                        GameSettings.stageSettingNum = 1;
+                        StageSettings.isStageReseted = true;
+                        continue;
+                    case ConsoleKey.A:
+                        ObjectsStatus.isAdviceToggled = true;
                         continue;
                 }
 
@@ -104,7 +138,7 @@ namespace Moon_Taker
                 {
                     if (Actions.IsCollided(player.X, player.Y, enemies[enemyId].X, enemies[enemyId].Y))
                     {
-                        Status.pushedEnemyId = enemyId;
+                        ObjectsStatus.pushedEnemyId = enemyId;
                         switch (Input)
                         {
                             case ConsoleKey.RightArrow:
@@ -131,7 +165,7 @@ namespace Moon_Taker
                 {
                     if (Actions.IsCollided(player.X, player.Y, blocks[blockId].X, blocks[blockId].Y))
                     {
-                        Status.pushedBlockId = blockId;
+                        ObjectsStatus.pushedBlockId = blockId;
                         switch (Input)
                         {
                             case ConsoleKey.RightArrow:
@@ -181,27 +215,32 @@ namespace Moon_Taker
                 {
                     for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
                     {
+                        if (enemies[enemyId].IsAlive == false)
+                        {
+                            continue;
+                        }
                         if (Actions.IsCollided(walls[wallId].X, walls[wallId].Y, enemies[enemyId].X, enemies[enemyId].Y))
                         {
                             enemies[enemyId].X = 0;
                             enemies[enemyId].Y = 0;
                             enemies[enemyId].IsAlive = false;
+                            Console.Beep();
                         }
                     }
                 }
 
                 for (int collidedenemyId = 0; collidedenemyId < enemies.Length; ++collidedenemyId)
                 {
-                    if (Status.pushedEnemyId == collidedenemyId)
+                    if (ObjectsStatus.pushedEnemyId == collidedenemyId || enemies[collidedenemyId].IsAlive == false)
                     {
                         continue;
                     }
-
-                    if (Actions.IsCollided(enemies[Status.pushedEnemyId].X, enemies[Status.pushedEnemyId].Y, enemies[collidedenemyId].X, enemies[collidedenemyId].Y))
+                    if (Actions.IsCollided(enemies[ObjectsStatus.pushedEnemyId].X, enemies[ObjectsStatus.pushedEnemyId].Y, enemies[collidedenemyId].X, enemies[collidedenemyId].Y))
                     {
-                        enemies[Status.pushedEnemyId].X = 0;
-                        enemies[Status.pushedEnemyId].Y = 0;
-                        enemies[Status.pushedEnemyId].IsAlive = false;
+                        enemies[ObjectsStatus.pushedEnemyId].X = 0;
+                        enemies[ObjectsStatus.pushedEnemyId].Y = 0;
+                        enemies[ObjectsStatus.pushedEnemyId].IsAlive = false;
+                        Console.Beep();
                     }
                 }
 
@@ -233,39 +272,49 @@ namespace Moon_Taker
 
                 for (int collidedBlockId = 0; collidedBlockId < blocks.Length; ++collidedBlockId)
                 {
-                    if (Status.pushedBlockId == collidedBlockId)
+                    if (ObjectsStatus.pushedBlockId == collidedBlockId)
                     {
                         continue;
                     }
 
-                    if (Actions.IsCollided(blocks[Status.pushedBlockId].X, blocks[Status.pushedBlockId].Y, blocks[collidedBlockId].X, blocks[collidedBlockId].Y))
+                    if (Actions.IsCollided(blocks[ObjectsStatus.pushedBlockId].X, blocks[ObjectsStatus.pushedBlockId].Y, blocks[collidedBlockId].X, blocks[collidedBlockId].Y))
                     {
                         switch (Input)
                         {
                             case ConsoleKey.RightArrow:
-                                Actions.CollidSolidOnLeft(ref blocks[Status.pushedBlockId].X);
+                                Actions.CollidSolidOnLeft(ref blocks[ObjectsStatus.pushedBlockId].X);
                                 break;
                             case ConsoleKey.LeftArrow:
-                                Actions.CollidSolidOnRight(ref blocks[Status.pushedBlockId].X);
+                                Actions.CollidSolidOnRight(ref blocks[ObjectsStatus.pushedBlockId].X);
                                 break;
                             case ConsoleKey.DownArrow:
-                                Actions.CollidSolidOnUp(ref blocks[Status.pushedBlockId].Y);
+                                Actions.CollidSolidOnUp(ref blocks[ObjectsStatus.pushedBlockId].Y);
                                 break;
                             case ConsoleKey.UpArrow:
-                                Actions.CollidSolidOnDown(ref blocks[Status.pushedBlockId].Y);
+                                Actions.CollidSolidOnDown(ref blocks[ObjectsStatus.pushedBlockId].Y);
                                 break;
                         }
                     }
                 }
 
+                for(int trapId = 0; trapId < traps.Length; ++trapId)
+                {
+                    if (ObjectsStatus.isTrapToggled && Actions.IsCollided(traps[trapId].X, traps[trapId].Y, player.X, player.Y))
+                    {
+                        ObjectsStatus.playerMovePoint -= 2;
+                    }
+                }
+
                 if (Actions.IsCollided(player.X, player.Y, moon.X, moon.Y))
                 {
-                    ++GameSettings.stageNum;
+                    Functions.EnterStageClearScene(ref StageSettings.stageNum);
                     continue;
                 }
-                Functions.EnterGameOverScene(Status.playerMovePoint);
+                if (ObjectsStatus.playerMovePoint <= 0)
+                {
+                    Functions.EnterGameOverScene(ObjectsStatus.playerMovePoint);
+                }
             }
-            Functions.EnterStageClearScene();
         }
     }
 }
