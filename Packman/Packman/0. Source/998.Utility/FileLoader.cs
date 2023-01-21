@@ -14,8 +14,8 @@ namespace Packman
         /// <summary>
         /// 파일을 Load합니다..
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="fileExtension"></param>
+        /// <param name="fileName"> Load할 파일 이름 </param>
+        /// <param name="fileExtension"> Load할 파일 확장자 </param>
         /// <returns></returns>
         public static void Load( string fileName, string fileExtension )
         {
@@ -37,6 +37,11 @@ namespace Packman
             return Path.Combine( "..\\..\\..\\Resources", "Data", fileName + "." + fileExtension );
         }
 
+        /// <summary>
+        /// 파일을 읽어와 모든 파일 안의 문자열들을 반환합니다.
+        /// </summary>
+        /// <param name="path"> 파일 경로 </param>
+        /// <returns> 파일 안의 문자열들( 배열의 원소에는 한 줄의 문자열이 담겨있습니다 ) </returns>
         private static string[] ReadFile(string path )
         {
             Debug.Assert( File.Exists( path ) );
@@ -44,15 +49,26 @@ namespace Packman
             return File.ReadAllLines( path );
         }
 
+        /// <summary>
+        /// Stage File 을 파싱합니다.
+        /// </summary>
+        /// <param name="lines"> Steg File 의 문자열들 </param>
         private static void PasingStageData( string[] lines )
         {
             string[] mapFileMetadata = lines[0].Split(' ');
             string[] playerFileMetadata = lines[1].Split(' ');
+            string[] MonsterFileMetadata = lines[2].Split(' ');
 
             PasingMapData( mapFileMetadata[0], mapFileMetadata[1] );
             PasingPlayerData( playerFileMetadata[0], playerFileMetadata[1] );
+            PasingMonsterData( MonsterFileMetadata[0], MonsterFileMetadata[1] );
         }
 
+        /// <summary>
+        /// Map File 을 파싱합니다.
+        /// </summary>
+        /// <param name="fileName"> 맵 파일 이름 </param>
+        /// <param name="fileExtension"> 맵 파일 확장자 </param>
         private static void PasingMapData(string fileName, string fileExtension)
         {
             string path = MakePath(fileName, fileExtension);
@@ -99,6 +115,11 @@ namespace Packman
             ObjectManager.Instance.AddGameObject( "Map", map );
         }
 
+        /// <summary>
+        /// Player File 을 파싱합니다.
+        /// </summary>
+        /// <param name="fileName"> 플레이어 파일 이름 </param>
+        /// <param name="fileExtension"> 플레이어 파일 확장자 </param>
         private static void PasingPlayerData( string fileName, string fileExtension )
         {
             string path = MakePath(fileName, fileExtension);
@@ -113,6 +134,33 @@ namespace Packman
             Debug.Assert( player.Initialize() );
 
             ObjectManager.Instance.AddGameObject( "Player", player );
+        }
+
+        /// <summary>
+        /// Monster File 을 파싱합니다.
+        /// </summary>
+        /// <param name="fileName"> 몬스터 파일 이름 </param>
+        /// <param name="fileExtension"> 몬스터 파일 확장자 </param>
+        private static void PasingMonsterData( string fileName, string fileExtension )
+        {
+            Map map = ObjectManager.Instance.GetGameObject<Map>();
+            Debug.Assert( null != map );
+
+            string path = MakePath(fileName, fileExtension);
+            string[] lines = ReadFile(path);
+
+            for( int curLineIndex = 0; curLineIndex < lines.Length; ++curLineIndex )
+            {
+                string[] monsterMetadata = lines[curLineIndex].Split(' ');
+
+                int monsterPosX = int.Parse(monsterMetadata[0]);
+                int monsterPosY = int.Parse(monsterMetadata[1]);
+
+                Monster monster = new Monster(monsterPosX, monsterPosY, map );
+                monster.Initialize();
+
+                Debug.Assert( ObjectManager.Instance.AddGameObject( $"Monster_{curLineIndex:D2}", monster ) );
+            }
         }
     }
 }

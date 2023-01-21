@@ -42,6 +42,7 @@ namespace Packman
                 if ( true == timeManagerInstance.UpdatePassFrameInterval() )
                 {
                     inputManagerInstance.Update();
+                    EventManager.Instance.Update();
 
                     SceneManager.Instance.Update();
                     SceneManager.Instance.Render();
@@ -69,7 +70,7 @@ namespace Packman
         /// <summary>
         /// 콘솔 세팅 초기화..
         /// </summary>
-        /// <returns></returns>
+        /// <returns> 성공 실패 여부 </returns>
         private bool InitConsoleSetting()
         {
             Console.Clear();
@@ -79,7 +80,7 @@ namespace Packman
             Console.CursorVisible = false;
 
             // 인코딩은 UTF8로 설정..
-            //Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
 
             return true;
         }
@@ -87,7 +88,7 @@ namespace Packman
         /// <summary>
         /// 싱글톤 인스턴스들 초기화..
         /// </summary>
-        /// <returns></returns>
+        /// <returns> 성공 실패 여부 </returns>
         private bool InitializeSingletons()
         {
             // Scene Manager 초기화..

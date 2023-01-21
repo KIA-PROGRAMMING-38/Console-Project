@@ -69,6 +69,12 @@ namespace Packman
             return false;
         }
 
+        /// <summary>
+        /// 밀리세컨드 단위를 초 단위로 바꿔줍니다..
+        /// <para></para>
+        /// </summary>
+        /// <param name="millisecond"> 밀리세컨드 </param>
+        /// <returns> 초 단위로 변환한 결과값 </returns>
         private float MilliSecondToSecond(long millisecond)
         {
             return millisecond * 0.001f;

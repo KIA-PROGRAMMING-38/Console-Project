@@ -14,6 +14,9 @@ namespace Packman._0._Source._000._GameObject
             public Action Event;
         }
 
+        // 많이 사용하는 싱글톤들은 미리 멤버로 받아두기..
+        EventManager _eventManager = EventManager.Instance;
+
         private List<SelectInfo> _selectInfoes = new List<SelectInfo>();
         int _maxSelectPointCount = 0;
         int _curSelectPoint = 0;
@@ -81,9 +84,9 @@ namespace Packman._0._Source._000._GameObject
         /// </summary>
         private void AddKeyPressEvent()
         {
-            InputManager.Instance.AddEvent( ConsoleKey.UpArrow, this.OnPressUpArrowKey );
-            InputManager.Instance.AddEvent( ConsoleKey.DownArrow, this.OnPressDownArrowKey );
-            InputManager.Instance.AddEvent( ConsoleKey.Enter, this.OnPressEnterKey );
+            _eventManager.AddInputEvent( ConsoleKey.UpArrow, this.OnPressUpArrowKey );
+            _eventManager.AddInputEvent( ConsoleKey.DownArrow, this.OnPressDownArrowKey );
+            _eventManager.AddInputEvent( ConsoleKey.Enter, this.OnPressEnterKey );
         }
 
         /// <summary>
@@ -91,9 +94,9 @@ namespace Packman._0._Source._000._GameObject
         /// </summary>
         private void RemoveKeyPressEvent()
         {
-            InputManager.Instance.RemoveEvent( ConsoleKey.UpArrow, this.OnPressUpArrowKey );
-            InputManager.Instance.RemoveEvent( ConsoleKey.DownArrow, this.OnPressDownArrowKey );
-            InputManager.Instance.RemoveEvent( ConsoleKey.Enter, this.OnPressEnterKey );
+            _eventManager.RemoveInputEvent( ConsoleKey.UpArrow, this.OnPressUpArrowKey );
+            _eventManager.RemoveInputEvent( ConsoleKey.DownArrow, this.OnPressDownArrowKey );
+            _eventManager.RemoveInputEvent( ConsoleKey.Enter, this.OnPressEnterKey );
         }
 
         /// <summary>

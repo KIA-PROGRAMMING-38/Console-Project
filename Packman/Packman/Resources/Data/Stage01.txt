@@ -1,2 +1,3 @@
 Stage01_Map txt
 Stage01_Player txt
+Stage01_Monster txt

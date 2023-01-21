@@ -8,38 +8,18 @@ namespace Packman
 {
     internal class InputManager : SingletonBase<InputManager>
     {
-        private const int PRESS_EVENT_DEFAULT = 0;
-        private const int PRESS_EVENT_ALTPRESS = 1;
-        private const int PRESS_EVENT_SHIFTPRESS = 2;
-        private const int PRESS_EVENT_CTRLPRESS = 3;
-
-        private const int EVENT_TYPE_COUNT = 4;
-
-        private struct PressKeyEventInfo
-        {
-            public Action[] events;
-
-            public PressKeyEventInfo()
-            {
-                events = new Action[EVENT_TYPE_COUNT];
-            }
-        }
-
         // ConsoleKey enum 값에 있는 기호상수중 가장 큰 값인 OemClear가 254니까 +1해서 255개 생성..
-        const int totalKeyCount = 255;
+        public const int TOTAL_KEY_COUNT = 255;
 
-        private PressKeyEventInfo[] pressKeyEvents = new PressKeyEventInfo[totalKeyCount];
-        private bool[] pressKeyState = new bool[totalKeyCount];
-        private ConsoleModifiers[] pressKeyModifiers = new ConsoleModifiers[totalKeyCount];
-
-        Stack<int> pressKeyIndices = new Stack<int>();
+        // 키 입력 관련 데이터들..
+        private bool[] pressKeyState = new bool[TOTAL_KEY_COUNT];
+        private ConsoleModifiers[] pressKeyModifiers = new ConsoleModifiers[InputManager.TOTAL_KEY_COUNT];
+        // 키 입력 시 실행될 콜백함수를 저장할 녀석..
+        public Action<ConsoleKey, ConsoleModifiers> OnPressInput;
 
         public InputManager()
         {
-            for( int i = 0; i < totalKeyCount; ++i )
-            {
-                pressKeyEvents[i] = new PressKeyEventInfo();
-            }
+
         }
 
         public void Update()
@@ -54,7 +34,7 @@ namespace Packman
                 pressKeyModifiers[index] = keyInfo.Modifiers;
             }
 
-            for( int index = 0; index < totalKeyCount; ++index )
+            for( int index = 0; index < TOTAL_KEY_COUNT; ++index )
             {
                 if( false == pressKeyState[index] )
                 {
@@ -63,18 +43,8 @@ namespace Packman
 
                 pressKeyState[index] = false;
 
-                pressKeyEvents?[index].events[PRESS_EVENT_DEFAULT]?.Invoke();
+                OnPressInput?.Invoke( (ConsoleKey)index, pressKeyModifiers[index] );
             }
-        }
-
-        public void AddEvent(ConsoleKey key, Action action)
-        {
-            pressKeyEvents[(int)key].events[PRESS_EVENT_DEFAULT] += action;
-        }
-
-        public void RemoveEvent(ConsoleKey key, Action action)
-        {
-            pressKeyEvents[(int)key].events[PRESS_EVENT_DEFAULT] -= action;
         }
     }
 }

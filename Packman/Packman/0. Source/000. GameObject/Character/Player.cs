@@ -11,7 +11,7 @@ namespace Packman
     internal class Player : Character
     {
         // 많이 사용하는 싱글톤들은 미리 멤버로 받아두기..
-        private InputManager _inputManager = InputManager.Instance;
+        private EventManager _eventManager = EventManager.Instance;
 
         // 키 관련 상수 정의..
         private const ConsoleKey moveRightKey = ConsoleKey.RightArrow;
@@ -60,10 +60,10 @@ namespace Packman
         /// </summary>
         private void AddKeyPressEvent()
         {
-            _inputManager.AddEvent( moveRightKey, OnMoveRightKeyPress );
-            _inputManager.AddEvent( moveLeftKey, OnMoveLeftKeyPress );
-            _inputManager.AddEvent( moveUpKey, OnMoveUpKeyPress );
-            _inputManager.AddEvent( moveDownKey, OnMoveDownKeyPress );
+            _eventManager.AddInputEvent( moveRightKey, OnMoveRightKeyPress );
+            _eventManager.AddInputEvent( moveLeftKey, OnMoveLeftKeyPress );
+            _eventManager.AddInputEvent( moveUpKey, OnMoveUpKeyPress );
+            _eventManager.AddInputEvent( moveDownKey, OnMoveDownKeyPress );
         }
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace Packman
         /// </summary>
         private void RemoveKeyPressEvent()
         {
-            _inputManager.RemoveEvent( moveRightKey, OnMoveRightKeyPress );
-            _inputManager.RemoveEvent( moveLeftKey, OnMoveLeftKeyPress );
-            _inputManager.RemoveEvent( moveUpKey, OnMoveUpKeyPress );
-            _inputManager.RemoveEvent( moveDownKey, OnMoveDownKeyPress );
+            _eventManager.RemoveInputEvent( moveRightKey, OnMoveRightKeyPress );
+            _eventManager.RemoveInputEvent( moveLeftKey, OnMoveLeftKeyPress );
+            _eventManager.RemoveInputEvent( moveUpKey, OnMoveUpKeyPress );
+            _eventManager.RemoveInputEvent( moveDownKey, OnMoveDownKeyPress );
         }
 
         /// <summary>

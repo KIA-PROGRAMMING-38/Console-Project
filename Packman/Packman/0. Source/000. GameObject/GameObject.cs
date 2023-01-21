@@ -15,7 +15,7 @@ namespace Packman
         protected ObjectManager _objectManager;
 
         // 현재 GameObject가 가지고 있는 Component 들..
-        private Dictionary<string, Component> components = new Dictionary<string, Component>();
+        private Dictionary<string, Component> _components = new Dictionary<string, Component>();
         protected Renderer _renderer = new Renderer();
 
         protected int _x = 0;
@@ -93,7 +93,7 @@ namespace Packman
 
         public virtual void Update()
         {
-            foreach ( var component in components )
+            foreach ( var component in _components )
             {
                 component.Value.UpdateComponent();
             }
@@ -127,7 +127,7 @@ namespace Packman
             Component? findComponent = null;
 
             // 컴포넌트를 찾고 있다면 반환, 없다면 null 반환..
-            if( components.TryGetValue(componentId, out findComponent) )
+            if( _components.TryGetValue(componentId, out findComponent) )
             {
                 return (T)findComponent;
             }
@@ -150,14 +150,14 @@ namespace Packman
             }
 
             // 이미 컴포넌트 ID가 사용중이라면..
-            if ( true == components.ContainsKey( componentId ) )
+            if ( true == _components.ContainsKey( componentId ) )
             {
                 return false;
             }
 
             // 컴포넌트의 gameobject 를 나(현재 GameObject 인스턴스)로 바꾸고 추가합니다..
             component.gameobject = this;
-            components.Add( componentId, component );
+            _components.Add( componentId, component );
 
             return true;
         }
