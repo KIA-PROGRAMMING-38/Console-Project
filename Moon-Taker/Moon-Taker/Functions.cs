@@ -69,26 +69,24 @@ namespace Moon_Taker
             }
         }
 
-        public static string[] LoadStage(int stageNumber, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, ref Key key, ref Door door)
+        public static string[] LoadStage(int stageNumber)
         {
             string stageFilePath = Path.Combine("Assets", "Stage", $"Stage{stageNumber}.txt");
             Debug.Assert(File.Exists(stageFilePath));
 
-            player = null;
-            wall = null;
-            enemy = null;
-            block = null;
-            trap = null;
-            key = null;
-            door = null;
-            moon = null;
+            return File.ReadAllLines(stageFilePath);
+        }
+
+        public static string[] LoadAdvice()
+        {
+            string stageFilePath = Path.Combine("Assets", "Advice", "Advice.txt");
+            Debug.Assert(File.Exists(stageFilePath));
 
             return File.ReadAllLines(stageFilePath);
         }
 
         public static void ParseStage(string[] stage, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, ref Key key, ref Door door, out MapSize mapSize)
+            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, out Key key, out Door door, out MapSize mapSize)
         {
             string[] objectNums = stage[stage.Length - 1].Split(" ");
 
@@ -96,6 +94,8 @@ namespace Moon_Taker
             enemy = new Enemy[int.Parse(objectNums[1])];
             block = new Block[int.Parse(objectNums[2])];
             trap = new Trap[int.Parse(objectNums[3])];
+            key = null;
+            door = null;
             player = null;
             moon = null;
             mapSize = new MapSize { X = stage[0].Length, Y = stage.Length };
@@ -142,12 +142,24 @@ namespace Moon_Taker
                         case Constants.blank:
                             break;
                         default:
-                            Console.Clear();
-                            Console.WriteLine($"스테이지 파일이 손상되었습니다.{y}번 행의 {x}번째 글자: {stage[y][x]}");
-                            Environment.Exit(-1);
+                            ExitWithError($"스테이지 파일이 손상되었습니다. {y}번 행의 {x}번째 글자: {stage[y][x]}", -1);
                             break;
                     }
                 }
+            }
+        }
+
+        public static void ParseAdvice(string[] advices, out Advice[] advice)
+        {
+            advice = new Advice[advices.Length];
+            for (int adviceId = 0; adviceId < advices.Length; adviceId++)
+            {
+                advice[adviceId] = new Advice
+                {
+                    name = advices[adviceId].Split("\t")[0],
+                    advice = advices[adviceId].Split("\t")[1],
+                    weight = int.Parse(advices[adviceId].Split("\t")[2])
+                };
             }
         }
 
@@ -197,12 +209,32 @@ namespace Moon_Taker
             }
         }
 
-        public static void WriteAdvice(Advice[] someAdvice, MapSize mapSize)
+        public static void PickAdviceNumber(Advice[] someAdvice, ref int adviceNumber)
         {
             Random random = new Random();
-            int adviceNum = random.Next(0, someAdvice.Length - 1);
-            string advice = $"{someAdvice[adviceNum].name}: {someAdvice[adviceNum].advice}";
-            Console.SetCursorPosition(0, mapSize.Y + 3);
+            int randomAdviceNum = random.Next(1, 100);
+            int totalWeight = someAdvice[0].weight;
+
+            for (int i = 1; i < someAdvice.Length; i++)
+            {
+                if (totalWeight < randomAdviceNum)
+                {
+                    totalWeight += someAdvice[i].weight;
+                    continue;
+                }
+                adviceNumber = i;
+                return;
+            }
+            return;
+        }
+        public static void WriteAdvice(Advice[] someAdvice, MapSize mapSize, in int adviceNumber)
+        {
+            if(adviceNumber == -1)
+            {
+                ExitWithError($"Advice 파일의 형식이 잘못되었습니다. {someAdvice[adviceNumber].name}", - 2);
+            }
+            string advice = $"{someAdvice[adviceNumber].name}: {someAdvice[adviceNumber].advice}";
+            Console.SetCursorPosition(mapSize.X / 2, mapSize.Y + 3);
             Console.Write(advice);
         }
 
@@ -225,5 +257,26 @@ namespace Moon_Taker
             }
 
         }
+        public static void ExitWithError(string errorMessage, int errorCode)
+        {
+            Console.Clear();
+            Console.WriteLine("에러가 발생하여 프로그램을 종료합니다.");
+            Console.WriteLine($"에러내용: {errorMessage}");
+            Console.WriteLine("나가시려면 ESC키를 눌러주세요");
+            while (true)
+            {
+                ConsoleKey resetKey = Console.ReadKey().Key;
+                if (resetKey == ConsoleKey.Escape)
+                {
+                    Environment.Exit(errorCode);
+                    break;
+                }
+                else
+                {
+                    Console.Write("\b \b");
+                }
+            }
+        }
+
     }
 }

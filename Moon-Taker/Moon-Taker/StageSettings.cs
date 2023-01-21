@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Moon_Taker
 {
     internal class StageSettings
+
     {
         public static bool isGameStarted = false;
         public static bool isStageStarted = false;

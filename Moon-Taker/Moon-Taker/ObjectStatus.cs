@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Moon_Taker
 {
-    internal class ObjectsStatus
+    internal class ObjectStatus
     {
         public static int pushedEnemyId;
         public static int pushedBlockId;

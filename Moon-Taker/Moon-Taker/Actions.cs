@@ -53,27 +53,27 @@ namespace Moon_Taker
             --y;
             return;
         }
-        public static void PushRight(ref int enemyX, ref int playerX)
+        public static void PushRight(ref int pushedObjectX, ref int playerX)
         {
-            enemyX = ++playerX;
+            pushedObjectX = ++playerX;
             --playerX;
             return;
         }
-        public static void PushLeft(ref int enemyX, ref int playerX)
+        public static void PushLeft(ref int pushedObjectX, ref int playerX)
         {
-            enemyX = --playerX;
+            pushedObjectX = --playerX;
             ++playerX;
             return;
         }
-        public static void PushDown(ref int enemyY, ref int playerY)
+        public static void PushDown(ref int pushedObjectY, ref int playerY)
         {
-            enemyY = ++playerY;
+            pushedObjectY = ++playerY;
             --playerY;
             return;
         }
-        public static void PushUp(ref int enemyY, ref int playerY)
+        public static void PushUp(ref int pushedObjectY, ref int playerY)
         {
-            enemyY = --playerY;
+            pushedObjectY = --playerY;
             ++playerY;
             return;
         }
