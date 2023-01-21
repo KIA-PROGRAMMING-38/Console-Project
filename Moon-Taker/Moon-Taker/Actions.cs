@@ -4,31 +4,26 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Moon_Taker.Enum;
 
 namespace Moon_Taker
 {
     internal class Actions
     {
-        public static void MovePlayerToRight(ref int playerX, in int mapSizeX, Enum.Direction direction)
+        public static void MovePlayerToRight(ref int playerX, in int mapSizeX)
         {
             playerX = Math.Min(playerX + 1, mapSizeX);
-            direction = Enum.Direction.Right;
         }
-        public static void MovePlayerToLeft(ref int playerX, in int mapSizeX, Enum.Direction direction)
+        public static void MovePlayerToLeft(ref int playerX, in int mapSizeX)
         {
             playerX = Math.Max(0, playerX - 1);
-            direction = Enum.Direction.Left;
         }
-        public static void MovePlayerToDown(ref int playerY, in int mapSizeY, Enum.Direction direction)
+        public static void MovePlayerToDown(ref int playerY, in int mapSizeY)
         {
             playerY = Math.Min(playerY + 1, mapSizeY);
-            direction = Enum.Direction.Down;
         }
-        public static void MovePlayerToUp(ref int playerY, in int mapSizeY, Enum.Direction direction)
+        public static void MovePlayerToUp(ref int playerY, in int mapSizeY)
         {
             playerY = Math.Max(0, playerY - 1);
-            direction = Enum.Direction.Up;
         }
         public static bool IsCollided(int x1, int y1, int x2, int y2)
         {

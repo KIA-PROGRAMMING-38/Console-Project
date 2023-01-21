@@ -70,7 +70,7 @@ namespace Moon_Taker
         }
 
         public static string[] LoadStage(int stageNumber, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, out Key key, out Door door)
+            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, ref Key key, ref Door door)
         {
             string stageFilePath = Path.Combine("Assets", "Stage", $"Stage{stageNumber}.txt");
             Debug.Assert(File.Exists(stageFilePath));
@@ -80,15 +80,15 @@ namespace Moon_Taker
             enemy = null;
             block = null;
             trap = null;
-            moon = null;
             key = null;
             door = null;
+            moon = null;
 
             return File.ReadAllLines(stageFilePath);
         }
 
         public static void ParseStage(string[] stage, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, out Key key, out Door door, out MapSize mapSize)
+            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, ref Key key, ref Door door, out MapSize mapSize)
         {
             string[] objectNums = stage[stage.Length - 1].Split(" ");
 
@@ -98,8 +98,6 @@ namespace Moon_Taker
             trap = new Trap[int.Parse(objectNums[3])];
             player = null;
             moon = null;
-            key = null;
-            door = null;
             mapSize = new MapSize { X = stage[0].Length, Y = stage.Length };
 
             int wallId = 0;
@@ -206,6 +204,26 @@ namespace Moon_Taker
             string advice = $"{someAdvice[adviceNum].name}: {someAdvice[adviceNum].advice}";
             Console.SetCursorPosition(0, mapSize.Y + 3);
             Console.Write(advice);
+        }
+
+        public static void EnterGameClearScene()
+        {
+            Console.Clear();
+            Console.WriteLine("Game Clear! Press E to exit game");
+            while (true)
+            {
+                ConsoleKey resetKey = Console.ReadKey().Key;
+                if (resetKey == ConsoleKey.E)
+                {
+                    Environment.Exit(1);
+                    break;
+                }
+                else
+                {
+                    Console.Write("\b \b");
+                }
+            }
+
         }
     }
 }

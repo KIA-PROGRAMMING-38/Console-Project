@@ -8,11 +8,15 @@ namespace Moon_Taker
 {
     internal class ObjectsStatus
     {
-        public static Enum.Direction playerMoveDirection;
         public static int pushedEnemyId;
         public static int pushedBlockId;
+
         public static int playerMovePoint;
-        public static bool isAdviceToggled;
+
+        public static bool isAdviceToggled = false;
+
         public static bool isTrapToggled = true;
+        public static bool hasKey = false;
+        public static bool isDoorOpened = false;
     }
 }

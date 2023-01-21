@@ -12,5 +12,6 @@ namespace Moon_Taker
         public static bool isStageStarted = false;
         public static bool isStageReseted = true;
         public static int stageNum = 1;
+        public static bool isKeyNull = true;
     }
 }

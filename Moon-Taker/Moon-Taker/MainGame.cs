@@ -23,8 +23,8 @@ namespace Moon_Taker
             Block[] blocks;
             Trap[] traps;
             Moon moon;
-            Key key;
-            Door door;
+            Key key = new Key();
+            Door door = new Door();
             MapSize mapSize = new MapSize();
             Advice[] advice = new Advice[5]
             {
@@ -35,9 +35,9 @@ namespace Moon_Taker
                 new Advice {name = "김규법", advice = "겐지가 함께한다"},
             };
 
-            string[] Stage1 = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
-            string[] Stage2 = Functions.LoadStage(2, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
-       
+            string[] Stage1 = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door);
+            string[] Stage2 = Functions.LoadStage(2, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door);
+            string[] Stage3 = Functions.LoadStage(3, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door);
 
             while (StageSettings.isGameStarted)
             {
@@ -45,35 +45,52 @@ namespace Moon_Taker
 
                 if (StageSettings.stageNum == 1 && StageSettings.isStageReseted)
                 {
-                    string[] Stage1Reset = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
+                    string[] Stage1Reset = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door);
 
                     for (int i = 0; i < Stage1.Length - 1; ++i)
                     {
                         Console.WriteLine(Stage1[i]);
                     }
 
-                    Functions.ParseStage(Stage1, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
+                    Functions.ParseStage(Stage1, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door, out mapSize);
                     StageSettings.isStageReseted = false;
+                    StageSettings.isKeyNull = true;
                     ObjectsStatus.playerMovePoint = 23;
                     ObjectsStatus.isTrapToggled = true;
                 }
 
                 else if (StageSettings.stageNum == 2 && StageSettings.isStageReseted)
                 {
-                    string[] Stage2Reset = Functions.LoadStage(2, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door);
+                    string[] Stage2Reset = Functions.LoadStage(2, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door);
 
                     for (int i = 0; i < Stage2.Length - 1; ++i)
                     {
                         Console.WriteLine(Stage2[i]);
                     }
 
-                    Functions.ParseStage(Stage2, out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
+                    Functions.ParseStage(Stage2, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door, out mapSize);
                     StageSettings.isStageReseted = false;
-                    ObjectsStatus.playerMovePoint = 24;
+                    StageSettings.isKeyNull = true;
+                    ObjectsStatus.playerMovePoint = 19;
                     ObjectsStatus.isTrapToggled = true;
                 }
 
-                Functions.RenderObject(player.X, player.Y, Constants.player);
+                else if (StageSettings.stageNum == 3 && StageSettings.isStageReseted)
+                {
+                    string[] Stage3Reset = Functions.LoadStage(3, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door);
+
+                    for (int i = 0; i < Stage3.Length - 1; ++i)
+                    {
+                        Console.WriteLine(Stage3[i]);
+                    }
+
+                    Functions.ParseStage(Stage3, out player, out walls, out enemies, out blocks, out traps, out moon, ref key, ref door, out mapSize);
+                    StageSettings.isStageReseted = false;
+                    StageSettings.isKeyNull = false;
+                    ObjectsStatus.playerMovePoint = 33;
+                    ObjectsStatus.isTrapToggled = true;
+                }
+
                 for (int wallId = 0; wallId < walls.Length; ++wallId)
                 {
                     Functions.RenderObject(walls[wallId].X, walls[wallId].Y, Constants.wall);
@@ -94,7 +111,19 @@ namespace Moon_Taker
                         Functions.RenderObject(traps[trapId].X, traps[trapId].Y, Constants.trap);
                     }
                 }
+                if (false == StageSettings.isKeyNull)
+                {
+                    if (false == ObjectsStatus.hasKey)
+                    {
+                        Functions.RenderObject(key.X, key.Y, Constants.key);
+                    }
+                    if (false == ObjectsStatus.isDoorOpened)
+                    {
+                        Functions.RenderObject(door.X, door.Y, Constants.door);
+                    }
+                }
                 Functions.RenderObject(moon.X, moon.Y, Constants.moon);
+                Functions.RenderObject(player.X, player.Y, Constants.player);
                 Console.SetCursorPosition(Stage1[0].Length + 3, Stage1.Length / 2);
                 Functions.Render($"Your Move Point : {ObjectsStatus.playerMovePoint}");
                 if (ObjectsStatus.isAdviceToggled)
@@ -107,22 +136,22 @@ namespace Moon_Taker
                 switch (Input)
                 {
                     case ConsoleKey.RightArrow:
-                        Actions.MovePlayerToRight(ref player.X, mapSize.X, ObjectsStatus.playerMoveDirection);
+                        Actions.MovePlayerToRight(ref player.X, mapSize.X);
                         --ObjectsStatus.playerMovePoint;
                         ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
                     case ConsoleKey.LeftArrow:
-                        Actions.MovePlayerToLeft(ref player.X, mapSize.X, ObjectsStatus.playerMoveDirection);
+                        Actions.MovePlayerToLeft(ref player.X, mapSize.X);
                         --ObjectsStatus.playerMovePoint;
                         ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
                     case ConsoleKey.DownArrow:
-                        Actions.MovePlayerToDown(ref player.Y, mapSize.Y, ObjectsStatus.playerMoveDirection);
+                        Actions.MovePlayerToDown(ref player.Y, mapSize.Y);
                         --ObjectsStatus.playerMovePoint;
                         ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
                     case ConsoleKey.UpArrow:
-                        Actions.MovePlayerToUp(ref player.Y, mapSize.Y, ObjectsStatus.playerMoveDirection);
+                        Actions.MovePlayerToUp(ref player.Y, mapSize.Y);
                         --ObjectsStatus.playerMovePoint;
                         ObjectsStatus.isTrapToggled = true ^ ObjectsStatus.isTrapToggled;
                         break;
@@ -305,10 +334,51 @@ namespace Moon_Taker
                     }
                 }
 
+                if (false == StageSettings.isKeyNull)
+                {
+                    if (Actions.IsCollided(player.X, player.Y, key.X, key.Y))
+                    {
+                        ObjectsStatus.hasKey = true;
+                    }
+
+                    if (Actions.IsCollided(player.X, player.Y, door.X, door.Y))
+                    {
+                        if (false == ObjectsStatus.hasKey)
+                        {
+                            switch (Input)
+                            {
+                                case ConsoleKey.RightArrow:
+                                    Actions.CollidSolidOnLeft(ref player.X);
+                                    break;
+                                case ConsoleKey.LeftArrow:
+                                    Actions.CollidSolidOnRight(ref player.X);
+                                    break;
+                                case ConsoleKey.DownArrow:
+                                    Actions.CollidSolidOnUp(ref player.Y);
+                                    break;
+                                case ConsoleKey.UpArrow:
+                                    Actions.CollidSolidOnDown(ref player.Y);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            ObjectsStatus.isDoorOpened = true;
+                        }
+                    }
+                }
+
                 if (Actions.IsCollided(player.X, player.Y, moon.X, moon.Y))
                 {
-                    Functions.EnterStageClearScene(ref StageSettings.stageNum);
-                    continue;
+                    if (StageSettings.stageNum < 3)
+                    {
+                        Functions.EnterStageClearScene(ref StageSettings.stageNum);
+                        continue;
+                    }
+                    else if (StageSettings.stageNum == 3)
+                    {
+                        Functions.EnterGameClearScene();
+                    }
                 }
                 if (ObjectsStatus.playerMovePoint <= 0)
                 {
