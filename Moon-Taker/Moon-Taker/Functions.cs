@@ -25,7 +25,7 @@ namespace Moon_Taker
                    "   | .  . || | | || | | ||  \\| |\r\n" +
                    "   | |\\/| || | | || | | || . ` |\r\n" +
                    "   | |  | |\\ \\_/ /\\ \\_/ /| |\\  |\r\n" +
-                   "   \\_|  |_/ \\___/  \\___/ \\_| \\_/\r"
+                   "   \\_|  |_/ \\___/  \\___/ \\_| \\_/\r\n"
                    , ConsoleColor.Yellow);
 
             Render("_____   ___   _   __ _____ ______ \r\n" +
@@ -46,12 +46,6 @@ namespace Moon_Taker
             Console.SetCursorPosition(x, y);
             Console.ForegroundColor = myColor;
             Console.Write(icon);
-        }
-
-        public static void EraseObject(int x, int y)
-        {
-            Console.SetCursorPosition(x, y);
-            Console.Write(' ');
         }
 
         public static void StartStage(out bool isStageStarted, ref int stageNum)
@@ -141,11 +135,37 @@ namespace Moon_Taker
                         case Constants.blank:
                             break;
                         default:
+                            Console.Clear();
+                            Console.WriteLine($"스테이지 파일이 손상되었습니다.{y}번 행의 {x}번째 글자: {stage[y][x]}");
                             Environment.Exit(-1);
                             break;
                     }
                 }
             }
+        }
+
+        public static void EnterGameOverScene(int playerMovePoint)
+        {
+            if (playerMovePoint == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Game Over! Press R to restart!");
+                while (true)
+                {
+                    ConsoleKey resetKey = Console.ReadKey().Key;
+                    if (resetKey == ConsoleKey.R)
+                    {
+                        GameSettings.stageSettingNum = GameSettings.stageNum;
+                        break;
+                    }
+                }
+            }
+        }
+
+        public static void EnterStageClearScene()
+        {
+            Console.Clear();
+            Console.WriteLine("Stage Clear!");
         }
     }
 }

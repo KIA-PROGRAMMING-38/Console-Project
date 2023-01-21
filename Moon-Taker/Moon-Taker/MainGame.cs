@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
@@ -10,10 +11,11 @@ namespace Moon_Taker
     {
         static void Main()
         {
-            
+
             Functions.InitialSettings();
-            Functions.Render("\n\n Press e to start game.");
-            Functions.StartStage(out GameRules.isGameStarted, ref GameRules.stageNum);
+            Console.SetCursorPosition(6, 14);
+            Functions.Render("Press e to start game.");
+            Functions.StartStage(out GameSettings.isGameStarted, ref GameSettings.stageNum);
 
             Player player = new Player();
             Wall[] walls;
@@ -23,9 +25,7 @@ namespace Moon_Taker
             Key key;
             Door door;
             MapSize mapSize = new MapSize();
-            GameRules.stageSettingNum = GameRules.stageNum;
-
-            Console.Clear();
+            GameSettings.stageSettingNum = GameSettings.stageNum;
 
             string[] Stage1 = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out moon, out key, out door);
 
@@ -36,11 +36,27 @@ namespace Moon_Taker
 
             Functions.ParseStage(Stage1, out player, out walls, out enemies, out blocks, out moon, out key, out door, out mapSize);
 
-            ++GameRules.stageSettingNum;
-            
-            while (GameRules.stageNum == 1)
+            ++GameSettings.stageSettingNum;
+            Status.playerMovePoint = 23;
+
+            while (GameSettings.stageNum == 1)
             {
                 Console.Clear();
+
+                if (GameSettings.stageSettingNum == 1)
+                {
+                    string[] Stage1Reset = Functions.LoadStage(1, out player, out walls, out enemies, out blocks, out moon, out key, out door);
+
+                    for (int i = 0; i < Stage1.Length - 1; ++i)
+                    {
+                        Console.WriteLine(Stage1[i]);
+                    }
+
+                    Functions.ParseStage(Stage1, out player, out walls, out enemies, out blocks, out moon, out key, out door, out mapSize);
+                    Status.playerMovePoint = 23;
+
+                    ++GameSettings.stageSettingNum;
+                }
 
                 Functions.RenderObject(player.X, player.Y, Constants.player);
                 for (int wallId = 0; wallId < walls.Length; ++wallId)
@@ -50,29 +66,38 @@ namespace Moon_Taker
                 for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
                 {
                     if (enemies[enemyId].IsAlive)
-                    Functions.RenderObject(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemy);
+                        Functions.RenderObject(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemy);
                 }
                 for (int blockId = 0; blockId < blocks.Length; ++blockId)
                 {
                     Functions.RenderObject(blocks[blockId].X, blocks[blockId].Y, Constants.block);
                 }
-
+                Functions.RenderObject(moon.X, moon.Y, Constants.moon);
+                Console.SetCursorPosition(Stage1[0].Length + 3, Stage1.Length / 2);
+                Functions.Render($"Your Move Point : {Status.playerMovePoint}");
                 ConsoleKey Input = Console.ReadKey().Key;
 
                 switch (Input)
                 {
                     case ConsoleKey.RightArrow:
                         Actions.MovePlayerToRight(ref player.X, mapSize.X, Status.playerMoveDirection);
+                        --Status.playerMovePoint;
                         break;
                     case ConsoleKey.LeftArrow:
                         Actions.MovePlayerToLeft(ref player.X, mapSize.X, Status.playerMoveDirection);
+                        --Status.playerMovePoint;
                         break;
                     case ConsoleKey.DownArrow:
                         Actions.MovePlayerToDown(ref player.Y, mapSize.Y, Status.playerMoveDirection);
+                        --Status.playerMovePoint;
                         break;
                     case ConsoleKey.UpArrow:
                         Actions.MovePlayerToUp(ref player.Y, mapSize.Y, Status.playerMoveDirection);
+                        --Status.playerMovePoint;
                         break;
+                    case ConsoleKey.R:
+                        GameSettings.stageSettingNum = 1;
+                        continue;
                 }
 
                 for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
@@ -132,7 +157,7 @@ namespace Moon_Taker
 
                 for (int wallId = 0; wallId < walls.Length; wallId++)
                 {
-                    if(Actions.IsCollided(player.X, player.Y, walls[wallId].X, walls[wallId].Y))
+                    if (Actions.IsCollided(player.X, player.Y, walls[wallId].X, walls[wallId].Y))
                     {
                         switch (Input)
                         {
@@ -152,13 +177,13 @@ namespace Moon_Taker
                     }
                 }
 
-                for(int wallId = 0; wallId < walls.Length; wallId++)
+                for (int wallId = 0; wallId < walls.Length; wallId++)
                 {
                     for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
                     {
                         if (Actions.IsCollided(walls[wallId].X, walls[wallId].Y, enemies[enemyId].X, enemies[enemyId].Y))
                         {
-                            enemies[enemyId].X = 0; 
+                            enemies[enemyId].X = 0;
                             enemies[enemyId].Y = 0;
                             enemies[enemyId].IsAlive = false;
                         }
@@ -184,7 +209,8 @@ namespace Moon_Taker
                 {
                     for (int blockId = 0; blockId < blocks.Length; ++blockId)
                     {
-                        if (Actions.IsCollided(walls[wallId].X, walls[wallId].Y,blocks[blockId].X, blocks[blockId].Y))
+                        if (Actions.IsCollided(walls[wallId].X, walls[wallId].Y, blocks[blockId].X, blocks[blockId].Y)
+                            || Actions.IsCollided(blocks[blockId].X, blocks[blockId].Y, moon.X, moon.Y))
                         {
                             switch (Input)
                             {
@@ -211,7 +237,7 @@ namespace Moon_Taker
                     {
                         continue;
                     }
-                    
+
                     if (Actions.IsCollided(blocks[Status.pushedBlockId].X, blocks[Status.pushedBlockId].Y, blocks[collidedBlockId].X, blocks[collidedBlockId].Y))
                     {
                         switch (Input)
@@ -231,7 +257,15 @@ namespace Moon_Taker
                         }
                     }
                 }
+
+                if (Actions.IsCollided(player.X, player.Y, moon.X, moon.Y))
+                {
+                    ++GameSettings.stageNum;
+                    continue;
+                }
+                Functions.EnterGameOverScene(Status.playerMovePoint);
             }
+            Functions.EnterStageClearScene();
         }
     }
 }

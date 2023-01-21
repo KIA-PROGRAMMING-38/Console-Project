@@ -11,5 +11,6 @@ namespace Moon_Taker
         public static Enum.Direction playerMoveDirection;
         public static int pushedEnemyId;
         public static int pushedBlockId;
+        public static int playerMovePoint;
     }
 }
