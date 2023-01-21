@@ -9,5 +9,10 @@ namespace Moon_Taker
     internal class GameRules
     {
         public static bool isGameStarted = false;
+        public static int stageNum = 0;
+        public static int stageSettingNum;
+
+        public static Enum.Direction playerMoveDirection;
+        public static bool enemyAlive = true;
     }
 }

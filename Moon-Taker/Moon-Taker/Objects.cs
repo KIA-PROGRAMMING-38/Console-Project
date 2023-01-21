@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,6 +38,21 @@ namespace Moon_Taker
         public int Y;
     }
     public class Door
+    {
+        public int X;
+        public int Y;
+    }
+    public class MapSize
+    {
+        public int X;
+        public int Y;
+    }
+    public class PreviousPlayer
+    {
+        public int X;
+        public int Y;
+    }
+    public class PreviousEnemy
     {
         public int X;
         public int Y;

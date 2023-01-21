@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Moon_Taker
 {
-    internal class ObjectSymbol
+    internal class Constants
     {
         public const char player = '8';
         public const char wall = '#';
@@ -15,5 +15,6 @@ namespace Moon_Taker
         public const char moon = 'm';
         public const char key = 'k';
         public const char door = 'X';
+        public const char blank = ' ';
     }
 }

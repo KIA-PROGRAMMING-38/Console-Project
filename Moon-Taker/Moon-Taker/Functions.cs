@@ -8,6 +8,7 @@ using System.Windows;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.ComponentModel.DataAnnotations;
 
 namespace Moon_Taker
 {
@@ -16,6 +17,7 @@ namespace Moon_Taker
         public static void InitialSettings()
         {
             Console.Clear();
+            Console.ResetColor();
             Console.CursorVisible = false;
             Console.Title = "Moon taker";
             Render("   ___  ___ _____  _____  _   _ \r\n" +
@@ -39,18 +41,35 @@ namespace Moon_Taker
             Console.Write(someString);
         }
 
-        public static void StartGame(out bool isGameStarted)
+        public static void RenderObject(int x, int y, char icon, ConsoleColor myColor = ConsoleColor.White)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = myColor;
+            Console.Write(icon);
+        }
+
+        public static void EraseObject(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write(' ');
+        }
+
+        public static void StartStage(out bool isStageStarted, ref int stageNum)
         {
             while (true)
             {
                 ConsoleKey key = Console.ReadKey().Key;
-                if (key != ConsoleKey.E)
+                if (((int)key >= 48 && (int)key <= 57) || ((int)key >= 65 && (int)key <= 90))
                 {
                     Console.Write("\b \b");
+                    if(key == ConsoleKey.E)
+                    {
+                        isStageStarted = true;
+                        ++stageNum;
+                        return;
+                    }
                     continue;
                 }
-                isGameStarted = true;
-                return;
             }
         }
 
@@ -58,7 +77,6 @@ namespace Moon_Taker
             out Enemy[] enemy, out Block[] block, out Moon moon, out Key key, out Door door)
         {
             string stageFilePath = Path.Combine("Assets", "Stage", $"Stage{stageNumber}.txt");
-            Console.WriteLine(stageFilePath);
             Debug.Assert(File.Exists(stageFilePath));
 
             player = null;
@@ -73,7 +91,7 @@ namespace Moon_Taker
         }
 
         public static void ParseStage(string[] stage, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Moon moon, out Key key, out Door door)
+            out Enemy[] enemy, out Block[] block, out Moon moon, out Key key, out Door door, out MapSize mapSize)
         {
             string[] objectNums = stage[stage.Length - 1].Split(" ");
             
@@ -84,6 +102,7 @@ namespace Moon_Taker
             moon = null;
             key = null;
             door = null;
+            mapSize = new MapSize { X = stage[0].Length, Y = stage.Length };
 
             int wallId = 0;
             int enemyId = 0;
@@ -95,29 +114,31 @@ namespace Moon_Taker
                 {
                     switch (stage[y][x])
                     {
-                        case ObjectSymbol.player:
+                        case Constants.player:
                             player = new Player { X = x, Y = y };
                             break;
-                            case ObjectSymbol.wall:
+                            case Constants.wall:
                             wall[wallId] = new Wall { X = x, Y = y };
                             ++wallId;
                             break;
-                        case ObjectSymbol.enemy:
+                        case Constants.enemy:
                             enemy[enemyId] = new Enemy { X = x, Y = y };
                             ++enemyId;
                             break;
-                        case ObjectSymbol.block:
+                        case Constants.block:
                             block[blockId] = new Block { X = x, Y = y };
                             ++blockId;
                             break;
-                        case ObjectSymbol.moon:
+                        case Constants.moon:
                             moon = new Moon { X = x, Y = y };
                             break;
-                        case ObjectSymbol.key:
+                        case Constants.key:
                             key = new Key { X = x, Y = y };
                             break;
-                        case ObjectSymbol.door:
+                        case Constants.door:
                             door = new Door { X = x, Y = y };
+                            break;
+                        case Constants.blank:
                             break;
                         default:
                             Environment.Exit(-1);
