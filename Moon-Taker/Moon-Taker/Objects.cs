@@ -60,4 +60,5 @@ namespace Moon_Taker
         public string advice;
         public int weight;
     }
+
 }

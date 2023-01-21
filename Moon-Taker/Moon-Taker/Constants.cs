@@ -13,8 +13,8 @@ namespace Moon_Taker
         public const char wall = '#';
         public const char enemy = 'e';
         public const char block = 'b';
-        public const char trap = 'w';
-        public const char moon = 'm';
+        public const char trap = 'M';
+        public const char moon = 'O';
         public const char key = 'k';
         public const char door = 'X';
         public const char blank = ' ';

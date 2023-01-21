@@ -10,9 +10,10 @@ namespace Moon_Taker
 
     {
         public static bool isGameStarted = false;
-        public static bool isStageStarted = false;
         public static bool isStageReseted = true;
-        public static int stageNum = 1;
+        public static int currentStage = 1;
+        public static int stageNumber = 3;
         public static bool isKeyNull = true;
+        public static bool isBlessed = true;
     }
 }
