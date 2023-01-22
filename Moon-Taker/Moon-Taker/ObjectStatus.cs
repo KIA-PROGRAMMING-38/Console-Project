@@ -8,6 +8,8 @@ namespace Moon_Taker
 {
     internal class ObjectStatus
     {
+        public static ConsoleColor moonColor = Functions.RandomColor();
+
         public static int pushedEnemyId;
         public static int pushedBlockId;
 

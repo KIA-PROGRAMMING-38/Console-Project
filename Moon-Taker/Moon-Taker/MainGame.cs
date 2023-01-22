@@ -13,10 +13,7 @@ namespace Moon_Taker
         static void Main()
         {
 
-            Functions.InitialSettings();
-            Console.SetCursorPosition(6, 14);
-            Functions.Render("Press e to start game.");
-            Functions.StartStage();
+            Scene.SetTitleScene();
 
             Player player = new Player();
             Wall[] walls = new Wall[0];
@@ -30,111 +27,100 @@ namespace Moon_Taker
             Advice[] advice = new Advice[0];
 
             string[][] Stage = new string[StageSettings.stageNumber + 1][];
-            for(int stageId = 1; stageId < Stage.Length; ++stageId)
+            for (int stageId = 1; stageId < Stage.Length; ++stageId)
             {
-                Stage[stageId] = Functions.LoadStage(stageId);
+                Stage[stageId] = Functions.LoadFile(@$"Assets\Stage\Stage{stageId}.txt", stageId);
             }
-
-            string[] advices = Functions.LoadAdvice();
+            string[] advices = Functions.LoadFile(@"Assets\Advice\Advice.txt");
             Functions.ParseAdvice(advices, out advice);
-            Functions.ShowSynopsis();
-            Functions.ShowGameRules();
-            
+            Scene.EnterSynopsisScene();
+            Scene.EnterGameRulesScene();
+
             while (StageSettings.isGameStarted)
             {
                 Console.Clear();
 
                 if (StageSettings.isStageReseted)
                 {
-                    string[] Stage1Reset = Functions.LoadStage(StageSettings.currentStage);
-
                     for (int i = 0; i < Stage[StageSettings.currentStage].Length - 1; ++i)
                     {
                         Console.WriteLine(Stage[StageSettings.currentStage][i]);
                     }
-                    Functions.ParseStage(Stage[StageSettings.currentStage], out player, out walls, out enemies, out blocks, out traps, out moon, out key, out door, out mapSize);
+                    Functions.ParseStage(Stage[StageSettings.currentStage], out player, out walls, out enemies,
+                        out blocks, out traps, out moon, out key, out door, out mapSize);
                     Functions.ResetStageSetting(StageSettings.isStageKeyNull[StageSettings.currentStage], StageSettings.stageMovePoint[StageSettings.currentStage]);
                 }
 
-                    for (int wallId = 0; wallId < walls.Length; ++wallId)
+                for (int wallId = 0; wallId < walls.Length; ++wallId)
+                {
+                    Functions.RenderAt(walls[wallId].X, walls[wallId].Y, Constants.wall, ConsoleColor.DarkGray);
+                }
+                for (int trapId = 0; trapId < traps.Length; ++trapId)
+                {
+                    if (ObjectStatus.isTrapToggled)
                     {
-                        Functions.RenderObject(walls[wallId].X, walls[wallId].Y, Constants.wall, ConsoleColor.DarkGray);
+                        Functions.RenderAt(traps[trapId].X, traps[trapId].Y, Constants.trap, ConsoleColor.Red);
                     }
-                    for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
+                }
+                for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
+                {
+                    if (enemies[enemyId].IsAlive)
+                        Functions.RenderAt(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemy, ConsoleColor.Blue);
+                }
+                for (int blockId = 0; blockId < blocks.Length; ++blockId)
+                {
+                    Functions.RenderAt(blocks[blockId].X, blocks[blockId].Y, Constants.block, ConsoleColor.Cyan);
+                }
+                if (false == StageSettings.isKeyNull)
+                {
+                    if (false == ObjectStatus.hasKey)
                     {
-                        if (enemies[enemyId].IsAlive)
-                            Functions.RenderObject(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemy, ConsoleColor.Blue);
+                        Functions.RenderAt(key.X, key.Y, Constants.key, ConsoleColor.Yellow);
                     }
-                    for (int blockId = 0; blockId < blocks.Length; ++blockId)
+                    if (false == ObjectStatus.isDoorOpened)
                     {
-                        Functions.RenderObject(blocks[blockId].X, blocks[blockId].Y, Constants.block, ConsoleColor.Cyan);
+                        Functions.RenderAt(door.X, door.Y, Constants.door, ConsoleColor.DarkYellow);
                     }
-                    for (int trapId = 0; trapId < traps.Length; ++trapId)
-                    {
-                        if (ObjectStatus.isTrapToggled)
-                        {
-                            Functions.RenderObject(traps[trapId].X, traps[trapId].Y, Constants.trap, ConsoleColor.Red);
-                        }
-                    }
-                    if (false == StageSettings.isKeyNull)
-                    {
-                        if (false == ObjectStatus.hasKey)
-                        {
-                            Functions.RenderObject(key.X, key.Y, Constants.key, ConsoleColor.Yellow);
-                        }
-                        if (false == ObjectStatus.isDoorOpened)
-                        {
-                            Functions.RenderObject(door.X, door.Y, Constants.door, ConsoleColor.DarkYellow);
-                        }
-                    }
-                ConsoleColor moonColor = Functions.RandomColor();
-                    Functions.RenderObject(moon.X, moon.Y, Constants.moon, moonColor);
-                    Functions.RenderObject(player.X, player.Y, Constants.player);
+                }
+                LookUpTable.objectColor[5] = Functions.RandomColor();
+                Functions.RenderAt(moon.X, moon.Y, Constants.moon, LookUpTable.objectColor[5]);
+                Functions.RenderAt(player.X, player.Y, Constants.player);
 
                 for (int stageId = 1; stageId < Stage.Length; ++stageId)
                 {
-                    if(stageId != StageSettings.currentStage)
+                    if (stageId != StageSettings.currentStage)
                     {
                         continue;
                     }
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 0);
-                    Functions.Render("방향키로 움직이세요!");
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 1);
-                    Functions.Render("A키를 눌러 동기들의 응원을 확인하세요!");
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 2);
-                    Functions.Render("막혔을 땐 R키로 재시작해봐요!");
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 4);
-                    Functions.Render($"{Constants.player}",ConsoleColor.White);
-                    Console.Write(" : 유재광   ");
-                    Functions.Render($"{Constants.enemy}",ConsoleColor.Blue);
-                    Console.Write(" : 적");
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 5);
-                    Functions.Render($"{Constants.block}", ConsoleColor.Cyan);
-                    Console.Write(" : 블록     ");
-                    Functions.Render($"{Constants.wall}", ConsoleColor.Gray);
-                    Console.Write(" : 벽");
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 6);
-                    Functions.Render($"{Constants.trap}", ConsoleColor.Red);
-                    Console.Write(" : 가시함정 ");
-                    Functions.Render($"{Constants.moon}", moonColor);
-                    Console.Write(" : 교수님의 흔적");
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 7);
-                    Functions.Render($"{Constants.key}", ConsoleColor.Yellow);
-                    Console.Write(" : 열쇠     ");
-                    Functions.Render($"{Constants.door}", ConsoleColor.DarkYellow);
-                    Console.Write(" : 문");
-                    Console.SetCursorPosition(Stage[stageId][0].Length + 2, 9);
-                    Functions.Render($"남은 행동 횟수 : {ObjectStatus.playerMovePoint}");
+                    for(int i = 0; i < LookUpTable.controlHelp.Length; ++i)
+                    {
+                        Functions.RenderAt(Stage[stageId][0].Length + 2, i, LookUpTable.controlHelp[i]);
+                    }
+                    for(int i = 0; i < LookUpTable.objectDescription.Length; ++i)
+                    {
+                        if(i % 2 == 0)
+                        {
+                            Functions.RenderAt(Stage[stageId][0].Length + 2, (i / 2) + 4, LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
+                        }
+                        else
+                        {
+                            Functions.Render(LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
+                        }
+                    }
+                    Functions.RenderAt(mapSize.X / 2, mapSize.Y + 1, $"남은 행동 횟수 : {ObjectStatus.playerMovePoint}");
                 }
 
                 if (ObjectStatus.isAdviceToggled)
                 {
-                    int adviceNumber = -1; 
+                    int adviceNumber = -1;
                     Functions.PickAdviceNumber(advice, ref adviceNumber);
                     Functions.WriteAdvice(advice, mapSize, ref adviceNumber);
-                    Functions.BlessPlayer(advice, adviceNumber);
+                    if (advice[adviceNumber].name == "최선문" && StageSettings.currentStage != StageSettings.stageNumber)
+                    {
+                        Scene.EnterBlessedScene(advice, adviceNumber);
+                    }
                     ObjectStatus.isAdviceToggled = false;
-                    if(StageSettings.isBlessed)
+                    if (StageSettings.isBlessed)
                     {
                         goto LoopEnd;
                     }
@@ -230,7 +216,6 @@ namespace Moon_Taker
                     }
                 }
 
-
                 for (int wallId = 0; wallId < walls.Length; wallId++)
                 {
                     if (false == Actions.IsCollided(player.X, player.Y, walls[wallId].X, walls[wallId].Y))
@@ -272,21 +257,6 @@ namespace Moon_Taker
                     }
                 }
 
-                for (int collidedenemyId = 0; collidedenemyId < enemies.Length; ++collidedenemyId)
-                {
-                    if (ObjectStatus.pushedEnemyId == collidedenemyId || enemies[collidedenemyId].IsAlive == false)
-                    {
-                        continue;
-                    }
-                    if (Actions.IsCollided(enemies[ObjectStatus.pushedEnemyId].X, enemies[ObjectStatus.pushedEnemyId].Y, enemies[collidedenemyId].X, enemies[collidedenemyId].Y))
-                    {
-                        enemies[ObjectStatus.pushedEnemyId].X = 0;
-                        enemies[ObjectStatus.pushedEnemyId].Y = 0;
-                        enemies[ObjectStatus.pushedEnemyId].IsAlive = false;
-                        Console.Beep();
-                    }
-                }
-
                 for (int wallId = 0; wallId < walls.Length; wallId++)
                 {
                     for (int blockId = 0; blockId < blocks.Length; ++blockId)
@@ -310,6 +280,21 @@ namespace Moon_Taker
                                     break;
                             }
                         }
+                    }
+                }
+
+                for (int collidedenemyId = 0; collidedenemyId < enemies.Length; ++collidedenemyId)
+                {
+                    if (ObjectStatus.pushedEnemyId == collidedenemyId || enemies[collidedenemyId].IsAlive == false)
+                    {
+                        continue;
+                    }
+                    if (Actions.IsCollided(enemies[ObjectStatus.pushedEnemyId].X, enemies[ObjectStatus.pushedEnemyId].Y, enemies[collidedenemyId].X, enemies[collidedenemyId].Y))
+                    {
+                        enemies[ObjectStatus.pushedEnemyId].X = 0;
+                        enemies[ObjectStatus.pushedEnemyId].Y = 0;
+                        enemies[ObjectStatus.pushedEnemyId].IsAlive = false;
+                        Console.Beep();
                     }
                 }
 
@@ -386,17 +371,18 @@ namespace Moon_Taker
                 {
                     if (StageSettings.currentStage < 3)
                     {
-                        Functions.EnterStageClearScene(ref StageSettings.currentStage);
+                        Scene.EnterStageClearScene(ref StageSettings.currentStage);
                         continue;
                     }
                     else if (StageSettings.currentStage == 3)
                     {
-                        Functions.EnterGameClearScene();
+                        Scene.EnterGameClearScene();
                     }
                 }
+
                 if (ObjectStatus.playerMovePoint <= 0)
                 {
-                    Functions.EnterGameOverScene(ObjectStatus.playerMovePoint);
+                    Scene.EnterGameOverScene(ObjectStatus.playerMovePoint);
                 }
             LoopEnd:;
             }

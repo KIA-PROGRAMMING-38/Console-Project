@@ -8,7 +8,7 @@ namespace Moon_Taker
 {
     public class LookUpTable
     {
-        static public ConsoleColor[] consoleColor =
+        static public ConsoleColor[] allColor =
         {
             ConsoleColor.DarkRed,
             ConsoleColor.DarkBlue,
@@ -24,7 +24,38 @@ namespace Moon_Taker
             ConsoleColor.Magenta,
             ConsoleColor.DarkYellow,
             ConsoleColor.Yellow,
-            ConsoleColor.White
+            ConsoleColor.White,
+        };
+
+        static public string[] controlHelp =
+        {
+            "방향키로 움직이세요!",
+            "A키를 눌러 동기들의 응원을 확인하세요!",
+            "막혔을 땐 R키로 재시작해봐요!"
+        };
+
+        static public string[] objectDescription =
+        {
+            $"{Constants.player} : 유재광   ",
+            $"{Constants.enemy} : 적",
+            $"{Constants.block} : 블록     ",
+            $"{Constants.wall} : 벽",
+            $"{Constants.trap} : 가시함정 ",
+            $"{Constants.moon} : 교수님의 흔적",
+            $"{Constants.key} : 열쇠     ",
+            $"{Constants.door} : 문"
+        };
+
+        static public ConsoleColor[] objectColor =
+        {
+            ConsoleColor.White,
+            ConsoleColor.Blue,
+            ConsoleColor.Cyan,
+            ConsoleColor.Gray,
+            ConsoleColor.Red,
+            ObjectStatus.moonColor,
+            ConsoleColor.Yellow,
+            ConsoleColor.DarkYellow
         };
     }
 }
