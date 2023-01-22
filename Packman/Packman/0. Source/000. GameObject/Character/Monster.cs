@@ -10,17 +10,37 @@ namespace Packman
 {
     internal class Monster : Character
     {
+        public enum PatternKind
+        {
+			Begin,
+			Wait,
+			Idle,
+            Move,
+            ChaseTarget,
+		}
+
         // 플레이어 인스턴스..
         private Player _player = null;
-        // 몬스터 AI..
-        private MonsterAI _aiInstance = null;
 
-        // 경로 관련..
-        private List<Point2D> _paths = new List<Point2D>();
+		// 경로 관련..
+		private List<Point2D> _paths = new List<Point2D>();
         private int _curPathIndex = 0;
 
-        private float _moveInterval = 5.0f;
+        // AI 와 관련된 정보들..
+		PatternKind _prevPatternKind = PatternKind.Begin;
+		PatternKind _patternKind = PatternKind.Begin;
+		// 패턴을 진행할 수 없는가..
+		private bool _isCanActPattern = false;
+        // WayPointGroup..
+        WayPointGroup _wayPointGroup = null;
+        // 현재 찾아가야할 WayPoint..
+        WayPoint _curDestinationWayPoint = null;
+
+        // 움직임에 딜레이 주기..
+		private float _moveInterval = 2.0f;
         private bool _isWaitMove = false;
+
+        private int _targetRecognizeRange = 8;
 
         public List<Point2D> Paths { get { return _paths; } }
         
@@ -29,8 +49,6 @@ namespace Packman
             : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER, map )
         {
             _player = _objectManager.GetGameObject<Player>( "Player" );
-
-            _aiInstance = new MonsterAI( this );
         }
 
         public void Initialize()
@@ -44,60 +62,204 @@ namespace Packman
         {
             base.Update();
 
-            _aiInstance.Update();
+            switch ( _patternKind )
+            {
+                case PatternKind.Begin:
+                    ActBeginPattern();
+                    _color = ConsoleColor.Green;
 
-            //switch ( _curState )
-            //{
-            //    case State.Idle:
-            //        ActionFindPath( _player.X, _player.Y );
-            //        break;
-            //
-            //    case State.Chase:
-            //        ActionFindPath( _player.X, _player.Y );
-            //
-            //        if(false == _isWaitMove )
-            //        {
-            //            EventManager.Instance.SetTimeOut( MoveToNextPath, _moveInterval );
-            //            _isWaitMove = true;
-            //        }
-            //        break;
-            //}
+					break;
+                case PatternKind.Wait:
+                    ActWaitPattern();
+
+                    break;
+                case PatternKind.Idle:
+                    ActIdlePattern();
+
+					_color = ConsoleColor.Blue;
+
+					break;
+                case PatternKind.ChaseTarget:
+                    ActChaseTargetPattern();
+
+					_color = ConsoleColor.Red;
+
+					break;
+            }
         }
 
-        private void ActionFindPath(int destinationX, int destinationY)
+		public override void Render()
+		{
+			base.Render();
+		}
+
+		// ====================================================================================================================================
+		// ================================================= AI Pattern 별로 실행되는 함수들..  =================================================
+		// ====================================================================================================================================
+		private void ActBeginPattern()
+        {
+            float waitTime = 1.0f;// (float)RandomManager.Instance.GetRandomDouble(2.0, 3.0);
+
+            EventManager.Instance.SetTimeOut( OnEnablePattern, waitTime );
+
+            if ( null == _wayPointGroup )
+            {
+                _wayPointGroup = _objectManager.GetGameObject<WayPointGroup>();
+            }
+
+            _curDestinationWayPoint = _wayPointGroup.FindNearWayPoint( this );
+            ActionFindPath( _curDestinationWayPoint.X, _curDestinationWayPoint.Y );
+
+            SetPatternKind( PatternKind.Wait );
+        }
+
+        private void ActWaitPattern()
+        {
+			if ( true == _isCanActPattern )
+			{
+				SetPatternKind( PatternKind.Idle );
+			}
+		}
+
+        private void ActIdlePattern()
+        {
+			if ( _paths.Count > _curPathIndex )
+			{
+                StartMoveAction();
+			}
+			else
+			{
+				int findIndex = RandomManager.Instance.GetRandomNumber( _curDestinationWayPoint.NearPointCount - 1 );
+				_curDestinationWayPoint = _curDestinationWayPoint.GetNearPoint( findIndex );
+				ActionFindPath( _curDestinationWayPoint.X, _curDestinationWayPoint.Y );
+			}
+
+            FindTarget();
+		}
+
+        private void ActChaseTargetPattern()
+        {
+            if ( true == _isWaitMove )
+                return;
+
+			ActionFindPath( _player.X, _player.Y );
+			StartMoveAction();
+		}
+
+        private void StartMoveAction()
+        {
+            if ( true == _isWaitMove )
+            {
+                return;
+            }
+
+			_isWaitMove = true;
+            EventManager.Instance.SetTimeOut( () =>
+            {
+                MoveToNextPath();
+                _isWaitMove = false;
+            }, _moveInterval );
+		}
+
+		// ====================================================================================================================================
+		// ============================================= AI Pattern 에서 필요로 하는 함수들..  ==================================================
+		// ====================================================================================================================================
+		private void ActionFindPath(int destinationX, int destinationY)
         {
             _paths.Clear();
 
-            //if( true == PathFinder.ComputePath( _map, _x, _y, destinationX, destinationY, ref _paths ) )
-            //{
-            //    _curState = State.Chase;
-            //    _curPathIndex = 0;
-            //}
-        }
-
-        private void InitializeAIPattern()
-        {
-
-        }
-
-        private void InitializeAIAction()
-        {
-
+            if( true == PathFinder.ComputePath( _map, _x, _y, destinationX, destinationY, ref _paths ) )
+            {
+                _curPathIndex = 0;
+            }
         }
 
         private void MoveToNextPath()
         {
-            if( 0 >= _paths.Count )
+            if( _curPathIndex >= _paths.Count )
             {
                 return;
             }
 
             int dirX = _paths[_curPathIndex].X - _x;
             int dirY = _paths[_curPathIndex].Y - _y;
+            ++_curPathIndex;
 
-            MoveDirection( dirX, dirY );
+			MoveDirection( dirX, dirY );
 
             _isWaitMove = false;
         }
-    }
+
+		private void FindTarget()
+        {
+            // 몬스터가 플레이어를 바라보는 방향 구하기..
+            int monsterLookPlayerDirX = _player.X - _x;
+            int monsterLookPlayerDirY = _player.Y - _y;
+
+            int monsterLookPlayerDirDist = Math.Abs(monsterLookPlayerDirX) + Math.Abs(monsterLookPlayerDirY);
+
+            if(_targetRecognizeRange >= monsterLookPlayerDirDist)
+            {
+                SetPatternKind( PatternKind.ChaseTarget );
+            }
+
+			//int monsterLookPlayerDirDist = 0;
+			//
+			//// 방향 크기 1로 조절..
+			//if (0 != monsterLookPlayerDirX )
+			//{
+			//    monsterLookPlayerDirDist = Math.Abs( monsterLookPlayerDirX );
+			//	monsterLookPlayerDirX /= monsterLookPlayerDirDist;
+			//}
+			//if ( 0 != monsterLookPlayerDirY )
+			//{
+			//	monsterLookPlayerDirDist = Math.Abs( monsterLookPlayerDirY );
+			//	monsterLookPlayerDirY /= monsterLookPlayerDirDist;
+			//}
+			//
+			//// 몬스터가 플레이어를 바라보는 방향과 현재 몬스터가 움직이는 방향이 같다면 그리고 인식 범위라면..
+			//if( _dirX == monsterLookPlayerDirX && _dirY == monsterLookPlayerDirY && _targetRecognizeRange >= monsterLookPlayerDirDist )
+			//{
+			//    
+			//}
+		}
+
+		private void OnEnablePattern()
+        {
+            _isCanActPattern = true;
+        }
+
+		private void OnDisablePattern()
+		{
+            _isCanActPattern = false;
+		}
+
+        private void SetPatternKind( PatternKind newPatternKind )
+        {
+            _prevPatternKind = _patternKind;
+			_patternKind = newPatternKind;
+
+            switch( _patternKind)
+            {
+				case PatternKind.Begin:
+					break;
+
+				case PatternKind.Wait:
+					break;
+
+				case PatternKind.Idle:
+					break;
+
+				case PatternKind.Move:
+					break;
+
+				case PatternKind.ChaseTarget:
+                    if( true == _isWaitMove)
+                    {
+						ActionFindPath( _player.X, _player.Y );
+					}
+					break;
+			}
+        }
+	}
 }

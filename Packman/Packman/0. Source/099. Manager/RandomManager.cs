@@ -52,7 +52,7 @@ namespace Packman
 
             double dist = max - min;
 
-            return random.Next() * dist + min;
+            return random.NextDouble() * dist + min;
         }
     }
 }

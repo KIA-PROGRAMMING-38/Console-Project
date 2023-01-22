@@ -40,7 +40,7 @@ namespace Packman
             int objectPosX = gameobject.X;
             int objectPosY = gameobject.Y;
 
-            int mostSmallerDist = int.MinValue;
+            int mostSmallerDist = int.MaxValue;
             WayPoint mostNearWayPoint = null;
 
             foreach(WayPoint wayPoint in _wayPoints)

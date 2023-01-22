@@ -62,6 +62,9 @@ namespace Packman
             return true;
         }
 
+        /// <summary>
+        /// Player Update..
+        /// </summary>
         public override void Update()
         {
             base.Update();

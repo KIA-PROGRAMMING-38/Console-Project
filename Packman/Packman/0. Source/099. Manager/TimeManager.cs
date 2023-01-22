@@ -23,7 +23,7 @@ namespace Packman
 
         public float RunTime { get { return runTime; } }
 
-        public bool Initialize(int framePerSecond)
+        public bool Initialize( int framePerSecond )
         {
             stopwatch = new Stopwatch();
 

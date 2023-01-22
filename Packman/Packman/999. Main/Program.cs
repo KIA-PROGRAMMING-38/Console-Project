@@ -27,6 +27,8 @@ namespace Packman
 
             if ( true == Game.Instance.Initialize() )
             {
+                Console.CursorVisible = false;
+
                 Game.Instance.Run();
             
                 Game.Instance.Release();

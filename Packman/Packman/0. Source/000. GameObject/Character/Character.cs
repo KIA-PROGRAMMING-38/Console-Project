@@ -16,7 +16,10 @@ namespace Packman
         protected int _prevX;
         protected int _prevY;
 
-        public int PrevX { get { return _prevX; } }
+        protected int _dirX;
+        protected int _dirY;
+
+		public int PrevX { get { return _prevX; } }
         public int PrevY { get { return _prevY; } }
 
         public Character( int x, int y, string image, ConsoleColor color, int renderOrder, Map map )
@@ -42,19 +45,22 @@ namespace Packman
             int moveDestinationX = _x + dirX;
             int moveDestinationY = _y + dirY;
 
-            _renderManager.ReserveRenderRemove( _prevX, _prevY, 1 );
+			_renderManager.ReserveRenderRemove( _prevX, _prevY, 1 );
 
-            Tile.Kind curPosTileKind = _map.GetTileKind( moveDestinationX, moveDestinationY );
+			Tile.Kind curPosTileKind = _map.GetTileKind( moveDestinationX, moveDestinationY );
             if( Tile.Kind.Empty == curPosTileKind )
             {
-                _prevX = _x;
+                _dirX = dirX;
+                _dirY = dirY;
+
+				_prevX = _x;
                 _prevY = _y;
 
                 _x = moveDestinationX;
                 _y = moveDestinationY;
 
                 OnMoveCharacterEvent?.Invoke( this );
-            }
+			}
         }
     }
 }

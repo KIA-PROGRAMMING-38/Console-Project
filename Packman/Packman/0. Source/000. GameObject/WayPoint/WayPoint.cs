@@ -9,7 +9,15 @@ namespace Packman
 {
     internal class WayPoint : GameObject
     {
-        LinkedList<WayPoint> _nearPoints = new LinkedList<WayPoint>();
+        private List<WayPoint> _nearPoints = new List<WayPoint>();
+        private int _nearPointCount = 0;
+
+        public int NearPointCount { get { return _nearPointCount; } }
+
+        public WayPoint GetNearPoint(int index)
+        {
+            return _nearPoints[index];
+        }
 
         public WayPoint( int x, int y, int renderOrder )
             : base( x, y, renderOrder )
@@ -27,7 +35,8 @@ namespace Packman
         {
             Debug.Assert( null != nearPoint );
 
-            _nearPoints.AddLast( nearPoint );
-        }
+            _nearPoints.Add( nearPoint );
+            _nearPointCount = _nearPoints.Count;
+		}
     }
 }

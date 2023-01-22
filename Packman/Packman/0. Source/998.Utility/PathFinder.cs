@@ -53,9 +53,12 @@ namespace Packman
                 return false;
             }
 
-            ReverseAdd( lastPathNode._parent, ref paths );
+            ReverseAdd( lastPathNode, ref paths );
 
-            return true;
+            paths.RemoveRange( 0, 1 );
+
+
+			return true;
         }
 
         private static void ReverseAdd( Node curNode, ref List<Point2D> paths)
@@ -154,7 +157,7 @@ namespace Packman
                 }
 
                 // 오른쪽 인접 노드..
-                if ( x + 1 < map.Width )
+                if ( x + 1 < map.X + map.Width )
                 {
                     curTile = map.GetTile( x + 1, y );
                     if ( null != curTile && true == curTile.IsCanPassTile() )
@@ -180,7 +183,7 @@ namespace Packman
                 }
 
                 // 아래쪽 인접 노드..
-                if ( y + 1 < map.Height )
+                if ( y + 1 < map.Y + map.Height )
                 {
                     curTile = map.GetTile( x, y + 1 );
                     if ( null != curTile && true == curTile.IsCanPassTile() )
