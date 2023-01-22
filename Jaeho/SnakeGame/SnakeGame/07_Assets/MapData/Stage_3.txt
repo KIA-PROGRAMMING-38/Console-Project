@@ -1,0 +1,20 @@
+20
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+B                       B               B                 B
+BB BB BBB BBBBB BBB  BBBBBB BBBBBBBBBB BBBBBBB BBBBB BBBBBB
+B       B               B               B                 B
+B                             B                           B
+BBB BB BBBBBBBB BBBBB BBBBB BBBBBB BB BBBBB BBBB BBB BBBBBB
+B                       B     B         B                 B
+B       B                     B         B                 B
+B BBBBBBBBBB         BBBBBBBBBBBBBBBBBBBBBBBBB         BBBB
+B       B               B     B         B                 B
+B                P                                        B
+B       B               B     B         B                 B
+BB BBB BBBBB  BBBBB  BBBBBB BBBBBBB  BBBBBBBBBBBBBBBBBBBBBB
+B                       B               B                 B
+B       B                     B         B                 B
+BB BB BBBBBBBBBBBBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+B                             B                           B
+B       B               B               B                 B
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
