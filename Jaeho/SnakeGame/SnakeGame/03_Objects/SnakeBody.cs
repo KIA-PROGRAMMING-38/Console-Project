@@ -1,4 +1,6 @@
-﻿namespace SnakeGame
+﻿using System.Drawing;
+
+namespace SnakeGame
 {
     public class SnakeBody : GameObject
     {
@@ -21,7 +23,7 @@
         public override void Start()
         {
             AddComponent(new Collider());
-            _renderer = new Renderer('o', 2);
+            _renderer = new Renderer('o', 2, ConsoleColor.Red);
             AddComponent(_renderer);
             Parent = null;
             Next = null;

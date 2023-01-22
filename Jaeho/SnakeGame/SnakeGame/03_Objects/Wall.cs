@@ -2,7 +2,7 @@
 {
     public class Wall : GameObject
     {
-        //private bool _isRendered = false;
+        private bool _isRendered = false;
         private Renderer renderer;
         public override void Start()
         {
@@ -15,12 +15,12 @@
 
         public override void Render()
         {
-            //if (_isRendered) return;
+            if (_isRendered) return;
 
             Console.SetCursorPosition(Position.X, Position.Y);
             Console.Write(renderer.OwnerIcon);
 
-            //_isRendered = true;
+            _isRendered = true;
         }
     }
 }

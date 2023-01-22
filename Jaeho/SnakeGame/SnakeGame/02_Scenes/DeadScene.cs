@@ -2,18 +2,15 @@
 {
     public class DeadScene : Scene
     {
-        public InputKeyComponent InputKey;
 
         public override void Start()
         {
-             InputKey = new InputKeyComponent();
             SoundManager.Instance.Play("EndingBackgroundMusic");
         }
 
         public override void Update()
         {
-            InputKey.Update();
-            switch (InputKey.Key)
+            switch (InputManager.Instance.Key)
             {
                 case ConsoleKey.Enter:
                     SceneManager.Instance.ChangeScene(_nextSceneName);

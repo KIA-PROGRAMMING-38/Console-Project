@@ -42,6 +42,9 @@ namespace SnakeGame
         public static int MAP_MAX_Y { get  { return ANCHOR_TOP + _mapMaxY; } }
         public static int MAP_MIN_Y { get { return ANCHOR_TOP + _mapMinY; } }
 
+        public static int MAP_HEIGHT { get { return MAP_MAX_Y - MAP_MIN_Y; } }
+        public static int MAP_WIDTH { get { return MAP_MAX_X - MAP_MIN_X; } }
+
         private Dictionary<string, MapInfo> _mapData  = new Dictionary<string, MapInfo>();
 
         public MapInfo GetMapData(string mapName)

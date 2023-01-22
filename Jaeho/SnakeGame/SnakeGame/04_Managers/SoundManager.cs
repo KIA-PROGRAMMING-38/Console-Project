@@ -13,6 +13,7 @@ namespace SnakeGame
 
             //AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "MyDearest.wav")));
             //AddSound("TitleBackgroundMusic", new SoundPlayer(Path.Combine("Assets", "Sound", "Nostalgia.wav")));
+            AddSound("CollisionSound",        new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "CollisionSound.wav")));
             AddSound("TitleBackgroundMusic",  new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "쇄월.wav")));
             AddSound("EndingBackgroundMusic", new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "우마우마.wav")));
             

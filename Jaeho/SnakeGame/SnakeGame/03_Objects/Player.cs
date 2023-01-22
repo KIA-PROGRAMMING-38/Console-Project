@@ -6,15 +6,16 @@ namespace SnakeGame
     {
         private Renderer _renderer;
         private SnakeBody _head;
+        private SnakeBody _tail;
         public  Vector2 PrevPos;
 
         
         public override void Start()
         {
-            AddComponent(new InputKeyComponent());
+            //AddComponent(new InputKeyComponent());
             AddComponent(new PlayerMovement());
             AddComponent(new Collider());
-            AddComponent(new Renderer('☺', 5));
+            AddComponent(new Renderer('☺', 5, ConsoleColor.Yellow));
             PrevPos = Position;
             _renderer = GetComponent<Renderer>();
             
@@ -29,21 +30,23 @@ namespace SnakeGame
             switch(obj.Tag)
             {
                 case "Wall":
+                    SoundManager.Instance.Play("CollisionSound");
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 700, 4, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 1500, 3, 1);
                     break;
                 case "Feed":
                     AddBody();
                     GameObjectManager.Instance.Destroy(obj);
-                    if(obj is Feed)
+                    if(obj is Feed feed)
                     {
-                        ((Feed)obj).IsAlive = false;
+                        feed.IsAlive = false;
                     }
                     GameDataManager.Instance.CurrentFeedCount += 1;
                     break;
                 case "SnakeBody":
+                    SoundManager.Instance.Play("CollisionSound");
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 1000, 4, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 1500, 4, 1);
                     break;
                 default:
                     break;
@@ -73,6 +76,7 @@ namespace SnakeGame
 
             return result;
         }
+
         #region body 관련
         public void AddBody()
         {
@@ -80,18 +84,15 @@ namespace SnakeGame
             {
                 _head = new SnakeBody();
                 _head.SetPosition(AddPositionCalc(PrevPos));
+                _tail = _head;
                 return;
             }
-            SnakeBody iter = _head;
 
-            while(iter.Next != null)
-            {
-                iter = iter.Next;
-            }
             SnakeBody newBody = new SnakeBody();
-            newBody.SetPosition(AddPositionCalc(iter.PrevPosition));
-            iter.Next = newBody;
-            newBody.Parent = iter;
+            newBody.SetPosition(AddPositionCalc(_tail.PrevPosition));
+            _tail.Next = newBody;
+            newBody.Parent = _tail;
+            _tail = newBody;
 
         }
 
@@ -111,18 +112,10 @@ namespace SnakeGame
             }
         }
 
-        public void BodyRender()
+        public void TailPrintRemove()
         {
             if (_head == null) return;
-
-            SnakeBody iter = _head;
-
-            while (iter.Next != null)
-            {
-                iter.Render();
-                iter = iter.Next;
-            }
-            Console.SetCursorPosition(iter.PrevPosition.X, iter.PrevPosition.Y);
+            Console.SetCursorPosition(_tail.PrevPosition.X, _tail.PrevPosition.Y);
             Console.Write(" ");
         }
         #endregion
@@ -135,13 +128,11 @@ namespace SnakeGame
                 pair.Value.Update();
             }
             BodyUpdate();
-
-
         }
 
         public override void Render()
         {
-            BodyRender();
+            TailPrintRemove();
             if (_head == null)
             {
                 Console.SetCursorPosition(PrevPos.X, PrevPos.Y);

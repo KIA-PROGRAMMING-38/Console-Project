@@ -4,7 +4,6 @@ namespace SnakeGame
 {
     public class TitleScene : Scene
     {
-        public InputKeyComponent InputKey;
         public StringBuilder[] Titles;
      
         public string StartButton;
@@ -18,7 +17,9 @@ namespace SnakeGame
             _TitleAnimTimer = 0;
             _startButtontimer = 0;
             _flicking = false;
-            InputKey = new InputKeyComponent();
+
+            //InputKey = new InputKeyComponent();
+            //InputKey.Start();
 
             SoundManager.Instance.Play("TitleBackgroundMusic", true);
 
@@ -93,10 +94,10 @@ namespace SnakeGame
 
         public override void Update()
         {
-            InputKey.Update();
+            //InputKey.Update();
             _startButtontimer += TimeManager.Instance.ElapsedMs;
             _TitleAnimTimer += TimeManager.Instance.ElapsedMs;
-            switch (InputKey.Key)
+            switch (InputManager.Instance.Key)
             {
                 case ConsoleKey.Enter:
                     SceneManager.Instance.ChangeScene(_nextSceneName);

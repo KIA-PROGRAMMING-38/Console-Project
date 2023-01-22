@@ -15,15 +15,13 @@ namespace SnakeGame
 
         private Direction moveDirection = Direction.None;
         public Direction MoveDirection { get { return moveDirection; } }
-        InputKeyComponent InputKey;
 
         public override void Start()
         {
-            InputKey = Owner.GetComponent<InputKeyComponent>();
         }
         public void DirectionUpdate()
         {
-            switch (InputKey.Key)
+            switch (InputManager.Instance.Key)
             {
                 case ConsoleKey.LeftArrow:
                     if (moveDirection == Direction.Right) break;
