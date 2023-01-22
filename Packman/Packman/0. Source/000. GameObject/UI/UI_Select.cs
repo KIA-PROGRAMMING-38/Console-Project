@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Packman._0._Source._000._GameObject
+namespace Packman
 {
     internal class UI_Select : GameObject
     {

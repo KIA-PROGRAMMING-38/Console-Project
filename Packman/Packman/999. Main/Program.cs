@@ -25,9 +25,6 @@ namespace Packman
             //
             //File.WriteAllLines( path, lines );
 
-            string a = "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
-            int  asdf= a.Length;
-
             if ( true == Game.Instance.Initialize() )
             {
                 Game.Instance.Run();

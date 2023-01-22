@@ -16,7 +16,7 @@ namespace Packman
 
         public override void Update()
         {
-            //base.Update();
+            base.Update();
         }
 
         public override void Render()

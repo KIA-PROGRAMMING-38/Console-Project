@@ -52,7 +52,7 @@ namespace Packman
 
         // ===================================== Property.. ===================================== //
         public bool IsActive 
-        { 
+        {
             get { return _isActive; }
             set
             {

@@ -6,12 +6,30 @@ using System.Threading.Tasks;
 
 namespace Packman
 {
+    public struct Point2D
+    {
+        public int X;
+        public int Y;
+
+        public Point2D()
+        {
+            X = 0;
+            Y = 0;
+        }
+
+        public Point2D(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
+    }
+
     internal static class Constants
     {
         // Object RenderOrder 관련 상수들..
         public const int PLAYER_RENDER_ORDER = 10;
         public const int MONSTER_RENDER_ORDER = 5;
-        public const int GOLD_RENDER_ORDER = 1;
+        public const int GOLD_RENDER_ORDER = 2;
         public const int TILE_RENDER_ORDER = 0;
 
         // Image 관련 상수들..

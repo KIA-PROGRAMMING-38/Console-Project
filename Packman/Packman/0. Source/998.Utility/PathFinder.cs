@@ -32,7 +32,17 @@ namespace Packman
             }
         }
 
-        public static bool ComputePath( Map map, int startX, int startY, int endX, int endY, ref List<Tile> paths )
+        /// <summary>
+        /// 길찾기 알고리즘을 사용해 길을 구해 Path를 계산합니다.
+        /// </summary>
+        /// <param name="map"> 게임 Map </param>
+        /// <param name="startX"> 시작 지점 x </param>
+        /// <param name="startY"> 시작 지점 y </param>
+        /// <param name="endX"> 끝 지점 x </param>
+        /// <param name="endY"> 끝 지점 y </param>
+        /// <param name="paths"> 알고리즘 결과로 나온 Path를 받을 애 </param>
+        /// <returns></returns>
+        public static bool ComputePath( Map map, int startX, int startY, int endX, int endY, ref List<Point2D> paths )
         {
             Tile start = map.GetTile(startX, startY);
             Tile end = map.GetTile(endX, endY);
@@ -43,14 +53,12 @@ namespace Packman
                 return false;
             }
 
-            ReverseAdd( lastPathNode, ref paths );
-
-            paths.Remove( start );
+            ReverseAdd( lastPathNode._parent, ref paths );
 
             return true;
         }
 
-        private static void ReverseAdd( Node curNode, ref List<Tile> paths)
+        private static void ReverseAdd( Node curNode, ref List<Point2D> paths)
         {
             if(null == curNode)
             {
@@ -59,9 +67,16 @@ namespace Packman
 
             ReverseAdd( curNode._parent, ref paths );
 
-            paths.Add( curNode._tile );
+            paths.Add( new Point2D( curNode._tile.X, curNode._tile.Y ) );
         }
 
+        /// <summary>
+        /// 길찾기 작업..
+        /// </summary>
+        /// <param name="map"> 게임의 map Instance </param>
+        /// <param name="start"> 시작 타일 </param>
+        /// <param name="end"> 종료 타일 </param>
+        /// <returns></returns>
         private static Node AStar( Map map, Tile start, Tile end )
         {
             PriorityQueue<Node, int> openList = new PriorityQueue<Node, int>();
@@ -124,49 +139,71 @@ namespace Packman
                 int nodeCount = 0;
 
                 // 왼쪽 인접 노드..
-                Tile curTile = map.GetTile(x - 1, y);
-                if ( null != curTile && true == curTile.IsCanPassTile() )
-                {
-                    H = (int)(ComputeDistance(curTile.X, curTile.Y, end.X, end.Y) * 10.0f + 0.1f);
-                    F = G + H;
+                Tile curTile = null;
 
-                    nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                if (x - 1 >= 0)
+                {
+                    curTile = map.GetTile(x - 1, y);
+                    if ( null != curTile && true == curTile.IsCanPassTile() )
+                    {
+                        H = (int)(ComputeDistance( curTile.X, curTile.Y, end.X, end.Y ) * 10.0f + 0.1f);
+                        F = G + H;
+
+                        nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                    }
                 }
 
                 // 오른쪽 인접 노드..
-                curTile = map.GetTile(x + 1, y);
-                if ( null != curTile && true == curTile.IsCanPassTile() )
+                if ( x + 1 < map.Width )
                 {
-                    H = (int)(ComputeDistance( curTile.X, curTile.Y, end.X, end.Y ) * 10.0f + 0.1f);
-                    F = G + H;
+                    curTile = map.GetTile( x + 1, y );
+                    if ( null != curTile && true == curTile.IsCanPassTile() )
+                    {
+                        H = (int)(ComputeDistance( curTile.X, curTile.Y, end.X, end.Y ) * 10.0f + 0.1f);
+                        F = G + H;
 
-                    nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                        nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                    }
                 }
 
                 // 위쪽 인접 노드..
-                curTile = map.GetTile(x, y - 1);
-                if ( null != curTile && true == curTile.IsCanPassTile() )
+                if ( y - 1 >= 0 )
                 {
-                    H = (int)(ComputeDistance( curTile.X, curTile.Y, end.X, end.Y ) * 10.0f + 0.1f);
-                    F = G + H;
+                    curTile = map.GetTile( x, y - 1 );
+                    if ( null != curTile && true == curTile.IsCanPassTile() )
+                    {
+                        H = (int)(ComputeDistance( curTile.X, curTile.Y, end.X, end.Y ) * 10.0f + 0.1f);
+                        F = G + H;
 
-                    nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                        nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                    }
                 }
 
                 // 아래쪽 인접 노드..
-                curTile = map.GetTile(x, y + 1);
-                if ( null != curTile && true == curTile.IsCanPassTile() )
+                if ( y + 1 < map.Height )
                 {
-                    H = (int)(ComputeDistance( curTile.X, curTile.Y, end.X, end.Y ) * 10.0f + 0.1f);
-                    F = G + H;
+                    curTile = map.GetTile( x, y + 1 );
+                    if ( null != curTile && true == curTile.IsCanPassTile() )
+                    {
+                        H = (int)(ComputeDistance( curTile.X, curTile.Y, end.X, end.Y ) * 10.0f + 0.1f);
+                        F = G + H;
 
-                    nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                        nearNodes[nodeCount++] = Node.CreateNode( curTile, F, G, H, parent );
+                    }
                 }
 
                 return nodeCount;
             }
         }
 
+        /// <summary>
+        /// 두 지점 간의 거리를 계산..
+        /// </summary>
+        /// <param name="x1"> 지점1의 x 좌표 </param>
+        /// <param name="y1"> 지점1의 y 좌표 </param>
+        /// <param name="x2"> 지점2의 x 좌표 </param>
+        /// <param name="y2"> 지점2의 y 좌표 </param>
+        /// <returns></returns>
         private static float ComputeDistance( int x1, int y1, int x2, int y2 )
         {
             int xDist = Math.Abs(x1 - x2);

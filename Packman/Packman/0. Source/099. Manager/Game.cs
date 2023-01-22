@@ -8,6 +8,10 @@ namespace Packman
 {
     internal class Game : SingletonBase<Game>
     {
+        int _realFPS = 0;
+        int _runFrameCount = 0;
+        int _prevSecFrameCount = 0;
+
         /// <summary>
         /// 전체적인 게임 초기화..
         /// </summary>
@@ -38,6 +42,8 @@ namespace Packman
             EventManager eventManagerInstance = EventManager.Instance;
             SceneManager sceneManagerInstance = SceneManager.Instance;
 
+            OnRunOneSecond();
+
             while ( true )
             {
                 timeManagerInstance.Update();
@@ -49,8 +55,19 @@ namespace Packman
 
                     sceneManagerInstance.Update();
                     sceneManagerInstance.Render();
+
+                    //Console.SetCursorPosition( 60, 20 );
+                    //Console.Write( $"FPS : {_realFPS}" );
                 }
             }
+        }
+
+        private void OnRunOneSecond()
+        {
+            //_realFPS = _runFrameCount - _prevSecFrameCount;
+            //_prevSecFrameCount = _runFrameCount;
+            //
+            //EventManager.Instance.SetTimeOut( OnRunOneSecond, 1.0f );
         }
 
         /// <summary>

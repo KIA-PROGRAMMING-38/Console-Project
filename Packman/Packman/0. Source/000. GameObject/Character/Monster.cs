@@ -10,17 +10,9 @@ namespace Packman
 {
     internal class Monster : Character
     {
-        public enum State
-        {
-            Idle,
-            Chase,
-        }
-
-        private State _curState;
-        private Map _mapObject;
         private Player _player;
 
-        private List<Tile> _paths = new List<Tile>();
+        private List<Point2D> _paths = new List<Point2D>();
         private int _curPathIndex = 0;
 
         private float _moveInterval = 5.0f;
@@ -28,10 +20,8 @@ namespace Packman
         
 
         public Monster( int x, int y, Map map )
-            : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER )
+            : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER, map )
         {
-            _curState = State.Idle;
-            _mapObject = map;
             _player = _objectManager.GetGameObject<Player>( "Player" );
         }
 
@@ -46,33 +36,43 @@ namespace Packman
         {
             base.Update();
 
-            switch ( _curState )
-            {
-                case State.Idle:
-                    ActionFindPath( _player.X, _player.Y );
-                    break;
-
-                case State.Chase:
-                    ActionFindPath( _player.X, _player.Y );
-
-                    if(false == _isWaitMove )
-                    {
-                        EventManager.Instance.SetTimeOut( MoveToNextPath, _moveInterval );
-                        _isWaitMove = true;
-                    }
-                    break;
-            }
+            //switch ( _curState )
+            //{
+            //    case State.Idle:
+            //        ActionFindPath( _player.X, _player.Y );
+            //        break;
+            //
+            //    case State.Chase:
+            //        ActionFindPath( _player.X, _player.Y );
+            //
+            //        if(false == _isWaitMove )
+            //        {
+            //            EventManager.Instance.SetTimeOut( MoveToNextPath, _moveInterval );
+            //            _isWaitMove = true;
+            //        }
+            //        break;
+            //}
         }
 
         private void ActionFindPath(int destinationX, int destinationY)
         {
             _paths.Clear();
 
-            if( true == PathFinder.ComputePath( _mapObject, _x, _y, destinationX, destinationY, ref _paths ) )
-            {
-                _curState = State.Chase;
-                _curPathIndex = 0;
-            }
+            //if( true == PathFinder.ComputePath( _map, _x, _y, destinationX, destinationY, ref _paths ) )
+            //{
+            //    _curState = State.Chase;
+            //    _curPathIndex = 0;
+            //}
+        }
+
+        private void InitializeAIPattern()
+        {
+
+        }
+
+        private void InitializeAIAction()
+        {
+
         }
 
         private void MoveToNextPath()

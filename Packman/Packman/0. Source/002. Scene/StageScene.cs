@@ -1,5 +1,4 @@
-﻿using Packman._0._Source._000._GameObject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -43,10 +42,10 @@ namespace Packman
 
         private bool InitPlayer(int playerX, int playerY)
         {
-            Player player = new Player(playerX, playerY);
-            player.Initialize();
-
-            _objectManager.AddGameObject( "Player", player );
+            //Player player = new Player(playerX, playerY);
+            //player.Initialize();
+            //
+            //_objectManager.AddGameObject( "Player", player );
 
             return true;
         }

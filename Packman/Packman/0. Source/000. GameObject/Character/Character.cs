@@ -13,11 +13,17 @@ namespace Packman
         protected RenderManager _renderManager;
         protected Map _map;
 
-        public Character( int x, int y, string image, ConsoleColor color, int renderOrder )
+        protected int _prevX;
+        protected int _prevY;
+
+        public int PrevX { get { return _prevX; } }
+        public int PrevY { get { return _prevY; } }
+
+        public Character( int x, int y, string image, ConsoleColor color, int renderOrder, Map map )
             : base( x, y, image, color, renderOrder )
         {
             _renderManager = RenderManager.Instance;
-            _map = _objectManager.GetGameObject<Map>();
+            _map = map;
         }
 
         public override void Update()
@@ -36,13 +42,18 @@ namespace Packman
             int moveDestinationX = _x + dirX;
             int moveDestinationY = _y + dirY;
 
+            _renderManager.ReserveRenderRemove( _prevX, _prevY, 1 );
+
             Tile.Kind curPosTileKind = _map.GetTileKind( moveDestinationX, moveDestinationY );
             if( Tile.Kind.Empty == curPosTileKind )
             {
-                _renderManager.ReserveRenderRemove( _x, _y, 1 );
+                _prevX = _x;
+                _prevY = _y;
 
                 _x = moveDestinationX;
                 _y = moveDestinationY;
+
+                OnMoveCharacterEvent?.Invoke( this );
             }
         }
     }

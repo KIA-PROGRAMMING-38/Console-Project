@@ -31,7 +31,7 @@ namespace Packman
                     break;
 
                 case Kind.Block:
-                    _image = "■";
+                    _image = "□";
                     break;
             }
         }

@@ -52,11 +52,18 @@ namespace Packman
             RenderManager.Instance.Render();
         }
 
+        /// <summary>
+        /// 등록된 모든 오브젝트 제거..
+        /// </summary>
         public void RemoveAll()
         {
             _gameObjects.Clear();
         }
 
+        /// <summary>
+        /// objectID 인 오브젝트 검사 후 제거
+        /// </summary>
+        /// <param name="objectID"> 제거할 object의 ID </param>
         public void RemoveObject( string objectID )
         {
             foreach ( var gameobject in _gameObjects )
@@ -71,6 +78,10 @@ namespace Packman
             }
         }
 
+        /// <summary>
+        /// removeGameObject 와 같은 오브젝트 검사 후 제거..
+        /// </summary>
+        /// <param name="removeGameObject"> 제거할 오브젝트 인스턴스 </param>
         public void RemoveObject(GameObject removeGameObject)
         {
             foreach ( var gameobject in _gameObjects )
