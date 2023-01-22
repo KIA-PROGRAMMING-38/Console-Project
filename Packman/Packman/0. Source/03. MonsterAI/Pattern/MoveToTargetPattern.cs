@@ -10,8 +10,8 @@ namespace Packman
     {
         private GameObject _targetObject;
 
-        public MoveToTargetPattern( Monster monsterInstance, float moveSpeed )
-            : base( monsterInstance )
+        public MoveToTargetPattern( Monster monsterInstance, int actPriority )
+            : base( monsterInstance, actPriority )
         {
 
         }

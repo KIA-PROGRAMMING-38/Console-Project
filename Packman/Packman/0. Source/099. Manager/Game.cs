@@ -42,8 +42,6 @@ namespace Packman
             EventManager eventManagerInstance = EventManager.Instance;
             SceneManager sceneManagerInstance = SceneManager.Instance;
 
-            OnRunOneSecond();
-
             while ( true )
             {
                 timeManagerInstance.Update();
@@ -55,19 +53,8 @@ namespace Packman
 
                     sceneManagerInstance.Update();
                     sceneManagerInstance.Render();
-
-                    //Console.SetCursorPosition( 60, 20 );
-                    //Console.Write( $"FPS : {_realFPS}" );
                 }
             }
-        }
-
-        private void OnRunOneSecond()
-        {
-            //_realFPS = _runFrameCount - _prevSecFrameCount;
-            //_prevSecFrameCount = _runFrameCount;
-            //
-            //EventManager.Instance.SetTimeOut( OnRunOneSecond, 1.0f );
         }
 
         /// <summary>

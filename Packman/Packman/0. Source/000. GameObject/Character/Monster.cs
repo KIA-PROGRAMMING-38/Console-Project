@@ -10,19 +10,27 @@ namespace Packman
 {
     internal class Monster : Character
     {
-        private Player _player;
+        // 플레이어 인스턴스..
+        private Player _player = null;
+        // 몬스터 AI..
+        private MonsterAI _aiInstance = null;
 
+        // 경로 관련..
         private List<Point2D> _paths = new List<Point2D>();
         private int _curPathIndex = 0;
 
         private float _moveInterval = 5.0f;
         private bool _isWaitMove = false;
+
+        public List<Point2D> Paths { get { return _paths; } }
         
 
         public Monster( int x, int y, Map map )
             : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER, map )
         {
             _player = _objectManager.GetGameObject<Player>( "Player" );
+
+            _aiInstance = new MonsterAI( this );
         }
 
         public void Initialize()
@@ -35,6 +43,8 @@ namespace Packman
         public override void Update()
         {
             base.Update();
+
+            _aiInstance.Update();
 
             //switch ( _curState )
             //{

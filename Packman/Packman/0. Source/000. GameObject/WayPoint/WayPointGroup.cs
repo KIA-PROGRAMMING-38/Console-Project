@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,32 @@ namespace Packman
 
             // WayPoint와 인접한 WayPoint들 연결시켜준다..
             ConnectWayPoint();
+        }
+
+        public WayPoint FindNearWayPoint( in GameObject gameobject )
+        {
+            Debug.Assert( null != gameobject );
+
+            int objectPosX = gameobject.X;
+            int objectPosY = gameobject.Y;
+
+            int mostSmallerDist = int.MinValue;
+            WayPoint mostNearWayPoint = null;
+
+            foreach(WayPoint wayPoint in _wayPoints)
+            {
+                int wayPointX = wayPoint.X;
+                int wayPointY = wayPoint.Y;
+
+                int dist = Math.Abs(wayPointX - objectPosX) + Math.Abs(wayPointY - objectPosY);
+                if(dist < mostSmallerDist)
+                {
+                    mostSmallerDist = dist;
+                    mostNearWayPoint = wayPoint;
+                }
+            }
+
+            return mostNearWayPoint;
         }
 
         /// <summary>

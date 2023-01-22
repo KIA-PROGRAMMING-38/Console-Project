@@ -57,14 +57,22 @@ namespace Packman
         // TimeOut 이벤트들을 저장할 객체..
         LinkedList<TimeoutEventInfo> _timeoutEventsInfo = new LinkedList<TimeoutEventInfo>();
         LinkedList<TimeoutEventInfo> _removeTimeoutEventsInfo = new LinkedList<TimeoutEventInfo>();
+        LinkedList<TimeoutEventInfo> _addTimeoutEventsInfo = new LinkedList<TimeoutEventInfo>();
 
         public void Update()
         {
             // 현재 흐른 시간을 가져옵니다..
             float elaspedTime = _timeManager.ElaspedTime;
 
+            // Timeout 이벤트에 추가해야할 것들 추가..
+            foreach ( TimeoutEventInfo timeoutEventInfo in _addTimeoutEventsInfo )
+            {
+                _timeoutEventsInfo.AddLast( timeoutEventInfo );
+            }
+            _addTimeoutEventsInfo.Clear();
+
             // Timeout 이벤트들을 순회하면서 시간 갱신..
-            foreach( TimeoutEventInfo timeoutEventInfo in _timeoutEventsInfo )
+            foreach ( TimeoutEventInfo timeoutEventInfo in _timeoutEventsInfo )
             {
                 timeoutEventInfo.RemainTime -= elaspedTime;
 
@@ -76,10 +84,12 @@ namespace Packman
                 }
             }
 
+            // 시간이 다 되서 없어져야 할 이벤트 없앰..
             foreach ( TimeoutEventInfo timeoutEventInfo in _removeTimeoutEventsInfo )
             {
                 _timeoutEventsInfo.Remove( timeoutEventInfo );
             }
+            _removeTimeoutEventsInfo.Clear();
         }
 
         /// <summary>
@@ -119,7 +129,7 @@ namespace Packman
         /// <param name="delay"> 몇 초 뒤에 실행할건지 </param>
         public void SetTimeOut(Action action, float delay)
         {
-            _timeoutEventsInfo.AddLast( new TimeoutEventInfo { Action = action, RemainTime = delay } );
+            _addTimeoutEventsInfo.AddLast( new TimeoutEventInfo { Action = action, RemainTime = delay } );
         }
     }
 }

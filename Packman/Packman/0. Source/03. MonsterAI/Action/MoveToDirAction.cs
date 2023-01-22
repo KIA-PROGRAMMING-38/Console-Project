@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Packman
 {
-    internal class WaitPattern : PatternBase
+    internal class MoveToDirAction : ActionBase
     {
-        public WaitPattern( Monster monster, int actPriority )
-            : base( monster, actPriority )
+        public MoveToDirAction( Monster monster, MonsterAI monsterAI ) 
+            : base( monster, monsterAI )
         {
 
         }

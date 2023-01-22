@@ -11,8 +11,8 @@ namespace Packman
     {
         private Point2D _destinationPoint;
 
-        public MoveToPointPattern( Monster monsterInstance, float moveSpeed )
-            : base( monsterInstance )
+        public MoveToPointPattern( Monster monsterInstance, int actPriority )
+            : base( monsterInstance, actPriority )
         {
 
         }

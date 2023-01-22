@@ -48,7 +48,7 @@ namespace Packman
         public const ConsoleColor DEFAULT_FOREGROUND_COLOR = ConsoleColor.White;
 
         // 시간과 관련된 상수들..
-        public const int FRAME_PER_SECOND = 30;
+        public const int FRAME_PER_SECOND = 90;
         // 맵과 관련된 상수들..
         public const int MAP_RANGE_MIN_X = 1;
         public const int MAP_RANGE_MIN_Y = 1;
