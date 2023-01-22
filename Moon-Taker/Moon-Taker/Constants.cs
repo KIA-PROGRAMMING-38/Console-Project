@@ -15,7 +15,8 @@ namespace Moon_Taker
         public const string enemyOnTrap = "E";
         public const string block = "b";
         public const string blockOnTrap = "B";
-        public const string trap = "M";
+        public const string activatedTrap = "M";
+        public const string deactivatedTrap = "_";
         public const string key = "k";
         public const string door = "X";
         public const string blank = " ";

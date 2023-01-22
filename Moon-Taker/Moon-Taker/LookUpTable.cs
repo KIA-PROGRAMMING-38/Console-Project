@@ -41,7 +41,7 @@ namespace Moon_Taker
             $"{Constants.wall} : 벽",
             $"{Constants.enemy} : 적       ",
             $"{Constants.block} : 블록",
-            $"{Constants.trap} : 가시함정 ",
+            $"{Constants.activatedTrap} : 가시함정 ",
             $"{Constants.key} : 열쇠     ",
             $"{Constants.door} : 문       ",
             $"{Constants.moon} : 교수님의 흔적",

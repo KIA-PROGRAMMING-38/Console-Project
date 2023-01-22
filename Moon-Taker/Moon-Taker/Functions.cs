@@ -90,8 +90,12 @@ namespace Moon_Taker
                             trap[trapId] = new Trap { X = x, Y = y };
                             ++trapId;
                             break;
-                        case Constants.trap:
-                            trap[trapId] = new Trap { X = x, Y = y };
+                        case Constants.activatedTrap:
+                            trap[trapId] = new Trap { X = x, Y = y, IsActivated = true};
+                            ++trapId;
+                            break;
+                        case Constants.deactivatedTrap:
+                            trap[trapId] = new Trap { X = x, Y = y, IsActivated = false};
                             ++trapId;
                             break;
                         case Constants.key:
@@ -204,8 +208,9 @@ namespace Moon_Taker
             StageSettings.isStageReseted = false;
             StageSettings.isBlessed = false;
             ObjectStatus.playerMovePoint = playerMovePoint;
-            ObjectStatus.isTrapToggled = true;
             StageSettings.doesKeyExist = doesKeyExist;
+            ObjectStatus.pushedBlockId = 0;
+            ObjectStatus.pushedEnemyId = 0;
             if (doesKeyExist)
             {
                 ObjectStatus.hasKey = false;

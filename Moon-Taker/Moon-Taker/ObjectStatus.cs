@@ -17,7 +17,6 @@ namespace Moon_Taker
 
         public static bool isAdviceToggled = false;
 
-        public static bool isTrapToggled = true;
         public static bool hasKey = false;
         public static bool isDoorOpened = false;
     }

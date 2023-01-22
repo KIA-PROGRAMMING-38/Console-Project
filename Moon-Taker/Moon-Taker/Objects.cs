@@ -35,6 +35,7 @@ namespace Moon_Taker
     {
         public int X;
         public int Y;
+        public bool IsActivated = true;
     }
     public class Moon
     {
