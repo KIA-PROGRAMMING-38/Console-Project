@@ -12,7 +12,7 @@ namespace SnakeGame
 
         public void Initialize()
         {
-            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;         
             Console.CursorVisible = false;
 
             GameDataManager.Instance.LoadMapData();

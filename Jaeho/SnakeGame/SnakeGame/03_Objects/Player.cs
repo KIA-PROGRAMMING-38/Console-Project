@@ -14,7 +14,7 @@ namespace SnakeGame
             AddComponent(new InputKeyComponent());
             AddComponent(new PlayerMovement());
             AddComponent(new Collider());
-            AddComponent(new Renderer("P", 5));
+            AddComponent(new Renderer('☺', 5));
             PrevPos = Position;
             _renderer = GetComponent<Renderer>();
             
@@ -43,7 +43,7 @@ namespace SnakeGame
                     break;
                 case "SnakeBody":
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 700, 4, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 1000, 4, 1);
                     break;
                 default:
                     break;

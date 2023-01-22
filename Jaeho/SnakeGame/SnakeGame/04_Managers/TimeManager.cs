@@ -8,8 +8,8 @@ namespace SnakeGame
         }
 
         public readonly int TimeScale = 1;
-        public static int MS_PER_FRAME = 1000 / FPS;
-        public const int FPS = 15;
+        public const int MS_PER_FRAME = 1000 / FPS;
+        public const int FPS = 10;
         private Stopwatch stopwatch = new Stopwatch();
         private long _currentMs = 0;
         private long _elapsed = 0;

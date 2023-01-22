@@ -1,11 +1,11 @@
-15
+20
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B                                                         B
 B                                                         B
 B                                                         B
 B                                                         B
+B             P                                           B
 B                                                         B
-B                      P                                  B
 B                                                         B
 B                                                         B
 B                                                         B

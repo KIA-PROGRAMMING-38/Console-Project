@@ -8,7 +8,7 @@
         public override void Start()
         {
             AddComponent(new Collider());
-            AddComponent(new Renderer("F", 1));
+            AddComponent(new Renderer('F', 1));
             renderer = GetComponent<Renderer>();
 
             base.Start();

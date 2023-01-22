@@ -5,7 +5,7 @@
 
         public InputKeyComponent() { }
         private ConsoleKey _key;
-        public  ConsoleKey Key { get { return _key; } }
+        public  ConsoleKey Key { get { return _key; } set { _key = value; } }
 
         public override void Start()
         {
@@ -16,6 +16,7 @@
         {
             if (Console.KeyAvailable)
             {
+                Console.Read();
                 _key = Console.ReadKey().Key;
             }
         }

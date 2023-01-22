@@ -21,7 +21,7 @@
         public override void Start()
         {
             AddComponent(new Collider());
-            _renderer = new Renderer("O", 2);
+            _renderer = new Renderer('o', 2);
             AddComponent(_renderer);
             Parent = null;
             Next = null;
