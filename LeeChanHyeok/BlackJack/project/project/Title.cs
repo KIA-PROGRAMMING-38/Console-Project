@@ -15,6 +15,7 @@ namespace project
         }
         private void TitleSceen()
         {
+            Console.Title = "블랙잭";
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             const int titleShapeX = 60;
 
