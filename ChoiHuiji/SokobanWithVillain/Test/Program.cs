@@ -19,7 +19,7 @@ class Program
         const int MIN_X = 0;
         const int MAX_X = 15;
         const int MIN_Y = 0;
-        const int MAX_Y = 20;
+        const int MAX_Y = 8;
 
         // 플레이어 생성
         Player player = new Player()
@@ -61,7 +61,7 @@ class Program
         };
 
         //빌런 스레드 분기
-        Thread villainThread = new Thread(VillainMove);
+        Thread villainThread = new Thread(VillainPlay);
         villainThread.Start();
 
         // 게임 루프
@@ -313,22 +313,54 @@ class Program
             }
         }
 
-        //빌런을 움직인다.
-        void VillainMove()
+        void MoveVillian(Direction direction, Villain villain)
         {
-            for(int villainY = MIN_Y; villainY < MAX_Y; ++villainY)
+            switch (direction)
             {
-                //다시 villainX를 초기화 시켜준다.
-                villain.X = MIN_X;
-                ++villain.Y;
-                for (int villainX = MIN_X; villainX < MAX_X; ++villainX)
-                {
+                case Direction.Left:
+                    MoveToLeftOfTarget(out villain.X, in villain.X);
+                    break;
 
-                    Render();
-                    ++villain.X;
-                    Thread.Sleep(100);
-                }                
+                case Direction.Right:
+                    if (villain.X == MAX_X)
+                    {
+                        villain.X = MIN_X;
+                        ++villain.Y;
+
+                        if(villain.Y == MAX_Y)
+                        {
+                            villain.VillainDirection = Direction.Left;
+                            villain.X = MAX_X;
+                            --villain.Y;
+                        }
+                    }
+                    else MoveToRightOfTarget(out villain.X, in villain.X);
+                    break;
+
+                case Direction.Up:
+                    MoveToUpOfTarget(out villain.Y, in villain.Y);
+                    break;
+
+                case Direction.Down:
+                    MoveToDownOfTarget(out villain.Y, in villain.Y);
+                    break;
             }
+        }
+        //빌런을 움직인다.
+        void VillainPlay()
+        {
+
+            while(true)
+            {
+                //Render------------------------
+                Render();
+                Thread.Sleep(100);
+                //Update------------------------
+                MoveVillian(villain.VillainDirection, villain);
+            }
+
+            
+
         }
 
         void Render()
