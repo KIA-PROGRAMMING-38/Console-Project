@@ -31,31 +31,32 @@ namespace Moon_Taker
         {
             "방향키로 움직이세요!",
             "A키를 눌러 동기들의 응원을 확인하세요!",
-            "막혔을 땐 R키로 재시작해봐요!"
+            "막혔을 땐 R키로 재시작해봐요!",
+            "블록과 적은 가시함정 위에서 대문자로 표시됩니다!"
         };
 
         static public string[] objectDescription =
         {
             $"{Constants.player} : 유재광   ",
-            $"{Constants.enemy} : 적",
-            $"{Constants.block} : 블록     ",
             $"{Constants.wall} : 벽",
+            $"{Constants.enemy} : 적       ",
+            $"{Constants.block} : 블록",
             $"{Constants.trap} : 가시함정 ",
-            $"{Constants.moon} : 교수님의 흔적",
             $"{Constants.key} : 열쇠     ",
-            $"{Constants.door} : 문"
+            $"{Constants.door} : 문       ",
+            $"{Constants.moon} : 교수님의 흔적",
         };
 
         static public ConsoleColor[] objectColor =
         {
-            ConsoleColor.White,
-            ConsoleColor.Blue,
-            ConsoleColor.Cyan,
-            ConsoleColor.Gray,
-            ConsoleColor.Red,
+            Constants.playerColor,
+            Constants.wallColor,
+            Constants.enemyColor,
+            Constants.blockColor,
+            Constants.trapColor,
+            Constants.keyColor,
+            Constants.doorColor,
             ObjectStatus.moonColor,
-            ConsoleColor.Yellow,
-            ConsoleColor.DarkYellow
         };
     }
 }

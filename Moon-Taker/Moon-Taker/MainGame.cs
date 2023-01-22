@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
@@ -42,49 +43,92 @@ namespace Moon_Taker
 
                 if (StageSettings.isStageReseted)
                 {
-                    for (int i = 0; i < Stage[StageSettings.currentStage].Length - 1; ++i)
+                    for (int stageId = 0; stageId < Stage[StageSettings.currentStage].Length - 1; ++stageId)
                     {
-                        Console.WriteLine(Stage[StageSettings.currentStage][i]);
+                        Console.WriteLine(Stage[StageSettings.currentStage][stageId]);
                     }
                     Functions.ParseStage(Stage[StageSettings.currentStage], out player, out walls, out enemies,
-                        out blocks, out traps, out moon, out key, out door, out mapSize);
-                    Functions.ResetStageSetting(StageSettings.isStageKeyNull[StageSettings.currentStage], StageSettings.stageMovePoint[StageSettings.currentStage]);
+                        out blocks, out traps, out key, out door, out moon, out mapSize);
+                    Functions.ResetStageSetting(StageSettings.doesKeyExist, StageSettings.stageMovePoint);
+                }
+
+                for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
+                {
+                    for (int trapId = 0; trapId < traps.Length; ++trapId)
+                    {
+                        if (Actions.IsCollided(traps[trapId].X, traps[trapId].Y, enemies[enemyId].X, enemies[enemyId].Y))
+                        {
+                            enemies[enemyId].isOnTrap = true;
+                            break;
+                        }
+                        enemies[enemyId].isOnTrap = false;
+                    }
+                }
+
+                for (int blockId = 0; blockId < blocks.Length; ++blockId)
+                {
+                    for (int trapId = 0; trapId < traps.Length; ++trapId)
+                    {
+                        if (Actions.IsCollided(traps[trapId].X, traps[trapId].Y, blocks[blockId].X, blocks[blockId].Y))
+                        {
+                            blocks[blockId].isOnTrap = true;
+                            break;
+                        }
+                        blocks[blockId].isOnTrap = false;
+                    }
                 }
 
                 for (int wallId = 0; wallId < walls.Length; ++wallId)
                 {
-                    Functions.RenderAt(walls[wallId].X, walls[wallId].Y, Constants.wall, ConsoleColor.DarkGray);
+                    Functions.RenderAt(walls[wallId].X, walls[wallId].Y, Constants.wall, Constants.wallColor);
                 }
                 for (int trapId = 0; trapId < traps.Length; ++trapId)
                 {
                     if (ObjectStatus.isTrapToggled)
                     {
-                        Functions.RenderAt(traps[trapId].X, traps[trapId].Y, Constants.trap, ConsoleColor.Red);
+                        Functions.RenderAt(traps[trapId].X, traps[trapId].Y, Constants.trap, Constants.trapColor);
                     }
                 }
                 for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
                 {
                     if (enemies[enemyId].IsAlive)
-                        Functions.RenderAt(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemy, ConsoleColor.Blue);
+                    {
+                        if (enemies[enemyId].isOnTrap)
+                        {
+                            Functions.RenderAt(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemyOnTrap, Constants.enemyColor);
+                        }
+                        else
+                        {
+                            Functions.RenderAt(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemy, Constants.enemyColor);
+                        }
+                    }
                 }
                 for (int blockId = 0; blockId < blocks.Length; ++blockId)
                 {
-                    Functions.RenderAt(blocks[blockId].X, blocks[blockId].Y, Constants.block, ConsoleColor.Cyan);
+                    if (blocks[blockId].isOnTrap)
+                    {
+                        Functions.RenderAt(blocks[blockId].X, blocks[blockId].Y, Constants.blockOnTrap, Constants.blockColor);
+                    }
+                    else 
+                    {
+                        Functions.RenderAt(blocks[blockId].X, blocks[blockId].Y, Constants.block, Constants.blockColor);
+                    }
                 }
-                if (false == StageSettings.isKeyNull)
+                if (StageSettings.doesKeyExist)
                 {
                     if (false == ObjectStatus.hasKey)
                     {
-                        Functions.RenderAt(key.X, key.Y, Constants.key, ConsoleColor.Yellow);
+                        Functions.RenderAt(key.X, key.Y, Constants.key, Constants.keyColor);
                     }
                     if (false == ObjectStatus.isDoorOpened)
                     {
-                        Functions.RenderAt(door.X, door.Y, Constants.door, ConsoleColor.DarkYellow);
+                        Functions.RenderAt(door.X, door.Y, Constants.door, Constants.doorColor);
                     }
                 }
-                LookUpTable.objectColor[5] = Functions.RandomColor();
-                Functions.RenderAt(moon.X, moon.Y, Constants.moon, LookUpTable.objectColor[5]);
-                Functions.RenderAt(player.X, player.Y, Constants.player);
+
+                LookUpTable.objectColor[LookUpTable.objectColor.Length - 1] = Functions.RandomColor();
+                Functions.RenderAt(moon.X, moon.Y, Constants.moon, LookUpTable.objectColor[LookUpTable.objectColor.Length - 1]);
+                Functions.RenderAt(player.X, player.Y, Constants.player, Constants.playerColor);
 
                 for (int stageId = 1; stageId < Stage.Length; ++stageId)
                 {
@@ -100,7 +144,7 @@ namespace Moon_Taker
                     {
                         if(i % 2 == 0)
                         {
-                            Functions.RenderAt(Stage[stageId][0].Length + 2, (i / 2) + 4, LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
+                            Functions.RenderAt(Stage[stageId][0].Length + 2, (i / 2) + LookUpTable.controlHelp.Length + 1, LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
                         }
                         else
                         {
@@ -328,12 +372,12 @@ namespace Moon_Taker
                 {
                     if (ObjectStatus.isTrapToggled && Actions.IsCollided(traps[trapId].X, traps[trapId].Y, player.X, player.Y))
                     {
-                        ObjectStatus.playerMovePoint -= 2;
+                        ObjectStatus.playerMovePoint -= 1;
                         Console.Beep();
                     }
                 }
 
-                if (false == StageSettings.isKeyNull)
+                if (StageSettings.doesKeyExist)
                 {
                     if (Actions.IsCollided(player.X, player.Y, key.X, key.Y))
                     {
@@ -369,12 +413,12 @@ namespace Moon_Taker
 
                 if (Actions.IsCollided(player.X, player.Y, moon.X, moon.Y))
                 {
-                    if (StageSettings.currentStage < 3)
+                    if (StageSettings.currentStage < StageSettings.stageNumber)
                     {
                         Scene.EnterStageClearScene(ref StageSettings.currentStage);
                         continue;
                     }
-                    else if (StageSettings.currentStage == 3)
+                    else if (StageSettings.currentStage == StageSettings.stageNumber)
                     {
                         Scene.EnterGameClearScene();
                     }

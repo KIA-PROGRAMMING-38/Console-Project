@@ -35,7 +35,7 @@ namespace Moon_Taker
             return File.ReadAllLines(filePath);
         }
         public static void ParseStage(string[] stage, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Moon moon, out Key key, out Door door, out MapSize mapSize)
+            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Key key, out Door door, out Moon moon, out MapSize mapSize)
         {
             string[] objectNums = stage[stage.Length - 1].Split(" ");
 
@@ -43,6 +43,9 @@ namespace Moon_Taker
             enemy = new Enemy[int.Parse(objectNums[1])];
             block = new Block[int.Parse(objectNums[2])];
             trap = new Trap[int.Parse(objectNums[3])];
+            StageSettings.stageMovePoint = int.Parse(objectNums[4]);
+            StageSettings.doesKeyExist = bool.Parse(objectNums[5]);
+
             key = null;
             door = null;
             player = null;
@@ -71,22 +74,34 @@ namespace Moon_Taker
                             enemy[enemyId] = new Enemy { X = x, Y = y, IsAlive = true };
                             ++enemyId;
                             break;
+                        case Constants.enemyOnTrap:
+                            enemy[enemyId] = new Enemy { X = x, Y = y, IsAlive = true };
+                            ++enemyId;
+                            trap[trapId] = new Trap { X = x, Y = y };
+                            ++trapId;
+                            break;
                         case Constants.block:
                             block[blockId] = new Block { X = x, Y = y };
                             ++blockId;
                             break;
-                        case Constants.trap:
+                        case Constants.blockOnTrap:
+                            block[blockId] = new Block { X = x, Y = y };
+                            ++blockId;
                             trap[trapId] = new Trap { X = x, Y = y };
                             ++trapId;
                             break;
-                        case Constants.moon:
-                            moon = new Moon { X = x, Y = y };
+                        case Constants.trap:
+                            trap[trapId] = new Trap { X = x, Y = y };
+                            ++trapId;
                             break;
                         case Constants.key:
                             key = new Key { X = x, Y = y };
                             break;
                         case Constants.door:
                             door = new Door { X = x, Y = y };
+                            break;
+                        case Constants.moon:
+                            moon = new Moon { X = x, Y = y };
                             break;
                         case Constants.blank:
                             break;
@@ -184,14 +199,14 @@ namespace Moon_Taker
             int colorIndex = random.Next(LookUpTable.allColor.Length);
             return LookUpTable.allColor[colorIndex];
         }
-        public static void ResetStageSetting(bool isKeyNull, int playerMovePoint)
+        public static void ResetStageSetting(bool doesKeyExist, int playerMovePoint)
         {
             StageSettings.isStageReseted = false;
             StageSettings.isBlessed = false;
             ObjectStatus.playerMovePoint = playerMovePoint;
             ObjectStatus.isTrapToggled = true;
-            StageSettings.isKeyNull = isKeyNull;
-            if (false == isKeyNull)
+            StageSettings.doesKeyExist = doesKeyExist;
+            if (doesKeyExist)
             {
                 ObjectStatus.hasKey = false;
                 ObjectStatus.isDoorOpened = false;
