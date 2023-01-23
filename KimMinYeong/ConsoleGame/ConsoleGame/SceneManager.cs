@@ -12,8 +12,6 @@ namespace ConsoleGame
         public int CapturedSceneId;
         public Scene scene = new Scene();
 
-        public Player player = new Player { BeforeX = 0, UpdateX = 0 };
-
         public bool IsSceneChange(int currentSceneId)
         {
             CurrentSceneId = currentSceneId;
@@ -42,27 +40,8 @@ namespace ConsoleGame
                     RenderTitleScene();
                     break;
                 case 1:
-                    //RenderMainScene();
-                    break;
-                case 2:
-                    RenderEndScene();
-                    break;
-                default:
-                    Console.Clear();
-                    Console.WriteLine($"잘못된 SceneId 입니다. {CurrentSceneId}");
-                    return;
-            }
-        }
-
-        public void TestRender(ConsoleKey key)
-        {
-            switch (CurrentSceneId)
-            {
-                case 0:
-                    RenderTitleScene();
-                    break;
-                case 1:
-                    RenderMainScene(key);
+                    InitMainScene();
+                    RenderMainScene();
                     break;
                 case 2:
                     RenderEndScene();
@@ -83,24 +62,28 @@ namespace ConsoleGame
             
         }
 
-        public void RenderMainScene(ConsoleKey key)
+        public void InitMainScene()
+        {
+            Console.CursorVisible = false;
+        }
+
+        public void RenderMainScene()
         {
             // 게임 진행 화면 렌더 구현
-            switch(key)
+            switch(Input.CheckInputKey())
             {
                 case ConsoleKey.RightArrow:
-                    player.moveDirection = MoveDirection.Right;
-                    player.Move();
+                    Player.moveDirection = MoveDirection.Right;
+                    Player.Move();
                     break;
 
                 case ConsoleKey.LeftArrow:
-                    player.moveDirection = MoveDirection.Left;
-                    player.Move();
+                    Player.moveDirection = MoveDirection.Left;
+                    Player.Move();
                     break;
             }
 
-            player.Render();
-            Thread.Sleep(1000);
+            Player.Render();
 
         }
 

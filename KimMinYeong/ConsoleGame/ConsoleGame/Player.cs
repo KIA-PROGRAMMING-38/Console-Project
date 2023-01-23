@@ -6,44 +6,44 @@ using System.Threading.Tasks;
 
 namespace ConsoleGame
 {
-    enum MoveDirection
+    public enum MoveDirection
     {
         None,
         Left,
         Right
     };
 
-    internal class Player
+    public static class Player
     {
-        public int BeforeX;
-        public int UpdateX;
-        public int Y = 0;
-        public string Icon = "▲";
-        public MoveDirection moveDirection;
+        public static int BeforeX;
+        public static int CurrentX;
+        public static int Y = 20;
+        public static string Icon = "A";
+        public static MoveDirection moveDirection;
 
-        public void Move()
+        public static void Move()
         {
+            BeforeX = CurrentX;
+
             switch(moveDirection)
             {
                 case MoveDirection.Left:
-                    UpdateX = Math.Max(0, BeforeX - 1);
+                    CurrentX = Math.Max(0, CurrentX - 1);
                     break;
 
                 case MoveDirection.Right:
-                    UpdateX = Math.Min(BeforeX + 1, 10);
+                    CurrentX = Math.Min(CurrentX + 1, 35);
                     break;
             }
         }
 
-        public void Render()
+        public static void Render()
         {
             Console.SetCursorPosition(BeforeX, Y);
             Console.Write(" ");
 
-            Console.SetCursorPosition(UpdateX, Y);
+            Console.SetCursorPosition(CurrentX, Y);
             Console.Write(Icon);
-
-            BeforeX = UpdateX;
         }
     }
 }

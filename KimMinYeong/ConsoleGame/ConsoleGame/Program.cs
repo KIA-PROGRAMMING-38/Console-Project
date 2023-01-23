@@ -6,21 +6,15 @@
         {
             SceneManager sceneManager = new SceneManager();
             Scene scene = sceneManager.scene;  // 처음엔 타이틀 화면으로 시작
-            Player player = sceneManager.player;
 
             while(true)
             {
-                
-                ConsoleKey key = default;
 
-                sceneManager.TestRender(key);
+                sceneManager.RenderCurrentScene();
 
-                if (Console.KeyAvailable)
-                {
-                    key = Console.ReadKey().Key;
-                }
+                Input.Process();
 
-                switch (key)
+                switch (Input.CheckInputKey())
                 {
                     case ConsoleKey.Enter:
                         scene.SceneId = 1;
