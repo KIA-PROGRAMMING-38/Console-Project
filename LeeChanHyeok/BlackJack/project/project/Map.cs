@@ -16,6 +16,18 @@ namespace project
         public int MAX_Y = 18;
         //소지금
         public int[] money = { 1000000 };
+        //메뉴
+        public Menu[] menu = new Menu[]
+        {
+                new Menu{X = 126, Y= 12, menuButten = "▶ " + "Raise"},
+                new Menu{X = 126, Y = 15, menuButten = "▶ " + "Check"},
+                new Menu{X = 126, Y = 18, menuButten = "▶ " + "Fold"}
+        };
+        #region 맵 배열
+
+        public int[] mapX = { 30, 155, 119, 153, 120, 36, 50, 65, 80, 62, 77, 92 };
+        public int[] mapY = { 4, 38, 5, 7, 6, 10, 20, 8, 16, 23, 31 };
+        #endregion
         public void MapRender()
         {
             MapDrow();
@@ -29,14 +41,6 @@ namespace project
 
         void MapDrow()
         {
-            //메뉴
-            Menu[] menu = new Menu[]
-            {
-
-                new Menu{X = 126, Y= 12, menuButten = "▶ " + "Raise"},
-                new Menu{X = 126, Y = 15, menuButten = "▶ " + "Check"},
-                new Menu{X = 126, Y = 18, menuButten = "▶ " + "Fold"}
-            };
             #region 맵 카운트
             const int ALL_MAPX_COUNT = 125;
             const int ALL_MAPY_COUNT = 35;
@@ -49,11 +53,6 @@ namespace project
             const int DEALER_MAPY_COUNT = 9;
             const int PLAYER_MAPX_COUNT = 12;
             const int PLAYER_MAPY_COUNT = 9;
-            #endregion
-            #region 맵 배열
-
-            int[] mapX = { 30, 155, 119, 153, 120, 36, 50, 65, 80, 62, 77, 92};
-            int[] mapY = { 4, 38, 5, 7, 6, 10, 20, 8, 16, 23, 31 };
             #endregion
             #region 전체 맵 테두리
             for (int allMapId = 0; allMapId < ALL_MAPX_COUNT; ++allMapId)

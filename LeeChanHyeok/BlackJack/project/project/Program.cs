@@ -9,52 +9,38 @@ namespace project
         down,
         enter
     }
-    enum CardPattern
-    {
-        none,
-        spade,
-        diamond,
-        hert,
-        club
-    }
     
-    enum CardNumber
-    {
-        none,
-        one, two, three, four, five, six, seven, eight, nine, ten, jack, queen, king
-    }
+  
     class Program
     {
         static void Main()
         {
-            Title titleSceen = new Title();
-            titleSceen.TitleMain();
+            //Title titleSceen = new Title();
+            //titleSceen.TitleMain();
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             Console.CursorVisible = false;
 
-            //맵 함수 부분
-            void MapExtent(int x, int y, string mapObject)
-            {
-                Console.SetCursorPosition(x, y);
-                Console.Write(mapObject);
-            }
-
             //카드
-            CardPattern cardPattern;
-            CardNumber cardNumber;
-
-            //CardPattern[] 
-            //CardNumber[] cards = new CardNumber[53];
-
+            const int CARD_COUNT = 13;
+            string[] pattern = { "♠", "◆", "♥", "♣" };
             
+
             Direction player = Direction.none;
-            
-            
+
+            Map mapRender = new Map();
+            Random random = new Random();
+
+            // 덱 초기화
+            int user = 0;
+            int dealer = 0;
+            // 덱 정보 저장
+            int saveDealer = 0;
+            int saveruser = 0;
+
             while (true)
             {
                 //------------------------------------랜더-------------------------------------
                 Console.Clear();
-                Map mapRender = new Map();
                 mapRender.MapRender();
                 
                 //------------------------------------ProcessInput ----------------------------
@@ -77,7 +63,68 @@ namespace project
                 }
 
                 //게임 진행
+
+                // 딜러
+                int patternIndex = random.Next(pattern.Length);
+                string patterns = pattern[patternIndex];
+                Console.SetCursorPosition(51, 9);
+                Console.Write(patterns);
+                Console.SetCursorPosition(60, 15);
+                Console.Write(patterns);
                 
+                dealer = random.Next(1, 13);
+                Console.SetCursorPosition(56, 12);
+                if(dealer < 11)
+                {
+                    Console.Write(dealer);
+                }
+                else if(dealer == 11)
+                {
+                    Console.Write("J");
+                }
+                else if(dealer == 12)
+                {
+                    Console.Write("Q");
+                }
+                else if(dealer == 13)
+                {
+                    Console.Write("K");
+                }
+                saveDealer += dealer;
+
+                //유저
+                patternIndex = random.Next(pattern.Length);
+                patterns = pattern[patternIndex];
+                Console.SetCursorPosition(51, 24);
+                Console.Write(patterns);
+                Console.SetCursorPosition(60, 30);
+                Console.Write(patterns);
+                user = random.Next(1, 13);
+                Console.SetCursorPosition(56, 27);
+                if(user < 11)
+                {
+                    Console.Write(user);
+                }
+                else if(user == 11) 
+                {
+                    Console.Write("J");
+                }
+                else if(user == 12)
+                {
+                    Console.Write("Q");
+                }
+                else if(user == 13)
+                {
+                    Console.Write("K");
+                }
+                
+                saveruser += user;
+
+                
+
+
+
+
             }
         }
     }
