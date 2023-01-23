@@ -1,42 +1,28 @@
-﻿using System;
+﻿using ProjectJK.Objects;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjectJK
 {
-    enum Direction
-    {
-        None,
-        Left,
-        Right,
-        Up,
-        Down,
-    }
     internal class Game
     {
-        public const int MAP_MIN_X = 20;
-        public const int MAP_MIN_Y = 10;
-        public const int MAP_MAX_X = 40;
-        public const int MAP_MAX_Y = 20;
-        public const int UI_HP_X = 4;
-        public const int UI_HP_Y = 10;
-        public const int UI_STATUS_X = 4;
-        public const int UI_STATUS_Y = 12;
-        public const int UI_MONEY_X = 4;
-        public const int UI_MONEY_Y = 16;
-        public const int UI_KEY_X = 4;
-        public const int UI_Key_Y = 17;
-        public const int UI_STAGE_X = 4;
-        public const int UI_STAGE_Y = 20;
-
-
-
-        public bool IsGameDoing;
-        public bool IsTitleDoing;
-        public bool IsStageOneDoing;
+        public const int Level_HP_Money_X = 31;
+        public const int EXP_X = 40;
+        public const int Status_X = 47;
+        public const int Battle_X = 62;
+        public const int Level_EXP_Battle_Y = 1;
+        public const int HP_STATUS_Y = 5;
+        public const int Money_Y = 9;
+        public const int DialogCursor_X = 2;
+        public const int DialogCursor_Y = 18;
+        public const int BattleCursor_X = 63;
+        public const int BattleCursor_Y = 10;
 
         public static class Function
         {
@@ -44,49 +30,43 @@ namespace ProjectJK
             {
                 Console.ResetColor();
                 Console.CursorVisible = false;
-                Console.Title = "던전 탈출";
+                Console.Title = "RPG";
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.OutputEncoding = Encoding.UTF8;
                 Console.Clear();
             }
 
-            public static void DefaultMapUI()
+            private static bool _isGameDoing = true;
+            public static void Run()
             {
-                // 맵
-                for (int i = -2; i <= MAP_MAX_X - MAP_MIN_X + 2; ++i)
+                while (_isGameDoing)
                 {
-                    ObjRender(MAP_MIN_X + i, MAP_MIN_Y - 1, "▒", ConsoleColor.DarkMagenta);
-                    ObjRender(MAP_MIN_X + i, MAP_MAX_Y + 1, "▒", ConsoleColor.DarkMagenta);
-                }
-                for (int i = 0; i <= MAP_MAX_Y - MAP_MIN_Y; ++i)
-                {
-                    ObjRender(MAP_MIN_X - 1, MAP_MIN_Y + i, "▒", ConsoleColor.DarkMagenta);
-                    ObjRender(MAP_MIN_X - 2, MAP_MIN_Y + i, "▒", ConsoleColor.DarkMagenta);
-                    ObjRender(MAP_MAX_X + 1, MAP_MIN_Y + i, "▒", ConsoleColor.DarkMagenta);
-                    ObjRender(MAP_MAX_X + 2, MAP_MIN_Y + i, "▒", ConsoleColor.DarkMagenta);
-                }
-                // UI
-                ObjRender(UI_HP_X, UI_HP_Y, "HP", ConsoleColor.Blue);
-                ObjRender(UI_STATUS_X, UI_STATUS_Y, "Status", ConsoleColor.Blue);
-                ObjRender(UI_MONEY_X, UI_MONEY_Y, "Money", ConsoleColor.Blue);
-                ObjRender(UI_KEY_X,UI_Key_Y,"Key", ConsoleColor.Blue);
-                ObjRender(UI_STAGE_X, UI_STAGE_Y, "Stage", ConsoleColor.Blue);
-            }
 
-            public static void StageMove()
-            {
-                for(int i = 0; i < MAP_MAX_X - MAP_MIN_X; ++i)
-                {
-                    for(int j = 0; j < MAP_MAX_Y - MAP_MIN_Y; ++j)
-                    {
-                        Console.SetCursorPosition(MAP_MIN_X + i, MAP_MIN_Y + j);
-                        Console.Write(" ");
-                    }
+                    Render();
+                    ProcessInput();
+                    Update();
                 }
             }
 
+            private static void Render()
+            {
+                Scene.Render();
+            }
 
+            private static void ProcessInput()
+            {
+                Input.Process();
+            }
+
+            private static void Update()
+            {
+                if (Scene.IsSceneChange())
+                {
+                    Scene.ChangeScene();
+                }
+                Scene.Update();
+            }
 
             public static void ObjRender(int objX, int objY, string icon, ConsoleColor color)
             {
@@ -96,6 +76,13 @@ namespace ProjectJK
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
+            public static void ExitWithError(string errorMsg)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine(errorMsg);
+                Environment.Exit(1);
+            }
         }
     }
 }
