@@ -17,6 +17,7 @@ namespace Wooseok_Console_Project
         public bool sokobanmode;
         public bool collision;
         public bool battlemode;
+        public bool shoppingmode;
 
 
         public Gameinfo()
@@ -26,9 +27,7 @@ namespace Wooseok_Console_Project
             max_x = 40;
             max_y = 20;
             character_selection = true;
-            sokobanmode = true;
-            collision = true;
-            battlemode = true;
+            
         }
 
         public static string[] LoadStage(int stagenumber)

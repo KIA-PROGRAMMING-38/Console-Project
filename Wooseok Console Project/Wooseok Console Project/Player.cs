@@ -15,6 +15,7 @@ namespace Wooseok_Console_Project
 
         public int prex;
         public int prey;
+        public int money;
 
         public Player()
         {
@@ -23,13 +24,11 @@ namespace Wooseok_Console_Project
             symbol = "P";
             prex = 2;
             prey = 2;
+            money = 300;
         }
 
 
-        public class Soldier : Player
-        {
-
-        }
+        
 
 
 

@@ -7,7 +7,7 @@ using Wooseok_Console_Project;
 
 class Program
 {
-    enum DIRECTION
+    enum PLAYERDIRECTION
     {
         NONE,
         RIGHT,
@@ -16,6 +16,14 @@ class Program
         DOWN
     }
 
+    enum LINE4DIRECTION
+    {
+        NONE,
+        RIGHT,
+        LEFT,
+        UP,
+        DOWN
+    }
 
 
     static void Main()
@@ -30,7 +38,7 @@ class Program
         Console.Title = "군대 시뮬레이션";
 
         Player player = new();
-        
+
 
 
 
@@ -40,18 +48,18 @@ class Program
 
         string character_path = ""; // 캐릭터 설명 텍스트 파일 경로를 담기 위한 객체 생성
 
-        Character chosen_one = new();
+        Character ChosenOne = new();
         Character sin = new() // 신병 객체 생성
         {
             id = "신병",
             hp = 5,
             mp = 5,
-            passive = "존댓말 하기 [병장 ATK 1 증가]",
-            passive_effect = "군대 언어가 익숙치 않아 매 턴 50%의 확률로 존댓말을 하여 병장을 화나게 한다",
+            passive = "존댓말 하기",
+            passive_effect = "군대 언어가 익숙치 않아 매 턴 50%의 확률로 존댓말을 하여 병장을 화나게 한다 [병장 ATK 1 증가]",
             atk = 3,
             attackeffect = "예?",
-            skill = "관등성명 대기(MP 5) → [병장 MP 3~5 감소]",
-            skill_effect = "관등성명을 댐으로써 병장의 흥미가 떨어진다 "
+            skill = "관등성명 대기(MP 5)",
+            skill_effect = "관등성명을 댐으로써 병장의 흥미가 떨어진다 [병장 MP 3~5 감소] "
         };
 
         Character ee = new() // 이병 객체 생성
@@ -59,12 +67,12 @@ class Program
             id = "이병",
             hp = 10,
             mp = 10,
-            passive = "얼 타기 [병장 MP 1 증가]",
-            passive_effect = "일머리가 없어 병장의 사기를 증가시킨다 ",
+            passive = "얼 타기",
+            passive_effect = "일머리가 없어 병장의 사기를 증가시킨다 [병장 MP 1 증가] ",
             atk = 3,
             attackeffect = "잘 못들었습니다?",
-            skill = "마음의 편지 쓰기(MP 5) → [병장 HP 3 ~ 5 감소]",
-            skill_effect = "마음의 편지를 씀으로써 병장의 휴가가 잘렸다"
+            skill = "마음의 편지 쓰기(MP 5)",
+            skill_effect = "마음의 편지를 씀으로써 병장의 휴가가 잘렸다 [병장 HP 3 ~ 5 감소]"
         };
 
         Character il = new() // 일병 객체 생성
@@ -72,12 +80,12 @@ class Program
             id = "일병",
             hp = 10,
             mp = 10,
-            passive = "작업노예 [매턴 30% 확률로 받는 데미지 반감]",
-            passive_effect = "하루종일 작업만 하다 맷집이 좋아졌다",
+            passive = "작업노예",
+            passive_effect = "하루종일 작업만 하다 맷집이 좋아졌다 [매턴 30% 확률로 받는 데미지 반감]",
             atk = 3,
             attackeffect = "잘 못슴다?",
-            skill = "담배 물리기 (MP 5) → [병장 2턴 Freeze]",
-            skill_effect = "담배를 권함으로써 병장이 2턴동안 흡연을 한다"
+            skill = "담배 물리기(MP 5)",
+            skill_effect = "담배를 권함으로써 병장이 2턴동안 흡연을 한다 [병장 2턴 Freeze]"
         };
 
         Character sang = new() // 상병 객체 생성
@@ -85,34 +93,34 @@ class Program
             id = "상병",
             hp = 15,
             mp = 10,
-            passive = "개기기 [매턴 10% 확률로 본인 ATK 1 증가]",
-            passive_effect = "짬 좀 찼다고 선임들 하나씩 먹으려 함",
+            passive = "개기기",
+            passive_effect = "짬 좀 찼다고 선임들 하나씩 먹으려 함 [매턴 10% 확률로 본인 ATK 1 증가]",
             atk = 3,
-            attackeffect = "자슴다?",
-            skill = "무시하기 (MP 5) → [병장 MP 5~10 감소]",
-            skill_effect = "집에 갈 양반이 왜 아직도 실세놀이를 하고 계십니까?"
+            attackeffect = "자몽소다?",
+            skill = "무시하기 (MP 5)",
+            skill_effect = "\"집에 갈 양반이 왜 아직도 실세놀이를 하고 계십니까?\" [병장 MP 5~10 감소]"
         };
 
 
-        Character byeong = new() // 병장 객체 생성
+        Character Byeong = new() // 병장 객체 생성
         {
             id = "병장",
             hp = 20,
             savehp = 20,
             mp = 10,
             savemp = 10,
-            passive = "현타 세게 맞기 [매턴 20% 확률로 턴 중지]",
-            passive_effect = "동기들을 먼저 보내고 혼자만 남아 현타를 맞음",
+            passive = "현타 세게 맞기",
+            passive_effect = "동기들을 먼저 보내고 혼자만 남아 현타를 맞음[매턴 20% 확률로 턴 중지]",
             atk = 5,
             attackeffect = "야 여동생이나 누나 있냐?",
-            skill = "군가 부르게 하기 (MP 2) → [DMG 1 ~ 3]",
-            skill_effect = "야 군가 한곡 기깔나게 뽑아봐",
+            skill = "군가 부르게 하기 (MP 2)",
+            skill_effect = "야 군가 한곡 기깔나게 뽑아봐[플레이어 HP 1 ~ 3 감소]",
 
-            skill2 = "기강 잡기 (MP 3) → [DMG 3 ~ 5]",
-            skill2_effect = "개빠졌네 진짜?? 군대가 니 집 안방이냐??",
+            skill2 = "기강 잡기 (MP 3)",
+            skill2_effect = "개빠졌네 진짜?? 군대가 니 집 안방이냐??[플레이어 HP 3 ~ 5 감소]",
 
-            skill3 = "맞선임 호출하기 (MP 5) → [DMG 5 ~ 10]",
-            skill3_effect = "야, 니 맞선임 누구냐??"
+            skill3 = "맞선임 호출하기 (MP 5)",
+            skill3_effect = "야, 니 맞선임 누구냐??[플레이어 HP 5 ~ 10 감소]"
         };
 
 
@@ -290,26 +298,26 @@ class Program
                 if (0 <= quiz.score && quiz.score <= 3)
                 {
                     choose = sin.id;
-                    chosen_one.id = choose;
-                    Function.Render(45, 18, chosen_one.id);
+                    ChosenOne.id = choose;
+                    Function.Render(45, 18, ChosenOne.id);
                 }
                 else if (4 <= quiz.score && quiz.score <= 6)
                 {
                     choose = ee.id;
-                    chosen_one.id = choose;
-                    Function.Render(45, 18, chosen_one.id);
+                    ChosenOne.id = choose;
+                    Function.Render(45, 18, ChosenOne.id);
                 }
                 else if (7 <= quiz.score && quiz.score <= 8)
                 {
                     choose = il.id;
-                    chosen_one.id = choose;
-                    Function.Render(45, 18, chosen_one.id);
+                    ChosenOne.id = choose;
+                    Function.Render(45, 18, ChosenOne.id);
                 }
                 else if (9 <= quiz.score && quiz.score <= 10)
                 {
                     choose = sang.id;
-                    chosen_one.id = choose;
-                    Function.Render(45, 18, chosen_one.id);
+                    ChosenOne.id = choose;
+                    Function.Render(45, 18, ChosenOne.id);
                 }
 
             }
@@ -735,53 +743,59 @@ class Program
             {
                 quiz.middlemusic = false; // 중간음악을 꺼준다
                 game.character_selection = false; // 캐릭터 선정 게임루프를 종료한다
+                game.sokobanmode = true;
                 music_song1.Stop(); // 노래를 끈다
+                Console.Clear(); // 다음화면으로 넘어가기 위한 클리어
             }
         }
-        Console.Clear(); // 다음화면으로 넘어가기 위한 클리어
+
         #endregion
 
 
-        switch (chosen_one.id) // id의 선택에 따른 골라진 플레이어로 데이터 옮기기
+        switch (ChosenOne.id) // id의 선택에 따른 골라진 플레이어로 데이터 옮기기
         {
             case "신병":
-                chosen_one.hp = sin.hp;
-                chosen_one.mp = sin.mp;
-                chosen_one.passive = sin.passive;
-                chosen_one.passive_effect = sin.passive_effect;
-                chosen_one.atk = sin.atk;
-                chosen_one.attackeffect = sin.attackeffect;
-                chosen_one.skill = sin.skill;
+                ChosenOne.hp = sin.hp;
+                ChosenOne.mp = sin.mp;
+                ChosenOne.passive = sin.passive;
+                ChosenOne.passive_effect = sin.passive_effect;
+                ChosenOne.atk = sin.atk;
+                ChosenOne.attackeffect = sin.attackeffect;
+                ChosenOne.skill = sin.skill;
+                ChosenOne.skill_effect = sin.skill_effect;
                 break;
 
             case "이병":
-                chosen_one.hp = ee.hp;
-                chosen_one.mp = ee.mp;
-                chosen_one.passive = ee.passive;
-                chosen_one.passive_effect = ee.passive_effect;
-                chosen_one.atk = ee.atk;
-                chosen_one.attackeffect = ee.attackeffect;
-                chosen_one.skill = ee.skill;
+                ChosenOne.hp = ee.hp;
+                ChosenOne.mp = ee.mp;
+                ChosenOne.passive = ee.passive;
+                ChosenOne.passive_effect = ee.passive_effect;
+                ChosenOne.atk = ee.atk;
+                ChosenOne.attackeffect = ee.attackeffect;
+                ChosenOne.skill = ee.skill;
+                ChosenOne.skill_effect = ee.skill_effect;
                 break;
 
             case "일병":
-                chosen_one.hp = il.hp;
-                chosen_one.mp = il.mp;
-                chosen_one.passive = il.passive;
-                chosen_one.passive_effect = il.passive_effect;
-                chosen_one.atk = il.atk;
-                chosen_one.attackeffect = il.attackeffect;
-                chosen_one.skill = il.skill;
+                ChosenOne.hp = il.hp;
+                ChosenOne.mp = il.mp;
+                ChosenOne.passive = il.passive;
+                ChosenOne.passive_effect = il.passive_effect;
+                ChosenOne.atk = il.atk;
+                ChosenOne.attackeffect = il.attackeffect;
+                ChosenOne.skill = il.skill;
+                ChosenOne.skill_effect = il.skill_effect;
                 break;
 
             case "상병":
-                chosen_one.hp = sang.hp;
-                chosen_one.mp = sang.mp;
-                chosen_one.passive = sang.passive;
-                chosen_one.passive_effect = sang.passive_effect;
-                chosen_one.atk = sang.atk;
-                chosen_one.attackeffect = sang.attackeffect;
-                chosen_one.skill = sang.skill;
+                ChosenOne.hp = sang.hp;
+                ChosenOne.mp = sang.mp;
+                ChosenOne.passive = sang.passive;
+                ChosenOne.passive_effect = sang.passive_effect;
+                ChosenOne.atk = sang.atk;
+                ChosenOne.attackeffect = sang.attackeffect;
+                ChosenOne.skill = sang.skill;
+                ChosenOne.skill_effect = sang.skill_effect;
                 break;
         }
 
@@ -806,6 +820,8 @@ class Program
             goal[i] = new Goal { x = game.max_x, y = i, symbol = "*" };
         }
 
+        PX PX = new() { x = 3, y = 3, symbol = "S" };
+
 
         Player[] line4 =
         {
@@ -813,12 +829,67 @@ class Program
             new Player{ x = 18, y = 5, symbol = "4"}
         };
 
+
+
+
+
+
+
+
+
+        LOOP_SHOPPING:
+
+        bool rendershop = true;
+        while (game.shoppingmode)
+        {
+            // render
+            string shoppingpath = Path.Combine("Assets", "Battle scene", "Shopping.txt");
+            string[] shoppingshow = File.ReadAllLines(shoppingpath);
+
+
+            if (rendershop == true)
+            {
+                for (int i = 0; i < shoppingshow.Length; ++i)
+                {
+                    Console.WriteLine(shoppingshow[i]);
+                }
+                rendershop = false;
+            }
+
+
+            // input
+
+            ConsoleKey key4 = Console.ReadKey(true).Key;
+            // update
+
+            if (key4 == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                game.shoppingmode = false;
+                game.sokobanmode = true;
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         int pushed = 0;
 
-    LOOP_EXIT:
+            LOOP_EXIT:
         music_walk.PlayLooping();
 
-        DIRECTION PlayerDirection = DIRECTION.NONE;
+        PLAYERDIRECTION PlayerDirection = PLAYERDIRECTION.NONE;
+        LINE4DIRECTION Line4Direction = LINE4DIRECTION.NONE;
 
         // 테트리스 게임루프
         while (game.sokobanmode)
@@ -827,26 +898,26 @@ class Program
 
             Console.ForegroundColor = ConsoleColor.Red;
 
-            for (int i = 0; i < line4.Length ;++i)// 병장을 그려준다
+            for (int i = 0; i < line4.Length; ++i)// 병장을 그려준다
             {
-                Function.Render(line4[i].x, line4[i].y, line4[i].symbol); 
+                Function.Render(line4[i].x, line4[i].y, line4[i].symbol);
             }
-            
+
 
             Function.Render(player.x, player.y, player.symbol); // 플레이어를 그려준다
 
-            for (int i = 0; i < box.Length ;++i) // 박스를 그려준다
+            for (int i = 0; i < box.Length; ++i) // 박스를 그려준다
             {
                 Function.Render(box[i].x, box[i].y, box[i].symbol);
             }
 
 
-            for (int i = 0; i < wall.Length ;++i)
+            for (int i = 0; i < wall.Length; ++i) // 벽을 그려준다
             {
                 Function.Render(wall[i].x, wall[i].y, wall[i].symbol);
             }
 
-
+            Function.Render(PX.x, PX.y, PX.symbol); // PX를 그려준다
 
             for (int i = 1; i < game.max_y + 1; ++i) // goal 을 그려준다
             {
@@ -864,7 +935,7 @@ class Program
             }
 
 
-            for (int i = 0; i < line4.Length ;++i)
+            for (int i = 0; i < line4.Length; ++i)
             {
                 if (line4[i].x == line4[i].prex && line4[i].y == line4[i].prey)
                 {
@@ -875,7 +946,7 @@ class Program
                     Function.Render(line4[i].prex, line4[i].prey, " ");
                 }
             }
-            
+
 
 
             #region Draw Boundaries
@@ -907,48 +978,102 @@ class Program
             player.prex = player.x;
             player.prey = player.y;
 
-            if (key2 == ConsoleKey.RightArrow)
+            if (key2 == ConsoleKey.RightArrow) // 플레이어 이동 구현
             {
                 player.x = Math.Clamp(player.x + 1, game.min_x, game.max_x);
-                PlayerDirection = DIRECTION.RIGHT;
+                PlayerDirection = PLAYERDIRECTION.RIGHT;
             }
             if (key2 == ConsoleKey.LeftArrow)
             {
                 player.x = Math.Clamp(player.x - 1, game.min_x, game.max_x);
-                PlayerDirection = DIRECTION.LEFT;
+                PlayerDirection = PLAYERDIRECTION.LEFT;
             }
             if (key2 == ConsoleKey.UpArrow)
             {
                 player.y = Math.Clamp(player.y - 1, game.min_y, game.max_y);
-                PlayerDirection = DIRECTION.UP;
+                PlayerDirection = PLAYERDIRECTION.UP;
             }
             if (key2 == ConsoleKey.DownArrow)
             {
                 player.y = Math.Clamp(player.y + 1, game.min_y, game.max_y);
-                PlayerDirection = DIRECTION.DOWN;
+                PlayerDirection = PLAYERDIRECTION.DOWN;
             }
 
 
 
-            for (int i = 0; i < box.Length ;++i) // 박스 밀기
+
+            PX.close = false; // 보통은 false이니 위에 걍 정의 (초기화용)
+
+            // 플레이어가 PX의 근처에 있는지를 정의하는 코드
+            if (player.x == PX.x - 1 && player.y == PX.y) // 플레이어가 px의 왼쪽에 있다면
+            {
+                PX.close = true; // px근처가 true가 된다
+            }
+            if (player.x == PX.x + 1 && player.y == PX.y) // 플레이어가 px의 오른쪽에 있다면
+            {
+                PX.close = true; // px근처가 true가 된다
+            }
+            if (player.x == PX.x && player.y == PX.y - 1) // 플레이어가 px의 위쪽에 있다면
+            {
+                PX.close = true; // px근처가 true가 된다
+            }
+            if (player.x == PX.x && player.y == PX.y + 1) // 플레이어가 px의 아래쪽에 있다면
+            {
+                PX.close = true; // px근처가 true가 된다
+            }
+
+            if (PX.close && key2 == ConsoleKey.Spacebar) // shopping mode로 들어가기
+            {
+                Console.Clear(); // 다음화면으로 넘어가기 위한 클리어
+                game.sokobanmode = false;
+                game.shoppingmode = true;
+                goto LOOP_SHOPPING;
+            }
+
+
+            // 상점에 막히는 플레이어 구현
+            if (player.x == PX.x && player.y == PX.y)
+            {
+                switch (PlayerDirection)
+                {
+                    case PLAYERDIRECTION.RIGHT:
+                        player.x = PX.x - 1;
+                        break;
+                    case PLAYERDIRECTION.LEFT:
+                        player.x = PX.x + 1;
+                        break;
+                    case PLAYERDIRECTION.UP:
+                        player.y = PX.y + 1;
+                        break;
+                    case PLAYERDIRECTION.DOWN:
+                        player.y = PX.y - 1;
+                        break;
+
+                }
+            }
+
+
+
+
+            for (int i = 0; i < box.Length; ++i) // 박스 밀기
             {
                 if (player.x == box[i].x && player.y == box[i].y)
                 {
                     switch (PlayerDirection)
                     {
-                        case DIRECTION.RIGHT:
-                            box[i].x = Math.Clamp(box[i].x +1, game.min_x, game.max_x);
+                        case PLAYERDIRECTION.RIGHT:
+                            box[i].x = Math.Clamp(box[i].x + 1, game.min_x, game.max_x);
                             player.x = box[i].x - 1;
                             break;
-                        case DIRECTION.LEFT:
+                        case PLAYERDIRECTION.LEFT:
                             box[i].x = Math.Clamp(box[i].x - 1, game.min_x, game.max_x);
                             player.x = box[i].x + 1;
                             break;
-                        case DIRECTION.UP:
-                            box[i].y = Math.Clamp(box[i].y -1, game.min_y, game.max_y);
+                        case PLAYERDIRECTION.UP:
+                            box[i].y = Math.Clamp(box[i].y - 1, game.min_y, game.max_y);
                             player.y = box[i].y + 1;
                             break;
-                        case DIRECTION.DOWN:
+                        case PLAYERDIRECTION.DOWN:
                             box[i].y = Math.Clamp(box[i].y + 1, game.min_y, game.max_y);
                             player.y = box[i].y - 1;
                             break;
@@ -962,7 +1087,7 @@ class Program
             }
 
 
-            for (int collided= 0; collided < box.Length ;++collided) // 박스끼리 충돌
+            for (int collided = 0; collided < box.Length; ++collided) // 박스끼리 충돌
             {
 
                 if (collided == pushed) // 민 박스와 밀린박스가 같다면 걍 스킵
@@ -974,19 +1099,19 @@ class Program
                 {
                     switch (PlayerDirection)
                     {
-                        case DIRECTION.RIGHT:
+                        case PLAYERDIRECTION.RIGHT:
                             box[pushed].x = box[collided].x - 1;
                             player.x = box[pushed].x - 1;
                             break;
-                        case DIRECTION.LEFT:
+                        case PLAYERDIRECTION.LEFT:
                             box[pushed].x = box[collided].x + 1;
                             player.x = box[pushed].x + 1;
                             break;
-                        case DIRECTION.UP:
+                        case PLAYERDIRECTION.UP:
                             box[pushed].y = box[collided].y + 1;
                             player.y = box[pushed].y + 1;
                             break;
-                        case DIRECTION.DOWN:
+                        case PLAYERDIRECTION.DOWN:
                             box[pushed].y = box[collided].y - 1;
                             player.y = box[pushed].y - 1;
                             break;
@@ -996,28 +1121,28 @@ class Program
             }
 
 
-            for (int i = 0; i < box.Length ;++i) // 박스랑 벽이랑 충돌
+            for (int i = 0; i < box.Length; ++i) // 박스랑 벽이랑 충돌
             {
-                for (int  k = 0; k < wall.Length ; ++k)
+                for (int k = 0; k < wall.Length; ++k)
                 {
 
                     if (box[i].x == wall[k].x && box[i].y == wall[k].y)
                     {
                         switch (PlayerDirection)
                         {
-                            case DIRECTION.RIGHT:
+                            case PLAYERDIRECTION.RIGHT:
                                 box[i].x = wall[k].x - 1;
                                 player.x = box[i].x - 1;
                                 break;
-                            case DIRECTION.LEFT:
+                            case PLAYERDIRECTION.LEFT:
                                 box[i].x = wall[k].x + 1;
                                 player.x = box[i].x + 1;
                                 break;
-                            case DIRECTION.UP:
+                            case PLAYERDIRECTION.UP:
                                 box[i].y = wall[k].y + 1;
                                 player.y = box[i].y + 1;
                                 break;
-                            case DIRECTION.DOWN:
+                            case PLAYERDIRECTION.DOWN:
                                 box[i].y = wall[k].y - 1;
                                 player.y = box[i].y - 1;
                                 break;
@@ -1045,22 +1170,22 @@ class Program
 
 
 
-            for (int i = 0; i < wall.Length ;++i) // 플레이어가 벽에 막히는 것 구현
+            for (int i = 0; i < wall.Length; ++i) // 플레이어가 벽에 막히는 것 구현
             {
                 if (player.x == wall[i].x && player.y == wall[i].y)
                 {
                     switch (PlayerDirection)
                     {
-                        case DIRECTION.RIGHT:
+                        case PLAYERDIRECTION.RIGHT:
                             player.x = wall[i].x - 1;
                             break;
-                        case DIRECTION.LEFT:
+                        case PLAYERDIRECTION.LEFT:
                             player.x = wall[i].x + 1;
                             break;
-                        case DIRECTION.UP:
+                        case PLAYERDIRECTION.UP:
                             player.y = wall[i].y + 1;
                             break;
-                        case DIRECTION.DOWN:
+                        case PLAYERDIRECTION.DOWN:
                             player.y = wall[i].y - 1;
                             break;
 
@@ -1075,16 +1200,16 @@ class Program
 
 
 
-            
 
-            for (int i = 0; i < line4.Length ;++i)
+
+            for (int i = 0; i < line4.Length; ++i)
             {
                 line4[i].prex = line4[i].x;
                 line4[i].prey = line4[i].y;
             }
 
 
-            //for (int i = 0; i < line4.Length ; ++i)
+            //for (int i = 0; i < line4.Length; ++i)
             //{
             //    int randommove = random.Next(1, 6); // 1부터 5까지의 랜덤한 숫자를 저장
 
@@ -1092,45 +1217,99 @@ class Program
             //    {
             //        case 1: // 1 나오면 병장이 오른쪽으로 이동
             //            line4[i].x = Math.Clamp(line4[i].x + 1, game.min_x, game.max_x);
+            //            Line4Direction = LINE4DIRECTION.RIGHT;
             //            break;
             //        case 2: // 2 나오면 병장이 왼쪽으로 이동
             //            line4[i].x = Math.Clamp(line4[i].x - 1, game.min_x, game.max_x);
+            //            Line4Direction = LINE4DIRECTION.LEFT;
             //            break;
             //        case 3: // 3 나오면 병장이 위로 이동
             //            line4[i].y = Math.Clamp(line4[i].y - 1, game.min_y, game.max_y);
+            //            Line4Direction = LINE4DIRECTION.UP;
             //            break;
             //        case 4: // 4 나오면 병장이 아래로 이동
             //            line4[i].y = Math.Clamp(line4[i].y + 1, game.min_y, game.max_y);
+            //            Line4Direction = LINE4DIRECTION.DOWN;
             //            break;
             //        case 5: // 5 나오면 병장 가만히 stop
             //            break;
 
             //    }
             //}
-            
 
 
-
-
-
-
-
-
+            // 병장과 벽의 충돌
             for (int i = 0; i < line4.Length ;++i)
+            {
+                for (int k = 0; k < wall.Length ;++k)
+                {
+                    if (line4[i].x == wall[k].x && line4[i].y == wall[k].y)
+                    {
+                        switch (Line4Direction)
+                        {
+                            case LINE4DIRECTION.RIGHT:
+                                line4[i].x = wall[k].x - 1;
+                                break;
+                            case LINE4DIRECTION.LEFT:
+                                line4[i].x = wall[k].x + 1;
+                                break;
+                            case LINE4DIRECTION.UP:
+                                line4[i].y = wall[k].y + 1;
+                                break;
+                            case LINE4DIRECTION.DOWN:
+                                line4[i].y = wall[k].y - 1;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            // 병장과 박스의 충돌
+            for (int i = 0; i < line4.Length; ++i)
+            {
+                for (int k = 0; k < box.Length; ++k)
+                {
+                    if (line4[i].x == box[k].x && line4[i].y == box[k].y)
+                    {
+                        switch (Line4Direction)
+                        {
+                            case LINE4DIRECTION.RIGHT:
+                                line4[i].x = box[k].x - 1;
+                                break;
+                            case LINE4DIRECTION.LEFT:
+                                line4[i].x = box[k].x + 1;
+                                break;
+                            case LINE4DIRECTION.UP:
+                                line4[i].y = box[k].y + 1;
+                                break;
+                            case LINE4DIRECTION.DOWN:
+                                line4[i].y = box[k].y - 1;
+                                break;
+                        }
+                    }
+                }
+            }
+
+
+
+
+            for (int i = 0; i < line4.Length; ++i)
             {
                 if (player.x == line4[i].x && player.y == line4[i].y) // 플레이어와 병장이 만난다면 테트리스모드를 끈다
                 {
-                    game.sokobanmode = false;
-                    music_walk.Stop();
+                    Console.Clear(); // 화면을 지워주고
+                    game.sokobanmode = false; // 소코반모드 꺼주고
+                    game.collision = true; // 병장과의 만남모드 켜주기
+                    music_walk.Stop(); // 노래꺼주기
                     break;
                 }
             }
-            
+
 
 
         }
 
-        Console.Clear(); // 다음 루프로 넘어가기 위한 클리어
+
 
 
         music_laugh.PlayLooping();
@@ -1143,7 +1322,7 @@ class Program
 
             //render 
 
-            prebattle_path = Path.Combine("Assets", "Battle_scene", "Prebattle.txt");
+            prebattle_path = Path.Combine("Assets", "Battle scene", "Prebattle.txt");
             prebattle = File.ReadAllLines(prebattle_path);
 
             if (render_prebattle == true)
@@ -1166,12 +1345,13 @@ class Program
 
             if (key3 == ConsoleKey.Enter)
             {
-                game.collision = false;
+                Console.Clear(); // 다음 루프로 넘어가기 위한 클리어
+                game.collision = false; // 병장과의 만남 씬 꺼주고
+                game.battlemode = true; // 배틀모드 켜주기
                 break;
             }
 
         }
-        Console.Clear(); // 다음 루프로 넘어가기 위한 클리어
 
 
 
@@ -1180,9 +1360,19 @@ class Program
 
 
 
-        string byeong_line = "병장 테스트용";
-        string player_basic = $"{chosen_one.id}은 무엇을 할까?";
-        string player_line = $"플레이어 테스트용";
+
+        string ByeongWhat = "[병장은 무엇을 할까?]";
+        string ByeongPassive = $"Passive({Byeong.passive}) → {Byeong.passive_effect}"; ;
+        string ByeongAttack = $"Attack({Byeong.attackeffect}) → [플레이어 HP {Byeong.atk} 감소]";
+        string ByeongSkill1 = $"Skill1({Byeong.skill}) → {Byeong.skill_effect}";
+        string ByeongSkill2 = $"Skill2({Byeong.skill2}) → {Byeong.skill2_effect}";
+        string ByeongSkill3 = $"Skill3({Byeong.skill3}) → {Byeong.skill3_effect}";
+
+
+        string PlayerWhat = $"[{ChosenOne.id}은 무엇을 할까?]";
+        string PlayerPassive = $"Passive({ChosenOne.passive}) → {ChosenOne.passive_effect}";
+        string PlayerAttack = $"A: Attack({ChosenOne.attackeffect}) → [병장 HP {ChosenOne.atk} 감소]";
+        string PlayerSkill = $"S: Skill({ChosenOne.skill}) → {ChosenOne.skill_effect}";
 
         bool byeong_lose = false;
         Battle battle = new();
@@ -1201,7 +1391,7 @@ class Program
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             if (battle.battle_on == true) // 배틀 스위치가 on이면
             {
-                string battlepath = Path.Combine("Assets", "Battle_scene", "Battle.txt");
+                string battlepath = Path.Combine("Assets", "Battle scene", "Battle.txt");
                 string[] battle_scene = File.ReadAllLines(battlepath);
                 for (int i = 0; i < battle_scene.Length; ++i) // 배틀씬 텍스트파일을 불러와 읽는다
                 {
@@ -1214,7 +1404,7 @@ class Program
 
             if (battle.victory_on == true) // 승리 스위치가 on이면
             {
-                string victorypath = Path.Combine("Assets", "Battle_scene", "Victory.txt");
+                string victorypath = Path.Combine("Assets", "Battle scene", "Victory.txt");
                 string[] victory_scene = File.ReadAllLines(victorypath);
                 for (int i = 0; i < victory_scene.Length; ++i) // 승리씬 텍스트파일을 불러와 읽는다
                 {
@@ -1224,7 +1414,7 @@ class Program
 
             if (battle.lose_on == true) // 패배 스위치가 on이면
             {
-                string losepath = Path.Combine("Assets", "Battle_scene", "Lose.txt");
+                string losepath = Path.Combine("Assets", "Battle scene", "Lose.txt");
                 string[] lose_scene = File.ReadAllLines(losepath);
                 for (int i = 0; i < lose_scene.Length; ++i) // 패배씬 텍스트파일을 불러와 읽는다
                 {
@@ -1237,13 +1427,31 @@ class Program
             if (battle.battle_on == true) // 배틀스위치가 on이라면
             {
                 // 입력키에 따른 병장과 플레이어의 행동설명
-                Console.ForegroundColor = ConsoleColor.Red;
-                Function.Render(55, 20, byeong_line);
+                Console.ForegroundColor = ConsoleColor.Red; // 병장은 무엇을 할까? 
+                Function.Render(55, 18, ByeongWhat);
 
-                Console.ForegroundColor = ConsoleColor.White;
-                Function.Render(5, 32, player_basic);
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Function.Render(55, 20, ByeongPassive); // 병장의 패시브를 그려준다
 
-                Function.Render(5, 34, player_line);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Function.Render(55, 22, ByeongAttack); // 병장의 공격을 그려준다
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Function.Render(55, 24, ByeongSkill1); // 병장의 스킬을 그려준다
+                Function.Render(55, 26, ByeongSkill2); // 병장의 스킬을 그려준다
+                Function.Render(55, 28, ByeongSkill3); // 병장의 스킬을 그려준다
+
+                Console.ForegroundColor = ConsoleColor.White; // 신병은 무엇을 할까?
+                Function.Render(5, 34, PlayerWhat);
+
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Function.Render(5, 36, PlayerPassive); // 패시브를 그려준다
+
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Function.Render(5, 38, PlayerAttack); // Attack을 그려준다
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Function.Render(5, 40, PlayerSkill); // Skill을 그려준다
 
             }
 
@@ -1254,30 +1462,30 @@ class Program
             Function.Render(53, 3, "[병장]");
 
             Console.ForegroundColor = ConsoleColor.White;
-            Function.Render(56, 5, $"HP({byeong.hp})");
-            for (int i = 0; i < byeong.hp; ++i)
+            Function.Render(56, 5, $"HP({Byeong.hp})");
+            for (int i = 0; i < Byeong.hp; ++i)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Function.Render(63 + (i * 2), 5, "■");
             }
 
             Console.ForegroundColor = ConsoleColor.White;
-            Function.Render(56, 6, $"MP({byeong.mp})");
-            for (int i = 0; i < byeong.mp; ++i)
+            Function.Render(56, 6, $"MP({Byeong.mp})");
+            for (int i = 0; i < Byeong.mp; ++i)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Function.Render(63 + (i * 2), 6, "■");
             }
 
             Console.ForegroundColor = ConsoleColor.White;
-            Function.Render(55, 7, $"ATK = {byeong.atk}");
+            Function.Render(55, 7, $"ATK = {Byeong.atk}");
 
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Function.Render(53, 10, "[플레이어]");
 
             Console.ForegroundColor = ConsoleColor.White;
-            Function.Render(56, 12, $"HP({chosen_one.hp})");
-            for (int i = 0; i < chosen_one.hp; ++i)
+            Function.Render(56, 12, $"HP({ChosenOne.hp})");
+            for (int i = 0; i < ChosenOne.hp; ++i)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Function.Render(63 + (i * 2), 12, "■");
@@ -1285,8 +1493,8 @@ class Program
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Function.Render(56, 13, $"MP({chosen_one.mp})");
-            for (int i = 0; i < chosen_one.mp; ++i)
+            Function.Render(56, 13, $"MP({ChosenOne.mp})");
+            for (int i = 0; i < ChosenOne.mp; ++i)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Function.Render(63 + (i * 2), 13, "■");
@@ -1294,7 +1502,7 @@ class Program
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            Function.Render(55, 14, $"ATK = {chosen_one.atk}");
+            Function.Render(55, 14, $"ATK = {ChosenOne.atk}");
 
 
             // input
@@ -1304,17 +1512,62 @@ class Program
             // update
 
 
-
-            if (byeong_lose == false && key4 == ConsoleKey.A)
+            if (battle.battle_on == true) // 플레이어 턴 구현하기
             {
-                byeong.hp--;
+                switch (ChosenOne.id)
+                {
+                    case "신병": // 만약 선택된 캐릭터의 id가 신병인데
+                        switch (key4) // 입력한 키가 
+                        {
+                            case ConsoleKey.A: // A면
+                                Byeong.hp -= 3; // 병장 HP -3 해버리기
+                                break;
+                            case ConsoleKey.S: // S면
+                                Byeong.mp -= random.Next(3,6); // 병장 MP를 3~5 사이의 난수만큼 빼버리기
+                                break;
+                        }
+                        break;
+                    case "이병":
+                        switch (key4)
+                        {
+                            case ConsoleKey.A:
+                                Byeong.hp -= 3;
+                                break;
+                            case ConsoleKey.S:
+                                Byeong.hp -= random.Next(3,6);
+                                break;
+                        }
+                        break;
+                    case "일병":
+                        switch (key4)
+                        {
+                            case ConsoleKey.A:
+                                Byeong.hp -= 3;
+                                break;
+                            case ConsoleKey.S:
+                                // 병장 2턴동안 가만히 있게하는 옵션 구현해야함
+                                break;
+                        }
+                        break;
+                    case "상병":
+                        switch (key4)
+                        {
+                            case ConsoleKey.A:
+                                Byeong.hp -= 3;
+                                break;
+                            case ConsoleKey.S:
+                                Byeong.mp -= random.Next(5,11);
+                                break;
+                           
+                        }
+                        break;
+                }
             }
-            if (key4 == ConsoleKey.D)
+
+            if (battle.battle_on) // 병장 턴 구현하기
             {
-                chosen_one.hp--;
+
             }
-
-
 
 
 
@@ -1371,7 +1624,7 @@ class Program
 
 
 
-            if (chosen_one.hp <= 0) // 플레이어 hp가 0이하가 되는경우
+            if (ChosenOne.hp <= 0) // 플레이어 hp가 0이하가 되는경우
             {
                 key4 = ConsoleKey.NoName; // 키 초기화하기
                 music_battle.Stop(); // 배틀모드 소리끄고
@@ -1380,10 +1633,10 @@ class Program
                 battle.lose_on = true; // 패배모드를 킨다
             }
 
-            if (byeong.hp <= 0) // 병장 hp가 0이하가 되는경우
+            if (Byeong.hp <= 0) // 병장 hp가 0이하가 되는경우
             {
                 key4 = ConsoleKey.NoName; // 키 초기화하기
-                byeong.hp = byeong.savehp; // 병장 피 원래대로 돌려놓기
+                Byeong.hp = Byeong.savehp; // 병장 피 원래대로 돌려놓기
                 byeong_lose = true;
                 music_battle.Stop(); // 배틀모드 소리 끄고
                 music_victory.PlayLooping(); // 승리모드 소리 키기
@@ -1391,11 +1644,20 @@ class Program
                 battle.battle_on = false; // 배틀모드를 끄고
                 battle.victory_on = true; // 승리모드를 킨다
             }
-
+            
+            
+            
+            if (battle.victory_on == true && key4 == ConsoleKey.Enter)
+            {
+                game.battlemode = false; // 배틀모드를 꺼주고
+                game.sokobanmode = true; // 소코반 모드를 켜준다
+                break;
+            }
 
             if (battle.lose_on == true && key4 == ConsoleKey.Enter)
             {
-                game.sokobanmode = false;
+                game.battlemode = false; // 배틀모드를 꺼주고
+                game.sokobanmode = true; // 소코반 모드를 켜준다
                 break;
             }
 
