@@ -16,6 +16,7 @@ namespace project
         public int MAX_Y = 18;
         //소지금
         public int[] money = { 1000000 };
+
         //메뉴
         public Menu[] menu = new Menu[]
         {
