@@ -813,7 +813,7 @@ class Program
             new Player{ x = 18, y = 5, symbol = "4"}
         };
 
-        int pushedbox = 0;
+        int pushed = 0;
 
     LOOP_EXIT:
         music_walk.PlayLooping();
@@ -821,7 +821,7 @@ class Program
         DIRECTION PlayerDirection = DIRECTION.NONE;
 
         // 테트리스 게임루프
-        while (game.tetrismode)
+        while (game.sokobanmode)
         {
             // render
 
@@ -955,33 +955,113 @@ class Program
 
                     }
 
-                    pushedbox = i; // 민 박스 표기
+                    pushed = i; // 민 박스 표기
 
                 }
 
             }
 
-            for (int i = 0; i < wall.Length ;++i)
+
+            for (int collided= 0; collided < box.Length ;++collided) // 박스끼리 충돌
+            {
+
+                if (collided == pushed) // 민 박스와 밀린박스가 같다면 걍 스킵
+                {
+                    continue;
+                }
+
+                if (box[collided].x == box[pushed].x && box[collided].y == box[pushed].y)
+                {
+                    switch (PlayerDirection)
+                    {
+                        case DIRECTION.RIGHT:
+                            box[pushed].x = box[collided].x - 1;
+                            player.x = box[pushed].x - 1;
+                            break;
+                        case DIRECTION.LEFT:
+                            box[pushed].x = box[collided].x + 1;
+                            player.x = box[pushed].x + 1;
+                            break;
+                        case DIRECTION.UP:
+                            box[pushed].y = box[collided].y + 1;
+                            player.y = box[pushed].y + 1;
+                            break;
+                        case DIRECTION.DOWN:
+                            box[pushed].y = box[collided].y - 1;
+                            player.y = box[pushed].y - 1;
+                            break;
+
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < box.Length ;++i) // 박스랑 벽이랑 충돌
+            {
+                for (int  k = 0; k < wall.Length ; ++k)
+                {
+
+                    if (box[i].x == wall[k].x && box[i].y == wall[k].y)
+                    {
+                        switch (PlayerDirection)
+                        {
+                            case DIRECTION.RIGHT:
+                                box[i].x = wall[k].x - 1;
+                                player.x = box[i].x - 1;
+                                break;
+                            case DIRECTION.LEFT:
+                                box[i].x = wall[k].x + 1;
+                                player.x = box[i].x + 1;
+                                break;
+                            case DIRECTION.UP:
+                                box[i].y = wall[k].y + 1;
+                                player.y = box[i].y + 1;
+                                break;
+                            case DIRECTION.DOWN:
+                                box[i].y = wall[k].y - 1;
+                                player.y = box[i].y - 1;
+                                break;
+                        }
+                    }
+
+
+
+
+
+                }
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            for (int i = 0; i < wall.Length ;++i) // 플레이어가 벽에 막히는 것 구현
             {
                 if (player.x == wall[i].x && player.y == wall[i].y)
                 {
                     switch (PlayerDirection)
                     {
                         case DIRECTION.RIGHT:
-                            box[i].x = Math.Clamp(box[i].x + 1, game.min_x, game.max_x);
-                            player.x = box[i].x - 1;
+                            player.x = wall[i].x - 1;
                             break;
                         case DIRECTION.LEFT:
-                            box[i].x = Math.Clamp(box[i].x - 1, game.min_x, game.max_x);
-                            player.x = box[i].x + 1;
+                            player.x = wall[i].x + 1;
                             break;
                         case DIRECTION.UP:
-                            box[i].y = Math.Clamp(box[i].y - 1, game.min_y, game.max_y);
-                            player.y = box[i].y + 1;
+                            player.y = wall[i].y + 1;
                             break;
                         case DIRECTION.DOWN:
-                            box[i].y = Math.Clamp(box[i].y + 1, game.min_y, game.max_y);
-                            player.y = box[i].y - 1;
+                            player.y = wall[i].y - 1;
                             break;
 
                     }
@@ -1040,7 +1120,7 @@ class Program
             {
                 if (player.x == line4[i].x && player.y == line4[i].y) // 플레이어와 병장이 만난다면 테트리스모드를 끈다
                 {
-                    game.tetrismode = false;
+                    game.sokobanmode = false;
                     music_walk.Stop();
                     break;
                 }
@@ -1280,7 +1360,7 @@ class Program
 
             if (key4 == ConsoleKey.Enter)
             {
-                game.tetrismode = true;
+                game.sokobanmode = true;
                 Console.Clear();
                 goto LOOP_EXIT;
 
@@ -1315,7 +1395,7 @@ class Program
 
             if (battle.lose_on == true && key4 == ConsoleKey.Enter)
             {
-                game.tetrismode = false;
+                game.sokobanmode = false;
                 break;
             }
 

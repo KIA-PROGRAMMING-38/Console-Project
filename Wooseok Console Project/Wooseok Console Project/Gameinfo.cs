@@ -14,7 +14,7 @@ namespace Wooseok_Console_Project
         public int max_x;
         public int max_y;
         public bool character_selection;
-        public bool tetrismode;
+        public bool sokobanmode;
         public bool collision;
         public bool battlemode;
 
@@ -26,7 +26,7 @@ namespace Wooseok_Console_Project
             max_x = 40;
             max_y = 20;
             character_selection = true;
-            tetrismode = true;
+            sokobanmode = true;
             collision = true;
             battlemode = true;
         }
