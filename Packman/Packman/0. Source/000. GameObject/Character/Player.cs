@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Packman.PlayerSkill;
 
 namespace Packman
 {
@@ -13,11 +14,15 @@ namespace Packman
         // 많이 사용하는 싱글톤들은 미리 멤버로 받아두기..
         private EventManager _eventManager = EventManager.Instance;
 
+        // 스킬들을 관리할 컴포넌트..
+        PlayerSkill _skillComponent = null;
+
         // 키 관련 상수 정의..
         private const ConsoleKey moveRightKey = ConsoleKey.RightArrow;
         private const ConsoleKey moveLeftKey = ConsoleKey.LeftArrow;
         private const ConsoleKey moveUpKey = ConsoleKey.UpArrow;
         private const ConsoleKey moveDownKey = ConsoleKey.DownArrow;
+        private const ConsoleKey fireStunGunKey = ConsoleKey.A;
 
         // 플레이어의 움직임 방향..
         private int _moveDirX = 0;
@@ -26,9 +31,17 @@ namespace Packman
         private int _nextMoveDirX = 0;
         private int _nextMoveDirY = 0;
 
+        private int _curMP = 10;
+        private int _maxMP = 10;
+
+        public int CurMP { get { return _curMP; } }
+        public int MaxMP { get { return _maxMP; } }
+
         public Player( int x, int y, Map map )
             : base( x, y, Constants.PLAYER_IMAGE, Constants.PLAYER_COLOR, Constants.PLAYER_RENDER_ORDER, map, Constants.PLAYER_MOVE_DELAY )
         {
+            _skillComponent = new PlayerSkill();
+            AddComponent( "Skill", _skillComponent );
         }
 
         /// <summary>
@@ -74,6 +87,11 @@ namespace Packman
             UpdateMovement();
         }
 
+        public void AddSkill( SkillKind skillKind )
+        {
+            _skillComponent.AddSkill( skillKind );
+        }
+
         /// <summary>
         /// InputManager에게 키 입력 시 호출할 이벤트를 등록합니다..
         /// </summary>
@@ -83,6 +101,7 @@ namespace Packman
             _eventManager.AddInputEvent( moveLeftKey, OnMoveLeftKeyPress );
             _eventManager.AddInputEvent( moveUpKey, OnMoveUpKeyPress );
             _eventManager.AddInputEvent( moveDownKey, OnMoveDownKeyPress );
+            _eventManager.AddInputEvent( fireStunGunKey, OnPressFireStunGunKey );
         }
 
         /// <summary>
@@ -94,6 +113,7 @@ namespace Packman
             _eventManager.RemoveInputEvent( moveLeftKey, OnMoveLeftKeyPress );
             _eventManager.RemoveInputEvent( moveUpKey, OnMoveUpKeyPress );
             _eventManager.RemoveInputEvent( moveDownKey, OnMoveDownKeyPress );
+            _eventManager.RemoveInputEvent( fireStunGunKey, OnPressFireStunGunKey );
         }
 
         /// <summary>
@@ -130,6 +150,11 @@ namespace Packman
         {
             //MoveDirection( 0, 1 );
             SetMoveDirection( 0, 1 );
+        }
+
+        private void OnPressFireStunGunKey()
+        {
+            _skillComponent.UseSkill( SkillKind.FireStungun );
         }
 
         private void SetMoveDirection(int dirX, int dirY)

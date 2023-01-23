@@ -17,6 +17,7 @@ namespace Packman
         public override void OnCollision( GameObject collisionObjectInst )
         {
             Player player = (Player)collisionObjectInst;
+            player.AddSkill( PlayerSkill.SkillKind.FireStungun );
 
             _objectManager.RemoveObject( this );
 

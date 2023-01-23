@@ -24,6 +24,8 @@ namespace Packman
         {
             FileLoader.Load( $"Stage{_stageNum:D2}", "txt" );
 
+            InitStageUI( 0, 2 );
+
             CollisionManager.Instance.RenewObjectInstance();
 
             return true;
@@ -43,6 +45,14 @@ namespace Packman
         public override void Render()
         {
             base.Render();
+        }
+
+        private void InitStageUI(int x, int y)
+        {
+            StageUI ui = new StageUI(x, y);
+            ui.Initialize();
+
+            _objectManager.AddGameObject( "StageUI", ui );
         }
     }
 }

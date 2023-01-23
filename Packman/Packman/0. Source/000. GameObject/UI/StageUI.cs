@@ -18,8 +18,8 @@ namespace Packman
         TextInfo[] _texts = null;
         int _textCount = 0;
 
-        public StageUI(int x, int y)
-            : base(x, y, 1000)
+        public StageUI( int x, int y )
+            : base( x, y, 1000 )
         {
 
         }
@@ -36,7 +36,9 @@ namespace Packman
             base.Update();
 
             GoldGroup goldGroup = _objectManager.GetGameObject<GoldGroup>();
+            Player player = _objectManager.GetGameObject<Player>();
             _texts[2].Text = $"현재 남은 골드 개수 : {goldGroup.RemainGoldCount}개";
+            _texts[4].Text = $"Player MP : {player.CurMP} / {player.MaxMP}";
         }
 
         public override void Render()
@@ -60,6 +62,7 @@ namespace Packman
                 new TextInfo { Text = "현재 남은 골드 개수 : ", LineAlignmentCount = 2 },
 
                 new TextInfo { Text = "====== Game Info ======", LineAlignmentCount = 1 },
+                new TextInfo { Text = "Player MP : ", LineAlignmentCount = 1 },
             };
 
             _textCount = _texts.Length;

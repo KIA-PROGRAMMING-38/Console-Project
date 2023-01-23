@@ -27,6 +27,13 @@ namespace Packman
             base.Update();
         }
 
+        public override void Release()
+        {
+            base.Release();
+
+            _objectManager.RemoveObject( this );
+        }
+
         private void UpdateMovement()
         {
             int moveDestinationX = _x + _dirX;
@@ -35,8 +42,6 @@ namespace Packman
             Tile tile = _map.GetTile( moveDestinationX, moveDestinationY );
             if ( Tile.Kind.Empty != tile.MyKind )
             {
-                _objectManager.RemoveObject( this );
-
                 CollisionManager.Instance.RenewObjectInstance();
             }
         }
