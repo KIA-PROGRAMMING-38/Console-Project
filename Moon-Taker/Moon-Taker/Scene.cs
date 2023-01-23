@@ -28,7 +28,7 @@ namespace Moon_Taker
                    "  | |  |  _  ||    \\ |  __| |    / \r\n" +
                    "  | |  | | | || |\\  \\| |___ | |\\ \\ \r\n" +
                    "  \\_/  \\_| |_/\\_| \\_/\\____/ \\_| \\_|\r\n");
-            Functions.RenderAt(6, 14, "Press e to start game.\n");
+            Functions.Render(6, 14, "Press e to start game.\n");
             Functions.WaitForNextInput(ConsoleKey.E, GameStart);
             return;
         }

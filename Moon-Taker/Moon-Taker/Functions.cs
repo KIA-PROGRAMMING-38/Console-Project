@@ -23,7 +23,7 @@ namespace Moon_Taker
             Console.ForegroundColor = myColor;
             Console.Write(someString);
         }
-        public static void RenderAt(int x, int y, string someString, ConsoleColor myColor = ConsoleColor.White)
+        public static void Render(int x, int y, string someString, ConsoleColor myColor = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
             Render(someString, myColor);
@@ -50,14 +50,17 @@ namespace Moon_Taker
             Debug.Assert(File.Exists(filePath));
             return File.ReadAllLines(filePath);
         }
-        public static void ParseStage(string[] stage, out Player player, out Wall[] wall,
-            out Enemy[] enemy, out Block[] block, out Trap[] trap, out Key key, out Door door, out Moon moon, out MapSize mapSize)
+        public static void ParseStage(string[] stage, out Player player, out PreviousPlayer previousPlayer,
+            out Wall[] wall, out Enemy[] enemy, out PreviousEnemy[] previousEnemy, out Block[] block, out PreviousBlock[] previousBlock,
+            out Trap[] trap, out Key key, out Door door, out Moon moon, out MapSize mapSize)
         {
             string[] objectNums = stage[stage.Length - 1].Split(" ");
 
             wall = new Wall[int.Parse(objectNums[0])];
             enemy = new Enemy[int.Parse(objectNums[1])];
+            previousEnemy = new PreviousEnemy[int.Parse(objectNums[1])];
             block = new Block[int.Parse(objectNums[2])];
+            previousBlock = new PreviousBlock[int.Parse(objectNums[2])];
             trap = new Trap[int.Parse(objectNums[3])];
             StageSettings.stageMovePoint = int.Parse(objectNums[4]);
             StageSettings.doesKeyExist = bool.Parse(objectNums[5]);
@@ -65,6 +68,7 @@ namespace Moon_Taker
             key = null;
             door = null;
             player = null;
+            previousPlayer = null;
             moon = null;
             mapSize = new MapSize { X = stage[0].Length, Y = stage.Length };
 
@@ -81,6 +85,7 @@ namespace Moon_Taker
                     {
                         case Constants.player:
                             player = new Player { X = x, Y = y };
+                            previousPlayer = new PreviousPlayer { X = x, Y = y };
                             break;
                         case Constants.wall:
                             wall[wallId] = new Wall { X = x, Y = y };
@@ -88,20 +93,24 @@ namespace Moon_Taker
                             break;
                         case Constants.enemy:
                             enemy[enemyId] = new Enemy { X = x, Y = y, IsAlive = true };
+                            previousEnemy[enemyId] = new PreviousEnemy { X = x, Y = y };
                             ++enemyId;
                             break;
                         case Constants.enemyOnTrap:
                             enemy[enemyId] = new Enemy { X = x, Y = y, IsAlive = true };
+                            previousEnemy[enemyId] = new PreviousEnemy { X = x, Y = y };
                             ++enemyId;
                             trap[trapId] = new Trap { X = x, Y = y };
                             ++trapId;
                             break;
                         case Constants.block:
                             block[blockId] = new Block { X = x, Y = y };
+                            previousBlock[blockId] = new PreviousBlock { X = x, Y = y };
                             ++blockId;
                             break;
                         case Constants.blockOnTrap:
                             block[blockId] = new Block { X = x, Y = y };
+                            previousBlock[blockId] = new PreviousBlock { X = x, Y = y };
                             ++blockId;
                             trap[trapId] = new Trap { X = x, Y = y };
                             ++trapId;
@@ -176,8 +185,8 @@ namespace Moon_Taker
                 Scene.EnterErrorScene($"Advice 파일의 형식이 잘못되었습니다.", -2);
             }
             
-            string advice = $"{someAdvice[adviceNumber].name}: {someAdvice[adviceNumber].advice}";
-            RenderAt(mapSize.X / 2, mapSize.Y + 2, advice);
+            string advice = $"{someAdvice[adviceNumber].name}: {someAdvice[adviceNumber].advice}".PadRight(100,' ');
+            Render(mapSize.X / 2, mapSize.Y + 2, advice);
             return;
         }
         public static void WaitForNextInput(ConsoleKey someKey, Action action1)
@@ -233,6 +242,16 @@ namespace Moon_Taker
                 ObjectStatus.isDoorOpened = false;
             }
             return;
+        }
+        public static void SavePreviousObject(out int previousX, out int previousY, int currentX, int currentY)
+        {
+            previousX = currentX;
+            previousY = currentY;
+            return;
+        }
+        public static void ClearObject(int x, int y)
+        {
+            Render(x, y, " ");
         }
     }
 }

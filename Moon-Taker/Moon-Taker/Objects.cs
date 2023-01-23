@@ -13,6 +13,11 @@ namespace Moon_Taker
         public int X;
         public int Y;
     }
+    public class PreviousPlayer
+    {
+        public int X;
+        public int Y;
+    }
     public class Wall
     {
         public int X;
@@ -25,11 +30,21 @@ namespace Moon_Taker
         public bool IsAlive;
         public bool isOnTrap = false;
     }
+    public class PreviousEnemy
+    {
+        public int X;
+        public int Y;
+    }
     public class Block
     {
         public int X;
         public int Y;
         public bool isOnTrap = false;
+    }
+    public class PreviousBlock
+    {
+        public int X;
+        public int Y;
     }
     public class Trap
     {
