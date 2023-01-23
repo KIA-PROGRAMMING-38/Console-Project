@@ -1,6 +1,6 @@
 ﻿namespace SnakeGame
 {
-    public class RandomManager : Singleton<RandomManager>
+    public class RandomManager : LazySingleton<RandomManager>
     {
         public  RandomManager() { _random = new Random(); }
 

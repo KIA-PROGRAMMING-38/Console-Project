@@ -12,7 +12,7 @@ namespace SnakeGame
         
         public override void Start()
         {
-            //AddComponent(new InputKeyComponent());
+
             AddComponent(new PlayerMovement());
             AddComponent(new Collider());
             AddComponent(new Renderer('☺', 5, ConsoleColor.Yellow));
@@ -32,7 +32,7 @@ namespace SnakeGame
                 case "Wall":
                     SoundManager.Instance.Play("CollisionSound");
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 1500, 3, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 1700, 3, 1);
                     break;
                 case "Feed":
                     AddBody();
@@ -46,7 +46,7 @@ namespace SnakeGame
                 case "SnakeBody":
                     SoundManager.Instance.Play("CollisionSound");
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 1500, 4, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 3000, 4, 1);
                     break;
                 default:
                     break;

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace SnakeGame
 {
-    public class RenderManager : Singleton<RenderManager>
+    public class RenderManager : LazySingleton<RenderManager>
     {
         public RenderManager()
         {

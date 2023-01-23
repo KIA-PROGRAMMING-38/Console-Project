@@ -2,7 +2,7 @@
 
 namespace SnakeGame
 {
-    public class GameManager : Singleton<GameManager>
+    public class GameManager : LazySingleton<GameManager>
     {
         public GameManager()
         {
@@ -14,21 +14,27 @@ namespace SnakeGame
         {
             Console.OutputEncoding = Encoding.UTF8;         
             Console.CursorVisible = false;
+            Console.SetBufferSize(1920, 1080);
 
-            GameDataManager.Instance.LoadMapData();
-            SceneManager.Instance.LoadScenes();
+            GameDataManager.Instance.Load();
+            SoundManager.Instance.Load();
+            SceneManager.Instance.Load();
         }
 
         public void GameLoop()
         {
             while (true)
             {
-                //Console.Clear();
                 TimeManager.Instance.Update();
-                if (IsGameSet == true) break;
-                //SceneManager.Instance.Render();
+
+                if (IsGameSet == true)
+                {
+                    break;
+                }
+
                 SceneManager.Instance.Update();
                 SceneManager.Instance.Render();
+
                 Thread.Sleep(TimeManager.MS_PER_FRAME);
             }
         }

@@ -4,83 +4,81 @@ namespace SnakeGame
 {
     public class TitleScene : Scene
     {
-        public StringBuilder[] Titles;
-     
-        public string StartButton;
-        private int  _titleAnimationindex;
+        private StringBuilder[] _titles;
+
+        private string _startButton;
+        private int _titleAnimationindex;
         private long _TitleAnimTimer;
         private long _startButtontimer;
         private bool _flicking;
+
         public override void Start()
         {
-            _titleAnimationindex =0;
+            _titleAnimationindex = 0;
             _TitleAnimTimer = 0;
             _startButtontimer = 0;
             _flicking = false;
 
-            //InputKey = new InputKeyComponent();
-            //InputKey.Start();
+            SoundManager.Instance.Play(_soundName, true);
 
-            SoundManager.Instance.Play("TitleBackgroundMusic", true);
+            _titles = new StringBuilder[5];
+            _titles[0] = new StringBuilder();
+            _titles[1] = new StringBuilder();
+            _titles[2] = new StringBuilder();
+            _titles[3] = new StringBuilder();
+            _titles[4] = new StringBuilder();
 
-            Titles = new StringBuilder[5];
-            Titles[0] = new StringBuilder();
-            Titles[1] = new StringBuilder();
-            Titles[2] = new StringBuilder();
-            Titles[3] = new StringBuilder();
-            Titles[4] = new StringBuilder();
+            _titles[0].AppendLine("\n\n\n\n");
+            _titles[0].AppendLine(@"       $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\  ");
+            _titles[0].AppendLine(@"      $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ | ");
+            _titles[0].AppendLine(@"      $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ | ");
+            _titles[0].AppendLine(@"      \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ | ");
+            _titles[0].AppendLine(@"       \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__| ");
+            _titles[0].AppendLine(@"      $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                     ");
+            _titles[0].AppendLine(@"      \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\  ");
+            _titles[0].AppendLine(@"       \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__| ");
 
-            Titles[0].AppendLine("\n\n\n\n");
-            Titles[0].AppendLine(@"   $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\ ");
-            Titles[0].AppendLine(@"  $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ |");
-            Titles[0].AppendLine(@"  $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ |");
-            Titles[0].AppendLine(@"  \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ |");
-            Titles[0].AppendLine(@"   \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__|");
-            Titles[0].AppendLine(@"  $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                    ");
-            Titles[0].AppendLine(@"  \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\ ");
-            Titles[0].AppendLine(@"   \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__|");
+            _titles[1].AppendLine("\n\n\n\n");
+            _titles[1].AppendLine(@"        $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\        $$\ $$\ ");
+            _titles[1].AppendLine(@"      $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ |");
+            _titles[1].AppendLine(@"         $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |          $$ |$$ |");
+            _titles[1].AppendLine(@"      \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$  |");
+            _titles[1].AppendLine(@"         \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|        \__|\__|");
+            _titles[1].AppendLine(@"          $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                 ");
+            _titles[1].AppendLine(@"       \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\ ");
+            _titles[1].AppendLine(@"         \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|    \__|\__|");
 
-            Titles[1].AppendLine("\n\n\n\n");
-            Titles[1].AppendLine(@"    $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\        $$\ $$\ ");
-            Titles[1].AppendLine(@"  $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ |");
-            Titles[1].AppendLine(@"     $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |          $$ |$$ |");
-            Titles[1].AppendLine(@"  \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$  |");
-            Titles[1].AppendLine(@"     \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|        \__|\__|");
-            Titles[1].AppendLine(@"      $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                 ");
-            Titles[1].AppendLine(@"   \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\ ");
-            Titles[1].AppendLine(@"     \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|    \__|\__|");
+            _titles[2].AppendLine("\n\n\n\n");
+            _titles[2].AppendLine(@"        $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\  ");
+            _titles[2].AppendLine(@"       $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ | ");
+            _titles[2].AppendLine(@"       $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ | ");
+            _titles[2].AppendLine(@"       \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ | ");
+            _titles[2].AppendLine(@"        \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__| ");
+            _titles[2].AppendLine(@"       $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                     ");
+            _titles[2].AppendLine(@"       \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\  ");
+            _titles[2].AppendLine(@"        \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__| ");
 
-            Titles[2].AppendLine("\n\n\n\n");
-            Titles[2].AppendLine(@"    $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\ ");
-            Titles[2].AppendLine(@"   $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ |");
-            Titles[2].AppendLine(@"   $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ |");
-            Titles[2].AppendLine(@"   \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ |");
-            Titles[2].AppendLine(@"    \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__|");
-            Titles[2].AppendLine(@"   $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                    ");
-            Titles[2].AppendLine(@"   \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\ ");
-            Titles[2].AppendLine(@"    \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__|");
+            _titles[3].AppendLine("\n\n\n\n");
+            _titles[3].AppendLine(@"       $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\  ");
+            _titles[3].AppendLine(@"      $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ | ");
+            _titles[3].AppendLine(@"      $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ | ");
+            _titles[3].AppendLine(@"      \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ | ");
+            _titles[3].AppendLine(@"       \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__| ");
+            _titles[3].AppendLine(@"      $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                     ");
+            _titles[3].AppendLine(@"      \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\  ");
+            _titles[3].AppendLine(@"       \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__| ");
 
-            Titles[3].AppendLine("\n\n\n\n");
-            Titles[3].AppendLine(@"   $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\ ");
-            Titles[3].AppendLine(@"  $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ |");
-            Titles[3].AppendLine(@"  $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ |");
-            Titles[3].AppendLine(@"  \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ |");
-            Titles[3].AppendLine(@"   \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__|");
-            Titles[3].AppendLine(@"  $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                    ");
-            Titles[3].AppendLine(@"  \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\ ");
-            Titles[3].AppendLine(@"   \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__|");
+            _titles[4].AppendLine("\n\n\n\n");
+            _titles[4].AppendLine(@"       $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\  ");
+            _titles[4].AppendLine(@"      $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ | ");
+            _titles[4].AppendLine(@"      $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ | ");
+            _titles[4].AppendLine(@"      \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ | ");
+            _titles[4].AppendLine(@"       \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__| ");
+            _titles[4].AppendLine(@"      $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                     ");
+            _titles[4].AppendLine(@"      \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\  ");
+            _titles[4].AppendLine(@"       \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__| ");
 
-            Titles[4].AppendLine("\n\n\n\n");
-            Titles[4].AppendLine(@"   $$$$$$\  $$\   $$\  $$$$$$\  $$\   $$\ $$$$$$$$\        $$$$$$\   $$$$$$\  $$\      $$\ $$$$$$$$\       $$\ $$\ ");
-            Titles[4].AppendLine(@"  $$  __$$\ $$$\  $$ |$$  __$$\ $$ | $$  |$$  _____|      $$  __$$\ $$  __$$\ $$$\    $$$ |$$  _____|      $$ |$$ |");
-            Titles[4].AppendLine(@"  $$ /  \__|$$$$\ $$ |$$ /  $$ |$$ |$$  / $$ |            $$ /  \__|$$ /  $$ |$$$$\  $$$$ |$$ |            $$ |$$ |");
-            Titles[4].AppendLine(@"  \$$$$$$\  $$ $$\$$ |$$$$$$$$ |$$$$$  /  $$$$$\          $$ |$$$$\ $$$$$$$$ |$$\$$\$$ $$ |$$$$$\          $$ |$$ |");
-            Titles[4].AppendLine(@"   \____$$\ $$ \$$$$ |$$  __$$ |$$  $$<   $$  __|         $$ |\_$$ |$$  __$$ |$$ \$$$  $$ |$$  __|         \__|\__|");
-            Titles[4].AppendLine(@"  $$\   $$ |$$ |\$$$ |$$ |  $$ |$$ |\$$\  $$ |            $$ |  $$ |$$ |  $$ |$$ |\$  /$$ |$$ |                    ");
-            Titles[4].AppendLine(@"  \$$$$$$  |$$ | \$$ |$$ |  $$ |$$ | \$$\ $$$$$$$$\       \$$$$$$  |$$ |  $$ |$$ | \_/ $$ |$$$$$$$$\       $$\ $$\ ");
-            Titles[4].AppendLine(@"   \______/ \__|  \__|\__|  \__|\__|  \__|\________|       \______/ \__|  \__|\__|     \__|\________|      \__|\__|");
-
-            StartButton =
+            _startButton =
             @"
                                               $$\                           $$\    
                                               $$ |                          $$ |    
@@ -94,24 +92,27 @@ namespace SnakeGame
 
         public override void Update()
         {
-            //InputKey.Update();
+
             _startButtontimer += TimeManager.Instance.ElapsedMs;
             _TitleAnimTimer += TimeManager.Instance.ElapsedMs;
-            switch (InputManager.Instance.Key)
+
+            if (InputManager.Instance.IsKeyDown(ConsoleKey.Enter))
             {
-                case ConsoleKey.Enter:
-                    SceneManager.Instance.ChangeScene(_nextSceneName);
-                    return;
-                case ConsoleKey.Escape:
-                    Environment.Exit(1);
-                    break;
+                SceneManager.Instance.ChangeFlagOn(_nextSceneName);
             }
-            if(_startButtontimer > 250)
+
+            if (InputManager.Instance.IsKeyDown(ConsoleKey.Escape))
+            {
+                Environment.Exit(1);
+            }
+
+            if (250 < _startButtontimer)
             {
                 _flicking = !_flicking;
                 _startButtontimer = 0;
             }
-            if(_TitleAnimTimer > 10)
+
+            if (10 < _TitleAnimTimer)
             {
                 _titleAnimationindex = RandomManager.Instance.GetRandomInt(4);
                 _TitleAnimTimer = 0;
@@ -122,9 +123,9 @@ namespace SnakeGame
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.SetCursorPosition(0, 0);
-            Console.Write(Titles[_titleAnimationindex]);
+            Console.Write(_titles[_titleAnimationindex]);
 
-            if (_flicking == true)
+            if (_flicking)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
             }
@@ -134,12 +135,12 @@ namespace SnakeGame
             }
 
             Console.SetCursorPosition(0, 15);
-            Console.Write(StartButton);
+            Console.Write(_startButton);
 
             Console.ForegroundColor = ConsoleColor.White;
-
             Console.SetCursorPosition(50, 27);
             Console.Write("Press Enter...");
+            Console.ForegroundColor = GameDataManager.DEFAULT_FOREGROUND_COLOR;
         }
     }
 }

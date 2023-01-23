@@ -2,7 +2,7 @@
 
 namespace SnakeGame
 {
-    public class GameObjectManager : Singleton<GameObjectManager>
+    public class GameObjectManager : LazySingleton<GameObjectManager>
     {
         public GameObjectManager() 
         {

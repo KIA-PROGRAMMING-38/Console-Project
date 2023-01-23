@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace SnakeGame
 {
-    public class SceneManager : Singleton<SceneManager>
+    public class SceneManager : LazySingleton<SceneManager>
     {
         public SceneManager()
         {
@@ -18,14 +18,15 @@ namespace SnakeGame
 
         private Dictionary<string, Scene> _scenes = new Dictionary<string, Scene>();
 
-        public void LoadScenes()
+        public void Load()
         {
-            AddScene(sceneName: "TitleScene",  nextSceneName : "Stage_1", new TitleScene());
-            AddScene(sceneName: "EndingScene", nextSceneName : "TitleScene", new EndingScene());
-            AddScene(sceneName: "DeadScene",   nextSceneName : "TitleScene",new EndingScene());
+            AddScene(sceneName: "TitleScene",  nextSceneName : "Stage_3",    soundName: "TitleBackgroundMusic", new TitleScene());
+            AddScene(sceneName: "EndingScene", nextSceneName : "TitleScene", soundName: "EndingBackgroundMusic", new EndingScene());
+            AddScene(sceneName: "DeadScene",   nextSceneName : "TitleScene", soundName: "EndingBackgroundMusic", new DeadScene());
 
-            AddScene(sceneName: "Stage_1", nextSceneName: "Stage_2", new Stage());
-            AddScene(sceneName: "Stage_2", nextSceneName: "Stage_3", new Stage());
+            AddScene(sceneName: "Stage_1", nextSceneName: "Stage_2", soundName: "TitleBackgroundMusic", new Stage());
+            AddScene(sceneName: "Stage_2", nextSceneName: "Stage_3", soundName: "TitleBackgroundMusic", new Stage());
+            AddScene(sceneName: "Stage_3", nextSceneName: "TitleScene", soundName: "TitleBackgroundMusic", new Stage());
 
             SetStartScene("TitleScene");
         }
@@ -65,6 +66,9 @@ namespace SnakeGame
             Console.Clear();
             _changeFlag = false;
             _currentScene = Scene;
+
+            InputManager.Instance.ResetKey();
+
             _currentScene.Start();
         }
 
@@ -74,12 +78,13 @@ namespace SnakeGame
         /// <param name="sceneName">추가하려는 Scene의 이름</param>
         /// <param name="nextSceneName">다음 Scene의 이름</param>
         /// <param name="scene">씬</param>
-        public void AddScene(string sceneName,string nextSceneName, Scene scene)
+        public void AddScene(string sceneName,string nextSceneName, string soundName, Scene scene)
         {
 
             bool isSucces = _scenes.TryAdd(sceneName, scene);
             Debug.Assert(isSucces, $"Already Contains Key SceneName: {sceneName}");
             scene.SetSceneName(sceneName);
+            scene.SetSoundName(soundName);
             scene.SetNextSceneName(nextSceneName);
         }
 

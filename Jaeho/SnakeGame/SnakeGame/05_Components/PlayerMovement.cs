@@ -5,7 +5,7 @@ namespace SnakeGame
     public class PlayerMovement : Component
     {
         public enum Direction
-        { 
+        {
             None,
             Left,
             Right,
@@ -21,24 +21,25 @@ namespace SnakeGame
         }
         public void DirectionUpdate()
         {
-            switch (InputManager.Instance.Key)
+            if (InputManager.Instance.IsKeyDown(ConsoleKey.LeftArrow))
             {
-                case ConsoleKey.LeftArrow:
-                    if (moveDirection == Direction.Right) break;
-                    moveDirection = Direction.Left;
-                    break;
-                case ConsoleKey.RightArrow:
-                    if (moveDirection == Direction.Left) break;
-                    moveDirection = Direction.Right;
-                    break;
-                case ConsoleKey.UpArrow:
-                    if (moveDirection == Direction.Down) break;
-                    moveDirection = Direction.Up;
-                    break;
-                case ConsoleKey.DownArrow:
-                    if (moveDirection == Direction.Up) break;
-                    moveDirection = Direction.Down;
-                    break;
+                if (MoveDirection == Direction.Right) return;
+                moveDirection = Direction.Left;
+            }
+            else if (InputManager.Instance.IsKeyDown(ConsoleKey.RightArrow))
+            {
+                if (moveDirection == Direction.Left) return;
+                moveDirection = Direction.Right;
+            }
+            else if (InputManager.Instance.IsKeyDown(ConsoleKey.UpArrow))
+            {
+                if (moveDirection == Direction.Down) return;
+                moveDirection = Direction.Up;
+            }
+            else if (InputManager.Instance.IsKeyDown(ConsoleKey.DownArrow))
+            {
+                if (moveDirection == Direction.Up) return;
+                moveDirection = Direction.Down;
             }
         }
         public void MoveObject()

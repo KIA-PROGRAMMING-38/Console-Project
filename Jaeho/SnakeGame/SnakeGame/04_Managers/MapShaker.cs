@@ -1,6 +1,6 @@
 ﻿namespace SnakeGame
 {
-    public class MapShaker : Singleton<MapShaker>
+    public class MapShaker : LazySingleton<MapShaker>
     {
         private bool _shakeFlagOn = false;
         private long _millsecond = 0;

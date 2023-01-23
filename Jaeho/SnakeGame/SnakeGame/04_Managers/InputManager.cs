@@ -16,9 +16,12 @@ namespace SnakeGame
                 {
                     _key = Console.ReadKey().Key;
                 }
-            });
+            }, TaskCreationOptions.LongRunning);
         }
+
+        public bool IsKeyDown(ConsoleKey key) => _key == key;
+
+        public void ResetKey() { _key = default; }
         private ConsoleKey _key;
-        public  ConsoleKey Key { get { return _key; } }
     }
 }

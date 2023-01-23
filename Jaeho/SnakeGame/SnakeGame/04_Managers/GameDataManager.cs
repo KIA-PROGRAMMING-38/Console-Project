@@ -3,11 +3,12 @@ using SnakeGame;
 
 namespace SnakeGame
 {
-    public class GameDataManager : Singleton<GameDataManager>
+    public class GameDataManager : LazySingleton<GameDataManager>
     {
         public struct MapInfo
         {
             public int NeedFeedCount;
+            public int SpawnInterval;
             public int Min_X;
             public int Min_Y;
 
@@ -23,9 +24,10 @@ namespace SnakeGame
         private int _needStageClearFeedCount = 0;
         private int _currentFeedCount = 0;
 
-        public  int CurrentFeedCount { get { return _currentFeedCount; } set { _currentFeedCount = value; } }
-        public  int NeedClearFeedCount { get { return _needStageClearFeedCount; } set { _needStageClearFeedCount = value; } }
+        public  int CurrentFeedCount  { get { return _currentFeedCount; } set { _currentFeedCount = value; } }
+        public  int NeedClearFeedCount { get { return _needStageClearFeedCount; } }
 
+        public const ConsoleColor DEFAULT_FOREGROUND_COLOR = ConsoleColor.White;
 
         public static int _mapMinX = 0;
         public static int _mapMinY = 0;
@@ -33,8 +35,8 @@ namespace SnakeGame
         public static int _mapMaxY = 0;
 
 
-        public const int ANCHOR_LEFT = 30;
-        public const int ANCHOR_TOP = 7;
+        public const  int ANCHOR_LEFT = 30;
+        public const  int ANCHOR_TOP = 7;
 
         public static int MAP_MAX_X { get { return ANCHOR_LEFT + _mapMaxX; } }
         public static int MAP_MIN_X { get  { return ANCHOR_LEFT + _mapMinX; } }
@@ -47,6 +49,11 @@ namespace SnakeGame
 
         private Dictionary<string, MapInfo> _mapData  = new Dictionary<string, MapInfo>();
 
+        /// <summary>
+        /// 맵 정보를 가져옵니다.
+        /// </summary>
+        /// <param name="mapName">맵 이름</param>
+        /// <returns></returns>
         public MapInfo GetMapData(string mapName)
         {
             MapInfo info;
@@ -57,13 +64,20 @@ namespace SnakeGame
             return info;
         }
 
-        public void LoadMapData()
+        /// <summary>
+        /// 맵데이터를 불러옵니다.
+        /// </summary>
+        public void Load()
         {
             _mapData.Add("Stage_1", ReadMapFile("Stage_1"));
             _mapData.Add("Stage_2", ReadMapFile("Stage_2"));
             _mapData.Add("Stage_3", ReadMapFile("Stage_3"));
         }
 
+        /// <summary>
+        /// 게임 데이터를 재설정 해줍니다.
+        /// </summary>
+        /// <param name="mapInfo"></param>
         public void SetData(MapInfo mapInfo)
         {
             _mapMaxX = mapInfo.Max_X;
@@ -74,12 +88,18 @@ namespace SnakeGame
             _currentFeedCount = 0;
         }
 
+        /// <summary>
+        /// 텍스트파일로부터 맵 정보 추출
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public MapInfo ReadMapFile(string fileName)
         {
             using (StreamReader textMapDataReader = new StreamReader(Path.Combine(ResourcePath, "MapData", fileName + ".txt")))
             {
                 MapInfo mapInfo = new MapInfo();
-                mapInfo.NeedFeedCount = int.Parse(textMapDataReader.ReadLine());
+                mapInfo.NeedFeedCount = int.Parse(textMapDataReader.ReadLine().Split()[1]);
+                mapInfo.SpawnInterval= int.Parse(textMapDataReader.ReadLine().Split()[1]);
                 int currentX = 0;
                 int currentY = 0;
                 List<Vector2> wallPositions = new List<Vector2>();

@@ -2,7 +2,7 @@
 
 namespace SnakeGame
 {
-    public class FeedSpawner : Singleton<FeedSpawner>
+    public class FeedSpawner : LazySingleton<FeedSpawner>
     {
         private List<Feed> _feedList = new List<Feed>();
         private HashSet<Feed> _removePendingList = new HashSet<Feed>();

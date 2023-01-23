@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SnakeGame._05_Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,33 +9,40 @@ namespace SnakeGame
 {
     public class Stage : Scene
     {
-        public GameDataManager.MapInfo mapInfo;
-        public GameObject player;
-
+        private GameDataManager.MapInfo _mapInfo;
+        private GameObject _player;
+        private Menu _menu;
         public override void Start()
         {
             // Load MapData
-            mapInfo = GameDataManager.Instance.GetMapData(_sceneName);
+            _mapInfo = GameDataManager.Instance.GetMapData(_sceneName);
 
-            player = new Player();
-            player.Position = mapInfo.PlayerPosition;
+            // BGM play
+            SoundManager.Instance.Play(_soundName, true);
+
+            _menu = new Menu();
+            _player = new Player();
+            _player.Position = _mapInfo.PlayerPosition;
 
             List<GameObject> walls = new List<GameObject>();
 
-            for (int i = 0; i < mapInfo.WallPosisions.Length; ++i)
+            for (int i = 0; i < _mapInfo.WallPosisions.Length; ++i)
             {
                 Wall wall = new Wall();
-                wall.Position = mapInfo.WallPosisions[i];
+                wall.Position = _mapInfo.WallPosisions[i];
                 walls.Add(wall);
             }
-  
-            FeedSpawner.Instance.StartSpawn(mapInfo.MapSpawnableTable, 2000);
+            
+            FeedSpawner.Instance.StartSpawn(_mapInfo.MapSpawnableTable, _mapInfo.SpawnInterval);
         }
 
   
 
         public override void Update()
         {
+            _menu.Update();
+            if (_menu.IsUiOpened()) return;
+
             if (GameDataManager.Instance.NeedClearFeedCount == GameDataManager.Instance.CurrentFeedCount)
             {
                 SceneManager.Instance.ChangeFlagOn(_nextSceneName);
@@ -43,14 +51,13 @@ namespace SnakeGame
             FeedSpawner.Instance.Update();
         }
 
-        public override void Render()
-        {
-            RenderManager.Instance.Render();
 
+        private void UiRender()
+        {
             Console.SetCursorPosition(GameDataManager.MAP_MIN_X, 1);
             StringBuilder sb = new StringBuilder();
             sb.Append("┌");
-            for(int i = 0; i < GameDataManager.MAP_WIDTH-1; ++i)
+            for (int i = 0; i < GameDataManager.MAP_WIDTH - 1; ++i)
             {
                 sb.Append("─");
             }
@@ -78,7 +85,7 @@ namespace SnakeGame
 
             Console.SetCursorPosition(GameDataManager.MAP_MIN_X + (GameDataManager.MAP_WIDTH / 2) - ui.Length / 2, 5);
             sb.Append("└");
-            for (int i = 0; i < ui.Length-2; ++i)
+            for (int i = 0; i < ui.Length - 2; ++i)
             {
                 sb.Append("─");
             }
@@ -86,12 +93,12 @@ namespace SnakeGame
             Console.Write(sb.ToString());
             sb.Clear();
 
-            
+
             string directionString = " 방 향 ";
-            Console.SetCursorPosition(GameDataManager.MAP_MIN_X + (GameDataManager.MAP_WIDTH / 2) - directionString.Length/2 - 1, GameDataManager.MAP_MAX_Y + 1);
+            Console.SetCursorPosition(GameDataManager.MAP_MIN_X + (GameDataManager.MAP_WIDTH / 2) - directionString.Length / 2 - 1, GameDataManager.MAP_MAX_Y + 1);
             Console.Write(directionString);
-            Console.SetCursorPosition(GameDataManager.MAP_MIN_X + (GameDataManager.MAP_WIDTH / 2), GameDataManager.MAP_MAX_Y + 3);
-            switch (player.GetComponent<PlayerMovement>().MoveDirection)
+            Console.SetCursorPosition(GameDataManager.MAP_MIN_X + (GameDataManager.MAP_WIDTH / 2), GameDataManager.MAP_MAX_Y + 2);
+            switch (_player.GetComponent<PlayerMovement>().MoveDirection)
             {
                 case PlayerMovement.Direction.None:
                     break;
@@ -108,7 +115,14 @@ namespace SnakeGame
                     Console.Write("↓");
                     break;
             }
-            
+
+        }
+        public override void Render()
+        {
+            RenderManager.Instance.Render();
+
+            UiRender();
+            _menu.Render();
         }
     }
 }

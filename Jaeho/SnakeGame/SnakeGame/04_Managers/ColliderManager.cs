@@ -2,7 +2,7 @@
 
 namespace SnakeGame
 {
-    public class ColliderManager : Singleton<ColliderManager>
+    public class ColliderManager : LazySingleton<ColliderManager>
     {
         public ColliderManager() 
         {

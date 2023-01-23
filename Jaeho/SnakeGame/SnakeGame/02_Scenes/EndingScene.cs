@@ -4,17 +4,14 @@
     {
         public override void Start()
         {
-            SoundManager.Instance.Play("EndingBackgroundMusic");
+            SoundManager.Instance.Play(_soundName, true);
         }
 
         public override void Update()
         {
-            switch (InputManager.Instance.Key)
+            if(InputManager.Instance.IsKeyDown(ConsoleKey.Enter)) 
             {
-                case ConsoleKey.Enter:
-                    SceneManager.Instance.ChangeScene(_nextSceneName);
-                    return;
-                    break;
+                SceneManager.Instance.ChangeFlagOn(_nextSceneName);
             }
         }
 

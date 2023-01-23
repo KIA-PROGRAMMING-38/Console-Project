@@ -3,7 +3,7 @@
 
 namespace SnakeGame
 {
-    public class SoundManager : Singleton<SoundManager>
+    public class SoundManager : LazySingleton<SoundManager>
     {
         public SoundManager()
         {
@@ -19,22 +19,28 @@ namespace SnakeGame
             
         }
 
-        private SoundPlayer _currentSoundName;
+        public void Load()
+        {
+            foreach(var sound in _soundPlayers.Values) 
+            {
+                sound.Load();
+            }
+        }
 
         public void AddSound(string name, SoundPlayer sound)
         {
             _soundPlayers.Add(name, sound);
-            sound.Load();
         }
+
         public void Play(string name, bool loop = false)
         {
-            if (loop)
+            if (!loop)
             {
-                _soundPlayers[name].PlayLooping();
+                _soundPlayers[name].Play();
             }
             else
             {
-                _soundPlayers[name].Play();
+                _soundPlayers[name].PlayLooping();
             }
         }
 
