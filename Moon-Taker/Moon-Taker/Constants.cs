@@ -29,5 +29,6 @@ namespace Moon_Taker
         public const ConsoleColor trapColor = ConsoleColor.Red;
         public const ConsoleColor keyColor = ConsoleColor.Yellow;
         public const ConsoleColor doorColor = ConsoleColor.DarkYellow;
+        public const ConsoleColor movePointColor = ConsoleColor.Green;
     }
 }

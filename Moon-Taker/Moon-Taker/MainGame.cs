@@ -13,8 +13,31 @@ namespace Moon_Taker
     {
         static void Main()
         {
+            while (false == GameSettings.isGameStarted)
+            {
+                if (Scene.isFirstScene)
+                {
+                    Scene.SetTitleScene();
+                }
+                ConsoleKey moveMenu = Console.ReadKey().Key;
 
-            Scene.SetTitleScene();
+                Scene.SelectMenu(ref GameSettings.MenuNum, ref moveMenu);
+                if (moveMenu == ConsoleKey.E)
+                {
+                    if (GameSettings.MenuNum == 0)
+                    {
+                        Scene.EnterSynopsisScene();
+                    }
+                    else if (GameSettings.MenuNum == 1)
+                    {
+                        Scene.EnterGameRulesScene();
+                    }
+                    else
+                    {
+                        Environment.Exit(0);
+                    }
+                }
+            }
 
             Player player = new Player();
             PreviousPlayer previousPlayer = new PreviousPlayer();
@@ -39,8 +62,6 @@ namespace Moon_Taker
             }
             string[] advices = Functions.LoadFile(GameSettings.adviceFilePath);
             Functions.ParseAdvice(advices, out advice);
-            Scene.EnterSynopsisScene();
-            Scene.EnterGameRulesScene();
 
             while (GameSettings.isGameStarted)
             {
@@ -184,7 +205,9 @@ namespace Moon_Taker
                             Functions.Render(LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
                         }
                     }
-                    Functions.Render(mapSize.X / 2, mapSize.Y + 1, "남은 행동 횟수 : " + $"{ObjectStatus.playerMovePoint}".PadLeft(2,' '));
+                    Functions.Render(mapSize.X / 2, mapSize.Y + 1, "남은 ");
+                    Functions.Render("행동 점수", Constants.movePointColor);
+                    Functions.Render($" : {ObjectStatus.playerMovePoint}".PadLeft(2, ' '));
                 }
 
                 if (ObjectStatus.isAdviceToggled)

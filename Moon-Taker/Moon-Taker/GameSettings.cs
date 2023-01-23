@@ -9,6 +9,7 @@ namespace Moon_Taker
 {
     internal class GameSettings
     {
+        public static int MenuNum = 0;
         public static bool isGameStarted = false;
         public static int stageNumber = Functions.CheckStageNumber();
 
