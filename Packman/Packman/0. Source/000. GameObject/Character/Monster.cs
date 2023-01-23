@@ -36,17 +36,14 @@ namespace Packman
         // 현재 찾아가야할 WayPoint..
         WayPoint _curDestinationWayPoint = null;
 
-        // 움직임에 딜레이 주기..
-		private float _moveInterval = 2.0f;
-        private bool _isWaitMove = false;
-
+        // 타겟 인식 범위..
         private int _targetRecognizeRange = 8;
 
         public List<Point2D> Paths { get { return _paths; } }
         
 
         public Monster( int x, int y, Map map )
-            : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER, map )
+            : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER, map, Constants.MONSTER_MOVE_DELAY )
         {
             _player = _objectManager.GetGameObject<Player>( "Player" );
         }
@@ -55,7 +52,7 @@ namespace Packman
         {
             Debug.Assert( base.Initialize() );
 
-            _moveInterval *= TimeManager.Instance.ElaspedTime;
+            OnMoveCharacterEvent += OnSuccessMove;
         }
 
         public override void Update()
@@ -139,27 +136,14 @@ namespace Packman
 
         private void ActChaseTargetPattern()
         {
-            if ( true == _isWaitMove )
-                return;
-
 			ActionFindPath( _player.X, _player.Y );
 			StartMoveAction();
 		}
 
         private void StartMoveAction()
         {
-            if ( true == _isWaitMove )
-            {
-                return;
-            }
-
-			_isWaitMove = true;
-            EventManager.Instance.SetTimeOut( () =>
-            {
-                MoveToNextPath();
-                _isWaitMove = false;
-            }, _moveInterval );
-		}
+            MoveToNextPath();
+        }
 
 		// ====================================================================================================================================
 		// ============================================= AI Pattern 에서 필요로 하는 함수들..  ==================================================
@@ -183,11 +167,8 @@ namespace Packman
 
             int dirX = _paths[_curPathIndex].X - _x;
             int dirY = _paths[_curPathIndex].Y - _y;
-            ++_curPathIndex;
 
-			MoveDirection( dirX, dirY );
-
-            _isWaitMove = false;
+            SendMoveDirOrder( dirX, dirY );
         }
 
 		private void FindTarget()
@@ -224,6 +205,11 @@ namespace Packman
 			//}
 		}
 
+        private void OnSuccessMove( Character character )
+        {
+            ++_curPathIndex;
+        }
+
 		private void OnEnablePattern()
         {
             _isCanActPattern = true;
@@ -248,16 +234,16 @@ namespace Packman
 					break;
 
 				case PatternKind.Idle:
-					break;
+                    _movementComponent.Reset();
+                    break;
 
 				case PatternKind.Move:
 					break;
 
 				case PatternKind.ChaseTarget:
-                    if( true == _isWaitMove)
-                    {
-						ActionFindPath( _player.X, _player.Y );
-					}
+                    _movementComponent.Reset();
+                    if ( true == _movementComponent.IsWaitMove )
+                        ActionFindPath( _player.X, _player.Y );
 					break;
 			}
         }

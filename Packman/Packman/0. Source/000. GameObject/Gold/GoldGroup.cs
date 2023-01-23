@@ -17,6 +17,9 @@ namespace Packman
         private Gold[,] _goldTable;
         private int _remainGoldCount = 0;  // 남은 골드 개수..
 
+        private int _goldRowCount = 0;
+        private int _goldColumnCount = 0;
+
         public int RemainGoldCount { get { return _remainGoldCount; } }
         
 
@@ -26,7 +29,10 @@ namespace Packman
             _player = null;
             _characters = new List<Character>();
 
-            _goldTable = new Gold[mapHeight + 1, mapWidth + 1];
+            _goldRowCount = mapWidth + 1;
+            _goldColumnCount = mapHeight + 1;
+
+            _goldTable = new Gold[_goldColumnCount, _goldRowCount];
             _remainGoldCount = 0;
         }
 
@@ -38,8 +44,9 @@ namespace Packman
             foreach ( Gold gold in golds )
             {
                 _goldTable[gold.Y, gold.X] = gold;
-                gold.Update();
             }
+
+            Render();
 
             // 총 Gold 개수 저장( 현재 남은 Gold 개수는 총 Gold 개수와 같으니까 )..
             _remainGoldCount = golds.Count;
@@ -66,7 +73,7 @@ namespace Packman
                 }
             }
 
-            base.Update();
+            //base.Update();
 
             // 현재 플레이어가 밟고 있는 타일에 있는 골드 제거..
             if ( null != _player )
@@ -79,6 +86,23 @@ namespace Packman
                     _goldTable[_player.Y, _player.X] = null;
 
                     --_remainGoldCount;
+                }
+            }
+        }
+
+        public override void Render()
+        {
+            base.Render();
+
+            for( int column = 0; column < _goldColumnCount; ++column )
+            {
+                for( int row = 0; row < _goldRowCount; ++row )
+                {
+                    Gold gold = _goldTable[column, row];
+                    if( null != gold)
+                    {
+                        gold.Render();
+                    }
                 }
             }
         }

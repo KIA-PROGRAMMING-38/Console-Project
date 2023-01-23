@@ -75,16 +75,19 @@ namespace Packman
                     }
 
                     // 가로, 세로 길이 구하기..
-                    int xDist = Math.Abs(_wayPoints[dstIndex].X - _wayPoints[srcIndex].X);
-                    int yDist = Math.Abs(_wayPoints[dstIndex].Y - _wayPoints[srcIndex].Y);
+                    //int xDist = Math.Abs(_wayPoints[dstIndex].X - _wayPoints[srcIndex].X);
+                    //int yDist = Math.Abs(_wayPoints[dstIndex].Y - _wayPoints[srcIndex].Y);
+                    //
+                    //// 일직선상에 있다 == 가로, 세로 둘중 하나만 같아야한다..
+                    //if ( (0 == xDist && 0 != yDist) ||  (0 == yDist && 0 != xDist) )
+                    //{
+                    //    // 일직선상에 있다면 연결시켜준다..
+                    //    _wayPoints[dstIndex].Connect( _wayPoints[srcIndex] );
+                    //    _wayPoints[srcIndex].Connect( _wayPoints[dstIndex] );
+                    //}
 
-                    // 일직선상에 있다 == 가로, 세로 둘중 하나만 같아야한다..
-                    if ( (0 == xDist && 0 != yDist) ||  (0 == yDist && 0 != xDist) )
-                    {
-                        // 일직선상에 있다면 연결시켜준다..
-                        _wayPoints[dstIndex].Connect( _wayPoints[srcIndex] );
-                        _wayPoints[srcIndex].Connect( _wayPoints[dstIndex] );
-                    }
+                    _wayPoints[dstIndex].Connect( _wayPoints[srcIndex] );
+                    _wayPoints[srcIndex].Connect( _wayPoints[dstIndex] );
                 }
             }
         }

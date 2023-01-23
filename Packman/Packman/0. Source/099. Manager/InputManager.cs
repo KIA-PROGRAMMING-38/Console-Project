@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,8 +23,23 @@ namespace Packman
 
         }
 
+        public bool IsKeyDown(ConsoleKey key)
+        {
+            return pressKeyState[(int)key];
+        }
+
         public void Update()
         {
+            for ( int index = 0; index < TOTAL_KEY_COUNT; ++index )
+            {
+                if ( false == pressKeyState[index] )
+                {
+                    continue;
+                }
+
+                pressKeyState[index] = false;
+            }
+
             while ( Console.KeyAvailable )
             {
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
@@ -40,8 +56,6 @@ namespace Packman
                 {
                     continue;
                 }
-
-                pressKeyState[index] = false;
 
                 OnPressInput?.Invoke( (ConsoleKey)index, pressKeyModifiers[index] );
             }

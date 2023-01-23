@@ -22,12 +22,12 @@ namespace Packman
         // 플레이어의 움직임 방향..
         private int _moveDirX = 0;
         private int _moveDirY = 0;
-        // 방향 전환 시 바로 벽에 부딪힐 경우 이전 방향으로 돌려주기 위해 저장할 용도..
-        private int _prevMoveDirX = 0;
-        private int _prevMoveDirY = 0;
+        // 플레이어가 다음으로 움직일 방향..
+        private int _nextMoveDirX = 0;
+        private int _nextMoveDirY = 0;
 
         public Player( int x, int y, Map map )
-            : base( x, y, Constants.PLAYER_IMAGE, Constants.PLAYER_COLOR, Constants.PLAYER_RENDER_ORDER, map )
+            : base( x, y, Constants.PLAYER_IMAGE, Constants.PLAYER_COLOR, Constants.PLAYER_RENDER_ORDER, map, Constants.PLAYER_MOVE_DELAY )
         {
         }
 
@@ -59,6 +59,8 @@ namespace Packman
         {
             Debug.Assert( base.Initialize() );
 
+            OnCharacterMoveFailedEvent += OnFailedMove;
+
             return true;
         }
 
@@ -69,9 +71,7 @@ namespace Packman
         {
             base.Update();
 
-            MoveDirection( _moveDirX, _moveDirY );
-            _moveDirX = _prevMoveDirX;
-            _moveDirY = _prevMoveDirY;
+            UpdateMovement();
         }
 
         /// <summary>
@@ -134,11 +134,24 @@ namespace Packman
 
         private void SetMoveDirection(int dirX, int dirY)
         {
-            _prevMoveDirX = _moveDirX;
-            _prevMoveDirX = _moveDirY;
+            if(_moveDirX != dirX || _moveDirY != dirY )
+            {
+                _movementComponent.Reset();
+            }
 
-            _moveDirX = dirX;
-            _moveDirY = dirY;
+            if ( IsCanGoPosition( _x + dirX, _y + dirY ) )
+            {
+                _moveDirX = dirX;
+                _moveDirY = dirY;
+            }
+            else
+            {
+                if ( 0 == _nextMoveDirX && 0 == _nextMoveDirY )
+                {
+                    _nextMoveDirX = dirX;
+                    _nextMoveDirY = dirY;
+                }
+            }
 
             OnMoveCharacterEvent += OnSuccessMove;
         }
@@ -146,14 +159,60 @@ namespace Packman
         /// <summary>
         /// 플레이어가 방향을 전환하고 첫 움직임에 성공할 때 호출됩니다..
         /// </summary>
-        private void OnSuccessMove( Character _character )
+        private void OnSuccessMove( Character character )
         {
-            // 이전 움직임 방향 초기화..
-            _prevMoveDirX = _moveDirX;
-            _prevMoveDirY = _moveDirY;
-
             // 또 호출될 필요 없기 때문에 콜백 해제..
             OnMoveCharacterEvent -= OnSuccessMove;
+        }
+
+        private void OnFailedMove( Character character )
+        {
+            _moveDirX = 0;
+            _moveDirY = 0;
+
+            _nextMoveDirX = 0;
+            _nextMoveDirY = 0;
+        }
+
+        public override void OnCollision( GameObject collisionObjectInst )
+        {
+            base.OnCollision( collisionObjectInst );
+
+            // 충돌한 타입이 몬스터다..
+            if ( typeof( Monster ) == collisionObjectInst.GetType() )
+            {
+                StageManager.Instance.OnPlayerDead();
+            }
+        }
+
+        private bool IsDirNotZero(int dirX, int dirY)
+        {
+            return (0 != dirX || 0 != dirY);
+        }
+
+        private void UpdateMovement()
+        {
+            if ( IsDirNotZero(_moveDirX, _moveDirY) )
+            {
+                CheckNextDirCondition();
+
+                SendMoveDirOrder( _moveDirX, _moveDirY );
+            }
+        }
+
+        private void CheckNextDirCondition()
+        {
+            if ( IsDirNotZero( _nextMoveDirX, _nextMoveDirY ) )
+            {
+                if ( true == IsCanGoPosition( _x + _nextMoveDirX, _y + _nextMoveDirY ) )
+                {
+                    _moveDirX = _nextMoveDirX;
+                    _moveDirY = _nextMoveDirY;
+
+                    _nextMoveDirX = 0;
+                    _nextMoveDirY = 0;
+                }
+            }
         }
     }
 }

@@ -65,7 +65,7 @@ namespace Packman
 
         private bool InitializeSelectUI()
         {
-            UI_Select selectUI = new UI_Select( 50, 20 );
+            SelectUI selectUI = new SelectUI( 50, 20 );
             selectUI.Initialize();
 
             selectUI.AddSelectList( "Game Start", GoStageScene );

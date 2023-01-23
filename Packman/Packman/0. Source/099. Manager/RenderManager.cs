@@ -16,7 +16,6 @@ namespace Packman
             public int Y;
             public int Size;
         }
-            
 
         List<Renderer> _renderers = new List<Renderer>(50);
         LinkedList<RemoveRenderInfo> _removeRenderInfoes = new LinkedList<RemoveRenderInfo>();
@@ -63,6 +62,12 @@ namespace Packman
                 renderer.Render();
             }
 
+            _renderers.Clear();
+        }
+
+        public void Release()
+        {
+            _removeRenderInfoes.Clear();
             _renderers.Clear();
         }
     }

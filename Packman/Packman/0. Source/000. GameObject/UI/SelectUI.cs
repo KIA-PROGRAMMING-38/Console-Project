@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Packman
 {
-    internal class UI_Select : GameObject
+    internal class SelectUI : GameObject
     {
         private struct SelectInfo
         {
@@ -21,7 +21,7 @@ namespace Packman
         int _maxSelectPointCount = 0;
         int _curSelectPoint = 0;
 
-        public UI_Select( int x, int y )
+        public SelectUI( int x, int y )
             : base( x, y, 2000 )
         {
 

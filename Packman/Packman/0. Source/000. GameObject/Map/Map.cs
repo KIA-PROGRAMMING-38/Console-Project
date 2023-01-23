@@ -59,6 +59,8 @@ namespace Packman
                 }
             }
 
+            Render();
+
             return true;
         }
 
@@ -69,11 +71,24 @@ namespace Packman
         {
             //base.Update();
 
+            //for ( int y = 0; y < _height; ++y )
+            //{
+            //    for ( int x = 0; x < _width; ++x )
+            //    {
+            //        _tiles?[y, x].Update();
+            //    }
+            //}
+        }
+
+        public override void Render()
+        {
+            //base.Render();
+
             for ( int y = 0; y < _height; ++y )
             {
                 for ( int x = 0; x < _width; ++x )
                 {
-                    _tiles?[y, x].Update();
+                    _tiles?[y, x].Render();
                 }
             }
         }

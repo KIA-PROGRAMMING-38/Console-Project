@@ -33,6 +33,7 @@ namespace Packman
             // 삭제할 오브젝트들 제거작업..
             foreach ( var gameobject in _removeObjects )
             {
+                gameobject.Value.Release();
                 _gameObjects.Remove( gameobject );
             }
             _removeObjects.Clear();
@@ -40,7 +41,10 @@ namespace Packman
             // 현재 오브젝트들 갱신..
             foreach ( var gameobject in _gameObjects )
             {
-                gameobject.Value.Update();
+                if( gameobject.Value.IsActive )
+                {
+                    gameobject.Value.Update();
+                }
             }
         }
 
@@ -57,6 +61,10 @@ namespace Packman
         /// </summary>
         public void RemoveAll()
         {
+            foreach ( var gameobject in _gameObjects )
+            {
+                gameobject.Value.Release();
+            }
             _gameObjects.Clear();
         }
 

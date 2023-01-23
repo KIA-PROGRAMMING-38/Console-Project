@@ -63,8 +63,8 @@ namespace Packman
             // 현재 흘러간 시간이 프레임 간격보다 크다면..
             if ( frameInterval <= deltaTime )
             {
-                deltaTime -= frameInterval;
-                //deltaTime = 0.0f;
+                //deltaTime -= frameInterval;
+                deltaTime = 0.0f;
                 return true;
             }
 

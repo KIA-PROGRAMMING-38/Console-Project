@@ -23,7 +23,7 @@ namespace Packman
         protected string _image = "";
         protected ConsoleColor _color = 0;
 
-        private bool _isActive;
+        private bool _isActive = true;
 
         // ===================================== Property.. ===================================== //
         public int X { get { return _x; } }
@@ -73,6 +73,11 @@ namespace Packman
         }
 
         // ===================================== Function.. ===================================== //
+
+        /// <summary>
+        /// 초기화..
+        /// </summary>
+        /// <returns> 성공 실패 여부.. </returns>
         public bool Initialize()
         {
             AddComponent( "Renderer", _renderer );
@@ -100,6 +105,9 @@ namespace Packman
             }
         }
 
+        /// <summary>
+        /// GameObject를 화면에 그린다..
+        /// </summary>
         public virtual void Render()
         {
             ConsoleColor tempColor = Console.ForegroundColor;
@@ -111,7 +119,15 @@ namespace Packman
             Console.ForegroundColor = tempColor;
         }
 
+        /// <summary>
+        /// 정리할 거 있으면 재정의해서 사용..
+        /// </summary>
         public virtual void Release()
+        {
+
+        }
+
+        public virtual void OnCollision(GameObject collisionObjectInst)
         {
 
         }

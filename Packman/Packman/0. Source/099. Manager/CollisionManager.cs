@@ -11,19 +11,43 @@ namespace Packman
         Player _player;
         Monster[] _monsters;
         Item[] _items;
-        GoldGroup _goldGroup;
 
         public void RenewObjectInstance()
         {
             _player = ObjectManager.Instance.GetGameObject<Player>();
             _monsters = ObjectManager.Instance.GetAllGameObject<Monster>();
             _items = ObjectManager.Instance.GetAllGameObject<Item>();
-            _goldGroup = ObjectManager.Instance.GetGameObject<GoldGroup>();
         }
 
         public void Update()
         {
+            // Collision Player To Monster..
+            if(null != _monsters )
+            {
+                foreach ( Monster monster in _monsters )
+                {
+                    if ( true == CollisionHelper.CollisionObjectToObject( _player, monster ) )
+                    {
+                        _player.OnCollision( monster );
+                        monster.OnCollision( _player );
 
+                        break;
+                    }
+                }
+            }
+
+            // Collision Player To Item..
+            if(null != _items )
+            {
+                foreach ( Item item in _items )
+                {
+                    if ( true == CollisionHelper.CollisionObjectToObject( _player, item ) )
+                    {
+                        _player.OnCollision( item );
+                        item.OnCollision( _player );
+                    }
+                }
+            }
         }
     }
 }

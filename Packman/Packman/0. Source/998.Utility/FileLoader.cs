@@ -184,7 +184,7 @@ namespace Packman
             ObjectManager.Instance.AddGameObject( "Map", map );
 
             // Gold Group 객체 생성 및 ObjectManager 에 넣어주기..
-            GoldGroup goldGroup = new GoldGroup(mapWidth, mapHeight);
+            GoldGroup goldGroup = new GoldGroup(mapWidth + mapPosX, mapHeight + mapPosY);
             goldGroup.Initialize( goldList );
             ObjectManager.Instance.AddGameObject( "GoldGroup", goldGroup );
 

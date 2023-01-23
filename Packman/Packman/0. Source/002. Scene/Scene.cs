@@ -47,6 +47,7 @@ namespace Packman
         public virtual void Release()
         {
             _objectManager.RemoveAll();
+            RenderManager.Instance.Release();
 
             Console.Clear();
         }

@@ -42,6 +42,9 @@ namespace Packman
             EventManager eventManagerInstance = EventManager.Instance;
             SceneManager sceneManagerInstance = SceneManager.Instance;
 
+            FastClickUI ui = new FastClickUI(30, 0);
+            ui.Initialize();
+
             while ( true )
             {
                 timeManagerInstance.Update();
@@ -51,8 +54,11 @@ namespace Packman
                     inputManagerInstance.Update();
                     eventManagerInstance.Update();
 
-                    sceneManagerInstance.Update();
-                    sceneManagerInstance.Render();
+                    ui.Update();
+                    ui.Render();
+
+                    //sceneManagerInstance.Update();
+                    //sceneManagerInstance.Render();
                 }
             }
         }
@@ -88,6 +94,9 @@ namespace Packman
 
             // 인코딩은 UTF8로 설정..
             Console.OutputEncoding = Encoding.UTF8;
+
+            Console.SetWindowSize( 1920, 1080 );
+            Console.SetBufferSize( 1920, 1080 );
 
             return true;
         }

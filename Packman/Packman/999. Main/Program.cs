@@ -7,6 +7,9 @@ namespace Packman
     {
         static void Main()
         {
+            string asdf = "|                               |";
+            int asdffff = asdf.Length;
+
             //string path = Path.Combine( "../../../Resources", "Data", "Stage1.txt" );
             //
             //string[] lines = File.ReadAllLines( path );

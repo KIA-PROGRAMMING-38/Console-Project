@@ -17,7 +17,7 @@ namespace Packman
                 return false;
             }
 
-            return CollisionObjectToObject( dstObject, srcObject );
+            return IsSamePosition( dstObject, srcObject );
         }
 
         private static bool IsSamePosition( GameObject dstObject, GameObject srcObject )
