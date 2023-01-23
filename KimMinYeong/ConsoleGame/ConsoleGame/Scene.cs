@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ConsoleGame
 {
-    internal class Scene
+    public static class Scene
     {
-        public int SceneId;
+        public static int SceneId;
 
-        public string TitleSceneData = "타이틀 씬 입니다.";
-        public string MainSceneData = "게임 진행 씬입니다.";
-        public string EndSceneData = "결과 씬입니다.";
+        public static string TitleSceneData = "타이틀 씬 입니다.";
+        public static string MainSceneData = "게임 진행 씬입니다.";
+        public static string EndSceneData = "결과 씬입니다.";
     }
 }

@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace ConsoleGame
 {
-    internal class SceneManager
+    public static class SceneManager
     {
-        public int CurrentSceneId;
-        public int CapturedSceneId;
-        public Scene scene = new Scene();
+        public static int CurrentSceneId;
+        public static int CapturedSceneId;
 
-        public bool IsSceneChange(int currentSceneId)
+        public static bool IsSceneChange(int currentSceneId)
         {
             CurrentSceneId = currentSceneId;
 
@@ -26,13 +25,13 @@ namespace ConsoleGame
             }
         }
 
-        public void ChangeScene()
+        public static void ChangeScene()
         {
             CapturedSceneId = CurrentSceneId;
             Console.Clear();
         }
 
-        public void RenderCurrentScene()
+        public static void RenderCurrentScene()
         {
             switch (CurrentSceneId)
             {
@@ -53,21 +52,21 @@ namespace ConsoleGame
             }
         }
 
-        public void RenderTitleScene()
+        public static void RenderTitleScene()
         {
             // 타이틀 씬 렌더 구현
             Console.Clear();
-            Console.WriteLine(scene.TitleSceneData);
+            Console.WriteLine(Scene.TitleSceneData);
             Thread.Sleep(1000);
             
         }
 
-        public void InitMainScene()
+        public static void InitMainScene()
         {
             Console.CursorVisible = false;
         }
 
-        public void RenderMainScene()
+        public static void RenderMainScene()
         {
             // 게임 진행 화면 렌더 구현
             switch(Input.CheckInputKey())
@@ -87,11 +86,11 @@ namespace ConsoleGame
 
         }
 
-        public void RenderEndScene()
+        public static void RenderEndScene()
         {
             // 결과 화면 렌더 구현
             Console.Clear();
-            Console.WriteLine(scene.EndSceneData);
+            Console.WriteLine(Scene.EndSceneData);
             Thread.Sleep(1000);
         }
     }
