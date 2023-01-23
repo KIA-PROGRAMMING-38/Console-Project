@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wooseok_Console_Project
 {
-    internal class Block
+    internal class Wall
     {
 
         public int x;

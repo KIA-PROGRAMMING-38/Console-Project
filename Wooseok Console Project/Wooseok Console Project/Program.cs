@@ -7,7 +7,14 @@ using Wooseok_Console_Project;
 
 class Program
 {
-
+    enum DIRECTION
+    {
+        NONE,
+        RIGHT,
+        LEFT,
+        UP,
+        DOWN
+    }
 
 
 
@@ -23,7 +30,7 @@ class Program
         Console.Title = "군대 시뮬레이션";
 
         Player player = new();
-        Box box = new();
+        
 
 
 
@@ -117,6 +124,8 @@ class Program
         SoundPlayer music_victory = new SoundPlayer(@"C:\Users\user1234\Console_Project\Console-Project\Wooseok Console Project\Wooseok Console Project\bin\Debug\net6.0\Assets\Music\Victory.wav");
         SoundPlayer music_battle = new SoundPlayer(@"C:\Users\user1234\Console_Project\Console-Project\Wooseok Console Project\Wooseok Console Project\bin\Debug\net6.0\Assets\Music\Battle.wav");
         SoundPlayer music_lose = new SoundPlayer(@"C:\Users\user1234\Console_Project\Console-Project\Wooseok Console Project\Wooseok Console Project\bin\Debug\net6.0\Assets\Music\Lose.wav");
+
+        #region 퀴즈부분
 
         string choose = ""; // 선택받은 캐릭터를 저장하기 위한 객체
         // 캐릭터 선택용 게임루프
@@ -730,7 +739,7 @@ class Program
             }
         }
         Console.Clear(); // 다음화면으로 넘어가기 위한 클리어
-
+        #endregion
 
 
         switch (chosen_one.id) // id의 선택에 따른 골라진 플레이어로 데이터 옮기기
@@ -776,9 +785,19 @@ class Program
                 break;
         }
 
+        Box[] box =
+        {
+            new Box{x = 20, y = 3, symbol = "B"},
+            new Box{x = 20, y = 6, symbol = "B"},
+            new Box{x = 20, y = 7, symbol = "B"}
+        };
 
-
-
+        Wall[] wall =
+        {
+            new Wall{ x= 13, y = 2, symbol = "W"},
+            new Wall{ x = 13, y = 5, symbol = "W"},
+            new Wall{ x = 13, y = 6, symbol = "W"}
+        };
 
 
         Goal[] goal = new Goal[game.max_y + 1]; // goal을 20개를 만든다
@@ -788,34 +807,46 @@ class Program
         }
 
 
-        Player line4 = new Player()
+        Player[] line4 =
         {
-            x = random.Next(10, 30),
-            y = random.Next(5, 15),
-            symbol = "B"
+            new Player{ x = 18, y = 8, symbol = "4"},
+            new Player{ x = 18, y = 5, symbol = "4"}
         };
+
+        int pushedbox = 0;
 
     LOOP_EXIT:
         music_walk.PlayLooping();
 
+        DIRECTION PlayerDirection = DIRECTION.NONE;
 
         // 테트리스 게임루프
         while (game.tetrismode)
         {
             // render
 
-            //string[] map = Gameinfo.LoadStage(1);
-            //for (int i = 0; i < map.Length ;++i)
-            //{
-            //    Console.WriteLine(map[i]);  
-            //}
-
             Console.ForegroundColor = ConsoleColor.Red;
 
-
-            Function.Render(line4.x, line4.y, line4.symbol); // 병장을 그려준다
+            for (int i = 0; i < line4.Length ;++i)// 병장을 그려준다
+            {
+                Function.Render(line4[i].x, line4[i].y, line4[i].symbol); 
+            }
+            
 
             Function.Render(player.x, player.y, player.symbol); // 플레이어를 그려준다
+
+            for (int i = 0; i < box.Length ;++i) // 박스를 그려준다
+            {
+                Function.Render(box[i].x, box[i].y, box[i].symbol);
+            }
+
+
+            for (int i = 0; i < wall.Length ;++i)
+            {
+                Function.Render(wall[i].x, wall[i].y, wall[i].symbol);
+            }
+
+
 
             for (int i = 1; i < game.max_y + 1; ++i) // goal 을 그려준다
             {
@@ -833,15 +864,18 @@ class Program
             }
 
 
-
-            if (line4.x == line4.prex && line4.y == line4.prey)
+            for (int i = 0; i < line4.Length ;++i)
             {
-                // 병장의 현재좌표와 이전좌표가 겹친다면 그리지 않는다
+                if (line4[i].x == line4[i].prex && line4[i].y == line4[i].prey)
+                {
+                    // 병장의 현재좌표와 이전좌표가 겹친다면 그리지 않는다
+                }
+                else
+                {
+                    Function.Render(line4[i].prex, line4[i].prey, " ");
+                }
             }
-            else
-            {
-                Function.Render(line4.prex, line4.prey, " ");
-            }
+            
 
 
             #region Draw Boundaries
@@ -876,57 +910,142 @@ class Program
             if (key2 == ConsoleKey.RightArrow)
             {
                 player.x = Math.Clamp(player.x + 1, game.min_x, game.max_x);
+                PlayerDirection = DIRECTION.RIGHT;
             }
             if (key2 == ConsoleKey.LeftArrow)
             {
                 player.x = Math.Clamp(player.x - 1, game.min_x, game.max_x);
+                PlayerDirection = DIRECTION.LEFT;
             }
             if (key2 == ConsoleKey.UpArrow)
             {
                 player.y = Math.Clamp(player.y - 1, game.min_y, game.max_y);
+                PlayerDirection = DIRECTION.UP;
             }
             if (key2 == ConsoleKey.DownArrow)
             {
                 player.y = Math.Clamp(player.y + 1, game.min_y, game.max_y);
+                PlayerDirection = DIRECTION.DOWN;
             }
 
 
 
-            int randommove = random.Next(1, 6); // 1부터 5까지의 랜덤한 숫자를 저장
-
-            line4.prex = line4.x;
-            line4.prey = line4.y;
-
-
-            //switch (randommove)
-            //{
-            //    case 1: // 1 나오면 병장이 오른쪽으로 이동
-            //        line4.x = Math.Clamp(line4.x + 1, game.min_x, game.max_x);
-            //        break;
-            //    case 2: // 2 나오면 병장이 왼쪽으로 이동
-            //        line4.x = Math.Clamp(line4.x - 1, game.min_x, game.max_x);
-            //        break;
-            //    case 3: // 3 나오면 병장이 위로 이동
-            //        line4.y = Math.Clamp(line4.y - 1, game.min_y, game.max_y);
-            //        break;
-            //    case 4: // 4 나오면 병장이 아래로 이동
-            //        line4.y = Math.Clamp(line4.y + 1, game.min_y, game.max_y);
-            //        break;
-            //    case 5: // 5 나오면 병장 가만히 stop
-            //        break;
-
-            //}
-
-
-
-
-
-            if (player.x == line4.x && player.y == line4.y)
+            for (int i = 0; i < box.Length ;++i) // 박스 밀기
             {
-                game.tetrismode = false;
-                music_walk.Stop();
-                break;
+                if (player.x == box[i].x && player.y == box[i].y)
+                {
+                    switch (PlayerDirection)
+                    {
+                        case DIRECTION.RIGHT:
+                            box[i].x = Math.Clamp(box[i].x +1, game.min_x, game.max_x);
+                            player.x = box[i].x - 1;
+                            break;
+                        case DIRECTION.LEFT:
+                            box[i].x = Math.Clamp(box[i].x - 1, game.min_x, game.max_x);
+                            player.x = box[i].x + 1;
+                            break;
+                        case DIRECTION.UP:
+                            box[i].y = Math.Clamp(box[i].y -1, game.min_y, game.max_y);
+                            player.y = box[i].y + 1;
+                            break;
+                        case DIRECTION.DOWN:
+                            box[i].y = Math.Clamp(box[i].y + 1, game.min_y, game.max_y);
+                            player.y = box[i].y - 1;
+                            break;
+
+                    }
+
+                    pushedbox = i; // 민 박스 표기
+
+                }
+
             }
+
+            for (int i = 0; i < wall.Length ;++i)
+            {
+                if (player.x == wall[i].x && player.y == wall[i].y)
+                {
+                    switch (PlayerDirection)
+                    {
+                        case DIRECTION.RIGHT:
+                            box[i].x = Math.Clamp(box[i].x + 1, game.min_x, game.max_x);
+                            player.x = box[i].x - 1;
+                            break;
+                        case DIRECTION.LEFT:
+                            box[i].x = Math.Clamp(box[i].x - 1, game.min_x, game.max_x);
+                            player.x = box[i].x + 1;
+                            break;
+                        case DIRECTION.UP:
+                            box[i].y = Math.Clamp(box[i].y - 1, game.min_y, game.max_y);
+                            player.y = box[i].y + 1;
+                            break;
+                        case DIRECTION.DOWN:
+                            box[i].y = Math.Clamp(box[i].y + 1, game.min_y, game.max_y);
+                            player.y = box[i].y - 1;
+                            break;
+
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+            
+
+            for (int i = 0; i < line4.Length ;++i)
+            {
+                line4[i].prex = line4[i].x;
+                line4[i].prey = line4[i].y;
+            }
+
+
+            //for (int i = 0; i < line4.Length ; ++i)
+            //{
+            //    int randommove = random.Next(1, 6); // 1부터 5까지의 랜덤한 숫자를 저장
+
+            //    switch (randommove)
+            //    {
+            //        case 1: // 1 나오면 병장이 오른쪽으로 이동
+            //            line4[i].x = Math.Clamp(line4[i].x + 1, game.min_x, game.max_x);
+            //            break;
+            //        case 2: // 2 나오면 병장이 왼쪽으로 이동
+            //            line4[i].x = Math.Clamp(line4[i].x - 1, game.min_x, game.max_x);
+            //            break;
+            //        case 3: // 3 나오면 병장이 위로 이동
+            //            line4[i].y = Math.Clamp(line4[i].y - 1, game.min_y, game.max_y);
+            //            break;
+            //        case 4: // 4 나오면 병장이 아래로 이동
+            //            line4[i].y = Math.Clamp(line4[i].y + 1, game.min_y, game.max_y);
+            //            break;
+            //        case 5: // 5 나오면 병장 가만히 stop
+            //            break;
+
+            //    }
+            //}
+            
+
+
+
+
+
+
+
+
+            for (int i = 0; i < line4.Length ;++i)
+            {
+                if (player.x == line4[i].x && player.y == line4[i].y) // 플레이어와 병장이 만난다면 테트리스모드를 끈다
+                {
+                    game.tetrismode = false;
+                    music_walk.Stop();
+                    break;
+                }
+            }
+            
 
 
         }
@@ -1188,6 +1307,7 @@ class Program
                 byeong_lose = true;
                 music_battle.Stop(); // 배틀모드 소리 끄고
                 music_victory.PlayLooping(); // 승리모드 소리 키기
+                game.collision = true; // 충돌씬 다시 true로 바꾸고
                 battle.battle_on = false; // 배틀모드를 끄고
                 battle.victory_on = true; // 승리모드를 킨다
             }
