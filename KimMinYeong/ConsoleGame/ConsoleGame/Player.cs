@@ -39,8 +39,11 @@ namespace ConsoleGame
 
         public static void Render()
         {
-            Console.SetCursorPosition(BeforeX, Y);
-            Console.Write(" ");
+            if(BeforeX != CurrentX)
+            {
+                Console.SetCursorPosition(BeforeX, Y);
+                Console.Write(" ");
+            }
 
             Console.SetCursorPosition(CurrentX, Y);
             Console.Write(Icon);
