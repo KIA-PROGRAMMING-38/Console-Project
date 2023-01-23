@@ -12,6 +12,8 @@ namespace Packman
 
         private bool _isPauseGame = false;
 
+        private LinkedList<GameObject> _ui = new LinkedList<GameObject>();
+
         private SelectUI _selectUI = null;
         private TitleText _titleText = null;
 
@@ -45,9 +47,37 @@ namespace Packman
             _selectUI.AddSelectList( "Go Title Scene", GoTitleScene );
         }
 
+        public void SetPauseGame(bool isPauseGame)
+        {
+            _isPauseGame = isPauseGame;
+
+            if(_isPauseGame)
+            {
+
+            }
+            else
+            {
+                _ui.Clear();
+
+                Console.Clear();
+
+                Map map = ObjectManager.Instance.GetGameObject<Map>();
+                if ( null != map )
+                {
+                    map.Render();
+                }
+
+                GoldGroup goldGroup = ObjectManager.Instance.GetGameObject<GoldGroup>();
+                if ( null != goldGroup )
+                {
+                    goldGroup.Render();
+                }
+            }
+        }
+
         public void Update()
         {
-            if( false == _isPauseGame)
+            if ( false == _isPauseGame )
             {
                 if ( null == _goldGroup )
                 {
@@ -66,12 +96,17 @@ namespace Packman
             }
             else
             {
-                _selectUI.Update();
-                _titleText.Update();
-
-                _selectUI.Render();
-                _titleText.Render();
+                foreach ( var ui in _ui )
+                {
+                    ui.Update();
+                    ui.Render();
+                }
             }
+        }
+
+        public void AddProcessUI( GameObject ui )
+        {
+            _ui.AddLast( ui );
         }
 
         public void OnPlayerDead()
@@ -86,7 +121,10 @@ namespace Packman
 
         private void OnPressEscapeKey()
         {
-            _isPauseGame = true;
+            SetPauseGame( true );
+
+            AddProcessUI( _selectUI );
+            AddProcessUI( _titleText );
         }
 
         private void GoTitleScene()
@@ -96,21 +134,7 @@ namespace Packman
 
         private void ResumeGame()
         {
-            _isPauseGame = false;
-
-            Console.Clear();
-
-            Map map = ObjectManager.Instance.GetGameObject<Map>();
-            if ( null != map )
-            {
-                map.Render();
-            }
-
-            GoldGroup goldGroup = ObjectManager.Instance.GetGameObject<GoldGroup>();
-            if( null != goldGroup)
-            {
-                goldGroup.Render();
-            }
+            SetPauseGame( false );
         }
     }
 }

@@ -59,6 +59,8 @@ namespace Packman
         {
             base.Update();
 
+            return;
+
             switch ( _patternKind )
             {
                 case PatternKind.Begin:

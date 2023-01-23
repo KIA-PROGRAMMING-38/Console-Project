@@ -37,11 +37,12 @@ namespace Packman
 		public const string MONSTER_IMAGE = "★";
 		//public const string MONSTER_IMAGE = "M";
 		public const string GOLD_IMAGE = "⊙";
-		//public const string GOLD_IMAGE = "G";
+        //public const string GOLD_IMAGE = "G";
+        public const string STUN_IMAGE = "Σ";
 
-		// Color 관련 상수들..
-		// 오브젝트 Color..
-		public const ConsoleColor PLAYER_COLOR = ConsoleColor.Yellow;
+        // Color 관련 상수들..
+        // 오브젝트 Color..
+        public const ConsoleColor PLAYER_COLOR = ConsoleColor.Yellow;
         public const ConsoleColor MONSTER_COLOR = ConsoleColor.Red;
         public const ConsoleColor MAP_WALL_COLOR = ConsoleColor.Blue;
         public const ConsoleColor GOLD_COLOR = ConsoleColor.DarkYellow;

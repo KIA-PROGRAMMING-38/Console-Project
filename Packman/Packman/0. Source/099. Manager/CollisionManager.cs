@@ -11,12 +11,24 @@ namespace Packman
         Player _player;
         Monster[] _monsters;
         Item[] _items;
+        Projectile[] _projectiles;
 
         public void RenewObjectInstance()
         {
             _player = ObjectManager.Instance.GetGameObject<Player>();
             _monsters = ObjectManager.Instance.GetAllGameObject<Monster>();
+            RenewItemInstance();
+            RenewProjectileInstance();
+        }
+
+        public void RenewItemInstance()
+        {
             _items = ObjectManager.Instance.GetAllGameObject<Item>();
+        }
+
+        public void RenewProjectileInstance()
+        {
+            _projectiles = ObjectManager.Instance.GetAllGameObject<Projectile>();
         }
 
         public void Update()
@@ -37,7 +49,7 @@ namespace Packman
             }
 
             // Collision Player To Item..
-            if(null != _items )
+            if ( null != _items )
             {
                 foreach ( Item item in _items )
                 {

@@ -85,6 +85,7 @@ namespace Packman
             const char MONSTER_TILE_SYMBOL = 'M';
             const char PLAYER_TILE_SYMBOL = 'P';
             const char WAYPOINT_TILE_SYMBOL = '*';
+            const char TRAP_TILE_SYMBOL = 'T';
 
             // 맵 데이터 가져와 파싱..
             string[] mapMetadata = lines[0].Split(' ');
@@ -160,6 +161,14 @@ namespace Packman
                             Debug.Assert( wayPoint.Initialize() );
 
                             wayPoints.Add( wayPoint );
+
+                            break;
+
+                        case TRAP_TILE_SYMBOL:
+                            Trap trap = new Trap(curIndexX + mapPosX, curIndexY + mapPosY);
+                            trap.Initialize();
+
+                            ObjectManager.Instance.AddGameObject( "Trap", trap );
 
                             break;
                         default:                // 이 외는 파일 잘못 만든 것이라 강제종료..

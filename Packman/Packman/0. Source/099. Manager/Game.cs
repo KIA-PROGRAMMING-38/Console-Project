@@ -42,9 +42,6 @@ namespace Packman
             EventManager eventManagerInstance = EventManager.Instance;
             SceneManager sceneManagerInstance = SceneManager.Instance;
 
-            FastClickUI ui = new FastClickUI(30, 0);
-            ui.Initialize();
-
             while ( true )
             {
                 timeManagerInstance.Update();
@@ -54,11 +51,8 @@ namespace Packman
                     inputManagerInstance.Update();
                     eventManagerInstance.Update();
 
-                    ui.Update();
-                    ui.Render();
-
-                    //sceneManagerInstance.Update();
-                    //sceneManagerInstance.Render();
+                    sceneManagerInstance.Update();
+                    sceneManagerInstance.Render();
                 }
             }
         }

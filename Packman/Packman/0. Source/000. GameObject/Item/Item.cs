@@ -16,7 +16,14 @@ namespace Packman
 
         public override void Render()
         {
-            
+            base.Render();
+        }
+
+        public override void OnCollision( GameObject collisionObjectInst )
+        {
+            base.OnCollision( collisionObjectInst );
+
+            CollisionManager.Instance.RenewItemInstance();
         }
     }
 }

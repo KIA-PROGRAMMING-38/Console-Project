@@ -144,7 +144,10 @@ namespace Packman
 
             foreach ( var gameobject in _gameObjects )
             {
-                if( gameobject.Value.GetType() == findType )
+                // 현재 검사하고 있는 gameobject 가 같은 타입이거나 상속받은 자식 타입인 경우..
+                Type curGameobjectType = gameobject.Value.GetType();
+                if ( curGameobjectType == findType ||
+                    curGameobjectType.IsSubclassOf( findType ) )
                 {
                     return (T)gameobject.Value;
                 }
@@ -166,7 +169,10 @@ namespace Packman
             // 모든 오브젝트들 순회하면서 값 담아둠..
             foreach ( var gameobject in _gameObjects )
             {
-                if ( gameobject.Value.GetType() == findType )
+                // 현재 검사하고 있는 gameobject 가 같은 타입이거나 상속받은 자식 타입인 경우..
+                Type curGameobjectType = gameobject.Value.GetType();
+                if ( curGameobjectType == findType ||
+                    curGameobjectType.IsSubclassOf( findType ) )
                 {
                     findTypeInstanceList.AddLast( (T)gameobject.Value );
                 }

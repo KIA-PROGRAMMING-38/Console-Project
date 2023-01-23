@@ -7,7 +7,11 @@ namespace Packman
     {
         static void Main()
         {
-            string asdf = "|                               |";
+            Game.Instance.Initialize();
+
+            string asdf = "========================";
+            Console.WriteLine( "AAA" );
+            Console.WriteLine( "Σ" );
             int asdffff = asdf.Length;
 
             //string path = Path.Combine( "../../../Resources", "Data", "Stage1.txt" );

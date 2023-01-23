@@ -8,49 +8,46 @@ namespace Packman
 {
     internal class FastClickUI : GameObject
     {
+        public Action OnFillMaxGauge;
+
         private string[] _text =
         {
-            @"======================================================",
-            @"|                                 _                  |",
-            @"|                                | |                 |",
-            @"| ___  _ __    __ _   ___   ___  | |__    __ _  _ __ |",
-            @"|/ __|| '_ \  / _` | / __| / _ \ | '_ \  / _` || '__||",
-            @"|\__ \| |_) || (_| || (__ |  __/ | |_) || (_| || |   |",
-            @"||___/| .__/  \__,_| \___| \___| |_.__/  \__,_||_|   |",
-            @"|     | |                                            |",
-            @"|     |_|                                            |",
-            @"======================================================",
+            @"=================================",
+            @"| ___  _ __    __ _   ___   ___ |",
+            @"|/ __|| '_ \  / _` | / __| / _ \|",
+            @"|\__ \| |_) || (_| || (__ |  __/|",
+            @"||___/| .__/  \__,_| \___| \___||",
+            @"|     | |                       |",
+            @"|     |_|                       |",
+            @"=================================",
         };
 
         // 프로그레스 바 관련 변수들..
         private string[] _progressBar = 
         {
-            "=================================",
-            "|                               |",
-            "|                               |",
-            "|                               |",
-            "=================================",
+            "       Gauge Bar        ",
+            "========================",
+            "|                      |",
+            "========================",
         };
 
         // 프로그레바 게이지 시작 위치..
         private const int GAUGE_BAR_START_X = 1;
-        private const int GAUGE_BAR_START_Y = 1;
-        private const int GAUGE_BAR_END_X = 32;
+        private const int GAUGE_BAR_START_Y = 2;
+        private const int GAUGE_BAR_END_X = 23;
         private const int GAUGE_BAR_WIDTH = GAUGE_BAR_END_X - GAUGE_BAR_START_X;
 
-        private int _gaugeBarOffsetX = 10;
-        private int _gaugeBarOffsetY = 5;
+        private int _gaugeBarOffsetX = 3;
+        private int _gaugeBarOffsetY = 2;
 
         private string[] _gaugeBar = null;
 
         float _curGauge = 0.0f;
         float _gaugePower = 0.01f;
+        bool _isFullGauge = false;
 
         ConsoleColor[] _colors = { ConsoleColor.Gray, ConsoleColor.DarkGray };
         int _curColorIndex = 0;
-
-        bool _isSpacebarKeyDown = false;
-        bool _isCheckSpacebarKeyUp = false;
 
         public FastClickUI( int x, int y )
             : base( x, y, 2100 )
@@ -89,22 +86,13 @@ namespace Packman
         public override void Update()
         {
             base.Update();
+        }
 
-            if(false == _isCheckSpacebarKeyUp )
-            {
-                if ( _isSpacebarKeyDown )
-                {
-                    _curGauge = Math.Min( _curGauge + _gaugePower, 1.0f );
-                    _isCheckSpacebarKeyUp = true;
-                }
-            }
-            else
-            {
-                if ( false == _isSpacebarKeyDown )
-                    _isCheckSpacebarKeyUp = false;
-            }
+        public override void Release()
+        {
+            base.Release();
 
-            _isSpacebarKeyDown = false;
+            EventManager.Instance.RemoveInputEvent( ConsoleKey.Spacebar, OnPressSpacebarKey );
         }
 
         public override void Render()
@@ -138,11 +126,8 @@ namespace Packman
             gaugeBarX += GAUGE_BAR_START_X;
             gaugeBarY = gaugeBarY + GAUGE_BAR_START_Y;
 
-            for( int i = 0; i < 3; ++i)
-            {
-                Console.SetCursorPosition( gaugeBarX, gaugeBarY + i );
-                Console.Write( _gaugeBar[gaugeBarIndex] );
-            }
+            Console.SetCursorPosition( gaugeBarX, gaugeBarY );
+            Console.Write( _gaugeBar[gaugeBarIndex] );
         }
 
         private void OnUpdateColor()
@@ -154,7 +139,11 @@ namespace Packman
 
         private void OnPressSpacebarKey()
         {
-            _isSpacebarKeyDown = true;
+            _curGauge = Math.Min( _curGauge + _gaugePower, 1.0f );
+            if( _curGauge >= 0.999f )
+            {
+                OnFillMaxGauge?.Invoke();
+            }
         }
     }
 }
