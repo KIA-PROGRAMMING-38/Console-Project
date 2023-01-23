@@ -27,17 +27,19 @@ namespace Moon_Taker
             MapSize mapSize = new MapSize();
             Advice[] advice = new Advice[0];
 
-            string[][] Stage = new string[StageSettings.stageNumber + 1][];
+            string[][] Stage = new string[GameSettings.stageNumber + 1][];
+            Functions.CheckStageNumber();
+            Functions.NameStage(GameSettings.stageFilePath);
             for (int stageId = 1; stageId < Stage.Length; ++stageId)
             {
-                Stage[stageId] = Functions.LoadFile(@$"Assets\Stage\Stage{stageId}.txt", stageId);
+                Stage[stageId] = Functions.LoadFile(GameSettings.stageFilePath[stageId]);
             }
-            string[] advices = Functions.LoadFile(@"Assets\Advice\Advice.txt");
+            string[] advices = Functions.LoadFile(GameSettings.adviceFilePath);
             Functions.ParseAdvice(advices, out advice);
             Scene.EnterSynopsisScene();
             Scene.EnterGameRulesScene();
 
-            while (StageSettings.isGameStarted)
+            while (GameSettings.isGameStarted)
             {
                 Console.Clear();
 
@@ -163,7 +165,7 @@ namespace Moon_Taker
                     int adviceNumber = -1;
                     Functions.PickAdviceNumber(advice, ref adviceNumber);
                     Functions.WriteAdvice(advice, mapSize, ref adviceNumber);
-                    if (advice[adviceNumber].name == "최선문" && StageSettings.currentStage != StageSettings.stageNumber)
+                    if (advice[adviceNumber].name == "최선문" && StageSettings.currentStage != GameSettings.stageNumber)
                     {
                         Scene.EnterBlessedScene(advice, adviceNumber);
                     }
@@ -247,6 +249,7 @@ namespace Moon_Taker
                         continue;
                     }
                     ObjectStatus.pushedBlockId = blockId;
+                    
                     switch (Input)
                     {
                         case ConsoleKey.RightArrow:
@@ -438,12 +441,12 @@ namespace Moon_Taker
 
                 if (Actions.IsCollided(player.X, player.Y, moon.X, moon.Y))
                 {
-                    if (StageSettings.currentStage < StageSettings.stageNumber)
+                    if (StageSettings.currentStage < GameSettings.stageNumber)
                     {
                         Scene.EnterStageClearScene(ref StageSettings.currentStage);
                         continue;
                     }
-                    else if (StageSettings.currentStage == StageSettings.stageNumber)
+                    else if (StageSettings.currentStage == GameSettings.stageNumber)
                     {
                         Scene.EnterGameClearScene();
                     }

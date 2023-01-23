@@ -28,6 +28,22 @@ namespace Moon_Taker
             Console.SetCursorPosition(x, y);
             Render(someString, myColor);
         }
+        public static int CheckStageNumber()
+        {
+            int stageNumber = 1;
+            while(File.Exists($@"Assets\Stage\Stage{stageNumber}.txt"))
+            {
+                ++stageNumber;
+            }
+            return stageNumber - 1;
+        }
+        public static void NameStage(string[] stageFilePath)
+        {
+            for(int stageId = 1; stageId < GameSettings.stageNumber + 1; stageId++)
+            {
+                stageFilePath[stageId] = $@"Assets\Stage\Stage{stageId}.txt";
+            }
+        }
         public static string[] LoadFile(string filePath, int stageNumber = 0)
         {
             string file = filePath;

@@ -50,7 +50,7 @@ namespace Moon_Taker
         {
             Console.Clear();
             Functions.Render("게임 규칙\n\n\n" +
-                   $"이 게임은 {StageSettings.stageNumber}개의 스테이지로 구성되어 있습니다.\n\n" +
+                   $"이 게임은 {GameSettings.stageNumber}개의 스테이지로 구성되어 있습니다.\n\n" +
                    "재광은 앞에 있는 적과 블록은 발로 찰 수 있습니다.\n\n" +
                    "적은 어딘가에 부딪히면 부서집니다.\n\n" +
                    "각 스테이지는 별도의 행동횟수가 주어지며, 움직이거나 무언가를 찰 때 1씩 감소합니다.\n\n" +
@@ -140,7 +140,7 @@ namespace Moon_Taker
             Functions.WaitForNextInput(ConsoleKey.Escape, FoundError);
         }
 
-        public static Action GameStart = () => StageSettings.isGameStarted = true;
+        public static Action GameStart = () => GameSettings.isGameStarted = true;
         public static Action StageReseted = () => StageSettings.isStageReseted = true;
         public static Action GameClear = () => Environment.Exit(1);
         public static Action FoundError = () => Environment.Exit(-1);
