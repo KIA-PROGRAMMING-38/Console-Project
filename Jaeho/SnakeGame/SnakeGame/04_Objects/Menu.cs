@@ -27,6 +27,7 @@ namespace SnakeGame._05_Components
             currentType  = MENU_TYPE.Title;
             _flag = false;
         }
+
         public void Update()
         {
             if (_flag == false && InputManager.Instance.IsKeyDown(ConsoleKey.Escape))

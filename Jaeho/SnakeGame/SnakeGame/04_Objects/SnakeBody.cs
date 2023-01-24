@@ -28,7 +28,7 @@ namespace SnakeGame
             Parent = null;
             Next = null;
 
-            base.Start();
+            StartComponents();
         }
 
         public override void Render()

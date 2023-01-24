@@ -10,7 +10,9 @@
             AddComponent(new Renderer('▒', 1));
             renderer = GetComponent<Renderer>();
 
-            base.Start();
+            StartComponents();
+
+            GetComponent<Collider>().SetCollisionCheck(false);
         }
 
         public override void Render()

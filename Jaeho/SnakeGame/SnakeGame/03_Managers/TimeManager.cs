@@ -22,9 +22,10 @@ namespace SnakeGame
             _currentMs = stopwatch.ElapsedMilliseconds;
         }
 
-        public void Destroy()
+        public void Release()
         {
             stopwatch.Stop();
+            stopwatch = null;
         }
     }
 }

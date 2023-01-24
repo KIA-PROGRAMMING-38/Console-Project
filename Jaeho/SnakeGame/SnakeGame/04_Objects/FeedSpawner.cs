@@ -8,16 +8,22 @@ namespace SnakeGame
         private HashSet<Feed> _removePendingList = new HashSet<Feed>();
         private bool[,] _currentSpawnAbleArea;
         private int _spawnInterval;
-        long time = 0;
+        private long _time = 0;
 
+        /// <summary>
+        /// Feed를 스폰해주는 함수
+        /// </summary>
+        /// <param name="spawnAbleArea">스폰가능한 맵데이터 테이블</param>
+        /// <param name="spawnInterval">스폰 간격</param>
         public void StartSpawn(bool[,] spawnAbleArea, int spawnInterval)
         {
-            time = 0;
+            _time = 0;
             _feedList.Clear();
             _currentSpawnAbleArea = spawnAbleArea;
             Debug.Assert(_currentSpawnAbleArea != null);
             _spawnInterval = spawnInterval;
         }
+
         public void FeedClear()
         {
             foreach (var feed in _feedList)
@@ -28,12 +34,13 @@ namespace SnakeGame
             _feedList.RemoveAll(_removePendingList.Contains);
             _removePendingList.Clear();
         }
+
         public void Update()
         {
             FeedClear();
             if (_feedList.Count >= 1) { return; }
-            time += TimeManager.Instance.ElapsedMs;
-            FeedSpawn(time);
+            _time += TimeManager.Instance.ElapsedMs;
+            FeedSpawn(_time);
         }
        
         public void FeedSpawn(long elapsed)
@@ -56,7 +63,7 @@ namespace SnakeGame
                 feed.Position = feedPos;
 
                 _feedList.Add(feed);
-                time = 0;
+                _time = 0;
             }
         }
     }

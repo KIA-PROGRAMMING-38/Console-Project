@@ -18,10 +18,14 @@ namespace SnakeGame
             AddComponent(new Renderer('☺', 5, ConsoleColor.Yellow));
             PrevPos = Position;
             _renderer = GetComponent<Renderer>();
-            
-            base.Start();
+
+            StartComponents();
         }
 
+        /// <summary>
+        /// 충돌했을 때 처리할 콜백 함수
+        /// </summary>
+        /// <param name="sender"></param>
         public override void OnCollision(object? sender)
         {
             GameObject? obj = sender as GameObject;
@@ -123,10 +127,9 @@ namespace SnakeGame
         public override void Update()
         {
             PrevPos = Position;
-            foreach (var pair in _components)
-            {
-                pair.Value.Update();
-            }
+
+            UpdateComponents();
+
             BodyUpdate();
         }
 

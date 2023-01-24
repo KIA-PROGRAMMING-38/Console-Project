@@ -1,0 +1,21 @@
+﻿GoalCount: 5
+SpawnInterval: 1500
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+B       B      B            B B                           B
+B                                       B      B          B
+BBBBBBBBBBBBBBBBBBBBBBBBBBB     BBBBBBBBBBBBBBBBBBBBBBBBBBB
+B                                       B      B          B
+B       B      B                                          B
+BBBBBBBBBBBBBBBBBBBBBBBBBB       BBBBBBBBBBBBBBBBBBBBBBBBBB
+B       B      B                                          B
+B                                       B      B          B
+BBBBBBBBBBBBBBBBBBBBBBBBB         BBBBBBBBBBBBBBBBBBBBBBBBB
+B                           P           B      B          B
+B       B      B                                          B
+BBBBBBBBBBBBBBBBBBBBBBBB           BBBBBBBBBBBBBBBBBBBBBBBB
+B       B      B                                          B
+B                                       B      B          B
+BBBBBBBBBBBBBBBBBBBBBBB             BBBBBBBBBBBBBBBBBBBBBBB
+B                                       B      B          B
+B       B      B          B    B                          B
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB

@@ -10,15 +10,28 @@ namespace SnakeGame
     {
         public InputManager()
         {
-            Task.Factory.StartNew(() => 
-            { 
-                while(true)
+            ProcessInputAsync();
+        }
+
+        /// <summary>
+        /// 비동기 키 처리
+        /// </summary>
+        public void ProcessInputAsync()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
                 {
                     _key = Console.ReadKey().Key;
                 }
             }, TaskCreationOptions.LongRunning);
         }
 
+        /// <summary>
+        /// key가 눌렸는지 검사
+        /// </summary>
+        /// <param name="key">검사할 키</param>
+        /// <returns>눌렸는지 반환</returns>
         public bool IsKeyDown(ConsoleKey key) => _key == key;
 
         public void ResetKey() { _key = default; }

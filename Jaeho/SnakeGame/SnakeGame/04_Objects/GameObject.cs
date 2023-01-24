@@ -8,9 +8,10 @@ namespace SnakeGame
         {
             _name = GetType().Name;
             _tag = GetType().Name;
-            //_tag = string.Empty;
             _position = new Vector2(0, 0);
             _components = new Dictionary<string, Component>();
+
+            // 생성과 동시에 게임오브젝트매니저에 등록
             GameObjectManager.Instance.AddGameObject(this);
         }
 
@@ -34,6 +35,10 @@ namespace SnakeGame
         public Vector2 Position { get { return _position; } set { _position = value; } }
         #endregion
 
+        /// <summary>
+        /// 컴포넌트를 추가해줍니다.
+        /// </summary>
+        /// <param name="component">추가할 컴포넌트</param>
         public void AddComponent(Component component)
         {
             string componentTypeName = component.GetType().Name;
@@ -45,6 +50,12 @@ namespace SnakeGame
             component.Owner = this;
         }
 
+        /// <summary>
+        /// 가지고 있는 컴포넌트 중 이름이 같은 컴포넌트를 반환
+        /// </summary>
+        /// <typeparam name="T">Component클래스를 상속받은 클래스만 가능</typeparam>
+        /// <param name="name">가져올 컴포넌트 이름</param>
+        /// <returns>컴포넌트</returns>
         public T GetComponent<T>(string name) where T : Component
         {
             Component component;
@@ -56,6 +67,11 @@ namespace SnakeGame
             return result;
         }
 
+        /// <summary>
+        /// T타입과 같은 컴포넌트를 반환
+        /// </summary>
+        /// <typeparam name="T">Component클래스를 상속받은 클래스만 가능</typeparam>
+        /// <returns>컴포넌트</returns>
         public T GetComponent<T>() where T : Component
         {
             Component component;
@@ -68,21 +84,14 @@ namespace SnakeGame
             return result;
         }
 
-        public virtual void OnCollision(object? sender = null)
-        {
-
-        }
-
-
-        public virtual void Start() 
+        protected void StartComponents()
         {
             foreach (var comp in _components)
             {
                 comp.Value.Start();
             }
         }
-
-        public virtual void Update() 
+        protected void UpdateComponents()
         {
             foreach (var comp in _components)
             {
@@ -90,16 +99,27 @@ namespace SnakeGame
             }
         }
 
+        /// <summary>
+        /// 충돌했을 때 호출될 함수
+        /// </summary>
+        /// <param name="sender"></param>
+        public virtual void OnCollision(object? sender = null)
+        {
+
+        }
+
+        public virtual void Start() 
+        {
+        }
+
+        public virtual void Update() 
+        {
+
+        }
+
         public virtual void Render()
         {
 
         }
-        //public virtual void Render() 
-        //{
-        //    foreach (var comp in _components)
-        //    {
-        //        comp.Value.Render();
-        //    }
-        //}
     }
 }

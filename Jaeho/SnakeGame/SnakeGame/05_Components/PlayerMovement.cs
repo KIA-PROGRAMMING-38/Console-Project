@@ -13,35 +13,45 @@ namespace SnakeGame
             Down,
         }
 
-        private Direction moveDirection = Direction.None;
+        private Direction moveDirection;
         public Direction MoveDirection { get { return moveDirection; } }
 
         public override void Start()
         {
+            moveDirection = Direction.None;
         }
         public void DirectionUpdate()
         {
             if (InputManager.Instance.IsKeyDown(ConsoleKey.LeftArrow))
             {
-                if (MoveDirection == Direction.Right) return;
-                moveDirection = Direction.Left;
+                if (MoveDirection != Direction.Right)
+                {
+                    moveDirection = Direction.Left;
+                }
             }
-            else if (InputManager.Instance.IsKeyDown(ConsoleKey.RightArrow))
+            if (InputManager.Instance.IsKeyDown(ConsoleKey.RightArrow))
             {
-                if (moveDirection == Direction.Left) return;
-                moveDirection = Direction.Right;
+                if (moveDirection != Direction.Left)
+                {
+                    moveDirection = Direction.Right;
+                }
             }
-            else if (InputManager.Instance.IsKeyDown(ConsoleKey.UpArrow))
+            if (InputManager.Instance.IsKeyDown(ConsoleKey.UpArrow))
             {
-                if (moveDirection == Direction.Down) return;
-                moveDirection = Direction.Up;
+                if (moveDirection != Direction.Down)
+                {
+                    moveDirection = Direction.Up;
+                }
             }
-            else if (InputManager.Instance.IsKeyDown(ConsoleKey.DownArrow))
+            if (InputManager.Instance.IsKeyDown(ConsoleKey.DownArrow))
             {
-                if (moveDirection == Direction.Up) return;
-                moveDirection = Direction.Down;
+                if (moveDirection != Direction.Up)
+                {
+                    moveDirection = Direction.Down;
+                }
             }
         }
+
         public void MoveObject()
         {
             Vector2 position = Owner.Position;

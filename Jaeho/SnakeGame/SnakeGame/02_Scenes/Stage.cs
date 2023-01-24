@@ -57,7 +57,7 @@ namespace SnakeGame
             Console.SetCursorPosition(GameDataManager.MAP_MIN_X, 1);
             StringBuilder sb = new StringBuilder();
             sb.Append("┌");
-            for (int i = 0; i < GameDataManager.MAP_WIDTH - 1; ++i)
+            for (int i = 0; i < GameDataManager.MAP_WIDTH - 2; ++i)
             {
                 sb.Append("─");
             }
@@ -70,7 +70,7 @@ namespace SnakeGame
 
             Console.SetCursorPosition(GameDataManager.MAP_MIN_X, 3);
             sb.Append("└");
-            for (int i = 0; i < GameDataManager.MAP_WIDTH - 1; ++i)
+            for (int i = 0; i < GameDataManager.MAP_WIDTH - 2; ++i)
             {
                 sb.Append("─");
             }

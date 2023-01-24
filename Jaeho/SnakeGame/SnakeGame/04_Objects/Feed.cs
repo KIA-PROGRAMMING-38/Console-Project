@@ -11,12 +11,14 @@
             AddComponent(new Renderer('F', 1));
             renderer = GetComponent<Renderer>();
 
-            base.Start();
+            StartComponents();
         }
+
         public override void Update()
         {
-            base.Update();
+            UpdateComponents();
         }
+
         public override void Render()
         {
             Console.SetCursorPosition(Position.X, Position.Y);

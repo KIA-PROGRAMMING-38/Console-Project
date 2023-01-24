@@ -17,12 +17,10 @@
 
         public override void Render()
         {
-
             Console.SetCursorPosition(0, 0);
             Console.Write("Die...");
             Console.SetCursorPosition(0, 1);
             Console.Write("Enter누르면 종료");
-            
         }
 
     }

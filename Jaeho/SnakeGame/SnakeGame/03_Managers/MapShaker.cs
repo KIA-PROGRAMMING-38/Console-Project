@@ -6,14 +6,25 @@
         private long _millsecond = 0;
         private int _shakePowerX = 0;
         private int _shakePowerY = 0;
+
+        /// <summary>
+        /// 맵을 흔드는 플래그를 켜주는 함수
+        /// </summary>
+        /// <param name="flag">flag</param>
+        /// <param name="millsecond">흔들 시간</param>
+        /// <param name="shakePowerX">-X ~ X 범위로 흔들음</param>
+        /// <param name="shakePowerY">-Y ~ Y 범위로 흔들음</param>
         public void SetShakeFlag(bool flag, long millsecond, int shakePowerX, int shakePowerY)
         {
             _shakeFlagOn = flag;
-            _millsecond= millsecond;
+            _millsecond = millsecond;
             _shakePowerX = shakePowerX;
             _shakePowerY = shakePowerY;
         }
 
+        /// <summary>
+        /// 맵을 흔들어주는 함수
+        /// </summary>
         public void RenderShakedMap()
         {
             if (_shakeFlagOn == true)

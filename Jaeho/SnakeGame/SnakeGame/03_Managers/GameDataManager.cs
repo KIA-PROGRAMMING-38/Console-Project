@@ -35,7 +35,7 @@ namespace SnakeGame
         public static int _mapMaxY = 0;
 
 
-        public const  int ANCHOR_LEFT = 30;
+        public const  int ANCHOR_LEFT = 36;
         public const  int ANCHOR_TOP = 7;
 
         public static int MAP_MAX_X { get { return ANCHOR_LEFT + _mapMaxX; } }
@@ -69,13 +69,21 @@ namespace SnakeGame
         /// </summary>
         public void Load()
         {
-            _mapData.Add("Stage_1", ReadMapFile("Stage_1"));
-            _mapData.Add("Stage_2", ReadMapFile("Stage_2"));
-            _mapData.Add("Stage_3", ReadMapFile("Stage_3"));
+            var scenes = SceneManager.Instance.Scenes;
+
+            foreach(var sceneInfo in scenes)
+            {
+                // 씬중 스테이지만 불러온다
+                if(sceneInfo.Value is Stage)
+                {
+                    _mapData.Add(sceneInfo.Key, ReadMapFile(sceneInfo.Key));
+                }
+            }
+            
         }
 
         /// <summary>
-        /// 게임 데이터를 재설정 해줍니다.
+        /// 게임 데이터를 재설정해줍니다.
         /// </summary>
         /// <param name="mapInfo"></param>
         public void SetData(MapInfo mapInfo)
