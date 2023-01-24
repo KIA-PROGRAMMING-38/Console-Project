@@ -20,19 +20,17 @@ namespace ConsoleGame
             {
                 Shoot();
                 Fly();
-                Thread.Sleep(100);
+                Thread.Sleep(200);
             }
         }
 
         public static void Shoot()
         {
-            _preY[_bulletIndex] = _y[_bulletIndex];
-
             _x[_bulletIndex] = Player._currentX;
             _y[_bulletIndex] = Player._y - 1;
 
 
-            if(_bulletIndex == Player._y - 0)  // 0은 나중에 맵 꾸미게되면 총알이 갈 수 있는 맵의 가장 상단 y좌표
+            if(_bulletIndex == Player._y - 1)  // 0은 나중에 맵 꾸미게되면 총알이 갈 수 있는 맵의 가장 상단 y좌표
             {
                 _bulletIndex = 0;
             }
@@ -51,6 +49,8 @@ namespace ConsoleGame
                     continue;
                 }
 
+                _preY[bulletId] = _y[bulletId];
+
                 _y[bulletId] -= 1;
             }
         }
@@ -59,11 +59,7 @@ namespace ConsoleGame
         {
             for(int bulletId = 0; bulletId < _preY.Length; ++bulletId)
             {
-                // 배열 선언할 때 초기화된 기본값이라는 건 shoot해서 변경된 위치가 아님 
-                if (_y[bulletId] == 0)
-                {
-                    continue;
-                }
+                
 
                 Console.SetCursorPosition(_x[bulletId], _preY[bulletId]);
                 Console.Write(" ");
