@@ -15,38 +15,38 @@ namespace ConsoleGame
 
     public static class Player
     {
-        public static int BeforeX;
-        public static int CurrentX;
-        public static int Y = 20;
-        public static string Icon = "A";
-        public static MoveDirection moveDirection;
+        public static int _beforeX;
+        public static int _currentX;
+        public static int _y = 20;
+        public static string _icon = "A";
+        public static MoveDirection _moveDirection;
 
         public static void Move()
         {
-            BeforeX = CurrentX;
+            _beforeX = _currentX;
 
-            switch(moveDirection)
+            switch(_moveDirection)
             {
                 case MoveDirection.Left:
-                    CurrentX = Math.Max(0, CurrentX - 1);
+                    _currentX = Math.Max(0, _currentX - 1);
                     break;
 
                 case MoveDirection.Right:
-                    CurrentX = Math.Min(CurrentX + 1, 35);
+                    _currentX = Math.Min(_currentX + 1, 35);
                     break;
             }
         }
 
         public static void Render()
         {
-            if(BeforeX != CurrentX)
+            if(_beforeX != _currentX)
             {
-                Console.SetCursorPosition(BeforeX, Y);
+                Console.SetCursorPosition(_beforeX, _y);
                 Console.Write(" ");
             }
 
-            Console.SetCursorPosition(CurrentX, Y);
-            Console.Write(Icon);
+            Console.SetCursorPosition(_currentX, _y);
+            Console.Write(_icon);
         }
     }
 }

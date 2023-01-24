@@ -16,28 +16,31 @@ namespace ConsoleGame
     }
     public static class SceneManager
     {
-        public static SceneKind CurrentScene;
-        public static SceneKind CapturedScene;
+        public static SceneKind _currentScene;
+        public static SceneKind _capturedScene;
+        public static Thread shootingBullet = new Thread(() => Bullet.Shooting());
+        //public static Thread shootThread = new Thread(() => Bullet.Shoot());
+        //public static Thread flyThread = new Thread(() => Bullet.Fly());
 
         public static bool IsSceneChange()
         {
-            if(CurrentScene == CapturedScene)
+            if(_currentScene == _capturedScene)
             {
                 return false;
             }
             else
             {
-                CapturedScene = CurrentScene;
+                _capturedScene = _currentScene;
                 return true;
             }
         }
 
         public static void ChangeScene()
         {
-            CapturedScene = CurrentScene;
+            _capturedScene = _currentScene;
             Console.Clear();
 
-            switch (CurrentScene)
+            switch (_currentScene)
             {
                 case SceneKind.Title:
                     InitTitle();
@@ -53,20 +56,21 @@ namespace ConsoleGame
                     break;
                 default:
                     Console.Clear();
-                    Console.WriteLine($"잘못된 SceneKind 입니다. {CurrentScene}");
+                    Console.WriteLine($"잘못된 SceneKind 입니다. {_currentScene}");
                     return;
             }
         }
 
         public static void RenderCurrentScene()
         {
-            switch (CurrentScene)
+            switch (_currentScene)
             {
                 case SceneKind.Title:
                     UpdateTitle();
                     RenderTitle();
                     break;
                 case SceneKind.InGame:
+                    UpdateInGame();
                     RenderInGame();
                     break;
                 case SceneKind.GameInfo:
@@ -78,7 +82,7 @@ namespace ConsoleGame
                     break;
                 default:
                     Console.Clear();
-                    Console.WriteLine($"잘못된 SceneId 입니다. {CurrentScene}");
+                    Console.WriteLine($"잘못된 SceneId 입니다. {_currentScene}");
                     return;
             }
         }
@@ -125,11 +129,11 @@ namespace ConsoleGame
             switch (Input.CheckInputKey())
             {
                 case ConsoleKey.UpArrow:
-                    SceneData.titleCursorY -= 2;
+                    SceneData.titleCursorY = Math.Max(15, SceneData.titleCursorY - 2);
                     break;
 
                 case ConsoleKey.DownArrow:
-                    SceneData.titleCursorY += 2;
+                    SceneData.titleCursorY = Math.Min(SceneData.titleCursorY + 2, 19);
                     break;
 
                 case ConsoleKey.Enter:
@@ -144,15 +148,15 @@ namespace ConsoleGame
         {
             switch(SceneData.titleCursorY)
             {
-                case 15:
-                    CurrentScene = SceneKind.InGame;
+                case SceneData.titleOption1Y:
+                    _currentScene = SceneKind.InGame;
                     break;
 
-                case 17:
-                    CurrentScene = SceneKind.GameInfo;
+                case SceneData.titleOption2Y:
+                    _currentScene = SceneKind.GameInfo;
                     break;
 
-                case 19:
+                case SceneData.titleOption3Y:
                     Console.Clear();
                     Console.WriteLine("게임을 종료하였습니다.");
                     Environment.Exit(1);
@@ -163,26 +167,33 @@ namespace ConsoleGame
         public static void InitInGame()
         {
             Console.SetWindowSize(50, 30);
+            shootingBullet.Start();
         }
 
         public static void RenderInGame()
         {
             // 게임 진행 화면 렌더 구현
-            switch(Input.CheckInputKey())
+            Bullet.Render();
+            Player.Render();
+
+        }
+
+        public static void UpdateInGame()
+        {
+            switch (Input.CheckInputKey())
             {
                 case ConsoleKey.RightArrow:
-                    Player.moveDirection = MoveDirection.Right;
+                    Player._moveDirection = MoveDirection.Right;
                     Player.Move();
                     break;
 
                 case ConsoleKey.LeftArrow:
-                    Player.moveDirection = MoveDirection.Left;
+                    Player._moveDirection = MoveDirection.Left;
                     Player.Move();
                     break;
+
             }
-
-            Player.Render();
-
+            
         }
 
         public static void InitGameInfo()
@@ -204,7 +215,7 @@ namespace ConsoleGame
         {
             if(Input.IsKeyDown(ConsoleKey.Enter))
             {
-                CurrentScene = SceneKind.Title;
+                _currentScene = SceneKind.Title;
             }
         }
 

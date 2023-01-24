@@ -16,10 +16,10 @@ namespace ConsoleGame
         public static string cursorIcon = "▶";
 
 
-        public static int titleOptionsX = 54;
-        public static int titleOption1Y = 15;
-        public static int titleOption2Y = 17;
-        public static int titleOption3Y = 19;
+        public const int titleOptionsX = 54;
+        public const int titleOption1Y = 15;
+        public const int titleOption2Y = 17;
+        public const int titleOption3Y = 19;
 
         public static int preTitleCursorY = 15;
         public static int titleCursorY = 15;
