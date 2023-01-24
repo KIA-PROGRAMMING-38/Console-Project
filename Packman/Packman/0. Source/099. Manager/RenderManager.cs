@@ -40,6 +40,19 @@ namespace Packman
             _renderers.Add( renderer );
         }
 
+        public void RemoveRenderer(Renderer removeRenderer)
+        {
+            foreach(Renderer renderer in _renderers)
+            {
+                if ( renderer == removeRenderer )
+                {
+                    _renderers.Remove( renderer );
+
+                    break;
+                }
+            }
+        }
+
         public void ReserveRenderRemove( int x, int y, int size )
         {
             _removeRenderInfoes.AddLast( new RemoveRenderInfo { X = x, Y = y, Size = size } );

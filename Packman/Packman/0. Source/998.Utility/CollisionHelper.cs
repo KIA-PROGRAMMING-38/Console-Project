@@ -20,17 +20,21 @@ namespace Packman
             return IsSamePosition( dstObject, srcObject );
         }
 
-        private static bool IsSamePosition( GameObject dstObject, GameObject srcObject )
+        public static bool IsSamePosition( GameObject dstObject, GameObject srcObject )
         {
             Debug.Assert( null != dstObject && true == dstObject.IsActive );
             Debug.Assert( null != srcObject && true == srcObject.IsActive );
 
-            return IsSamePosition( dstObject.X, dstObject.Y, srcObject.X, srcObject.Y );
+            // 현재 위치가 같은지 검사..
+            if ( IsSamePosition( dstObject.X, dstObject.Y, srcObject.X, srcObject.Y ) )
+                return true;
+
+            return false;
         }
 
-        private static bool IsSamePosition( int x1, int y1, int x2, int y2 )
+        public static bool IsSamePosition( int x1, int y1, int x2, int y2 )
         {
-            if ( x1 == x2 && y1 == y2)
+            if ( x1 == x2 && y1 == y2 )
             {
                 return true;
             }

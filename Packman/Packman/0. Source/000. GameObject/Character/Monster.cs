@@ -10,6 +10,13 @@ namespace Packman
 {
     internal class Monster : Character
     {
+        public enum State
+        {
+            Default,        // 기본( 패턴 진행중 )..
+            Stun,           // 스턴..
+            ForcedToPush,   // 강제로 밀리는중..
+        }
+
         public enum PatternKind
         {
 			Begin,
@@ -26,15 +33,20 @@ namespace Packman
 		private List<Point2D> _paths = new List<Point2D>();
         private int _curPathIndex = 0;
 
+        // 현재 몬스터의 상태..
+        private State _curState = State.Default;
+        // 상태와 관련된 정보들..
+        private float _stunEffectiveTime = 0.0f;    // 몇 초 동안 스턴 걸릴것인가..
+        private float _forcedPushPower = 0.0f;    // 얼마나 날라갈 것인가..
         // AI 와 관련된 정보들..
-		PatternKind _prevPatternKind = PatternKind.Begin;
-		PatternKind _patternKind = PatternKind.Begin;
-		// 패턴을 진행할 수 없는가..
-		private bool _isCanActPattern = false;
+        private PatternKind _prevPatternKind = PatternKind.Begin;
+        private PatternKind _patternKind = PatternKind.Begin;
+        // 패턴을 진행할 수 없는가..
+        private bool _isCanActPattern = false;
         // WayPointGroup..
-        WayPointGroup _wayPointGroup = null;
+        private  WayPointGroup _wayPointGroup = null;
         // 현재 찾아가야할 WayPoint..
-        WayPoint _curDestinationWayPoint = null;
+        private WayPoint _curDestinationWayPoint = null;
 
         // 타겟 인식 범위..
         private int _targetRecognizeRange = 8;
@@ -59,31 +71,20 @@ namespace Packman
         {
             base.Update();
 
-            return;
-
-            switch ( _patternKind )
+            switch( _curState )
             {
-                case PatternKind.Begin:
-                    ActBeginPattern();
-                    _color = ConsoleColor.Green;
-
-					break;
-                case PatternKind.Wait:
-                    ActWaitPattern();
+                case State.Default:
+                    UpdateDefaultState();
 
                     break;
-                case PatternKind.Idle:
-                    ActIdlePattern();
+                case State.Stun:
+                    UpdateStunState();
 
-					_color = ConsoleColor.Blue;
+                    break;
+                case State.ForcedToPush:
+                    UpdateForcedToPushPower();
 
-					break;
-                case PatternKind.ChaseTarget:
-                    ActChaseTargetPattern();
-
-					_color = ConsoleColor.Red;
-
-					break;
+                    break;
             }
         }
 
@@ -91,6 +92,89 @@ namespace Packman
 		{
 			base.Render();
 		}
+
+        public void OnChangedStunState( float stunEffectiveTime )
+        {
+            ChangeState( State.Stun );
+            _stunEffectiveTime = stunEffectiveTime;
+        }
+
+        public void OnCHangedForcedToPushState(float forcedPushPower )
+        {
+            _forcedPushPower = forcedPushPower;
+        }
+
+        private void ChangeState( State _newState )
+        {
+            _curState = _newState;
+
+            switch ( _curState )
+            {
+                case State.Default:
+                    SetPatternKind( _patternKind );
+                    _image = Constants.MONSTER_IMAGE;
+                    _color = Constants.MONSTER_COLOR;
+                    break;
+                case State.Stun:
+                    _image = Constants.MONSTER_STUN_STATE_IMAGE;
+                    _color = Constants.MONSTER_STUN_STATE_COLOR;
+                    break;
+                case State.ForcedToPush:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 기본 상태일 때 Update 에서 실행될 함수..
+        /// </summary>
+        private void UpdateDefaultState()
+        {
+            switch ( _patternKind )
+            {
+                case PatternKind.Begin:
+                    ActBeginPattern();
+                    _color = ConsoleColor.Green;
+
+                    break;
+                case PatternKind.Wait:
+                    ActWaitPattern();
+
+                    break;
+                case PatternKind.Idle:
+                    ActIdlePattern();
+
+                    _color = ConsoleColor.Blue;
+
+                    break;
+                case PatternKind.ChaseTarget:
+                    ActChaseTargetPattern();
+
+                    _color = ConsoleColor.Red;
+
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Stun 상태일 때 Update 에서 실행될 함수..
+        /// </summary>
+        private void UpdateStunState()
+        {
+            _stunEffectiveTime -= TimeManager.Instance.ElaspedTime;
+            if ( _stunEffectiveTime <= 0.0f )
+            {
+                ChangeState( State.Default );
+            }
+        }
+
+        /// <summary>
+        /// ForcedToPush 상태일 때 Update 에서 실행될 함수..
+        /// </summary>
+        private void UpdateForcedToPushPower()
+        {
+
+        }
+        
 
 		// ====================================================================================================================================
 		// ================================================= AI Pattern 별로 실행되는 함수들..  =================================================

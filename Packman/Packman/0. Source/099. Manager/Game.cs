@@ -71,6 +71,7 @@ namespace Packman
         /// <param name="exitCode"></param>
         public void Exit(int exitCode)
         {
+            Console.Clear();
             Environment.Exit( exitCode );
         }
 

@@ -23,6 +23,7 @@ namespace Packman
         private const ConsoleKey moveUpKey = ConsoleKey.UpArrow;
         private const ConsoleKey moveDownKey = ConsoleKey.DownArrow;
         private const ConsoleKey fireStunGunKey = ConsoleKey.A;
+        private const ConsoleKey firePunchMissileKey = ConsoleKey.S;
 
         // 플레이어의 움직임 방향..
         private int _moveDirX = 0;
@@ -30,18 +31,29 @@ namespace Packman
         // 플레이어가 다음으로 움직일 방향..
         private int _nextMoveDirX = 0;
         private int _nextMoveDirY = 0;
+        // 플레이어가 현재 바라보고 있는 방향..
+        private int _lookDirX = 0;
+        private int _lookDirY = 0;
 
         private int _curMP = 10;
         private int _maxMP = 10;
 
         public int CurMP { get { return _curMP; } }
         public int MaxMP { get { return _maxMP; } }
+        public int LookDirX { get { return _lookDirX; } }
+        public int LookDirY { get { return _lookDirY; } }
 
         public Player( int x, int y, Map map )
             : base( x, y, Constants.PLAYER_IMAGE, Constants.PLAYER_COLOR, Constants.PLAYER_RENDER_ORDER, map, Constants.PLAYER_MOVE_DELAY )
         {
             _skillComponent = new PlayerSkill();
             AddComponent( "Skill", _skillComponent );
+
+            for( int i = 0; i < 100; ++i )
+            {
+                _skillComponent.AddSkill( SkillKind.FireStungun );
+                _skillComponent.AddSkill( SkillKind.FirePunchMissile );
+            }
         }
 
         /// <summary>
@@ -102,6 +114,7 @@ namespace Packman
             _eventManager.AddInputEvent( moveUpKey, OnMoveUpKeyPress );
             _eventManager.AddInputEvent( moveDownKey, OnMoveDownKeyPress );
             _eventManager.AddInputEvent( fireStunGunKey, OnPressFireStunGunKey );
+            _eventManager.AddInputEvent( firePunchMissileKey, OnPressFirePunchMissileKey );
         }
 
         /// <summary>
@@ -114,6 +127,7 @@ namespace Packman
             _eventManager.RemoveInputEvent( moveUpKey, OnMoveUpKeyPress );
             _eventManager.RemoveInputEvent( moveDownKey, OnMoveDownKeyPress );
             _eventManager.RemoveInputEvent( fireStunGunKey, OnPressFireStunGunKey );
+            _eventManager.RemoveInputEvent( firePunchMissileKey, OnPressFirePunchMissileKey );
         }
 
         /// <summary>
@@ -157,6 +171,11 @@ namespace Packman
             _skillComponent.UseSkill( SkillKind.FireStungun );
         }
 
+        private void OnPressFirePunchMissileKey()
+        {
+            _skillComponent.UseSkill( SkillKind.FirePunchMissile );
+        }
+
         private void SetMoveDirection(int dirX, int dirY)
         {
             if(_moveDirX != dirX || _moveDirY != dirY )
@@ -168,6 +187,9 @@ namespace Packman
             {
                 _moveDirX = dirX;
                 _moveDirY = dirY;
+
+                _lookDirX = _moveDirX;
+                _lookDirY = _moveDirY;
             }
             else
             {
@@ -233,6 +255,9 @@ namespace Packman
                 {
                     _moveDirX = _nextMoveDirX;
                     _moveDirY = _nextMoveDirY;
+
+                    _lookDirX = _moveDirX;
+                    _lookDirY = _moveDirY;
 
                     _nextMoveDirX = 0;
                     _nextMoveDirY = 0;

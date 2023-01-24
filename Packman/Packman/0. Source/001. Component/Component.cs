@@ -9,17 +9,17 @@ namespace Packman
     internal class Component
     {
         // ===================================== Field.. ===================================== //
-        protected GameObject? gameObject = null;
+        protected GameObject? _gameObject = null;
 
         // ===================================== Property.. ===================================== //
         public GameObject? GameObject
         {
-            get { return gameObject; }
+            get { return _gameObject; }
             set
             {
                 if(null != value )
                 {
-                    gameObject = value;
+                    _gameObject = value;
                 }
             }
         }

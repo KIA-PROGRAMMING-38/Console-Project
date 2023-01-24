@@ -57,8 +57,8 @@ namespace Packman
             if ( null == _player )
             {
                 _player = _objectManager.GetGameObject<Player>();
-                Character[] allCharacters = _objectManager.GetAllGameObject<Monster>();
 
+                Character[] allCharacters = _objectManager.GetAllGameObject<Monster>();
                 if ( null != allCharacters )
                 {
                     foreach ( var character in allCharacters )
@@ -70,7 +70,7 @@ namespace Packman
 
                         character.OnMoveCharacterEvent += OnCharacterMove;
                     }
-                }
+                }    
             }
 
             //base.Update();
@@ -112,12 +112,23 @@ namespace Packman
             return _goldTable[y, x];
         }
 
-        public void OnCharacterMove( Character character )
+        private void OnCharacterMove( Character character )
         {
             Debug.Assert( null != character );
 
             Gold gold = GetGold( character.PrevX, character.PrevY );
             if(null != gold )
+            {
+                gold.Update();
+            }
+        }
+
+        public void OnProjectileMove( Projectile projectile )
+        {
+            Debug.Assert( null != projectile );
+
+            Gold gold = GetGold( projectile.PrevX, projectile.PrevY );
+            if ( null != gold )
             {
                 gold.Update();
             }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Packman
 {
-    internal class StunBullet : Projectile
+    internal class PunchMissile : Projectile
     {
-        public StunBullet( int x, int y, int dirX, int dirY )
-            : base( x, y, Constants.STUN_IMAGE, Constants.STUN_COLOR, dirX, dirY )
+        public PunchMissile( int x, int y, int dirX, int dirY )
+            : base( x, y, Constants.PUNCH_IMAGE, Constants.PUNCH_COLOR, dirX, dirY )
         {
 
         }
@@ -19,7 +19,8 @@ namespace Packman
             base.OnCollision( collisionObjectInst );
 
             Monster monster = (Monster)collisionObjectInst;
-            monster.OnChangedStunState( 1.0f );
+
+            monster.OnCHangedForcedToPushState( 5.0f );
         }
     }
 }

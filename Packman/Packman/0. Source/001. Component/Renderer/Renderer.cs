@@ -28,7 +28,7 @@ namespace Packman.Source
 
         public void Render()
         {
-            gameObject?.Render();
+            _gameObject?.Render();
         }
     }
 }
