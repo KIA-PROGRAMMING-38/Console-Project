@@ -15,7 +15,8 @@ namespace SnakeGame
 
             AddComponent(new PlayerMovement());
             AddComponent(new Collider());
-            AddComponent(new Renderer('☺', 5, ConsoleColor.Yellow));
+            //◯☺ ▢
+            AddComponent(new Renderer('▢', 5, ConsoleColor.Yellow));
             PrevPos = Position;
             _renderer = GetComponent<Renderer>();
 

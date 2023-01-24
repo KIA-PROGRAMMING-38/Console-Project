@@ -7,7 +7,8 @@
         public override void Start()
         {
             AddComponent(new Collider());
-            AddComponent(new Renderer('▒', 1));
+            //▮ ▢ ◯
+            AddComponent(new Renderer('▮', 1));
             renderer = GetComponent<Renderer>();
 
             StartComponents();
