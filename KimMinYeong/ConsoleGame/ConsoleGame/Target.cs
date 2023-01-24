@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleGame
 {
-    public static class Obstacle
+    public static class Target
     {
         private static int[] _x = new int[5];
         private static int[] _preY = new int[5];
         private static int[] _y = new int[5];
 
-        private static string _icon = "~~~";
+        private static int _icon = 9;
         private static int _index = 0;
-        private static bool _isAvailableCreateNewObst = true;
+        private static bool _isAvailableCreateNewTarget = true;
 
         private static Random random = new Random();
 
@@ -22,12 +22,14 @@ namespace ConsoleGame
         {
             while (true)
             {
-                if (_isAvailableCreateNewObst)
+                Thread.Sleep(3500);
+                
+                if (_isAvailableCreateNewTarget)
                 {
                     _x[_index] = random.Next(SceneData.MIN_OF_INGAME_X, SceneData.MAX_OF_INGAME_X);
                     _y[_index] = SceneData.MIN_OF_INGAME_Y + 1;
 
-                    if (_index == 3)  // 한 화면에 동시에 존재할 수 있는 장애물의 개수 (속도에따라 달라질듯)
+                    if (_index == 3)  // 한 화면에 동시에 존재할 수 있는 목표물의 개수
                     {
                         _index = 0;
                     }
@@ -37,22 +39,21 @@ namespace ConsoleGame
                     }
                 }
 
-                CheckAvailableCreateNewObst();
-                Thread.Sleep(3000);
+                CheckAvailableCreateNewTarget();
             }
         }
 
-        public static void CheckAvailableCreateNewObst()
+        public static void CheckAvailableCreateNewTarget()
         {
-            if(_index == _x.Length - 1)
+            if (_index == _x.Length - 1)
             {
-                _isAvailableCreateNewObst = false;
+                _isAvailableCreateNewTarget = false;
             }
 
             if (_y[0] == SceneData.MAX_OF_INGAME_Y)
             {
                 _y[0] = 0;
-                _isAvailableCreateNewObst = true;
+                _isAvailableCreateNewTarget = true;
             }
         }
 
@@ -60,41 +61,41 @@ namespace ConsoleGame
         {
             while (true)
             {
-                for(int obstId = 0; obstId < _x.Length; ++obstId)
+                for (int targetId = 0; targetId < _x.Length; ++targetId)
                 {
-                    if (_y[obstId] == 0)
+                    if (_y[targetId] == 0)
                     {
                         continue;
                     }
 
-                    _preY[obstId] = _y[obstId];
-                    _y[obstId] += 1;
+                    _preY[targetId] = _y[targetId];
+                    _y[targetId] += 1;
 
-                    if (_y[obstId] == SceneData.MAX_OF_INGAME_Y)
+                    if (_y[targetId] == SceneData.MAX_OF_INGAME_Y)
                     {
-                        _y[obstId] = 0;
+                        _y[targetId] = 0;
                     }
                 }
 
-                Thread.Sleep(500);
+                Thread.Sleep(300);
             }
         }
 
         public static void Render()
         {
-            for(int obstId = 0; obstId < _x.Length; ++obstId)
+            for (int targetId = 0; targetId < _x.Length; ++targetId)
             {
-                Console.SetCursorPosition(_x[obstId], _preY[obstId]);
-                Console.Write("   ");
-                
-                if (_y[obstId] == 0)
+                Console.SetCursorPosition(_x[targetId], _preY[targetId]);
+                Console.Write(" ");
+
+                if (_y[targetId] == 0)
                 {
                     continue;
                 }
 
-                if (_y[obstId] != SceneData.MAX_OF_INGAME_Y)
+                if (_y[targetId] != SceneData.MAX_OF_INGAME_Y)
                 {
-                    Console.SetCursorPosition(_x[obstId], _y[obstId]);
+                    Console.SetCursorPosition(_x[targetId], _y[targetId]);
                     Console.Write(_icon);
                 }
             }

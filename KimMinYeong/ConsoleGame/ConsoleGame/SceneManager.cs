@@ -18,9 +18,12 @@ namespace ConsoleGame
     {
         public static SceneKind _currentScene;
         public static SceneKind _capturedScene;
+
         public static Thread shootingBullet = new Thread(() => Bullet.Shooting());
         public static Thread obstacleCreate = new Thread(() => Obstacle.Create());
         public static Thread obstacleFly = new Thread(() => Obstacle.Fly());
+        public static Thread targetCreate = new Thread(() => Target.Create());
+        public static Thread targetFly = new Thread(() => Target.Fly());
 
         public static bool IsSceneChange()
         {
@@ -169,12 +172,15 @@ namespace ConsoleGame
             shootingBullet.Start();
             obstacleCreate.Start();
             obstacleFly.Start();
+            targetCreate.Start();
+            targetFly.Start();
         }
 
         public static void RenderInGame()
         {
             // 게임 진행 화면 렌더 구현
             Bullet.Render();
+            Target.Render();
             Obstacle.Render();
             Player.Render();
 
@@ -193,7 +199,6 @@ namespace ConsoleGame
                     Player._moveDirection = MoveDirection.Left;
                     Player.Move();
                     break;
-
             }
             
         }
