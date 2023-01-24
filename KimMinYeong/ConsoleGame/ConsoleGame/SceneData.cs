@@ -26,5 +26,11 @@ namespace ConsoleGame
 
         // GameInfo Data
         public static string[] infos = { "게임인포입니다.", "Title로 돌아가려면 엔터를 누르세요." };
+
+        // InGame Data
+        public const int MIN_OF_INGAME_X = 0;
+        public const int MAX_OF_INGAME_X = 48;
+        public const int MIN_OF_INGAME_Y = 0;
+        public const int MAX_OF_INGAME_Y = 19;
     }
 }

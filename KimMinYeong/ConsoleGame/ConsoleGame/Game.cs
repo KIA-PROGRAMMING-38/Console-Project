@@ -32,17 +32,6 @@ namespace ConsoleGame
                 SceneManager.RenderCurrentScene();
 
                 Input.Process();
-
-                //switch (Input.CheckInputKey())
-                //{
-                //    case ConsoleKey.Enter:
-                //        SceneManager.CurrentScene = SceneKind.InGame;
-                //        break;
-
-                //    case ConsoleKey.Spacebar:
-                //        SceneManager.CurrentScene = SceneKind.Ending;
-                //        break;
-                //}
             }
         }
     }

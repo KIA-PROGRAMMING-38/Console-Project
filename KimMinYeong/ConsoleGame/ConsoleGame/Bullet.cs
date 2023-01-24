@@ -11,7 +11,7 @@ namespace ConsoleGame
         private static int[] _x = new int[Player._y - 0];  // 0은 나중에 맵 꾸미게되면 총알이 갈 수 있는 맵의 가장 상단 y좌표
         private static int[] _preY = new int[Player._y - 0];
         private static int[] _y = new int[Player._y - 0];
-        private static string _icon = "o";
+        private static string _icon = "*";
         private static int _bulletIndex;
 
         public static void Shooting()

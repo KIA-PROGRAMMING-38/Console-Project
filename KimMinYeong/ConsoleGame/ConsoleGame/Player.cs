@@ -28,11 +28,11 @@ namespace ConsoleGame
             switch(_moveDirection)
             {
                 case MoveDirection.Left:
-                    _currentX = Math.Max(0, _currentX - 1);
+                    _currentX = Math.Max(SceneData.MIN_OF_INGAME_X, _currentX - 1);
                     break;
 
                 case MoveDirection.Right:
-                    _currentX = Math.Min(_currentX + 1, 35);
+                    _currentX = Math.Min(_currentX + 1, SceneData.MAX_OF_INGAME_X);
                     break;
             }
         }

@@ -19,8 +19,8 @@ namespace ConsoleGame
         public static SceneKind _currentScene;
         public static SceneKind _capturedScene;
         public static Thread shootingBullet = new Thread(() => Bullet.Shooting());
-        //public static Thread shootThread = new Thread(() => Bullet.Shoot());
-        //public static Thread flyThread = new Thread(() => Bullet.Fly());
+        public static Thread obstacleCreate = new Thread(() => Obstacle.Create());
+        public static Thread obstacleFly = new Thread(() => Obstacle.Fly());
 
         public static bool IsSceneChange()
         {
@@ -119,7 +119,6 @@ namespace ConsoleGame
             
             Console.SetCursorPosition(SceneData.titleOptionsX - 4, SceneData.titleCursorY);
             Console.Write(SceneData.cursorIcon);
-            //Thread.Sleep(1000);
         }
 
         public static void UpdateTitle()
@@ -168,12 +167,15 @@ namespace ConsoleGame
         {
             Console.SetWindowSize(50, 30);
             shootingBullet.Start();
+            obstacleCreate.Start();
+            obstacleFly.Start();
         }
 
         public static void RenderInGame()
         {
             // 게임 진행 화면 렌더 구현
             Bullet.Render();
+            Obstacle.Render();
             Player.Render();
 
         }
