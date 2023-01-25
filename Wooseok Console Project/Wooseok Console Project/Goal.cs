@@ -5,14 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Wooseok_Console_Project
-
 {
     internal class Goal
     {
-
         public int x;
         public int y;
-        public string symbol;
-
     }
 }

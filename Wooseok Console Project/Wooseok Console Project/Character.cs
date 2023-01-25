@@ -8,7 +8,7 @@ namespace Wooseok_Console_Project
 {
     internal class Character
     {
-        public string id;
+        public string name;
 
         public int hp;
         public int savehp;
@@ -16,20 +16,20 @@ namespace Wooseok_Console_Project
         public int savemp;
 
         public string passive;
-        public string passive_effect;
+        public string passiveeffect;
 
         public int atk;
+        public int saveatk;
         public string attackeffect;
 
-        public string skill;
-        public string skill_effect;
+        public string skill1;
+        public string skill1effect;
 
         public string skill2;
-        public string skill2_effect;
+        public string skill2effect;
 
         public string skill3;
-        public string skill3_effect;
-
+        public string skill3effect;
 
     }
 }

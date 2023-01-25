@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace Wooseok_Console_Project
 {
-    internal class Battle
+    internal class Line4
     {
-        public bool battle_on;
-        public bool victory_on;
-        public bool lose_on;
-
-
-
+        public int x;
+        public int y;
+        public int prex;
+        public int prey;
     }
 }

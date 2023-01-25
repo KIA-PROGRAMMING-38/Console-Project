@@ -10,27 +10,10 @@ namespace Wooseok_Console_Project
     {
         public int x;
         public int y;
-
         public string symbol;
-
         public int prex;
         public int prey;
-        public int money;
-
-        public Player()
-        {
-            x = 2;
-            y = 2;
-            symbol = "P";
-            prex = 2;
-            prey = 2;
-            money = 300;
-        }
-
-
-        
-
-
+       
 
     }
 }

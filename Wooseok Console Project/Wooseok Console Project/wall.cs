@@ -8,13 +8,7 @@ namespace Wooseok_Console_Project
 {
     internal class Wall
     {
-
         public int x;
         public int y;
-        public string symbol;
-
-
-
-
     }
 }
