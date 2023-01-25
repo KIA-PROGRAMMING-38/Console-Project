@@ -47,6 +47,13 @@ namespace Packman
             base.Render();
         }
 
+        public override void Release()
+        {
+            base.Release();
+
+            _stageManager.SetPauseGame( false );
+        }
+
         private void InitStageUI(int x, int y)
         {
             StageUI ui = new StageUI(x, y);

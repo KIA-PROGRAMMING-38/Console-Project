@@ -13,6 +13,8 @@ namespace Packman
         {
             FireStungun,
             FirePunchMissile,
+            FireCollectGoldBullet,
+            FireKillMonsterBullet,
             End,
         }
 
@@ -28,6 +30,8 @@ namespace Packman
 
         private int _stunBulletID = 0;
         private int _punchMissileID = 0;
+        private int _collectGoldBulletID = 0;
+        private int _monsterKillBulletID = 0;
 
         public PlayerSkill()
         {
@@ -72,6 +76,14 @@ namespace Packman
                     OnUsePunchSkill();
 
                     break;
+
+                case SkillKind.FireCollectGoldBullet:
+                    OnUseFireCollectGoldBulletSkill();
+                    break;
+
+                case SkillKind.FireKillMonsterBullet:
+                    OnUseFireKillMonsterBulletSKill();
+                    break;
                 default:
                     return;
             }
@@ -105,16 +117,36 @@ namespace Packman
             CollisionManager.Instance.RenewProjectileInstance();
         }
 
+        private void OnUseFireCollectGoldBulletSkill()
+        {
+            Projectile projectile = CreateCollectGoldBullet();
+            Debug.Assert( null != projectile );
+            Debug.Assert( ObjectManager.Instance.AddGameObject( $"CollectGoldBullet_{_collectGoldBulletID:D2}", projectile ) );
+            ++_collectGoldBulletID;
+
+            CollisionManager.Instance.RenewProjectileInstance();
+        }
+
+        private void OnUseFireKillMonsterBulletSKill()
+        {
+            Projectile projectile = CreateMonsterKillBullet();
+            Debug.Assert( null != projectile );
+            Debug.Assert( ObjectManager.Instance.AddGameObject( $"MonsterKillBullet_{_monsterKillBulletID:D2}", projectile ) );
+            ++_monsterKillBulletID;
+
+            CollisionManager.Instance.RenewProjectileInstance();
+        }
+
         /// <summary>
         /// StunBullet 을 생성한 다음 초기화한 뒤 반환합니다..
         /// </summary>
         /// <returns> 생성한 StunBullet 인스턴스 </returns>
         private StunBullet CreateStunBullet()
         {
-            StunBullet stunBullet = new StunBullet(_player.X, _player.Y, _player.LookDirX, _player.LookDirY);
-            Debug.Assert( stunBullet.Initialize() );
+            StunBullet projectile = new StunBullet(_player.X, _player.Y, _player.LookDirX, _player.LookDirY);
+            Debug.Assert( projectile.Initialize() );
 
-            return stunBullet;
+            return projectile;
         }
         
         /// <summary>
@@ -123,10 +155,34 @@ namespace Packman
         /// <returns> 생성한 PunchMissile 인스턴스 </returns>
         private PunchMissile CreatePunchMissile()
         {
-            PunchMissile punchMissile = new PunchMissile(_player.X, _player.Y, _player.LookDirX, _player.LookDirY);
-            Debug.Assert( punchMissile.Initialize() );
+            PunchMissile projectile = new PunchMissile(_player.X, _player.Y, _player.LookDirX, _player.LookDirY);
+            Debug.Assert( projectile.Initialize() );
 
-            return punchMissile;
+            return projectile;
+        }
+
+        /// <summary>
+        /// CollectGoldBullet 을 생성한 다음 초기화한 뒤 반환합니다..
+        /// </summary>
+        /// <returns> 생성한 CollectGoldBullet 인스턴스 </returns>
+        private CollectGoldBullet CreateCollectGoldBullet()
+        {
+            CollectGoldBullet projectile = new CollectGoldBullet(_player.X, _player.Y, _player.LookDirX, _player.LookDirY);
+            Debug.Assert( projectile.Initialize() );
+
+            return projectile;
+        }
+
+        /// <summary>
+        /// MonsterKillBullet 을 생성한 다음 초기화한 뒤 반환합니다..
+        /// </summary>
+        /// <returns> 생성한 MonsterKillBullet 인스턴스 </returns>
+        private MonsterKillBullet CreateMonsterKillBullet()
+        {
+            MonsterKillBullet projectile = new MonsterKillBullet(_player.X, _player.Y, _player.LookDirX, _player.LookDirY);
+            Debug.Assert( projectile.Initialize() );
+
+            return projectile;
         }
     }
 }

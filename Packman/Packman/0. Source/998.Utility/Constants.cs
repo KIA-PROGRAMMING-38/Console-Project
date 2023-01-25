@@ -39,14 +39,18 @@ namespace Packman
         //public const string MONSTER_IMAGE = "M";
         public const string GOLD_IMAGE = "⊙";
         //public const string GOLD_IMAGE = "G";
-        public const string STUN_IMAGE = "Z";
-        public const string PUNCH_IMAGE = "P";
+        // 투사체 관련 이미지..
+        public const string STUN_IMAGE = "z";
+        public const string PUNCH_IMAGE = "p";
+        public const string MONSTER_KILL_PROJECTILE_IMAGE = "→";
+        public const string COLLECT_GOLD_PROJECTILE_IMAGE = "c";
 
         // Color 관련 상수들..
         // 오브젝트 Color..
         public const ConsoleColor PLAYER_COLOR = ConsoleColor.Yellow;
         public const ConsoleColor MONSTER_COLOR = ConsoleColor.Red;
         public const ConsoleColor MONSTER_STUN_STATE_COLOR = ConsoleColor.DarkBlue;
+        public const ConsoleColor MONSTER_FORCED_PUSH_STATE_COLOR = ConsoleColor.Gray;
         public const ConsoleColor MAP_WALL_COLOR = ConsoleColor.Blue;
         public const ConsoleColor GOLD_COLOR = ConsoleColor.DarkYellow;
         // 맵 Color..
@@ -55,6 +59,8 @@ namespace Packman
         // 투사체 Color..
         public const ConsoleColor STUN_COLOR = ConsoleColor.DarkYellow;
         public const ConsoleColor PUNCH_COLOR = ConsoleColor.DarkRed;
+        public const ConsoleColor MONSTER_KILL_PROJECTILE_COLOR = ConsoleColor.Red;
+        public const ConsoleColor COLLECT_GOLD_PROJECTILE_COLOR = ConsoleColor.DarkCyan;
 
         // 시간과 관련된 상수들..
         public const int FRAME_PER_SECOND = 90;

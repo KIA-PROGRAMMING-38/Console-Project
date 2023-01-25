@@ -38,6 +38,11 @@ namespace Packman
         // 상태와 관련된 정보들..
         private float _stunEffectiveTime = 0.0f;    // 몇 초 동안 스턴 걸릴것인가..
         private float _forcedPushPower = 0.0f;    // 얼마나 날라갈 것인가..
+        private float _forcedPushPowerMinus = 0.0f;    // 얼마나 날라갈 것인가..
+        private float _forcedPushX = 0.0f;
+        private float _forcedPushY = 0.0f;
+        private int _forcedPushStartX = 0;
+        private int _forcedPushStartY = 0;
         // AI 와 관련된 정보들..
         private PatternKind _prevPatternKind = PatternKind.Begin;
         private PatternKind _patternKind = PatternKind.Begin;
@@ -49,7 +54,7 @@ namespace Packman
         private WayPoint _curDestinationWayPoint = null;
 
         // 타겟 인식 범위..
-        private int _targetRecognizeRange = 8;
+        private int _targetRecognizeRange = 5;
 
         public List<Point2D> Paths { get { return _paths; } }
         
@@ -70,6 +75,8 @@ namespace Packman
         public override void Update()
         {
             base.Update();
+
+            return;
 
             switch( _curState )
             {
@@ -93,15 +100,35 @@ namespace Packman
 			base.Render();
 		}
 
+        public void OnDead()
+        {
+
+        }
+
         public void OnChangedStunState( float stunEffectiveTime )
         {
             ChangeState( State.Stun );
             _stunEffectiveTime = stunEffectiveTime;
         }
 
-        public void OnCHangedForcedToPushState(float forcedPushPower )
+        public void OnCHangedForcedToPushState( int dirX, int dirY, float forcedPushPower )
         {
             _forcedPushPower = forcedPushPower;
+            _forcedPushPowerMinus = forcedPushPower * 4.0f;
+
+            _dirX = dirX;
+            _dirY = dirY;
+
+            if ( 0 != _dirX )
+            {
+                _dirX /= Math.Abs( _dirX );
+            }
+            if ( 0 != _dirY )
+            {
+                _dirY /= Math.Abs( _dirY );
+            }
+
+            ChangeState( State.ForcedToPush );
         }
 
         private void ChangeState( State _newState )
@@ -120,6 +147,13 @@ namespace Packman
                     _color = Constants.MONSTER_STUN_STATE_COLOR;
                     break;
                 case State.ForcedToPush:
+                    _image = Constants.MONSTER_STUN_STATE_IMAGE;
+                    _color = Constants.MONSTER_FORCED_PUSH_STATE_COLOR;
+                    _forcedPushX = _forcedPushY = 0.0f;
+                    _movementComponent.Reset();
+
+                    _forcedPushStartX = _x;
+                    _forcedPushStartY = _y;
                     break;
             }
         }
@@ -172,7 +206,37 @@ namespace Packman
         /// </summary>
         private void UpdateForcedToPushPower()
         {
+            if ( _forcedPushPower <= 0.0f )
+            {
+                ChangeState( State.Default );
 
+                return;
+            }
+
+            _forcedPushX += _dirX * _forcedPushPower * TimeManager.Instance.ElaspedTime;
+            _forcedPushY += _dirY * _forcedPushPower * TimeManager.Instance.ElaspedTime;
+
+            _forcedPushPower -= TimeManager.Instance.ElaspedTime * _forcedPushPowerMinus;
+
+            int moveDestinationX = _forcedPushStartX + (int)_forcedPushX;
+            int moveDestinationY = _forcedPushStartY + (int)_forcedPushY;
+
+            if ( IsCanGoPosition( moveDestinationX, moveDestinationY ) )
+            {
+                _renderManager.ReserveRenderRemove( _x, _y, 1 );
+
+                _prevX = _x;
+                _prevY = _y;
+
+                _x = moveDestinationX;
+                _y = moveDestinationY;
+
+                OnMoveCharacterEvent?.Invoke( this );
+            }
+            else
+            {
+                ChangeState( State.Default );
+            }
         }
         
 

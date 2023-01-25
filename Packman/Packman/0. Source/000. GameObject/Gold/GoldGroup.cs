@@ -10,8 +10,9 @@ namespace Packman
 {
     internal class GoldGroup : GameObject
     {
-        private Player _player;
-        private List<Character> _characters;
+        private Player _player = null;
+        private List<Character> _characters = null;
+        private CollectGoldBullet[] _collectGoldBullets = null;
 
         // 룩업테이블로 사용할 예정( y, x 좌표를 넣으면 Gold 인스턴스를 뱉게끔 )
         private Gold[,] _goldTable;
@@ -70,7 +71,7 @@ namespace Packman
 
                         character.OnMoveCharacterEvent += OnCharacterMove;
                     }
-                }    
+                }
             }
 
             //base.Update();
@@ -86,6 +87,25 @@ namespace Packman
                     _goldTable[_player.Y, _player.X] = null;
 
                     --_remainGoldCount;
+                }
+            }
+
+            // 현재 골드 수집기가 밟고 있는 타일에 있는 골드 제거..
+            _collectGoldBullets = _objectManager.GetAllGameObject<CollectGoldBullet>();
+            if ( null != _collectGoldBullets )
+            {
+                foreach ( var collectGoldBullet in _collectGoldBullets )
+                {
+                    Gold findGold = GetGold( collectGoldBullet.X, collectGoldBullet.Y );
+
+                    if(null != findGold )
+                    {
+                        _objectManager.RemoveObject( findGold );
+
+                        _goldTable[collectGoldBullet.Y, collectGoldBullet.X] = null;
+
+                        --_remainGoldCount;
+                    }
                 }
             }
         }

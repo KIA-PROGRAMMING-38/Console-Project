@@ -22,8 +22,10 @@ namespace Packman
         private const ConsoleKey moveLeftKey = ConsoleKey.LeftArrow;
         private const ConsoleKey moveUpKey = ConsoleKey.UpArrow;
         private const ConsoleKey moveDownKey = ConsoleKey.DownArrow;
-        private const ConsoleKey fireStunGunKey = ConsoleKey.A;
-        private const ConsoleKey firePunchMissileKey = ConsoleKey.S;
+        private const ConsoleKey fireStunGunKey = ConsoleKey.Q;
+        private const ConsoleKey firePunchMissileKey = ConsoleKey.W;
+        private const ConsoleKey fireCollectGoldBulletKey = ConsoleKey.E;
+        private const ConsoleKey fireKillMonsterBulletKey = ConsoleKey.R;
 
         // 플레이어의 움직임 방향..
         private int _moveDirX = 0;
@@ -53,6 +55,8 @@ namespace Packman
             {
                 _skillComponent.AddSkill( SkillKind.FireStungun );
                 _skillComponent.AddSkill( SkillKind.FirePunchMissile );
+                _skillComponent.AddSkill( SkillKind.FireKillMonsterBullet );
+                _skillComponent.AddSkill( SkillKind.FireCollectGoldBullet );
             }
         }
 
@@ -99,6 +103,13 @@ namespace Packman
             UpdateMovement();
         }
 
+        public override void Release()
+        {
+            base.Release();
+
+            RemoveKeyPressEvent();
+        }
+
         public void AddSkill( SkillKind skillKind )
         {
             _skillComponent.AddSkill( skillKind );
@@ -115,6 +126,8 @@ namespace Packman
             _eventManager.AddInputEvent( moveDownKey, OnMoveDownKeyPress );
             _eventManager.AddInputEvent( fireStunGunKey, OnPressFireStunGunKey );
             _eventManager.AddInputEvent( firePunchMissileKey, OnPressFirePunchMissileKey );
+            _eventManager.AddInputEvent( fireCollectGoldBulletKey, OnPressFireCollectGoldBullet );
+            _eventManager.AddInputEvent( fireKillMonsterBulletKey, OnPressFireKillMonsterBulletKey );
         }
 
         /// <summary>
@@ -128,6 +141,8 @@ namespace Packman
             _eventManager.RemoveInputEvent( moveDownKey, OnMoveDownKeyPress );
             _eventManager.RemoveInputEvent( fireStunGunKey, OnPressFireStunGunKey );
             _eventManager.RemoveInputEvent( firePunchMissileKey, OnPressFirePunchMissileKey );
+            _eventManager.RemoveInputEvent( fireCollectGoldBulletKey, OnPressFireCollectGoldBullet );
+            _eventManager.RemoveInputEvent( fireKillMonsterBulletKey, OnPressFireKillMonsterBulletKey );
         }
 
         /// <summary>
@@ -174,6 +189,16 @@ namespace Packman
         private void OnPressFirePunchMissileKey()
         {
             _skillComponent.UseSkill( SkillKind.FirePunchMissile );
+        }
+
+        private void OnPressFireCollectGoldBullet()
+        {
+            _skillComponent.UseSkill( SkillKind.FireCollectGoldBullet );
+        }
+
+        private void OnPressFireKillMonsterBulletKey()
+        {
+            _skillComponent.UseSkill( SkillKind.FireKillMonsterBullet );
         }
 
         private void SetMoveDirection(int dirX, int dirY)

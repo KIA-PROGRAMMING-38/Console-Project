@@ -16,11 +16,11 @@ namespace Packman
 
         public override void OnCollision( GameObject collisionObjectInst )
         {
-            base.OnCollision( collisionObjectInst );
-
             Monster monster = (Monster)collisionObjectInst;
 
-            monster.OnCHangedForcedToPushState( 5.0f );
+            monster.OnCHangedForcedToPushState( _dirX, _dirY, 100.0f );
+
+            base.OnCollision( collisionObjectInst );
         }
     }
 }
