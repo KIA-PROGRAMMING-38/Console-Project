@@ -11,7 +11,10 @@ namespace ProjectJK
     public enum StageKind
     {
         Stage00,
-        Stage01
+        Stage01,
+        Stage02,
+        Stage03,
+        Stage04,
     }
     public static class Stage
     {
@@ -60,7 +63,9 @@ namespace ProjectJK
             return File.ReadAllLines(stageFilePath);
         }
         public static void ParseStage(string[] stage, out Wall[] walls, out VillageChief villageChief, out StageUpPortal stageUpPortal, out StageDownPortal stageDownPortal,
-                                        out Dialog1[] dialog1, out Dialog2[] dialog2, out Dialog3[] dialog3, out Dialog4[] dialog4, out Dialog5[] dialog5, out Dialog6[] dialog6, out Dialog7 dialog7, out Dialog8 dialog8, out Dialog9 dialog9, out Dialog10 dialog10)
+                                        out Dialog1[] dialog1, out Dialog2[] dialog2, out Dialog3[] dialog3, out Dialog4[] dialog4, out Dialog5[] dialog5, out Dialog6[] dialog6, out Dialog7 dialog7, out Dialog8 dialog8, out Dialog9 dialog9, out Dialog10 dialog10,
+                                        out Slime[] slime, out Fox[] fox, out Goblin[] goblin,
+                                        out VillageRecoveringMerchant villageRecoveringMerchant, out VillageMaxHPMerchant villageMaxHPMerchant, out VillageATKMerchant villageATKMerchant, out VillageDEFMerchant villageDEFMerchant)
         {
             string[] stageMetaData = stage[0].Split(" ");
             walls = new Wall[int.Parse(stageMetaData[0])];
@@ -84,6 +89,18 @@ namespace ProjectJK
             dialog8 = default;
             dialog9 = default;
             dialog10 = default;
+            slime = new Slime[int.Parse(stageMetaData[7])];
+            int slimeIndex = 0;
+            fox = new Fox[int.Parse(stageMetaData[7])];
+            int foxIndex = 0;
+            goblin = new Goblin[int.Parse(stageMetaData[7])];
+            int goblinIndex = 0;
+            villageRecoveringMerchant = default;
+            villageMaxHPMerchant = default;
+            villageATKMerchant = default;
+            villageDEFMerchant = default;
+
+
 
             for (int y = 1; y < stage.Length; ++y)
             {
@@ -142,6 +159,30 @@ namespace ProjectJK
                             break;
                         case '┻':
                             dialog10 = new Dialog10 { X = x, Y = y };
+                            break;
+                        case 'S':
+                            slime[slimeIndex] = new Slime { X = x, Y = y, MaxHP = 10, ATK = 0, DEF = 0, Money = 10, EXP = 1, Alive = true };
+                            ++slimeIndex;
+                            break;
+                        case 'F':
+                            fox[foxIndex] = new Fox { X = x, Y = y, MaxHP = 50, ATK = 15, DEF = 5, Money = 50, EXP = 5, Alive = true };
+                            ++foxIndex;
+                            break;
+                        case 'G':
+                            goblin[goblinIndex] = new Goblin { X = x, Y = y, MaxHP = 200, ATK = 40, DEF = 30, Money = 200, EXP = 20, Alive = true };
+                            ++goblinIndex;
+                            break;
+                        case '1':
+                            villageRecoveringMerchant = new VillageRecoveringMerchant { X = x, Y = y };
+                            break;
+                        case '2':
+                            villageMaxHPMerchant = new VillageMaxHPMerchant { X = x, Y = y };
+                            break;
+                        case '3':
+                            villageATKMerchant = new VillageATKMerchant { X = x, Y = y };
+                            break;
+                        case '4':
+                            villageDEFMerchant = new VillageDEFMerchant { X = x, Y = y };
                             break;
                         default:
                             Game.Function.ExitWithError($"스테이지 파일 파싱 오류{stage[y]}");

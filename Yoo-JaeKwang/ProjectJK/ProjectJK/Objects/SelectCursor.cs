@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ProjectJK.Objects
 {
     public enum Select
     {
+        Attack = 10,
+        Escape = 11,
         Yes = 18,
         No = 19,
     }
@@ -16,34 +19,45 @@ namespace ProjectJK.Objects
         public int X;
         public int Y;
         public int PastY;
-        public bool On;
         public static class Function
         {
             public static void Render(SelectCursor selectCursor, Player player)
             {
-                if (selectCursor.On && true == player.IsOnBattle)
+                if (false == player.CanMove)
                 {
-                    Game.Function.ObjRender(selectCursor.X, selectCursor.PastY, ">", ConsoleColor.White);
-                    Game.Function.ObjRender(selectCursor.X, selectCursor.Y, ">", ConsoleColor.Black);
-                }
-                else if (selectCursor.On && false == player.IsOnBattle)
-                {
-                    Game.Function.ObjRender(selectCursor.X, selectCursor.PastY, ">", ConsoleColor.White);
-                    Game.Function.ObjRender(selectCursor.X, selectCursor.Y, ">", ConsoleColor.Black);
-                    Game.Function.ObjRender(selectCursor.X + 2, Game.DialogCursor_Y, "Yes", ConsoleColor.Black);
-                    Game.Function.ObjRender(selectCursor.X + 2, Game.DialogCursor_Y + 1, "No", ConsoleColor.Black);
+                    if (true == player.IsOnBattle)
+                    {
+
+                        Game.Function.ObjRender(selectCursor.X, selectCursor.PastY, ">", ConsoleColor.White);
+                        Game.Function.ObjRender(selectCursor.X, selectCursor.Y, ">", ConsoleColor.Black);
+                        Game.Function.ObjRender(Game.BattleCursor_X + 2, Game.BattleCursor_Y, "Attack", ConsoleColor.Black);
+                        Game.Function.ObjRender(Game.BattleCursor_X + 2, Game.BattleCursor_Y + 1, "Escape", ConsoleColor.Black);
+                    }
+
+                    else
+                    {
+                        Game.Function.ObjRender(selectCursor.X, selectCursor.PastY, ">", ConsoleColor.White);
+                        Game.Function.ObjRender(selectCursor.X, selectCursor.Y, ">", ConsoleColor.Black);
+                        Game.Function.ObjRender(Game.DialogCursor_X + 2, Game.DialogCursor_Y, "Yes", ConsoleColor.Black);
+                        Game.Function.ObjRender(Game.DialogCursor_X + 2, Game.DialogCursor_Y + 1, "No", ConsoleColor.Black);
+                    }
                 }
                 else
                 {
-                    Game.Function.ObjRender(selectCursor.X, selectCursor.PastY, ">", ConsoleColor.White);
-                    Game.Function.ObjRender(selectCursor.X, selectCursor.Y, ">", ConsoleColor.White);
-                    Game.Function.ObjRender(selectCursor.X + 2, Game.DialogCursor_Y, "Yes", ConsoleColor.White);
-                    Game.Function.ObjRender(selectCursor.X + 2, Game.DialogCursor_Y + 1, "No", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y, ">", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y + 1, ">", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.BattleCursor_X, Game.BattleCursor_Y, ">", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.BattleCursor_X, Game.BattleCursor_Y + 1, ">", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.DialogCursor_X + 2, Game.DialogCursor_Y, "Yes", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.DialogCursor_X + 2, Game.DialogCursor_Y + 1, "No", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.BattleCursor_X + 2, Game.BattleCursor_Y, "Attack", ConsoleColor.White);
+                    Game.Function.ObjRender(Game.BattleCursor_X + 2, Game.BattleCursor_Y + 1, "Escape", ConsoleColor.White);
+
                 }
             }
             public static void Move(SelectCursor selectCursor, Player player)
             {
-                if (selectCursor.On)
+                if (false == player.CanMove)
                 {
                     if (player.IsOnBattle)
                     {
@@ -72,6 +86,28 @@ namespace ProjectJK.Objects
                             --selectCursor.Y;
                         }
                     }
+                }
+            }
+            public static bool SelectAttack(SelectCursor selectCursor)
+            {
+                if (selectCursor.Y == (int)Select.Attack && (Input.IsKeyDown(ConsoleKey.Enter) || Input.IsKeyDown(ConsoleKey.Spacebar)))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            public static bool SelectEscape(SelectCursor selectCursor)
+            {
+                if (selectCursor.Y == (int)Select.Escape && (Input.IsKeyDown(ConsoleKey.Enter) || Input.IsKeyDown(ConsoleKey.Spacebar)))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             public static bool SelectYes(SelectCursor selectCursor)

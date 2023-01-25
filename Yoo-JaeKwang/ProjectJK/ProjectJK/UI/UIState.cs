@@ -16,7 +16,7 @@ namespace ProjectJK.UI
             Game.Function.ObjRender(Game.Level_HP_Money_X, Game.HP_STATUS_Y + 1, $" {player.CurrentHP:D3}/{player.MaxHP:D3}", ConsoleColor.Black);
             Game.Function.ObjRender(Game.Status_X, Game.HP_STATUS_Y + 1, $" ATK: {player.ATK:D3}", ConsoleColor.Black);
             Game.Function.ObjRender(Game.Status_X, Game.HP_STATUS_Y + 2, $" DEF: {player.DEF:D3}", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Level_HP_Money_X, Game.Money_Y + 1, $" {player.Money:D8} G", ConsoleColor.Black);
+            Game.Function.ObjRender(Game.Level_HP_Money_X, Game.Money_STATUS_Y + 1, $" {player.Money:D8} G", ConsoleColor.Black);
         }
     }
 }

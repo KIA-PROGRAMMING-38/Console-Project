@@ -13,7 +13,11 @@ namespace ProjectJK
         {
             _key = default;
 
-            _key = Console.ReadKey().Key;
+            if (Console.KeyAvailable)
+            {
+                _key = Console.ReadKey().Key;
+
+            }
         }
 
         public static bool IsKeyDown(ConsoleKey key)

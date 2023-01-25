@@ -18,11 +18,19 @@ namespace ProjectJK
         public const int Battle_X = 62;
         public const int Level_EXP_Battle_Y = 1;
         public const int HP_STATUS_Y = 5;
-        public const int Money_Y = 9;
+        public const int Money_STATUS_Y = 9;
         public const int DialogCursor_X = 2;
         public const int DialogCursor_Y = 18;
         public const int BattleCursor_X = 63;
         public const int BattleCursor_Y = 10;
+
+        public bool IsGameDoing;
+        public bool IsTitleDoing;
+        public bool IsStage00Doing;
+        public bool IsStage01Doing;
+        public bool IsStage02Doing;
+        public bool IsStage03Doing;
+        public bool IsStage04Doing;
 
         public static class Function
         {
@@ -82,6 +90,14 @@ namespace ProjectJK
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine(errorMsg);
                 Environment.Exit(1);
+            }
+
+            public static void GameClear()
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("그는 더 넓은 세상으로 떠났습니다.\n\n축하합니다 게임을 클리어 하셨습니다.");
+                Environment.Exit(0);
             }
         }
     }

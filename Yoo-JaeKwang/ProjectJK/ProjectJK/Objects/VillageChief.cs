@@ -10,7 +10,6 @@ namespace ProjectJK.Objects
     {
         public int X;
         public int Y;
-        public bool BeginnerSupport;
         public static class Function
         {
             public static void Render(VillageChief villageChief)

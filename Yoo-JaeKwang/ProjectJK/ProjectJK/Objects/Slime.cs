@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ProjectJK.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,59 +21,97 @@ namespace ProjectJK.Objects
         public int MaxHP;
         public int CurrentHP;
         public bool Alive;
-        public bool CanMove;
         public Direction MoveDirection;
 
-        
-        public static void Render(Slime slime)
+
+        public static void InitSlimeRender(Slime[] slime)
         {
-            Game.Function.ObjRender(slime.PastX, slime.PastY, "S", ConsoleColor.White);
-            Game.Function.ObjRender(slime.X, slime.Y, "S", ConsoleColor.DarkGreen);
+            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Slime", ConsoleColor.Black);
+            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {slime[0].ATK:D3}", ConsoleColor.Black);
+            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {slime[0].DEF:D3}", ConsoleColor.Black);
         }
-        public static void Update(Slime slime, Player player, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
+        public static void RenderPast(Slime[] slime)
         {
-            Move(slime);
+            for (int i = 0; i < slime.Length; ++i)
+            {
+                Game.Function.ObjRender(slime[i].PastX, slime[i].PastY, "S", ConsoleColor.White);
+            }
+        }
+        public static void RenderNow(Slime[] slime)
+        {
+            for (int i = 0; i < slime.Length; ++i)
+            {
+            
+                if (slime[i].Alive)
+                {
+                    Game.Function.ObjRender(slime[i].X, slime[i].Y, "S", ConsoleColor.DarkGreen);
+                }
+            }
+        }
+        public static void RenderBattle(Player player, Slime[] slime)
+        {
+            if (player.X == slime[player.MonsterIndex].X && player.Y == slime[player.MonsterIndex].Y && slime[player.MonsterIndex].Alive)
+            {
+                Game.Function.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
+                BattleGraphic.Slime();
+                RenderHP(slime[player.MonsterIndex]);
+            }
+            else
+            {
+                BattleGraphic.Clear();
+            }
+        }
+        private static void RenderHP(Slime slime)
+        {
+            Game.Function.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{slime.CurrentHP:D3} / {slime.MaxHP:D3}", ConsoleColor.Black);
+        }
+        public static void Update(Slime[] slime, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
+        {
             CollisionWithWall(slime, walls);
             CollisionWithStageUpPortal(slime, stageUpPortal);
             CollisionWithStageDownPortal(slime, stageDownPortal);
+            CollisionWithSlime(slime);
         }
-        private static void Move(Slime slime)
+        public static void Move(Slime[] slime, Player player)
         {
-            Random random = new Random();
-            int _randomNum = random.Next(1, 100);
-            if (slime.CanMove)
+            for (int i = 0; i < slime.Length; ++i)
             {
-                switch (_randomNum)
+                Random random = new Random();
+                int _randomNum = random.Next(1, 1000);
+                if (player.CanMove)
                 {
-                    case <= 5:
-                        slime.PastX = slime.X;
-                        slime.PastY = slime.Y;
-                        --slime.X;
-                        slime.MoveDirection = Direction.Left;
-                        break;
-                    case <= 10:
-                        slime.PastX = slime.X;
-                        slime.PastY = slime.Y;
-                        ++slime.X;
-                        slime.MoveDirection = Direction.Right;
-                        break;
-                    case <= 15:
-                        slime.PastX = slime.X;
-                        slime.PastY = slime.Y;
-                        --slime.Y;
-                        slime.MoveDirection = Direction.Up;
-                        break;
-                    case <= 20:
-                        slime.PastX = slime.X;
-                        slime.PastY = slime.Y;
-                        ++slime.Y;
-                        slime.MoveDirection = Direction.Down;
-                        break;
-                    case <= 99:
-                        break;
-                    default:
-                        Game.Function.ExitWithError($"슬라임 이동 방향 데이터 오류{_randomNum}");
-                        break;
+                    switch (_randomNum)
+                    {
+                        case <= 10:
+                            slime[i].PastX = slime[i].X;
+                            slime[i].PastY = slime[i].Y;
+                            --slime[i].X;
+                            slime[i].MoveDirection = Direction.Left;
+                            break;
+                        case <= 20:
+                            slime[i].PastX = slime[i].X;
+                            slime[i].PastY = slime[i].Y;
+                            ++slime[i].X;
+                            slime[i].MoveDirection = Direction.Right;
+                            break;
+                        case <= 30:
+                            slime[i].PastX = slime[i].X;
+                            slime[i].PastY = slime[i].Y;
+                            --slime[i].Y;
+                            slime[i].MoveDirection = Direction.Up;
+                            break;
+                        case <= 40:
+                            slime[i].PastX = slime[i].X;
+                            slime[i].PastY = slime[i].Y;
+                            ++slime[i].Y;
+                            slime[i].MoveDirection = Direction.Down;
+                            break;
+                        case <= 999:
+                            break;
+                        default:
+                            Game.Function.ExitWithError($"슬라임 이동 방향 데이터 오류{_randomNum}");
+                            break;
+                    }
                 }
             }
         }
@@ -107,31 +147,84 @@ namespace ProjectJK.Objects
                     break;
             }
         }
-        private static void CollisionWithWall(Slime slime, Wall[] walls)
+        private static void CollisionWithWall(Slime[] slime, Wall[] walls)
         {
             for (int i = 0; i < walls.Length; ++i)
             {
-                if (false == isCollision(slime, walls[i].X, walls[i].Y))
+                for (int j = 0; j < slime.Length; ++j)
                 {
-                    continue;
-                }
+                    if (false == isCollision(slime[j], walls[i].X, walls[i].Y))
+                    {
+                        continue;
+                    }
 
-                Back(slime, walls[i].X, walls[i].Y);
-                break;
+                    Back(slime[j], walls[i].X, walls[i].Y);
+                    break;
+                }
             }
         }
-        private static void CollisionWithStageUpPortal(Slime slime, StageUpPortal stageUpPortal)
+        private static void CollisionWithStageUpPortal(Slime[] slime, StageUpPortal stageUpPortal)
         {
-            if (isCollision(slime, stageUpPortal.X, stageUpPortal.Y))
+            for (int i = 0; i < slime.Length; ++i)
             {
-                Back(slime, stageUpPortal.X, stageUpPortal.Y);
+                if (isCollision(slime[i], stageUpPortal.X, stageUpPortal.Y))
+                {
+                    Back(slime[i], stageUpPortal.X, stageUpPortal.Y);
+                }
             }
         }
-        private static void CollisionWithStageDownPortal(Slime slime, StageDownPortal stageDownPortal)
+        private static void CollisionWithStageDownPortal(Slime[] slime, StageDownPortal stageDownPortal)
         {
-            if (isCollision(slime, stageDownPortal.X, stageDownPortal.Y))
+            for (int i = 0; i < slime.Length; ++i)
             {
-                Back(slime, stageDownPortal.X, stageDownPortal.Y);
+                if (isCollision(slime[i], stageDownPortal.X, stageDownPortal.Y))
+                {
+                    Back(slime[i], stageDownPortal.X, stageDownPortal.Y);
+                }
+            }
+        }
+        private static void CollisionWithSlime(Slime[] slime)
+        {
+            for (int i = 0; i < slime.Length; ++i)
+            {
+                for (int j = 0; j < slime.Length; ++j)
+                {
+                    if(i == j)
+                    {
+                        continue;
+                    }
+                    if (false == isCollision(slime[j], slime[i].X, slime[i].Y))
+                    {
+                        continue;
+                    }
+
+                    Back(slime[j], slime[i].X, slime[i].Y);
+                }
+            }
+        }
+        public static void Respawn(Slime[] slime, Player player)
+        {
+            if (player.CanMove)
+            {
+                for (int i = 0; i < slime.Length; ++i)
+                {
+                    if (false == slime[i].Alive)
+                    {
+                        Random random = new Random();
+                        int _randomNum = random.Next(1, 1000);
+                        switch (_randomNum)
+                        {
+                            case <= 8:
+                                slime[i].Alive = true;
+                                break;
+                            case <= 999:
+                                break;
+                            default:
+                                Game.Function.ExitWithError($"슬라임 리스폰 데이터 오류{_randomNum}");
+                                break;
+                        }
+                    }
+                }
             }
         }
     }
