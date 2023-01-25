@@ -12,7 +12,6 @@ namespace SnakeGame
         
         public override void Start()
         {
-
             AddComponent(new PlayerMovement());
             AddComponent(new Collider());
             AddComponent(new Renderer(GameDataManager.PLAYER_ICON, 5, ConsoleColor.Yellow));

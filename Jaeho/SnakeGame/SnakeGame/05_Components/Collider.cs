@@ -12,6 +12,7 @@
         public  Action<object>? CollisionAction { get { return _onCollisionAction; } }
 
         public void SetCollisionCheck(bool isCollisionCheck) => _collisionCheck = isCollisionCheck;
+
         public override void Start()
         {
             ColliderManager.Instance.AddColliderObjectList(this);

@@ -36,7 +36,7 @@ namespace SnakeGame
             SoundManager.Instance.AddSound("CollisionSound", new System.Media.SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "CollisionSound.wav")));
 
             // 시작 씬 설정
-            SceneManager.Instance.SetStartScene("Stage_4");
+            SceneManager.Instance.SetStartScene("TitleScene");
         }
 
         /// <summary>

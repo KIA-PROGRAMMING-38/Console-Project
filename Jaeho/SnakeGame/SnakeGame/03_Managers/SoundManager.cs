@@ -18,7 +18,7 @@ namespace SnakeGame
         /// </summary>
         public void Load()
         {
-            foreach(var sound in _soundPlayers.Values) 
+            foreach(SoundPlayer sound in _soundPlayers.Values) 
             {
                 sound.Load();
             }
@@ -83,15 +83,15 @@ namespace SnakeGame
         /// </summary>
         public void StopAll()
         {
-            foreach (var sound in _soundPlayers)
+            foreach (SoundPlayer sound in _soundPlayers.Values)
             {
-                sound.Value.Stop();
+                sound.Stop();
             }
         }
 
         public void Release()
         {
-            foreach(var sound in _soundPlayers.Values)
+            foreach(SoundPlayer sound in _soundPlayers.Values)
             {
                 sound.Dispose();
             }

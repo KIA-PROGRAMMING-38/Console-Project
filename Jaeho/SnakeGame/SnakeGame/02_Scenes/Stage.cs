@@ -5,9 +5,9 @@ namespace SnakeGame
 {
     public class Stage : Scene
     {
-        private GameDataManager.MapInfo _mapInfo;
-        private GameObject _player;
-        private Menu _menu;
+        protected GameDataManager.MapInfo _mapInfo;
+        protected GameObject _player;
+        protected Menu _menu;
 
         public override void Start()
         {

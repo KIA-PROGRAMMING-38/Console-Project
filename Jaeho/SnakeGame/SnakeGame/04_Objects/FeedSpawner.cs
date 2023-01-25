@@ -26,7 +26,7 @@ namespace SnakeGame
 
         public void FeedClear()
         {
-            foreach (var feed in _feedList)
+            foreach (Feed feed in _feedList)
             {
                 if (feed.IsAlive == false)
                     _removePendingList.Add(feed);

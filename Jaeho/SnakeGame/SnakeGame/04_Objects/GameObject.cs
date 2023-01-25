@@ -86,14 +86,14 @@ namespace SnakeGame
 
         protected void StartComponents()
         {
-            foreach (var comp in _components)
+            foreach (KeyValuePair<string, Component> comp in _components)
             {
                 comp.Value.Start();
             }
         }
         protected void UpdateComponents()
         {
-            foreach (var comp in _components)
+            foreach (KeyValuePair<string, Component> comp in _components)
             {
                 comp.Value.Update();
             }

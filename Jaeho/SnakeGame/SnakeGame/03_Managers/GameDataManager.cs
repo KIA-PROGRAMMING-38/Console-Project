@@ -80,9 +80,9 @@ namespace SnakeGame
         /// </summary>
         public void Load()
         {
-            var scenes = SceneManager.Instance.Scenes;
+            Dictionary<string, Scene> scenes = SceneManager.Instance.Scenes;
 
-            foreach(var sceneInfo in scenes)
+            foreach(KeyValuePair<string, Scene> sceneInfo in scenes)
             {
                 // 씬중 스테이지만 불러온다
                 if(sceneInfo.Value is Stage)

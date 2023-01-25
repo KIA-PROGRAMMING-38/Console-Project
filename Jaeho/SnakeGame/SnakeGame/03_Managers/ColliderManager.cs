@@ -47,7 +47,7 @@ namespace SnakeGame
         {
             bool isCollided = false;
 
-            foreach(var col in _colliders)
+            foreach(Collider col in _colliders)
             {
                 if(col == callerCollider) continue;
 
@@ -74,7 +74,7 @@ namespace SnakeGame
         public GameObject? GetCollidedGameObject(Collider callerCollider)
         {
             GameObject? collidedObject = null;
-            foreach (var col in _colliders)
+            foreach (Collider col in _colliders)
             {
                 if (col == callerCollider) continue;
 
