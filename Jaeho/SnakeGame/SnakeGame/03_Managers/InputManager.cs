@@ -18,13 +18,21 @@ namespace SnakeGame
         /// </summary>
         public void ProcessInputAsync()
         {
-            Task.Factory.StartNew(() =>
+            //Task.Factory.StartNew(() =>
+            //{
+            //    while (true)
+            //    {
+            //        _key = Console.ReadKey().Key;
+            //    }
+            //}, TaskCreationOptions.LongRunning);
+        }
+
+        public void Update()
+        {
+            if(Console.KeyAvailable)
             {
-                while (true)
-                {
-                    _key = Console.ReadKey().Key;
-                }
-            }, TaskCreationOptions.LongRunning);
+                _key = Console.ReadKey().Key;
+            }
         }
 
         /// <summary>

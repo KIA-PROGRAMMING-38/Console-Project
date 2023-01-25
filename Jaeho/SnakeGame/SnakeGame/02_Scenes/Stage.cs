@@ -1,9 +1,5 @@
 ﻿using SnakeGame._05_Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SnakeGame
 {
@@ -12,6 +8,7 @@ namespace SnakeGame
         private GameDataManager.MapInfo _mapInfo;
         private GameObject _player;
         private Menu _menu;
+
         public override void Start()
         {
             // Load MapData
@@ -32,7 +29,7 @@ namespace SnakeGame
                 wall.Position = _mapInfo.WallPosisions[i];
                 walls.Add(wall);
             }
-            
+            //GameObjectManager.Instance.Start();
             FeedSpawner.Instance.StartSpawn(_mapInfo.MapSpawnableTable, _mapInfo.SpawnInterval);
         }
 
@@ -43,12 +40,12 @@ namespace SnakeGame
             _menu.Update();
             if (_menu.IsUiOpened()) return;
 
+            GameObjectManager.Instance.Update();
+            FeedSpawner.Instance.Update();
             if (GameDataManager.Instance.NeedClearFeedCount == GameDataManager.Instance.CurrentFeedCount)
             {
                 SceneManager.Instance.ChangeFlagOn(_nextSceneName);
             }
-            GameObjectManager.Instance.Update();
-            FeedSpawner.Instance.Update();
         }
 
 

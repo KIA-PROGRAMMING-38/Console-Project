@@ -25,7 +25,7 @@ namespace SnakeGame
         public const char SNAKEBODY_ICON = '▢';
 
         //▮ ▢ ◯▮
-        public  const char WALL_ICON = 'W';
+        public  const char WALL_ICON = 'ꔮ';
         public  const char FEED_ICON = '☺';
         public  static readonly string ResourcePath = Path.Combine(@"..\..\..\","07_Assets");
 
@@ -36,6 +36,9 @@ namespace SnakeGame
         public  int NeedClearFeedCount { get { return _needStageClearFeedCount; } }
 
         public const ConsoleColor DEFAULT_FOREGROUND_COLOR = ConsoleColor.White;
+
+        public const int SCREEN_WIDTH = 120;
+        public const int SCREEN_HEIGHT = 34;
 
         public static int _mapMinX = 0;
         public static int _mapMinY = 0;

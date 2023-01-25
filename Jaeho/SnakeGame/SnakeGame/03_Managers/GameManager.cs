@@ -2,7 +2,7 @@
 
 namespace SnakeGame
 {
-    public class GameManager : LazySingleton<GameManager>
+    public class GameManager : Singleton<GameManager>
     {
         public GameManager()
         {
@@ -15,9 +15,15 @@ namespace SnakeGame
         /// </summary>
         public void Initialize()
         {
+
+            Console.SetWindowSize(GameDataManager.SCREEN_WIDTH, GameDataManager.SCREEN_HEIGHT);
+            Console.SetWindowPosition(0, 0);
+
             Console.OutputEncoding = Encoding.UTF8;         
             Console.CursorVisible = false;
-            //Console.SetBufferSize(1920, 1080);
+
+            // 게임오브젝트 매니저 인스턴스 생성
+            GameObjectManager.Instance.Start();
 
             // 1. 씬 정보 로드
             SceneManager.Instance.Load();
@@ -27,6 +33,10 @@ namespace SnakeGame
 
             // 3. 사운드 로드
             SoundManager.Instance.Load();
+            SoundManager.Instance.AddSound("CollisionSound", new System.Media.SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "CollisionSound.wav")));
+
+            // 시작 씬 설정
+            SceneManager.Instance.SetStartScene("Stage_4");
         }
 
         /// <summary>
@@ -37,7 +47,7 @@ namespace SnakeGame
             while (true)
             {
                 TimeManager.Instance.Update();
-
+                InputManager.Instance.Update();
                 if (IsGameSet == true)
                 {
                     break;

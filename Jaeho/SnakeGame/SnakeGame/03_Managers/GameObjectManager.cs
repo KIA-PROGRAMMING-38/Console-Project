@@ -4,12 +4,6 @@ namespace SnakeGame
 {
     public class GameObjectManager : LazySingleton<GameObjectManager>
     {
-        public GameObjectManager() 
-        {
-            _gameObjects = new List<GameObject>();
-            _removePendingList = new HashSet<GameObject>();
-        }
-
         public int GameObjectCount { get { return _gameObjects.Count; } }
 
         private List<GameObject> _gameObjects = new List<GameObject>();
@@ -37,10 +31,8 @@ namespace SnakeGame
 
         public void Start()
         {
-            foreach (var objects in _gameObjects)
-            {
-                objects.Start();
-            }
+            _gameObjects = new List<GameObject>();
+            _removePendingList = new HashSet<GameObject>();
         }
 
         /// <summary>

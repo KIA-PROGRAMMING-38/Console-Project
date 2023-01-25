@@ -1,4 +1,5 @@
-﻿using System.Media;
+﻿using System.Diagnostics;
+using System.Media;
 
 
 namespace SnakeGame
@@ -7,18 +8,7 @@ namespace SnakeGame
     {
         public SoundManager()
         {
-
             _soundPlayers = new Dictionary<string, SoundPlayer>();
-
-
-            AddSound("CollisionSound",        new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "CollisionSound.wav")));
-            AddSound("TitleBackgroundMusic",  new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "배드애플.wav")));
-            AddSound("EndingBackgroundMusic", new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "우마우마.wav")));
-            AddSound("DeadBackgroundMusic", new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "DeadSceneSound.wav")));
-            AddSound("Stage_1", new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "dropkick.wav")));
-            AddSound("Stage_2", new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "Nostalgia.wav")));
-            AddSound("Stage_3", new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "쇄월.wav")));
-            AddSound("Stage_4", new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "MyDearest.wav")));
         }
 
         private Dictionary<string, SoundPlayer> _soundPlayers;
@@ -41,7 +31,8 @@ namespace SnakeGame
         /// <param name="sound">사운드 객체</param>
         public void AddSound(string name, SoundPlayer sound)
         {
-            _soundPlayers.Add(name, sound);
+            bool isSuccess = _soundPlayers.TryAdd(name, sound);
+            Debug.Assert(isSuccess, $"Cant add sound => Sound Name : {name}");
         }
 
         /// <summary>

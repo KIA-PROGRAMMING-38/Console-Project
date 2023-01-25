@@ -1,5 +1,6 @@
 ﻿using SnakeGame;
 using System.Diagnostics;
+using System.Media;
 
 namespace SnakeGame
 {
@@ -24,16 +25,16 @@ namespace SnakeGame
         /// </summary>
         public void Load()
         {
-            AddScene(sceneName: "TitleScene",  nextSceneName : "Stage_1",    soundName: "TitleBackgroundMusic", new TitleScene());
-            AddScene(sceneName: "EndingScene", nextSceneName : "TitleScene", soundName: "EndingBackgroundMusic", new EndingScene());
-            AddScene(sceneName: "DeadScene",   nextSceneName : "TitleScene", soundName: "DeadBackgroundMusic", new DeadScene());
+            // Scene
+            AddScene(sceneName: "TitleScene",   nextSceneName: "Stage_1",       soundName: "Title_bgm",     new TitleScene());
+            AddScene(sceneName: "EndingScene",  nextSceneName: "TitleScene",    soundName: "Ending_bgm",    new EndingScene());
+            AddScene(sceneName: "DeadScene",    nextSceneName: "TitleScene",    soundName: "Dead_bgm",      new DeadScene());
 
-            AddScene(sceneName: "Stage_1", nextSceneName: "Stage_2",    soundName: "Stage_1", new Stage());
-            AddScene(sceneName: "Stage_2", nextSceneName: "Stage_3",    soundName: "Stage_2", new Stage());
-            AddScene(sceneName: "Stage_3", nextSceneName: "Stage_4",    soundName: "Stage_3", new Stage());
-            AddScene(sceneName: "Stage_4", nextSceneName: "TitleScene", soundName: "Stage_4", new Stage());
-
-            SetStartScene("TitleScene");
+            // Stage
+            AddScene(sceneName: "Stage_1",      nextSceneName: "Stage_2",       soundName: "Stage_1_bgm",   new Stage());
+            AddScene(sceneName: "Stage_2",      nextSceneName: "Stage_3",       soundName: "Stage_2_bgm",   new Stage());
+            AddScene(sceneName: "Stage_3",      nextSceneName: "Stage_4",       soundName: "Stage_3_bgm",   new Stage());
+            AddScene(sceneName: "Stage_4",      nextSceneName: "TitleScene",    soundName: "Stage_4_bgm",   new Stage());
         }
 
         /// <summary>
@@ -49,8 +50,8 @@ namespace SnakeGame
             isSuccess = Scenes.TryGetValue(sceneName, out Scene);
             Debug.Assert(isSuccess, $"Cant Find Scene / SceneName : {sceneName}");
             _currentScene = Scene;
-            _currentScene.Start();
             GameObjectManager.Instance.Start();
+            _currentScene.Start();    
         }
 
         /// <summary>
@@ -103,6 +104,7 @@ namespace SnakeGame
             scene.SetSceneName(sceneName);
             scene.SetSoundName(soundName);
             scene.SetNextSceneName(nextSceneName);
+            SoundManager.Instance.AddSound(soundName, new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", soundName + ".wav")));
         }
 
         public void Update()

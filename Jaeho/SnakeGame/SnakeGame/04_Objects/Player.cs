@@ -51,7 +51,7 @@ namespace SnakeGame
                         Task.Factory.StartNew(() =>
                         {
                             long time = 1000;
-                            int speed = 5;
+                            int speed = RandomManager.Instance.GetRandomRangeInt(2,5);
                             int prevTimeScale = TimeManager.TimeScale;
 
                             if (TimeManager.TimeScale == speed) return;
@@ -76,7 +76,7 @@ namespace SnakeGame
                 case "SnakeBody":
                     SoundManager.Instance.Play("CollisionSound");
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 2000, 4, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 700, 3, 1);
                     break;
                 default:
                     break;

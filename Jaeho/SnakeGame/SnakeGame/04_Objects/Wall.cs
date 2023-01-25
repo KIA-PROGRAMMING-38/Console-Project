@@ -17,7 +17,7 @@
 
         public override void Render()
         {
-            if (_isRendered) return;
+            //if (_isRendered) return;
 
             Console.SetCursorPosition(Position.X, Position.Y);
             Console.Write(renderer.OwnerIcon);

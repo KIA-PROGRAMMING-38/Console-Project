@@ -1,4 +1,4 @@
-GoalCount: 5
+GoalCount: 10
 SpawnInterval: 2000
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 B                                                         B
