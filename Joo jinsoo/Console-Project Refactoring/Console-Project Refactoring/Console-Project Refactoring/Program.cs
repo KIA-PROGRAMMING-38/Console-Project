@@ -17,6 +17,32 @@ namespace Console_Project_Refactoring
             Stage currentScene = Stage.Default;
             Stage captureScene = Stage.Livingroom;
 
+            GameSystem.murdererList = GameSystem.RandomCrimePick(GameSystem.CRIME_EVIDENCE,
+                GameSystem.MURDERER_COUNT);
+            GameSystem.weaponList = GameSystem.RandomCrimePick(GameSystem.CRIME_EVIDENCE,
+                GameSystem.WEAPON_COUNT);
+            GameSystem.motiveList = GameSystem.RandomCrimePick(GameSystem.CRIME_EVIDENCE,
+                GameSystem.MOTIVE_COUNT);
+
+            int[] answerNumber = new int[GameSystem.ANSWER_LIST];
+            answerNumber[0] = GameSystem.correctAnswer(GameSystem.murdererList);
+            answerNumber[1] = GameSystem.correctAnswer(GameSystem.weaponList);
+            answerNumber[2] = GameSystem.correctAnswer(GameSystem.motiveList);
+            string[] corretAnswerMurderer = GameSystem.LoadMurderer(answerNumber[0]);
+            string[] corretAnswerWeapon = GameSystem.LoadWeapon(answerNumber[1]);
+            string[] corretAnswerMotive = GameSystem.LoadMotive(answerNumber[2]);
+            string[] hintString = new string[GameSystem.ANSWER_LIST];
+            int[] mixedHintStringNumber = new int[GameSystem.ANSWER_LIST];
+            mixedHintStringNumber = GameSystem.RandomCrimePick(GameSystem.ANSWER_LIST, GameSystem.ANSWER_LIST);
+            hintString[0] = GameSystem.OutputTextToSecondLine(GameSystem.LoadMurderer(answerNumber[0]));
+            hintString[1] = GameSystem.OutputTextToSecondLine(GameSystem.LoadWeapon(answerNumber[1]));
+            hintString[2] = GameSystem.OutputTextToSecondLine(GameSystem.LoadMotive(answerNumber[2]));
+            string[] mixedHintString = new string[GameSystem.ANSWER_LIST];
+            mixedHintString[0] = hintString[mixedHintStringNumber[0] - 1];
+            mixedHintString[1] = hintString[mixedHintStringNumber[1] - 1];
+            mixedHintString[2] = hintString[mixedHintStringNumber[2] - 1];
+
+
             int answerCount = 0;
 
             Player player = new Player

@@ -93,10 +93,110 @@ namespace Console_Project_Refactoring
         public const int MAP_MAX_X = 24;
         public const int MAP_MAX_Y = 12;
 
+        public const int CRIME_EVIDENCE = 9;
+        public const int MURDERER_COUNT = 18;
+        public const int WEAPON_COUNT = 10;
+        public const int MOTIVE_COUNT = 9;
+        public const int ANSWER_LIST = 3;
+
         public static MapIcon[,] mapMetaData = new MapIcon[(MAP_OFFSET_X * 2) + MAP_MAX_X,
             (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
         public static InteractionObject[,] mapInteractionData = new InteractionObject[(MAP_OFFSET_X * 2) + MAP_MAX_X,
             (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
+
+        public static int[] murdererList = new int[CRIME_EVIDENCE];
+        public static int[] weaponList = new int[CRIME_EVIDENCE];
+        public static int[] motiveList = new int[CRIME_EVIDENCE];
+        
+
+        public static string[] LoadMurderer(int suspectNumber)
+        {
+            string suspectFilePath = Path.Combine("..\\..\\..\\Assets", "CandidateList", "Suspect", $"Suspect{suspectNumber:D2}.txt");
+
+            if (false == File.Exists(suspectFilePath))
+            {
+                Console.WriteLine($"용의자 파일이 없습니다. 파일 번호{suspectNumber}.txt");
+            }
+
+            return File.ReadAllLines(suspectFilePath);
+        }
+        public static string[] LoadWeapon(int weaponNumber)
+        {
+            string weaponFilePath = Path.Combine("..\\..\\..\\Assets", "CandidateList", "Weapon", $"Weapon{weaponNumber:D2}.txt");
+
+            if (false == File.Exists(weaponFilePath))
+            {
+                Console.WriteLine($"살해 도구 파일이 없습니다. 파일 번호{weaponNumber}.txt");
+            }
+
+            return File.ReadAllLines(weaponFilePath);
+        }
+        public static string[] LoadMotive(int motiveNumber)
+        {
+            string motiveFilePath = Path.Combine("..\\..\\..\\Assets", "CandidateList", "Motive", $"Motive{motiveNumber:D2}.txt");
+
+            if (false == File.Exists(motiveFilePath))
+            {
+                Console.WriteLine($"살해 동기 파일이 없습니다. 파일 번호{motiveNumber}.txt");
+            }
+
+            return File.ReadAllLines(motiveFilePath);
+        }
+        public static string OutputTextToFirstLine(string[] fileText)
+        {
+            string outputText = fileText[0];
+            return outputText;
+        }
+        public static string OutputTextToSecondLine(string[] fileText)
+        {
+            string outputText = fileText[1];
+            return outputText;
+        }
+        public static string OutputTextToThirdLine(string[] fileText)
+        {
+            string outputText = fileText[2];
+            return outputText;
+        }
+
+        public static int[] RandomCrimePick(int pickCount, int firstReapeat)
+        {
+            Random random = new Random();
+            int[] outputArray = new int[pickCount];
+
+            for (int checkJob = 0; checkJob < pickCount;)
+            {
+                bool checkNum = true;
+                int randomNumber = random.Next(1, firstReapeat + 1);
+
+                for (int alreadyInputCheck = 0; alreadyInputCheck < pickCount; ++alreadyInputCheck)
+                {
+                    if (outputArray[alreadyInputCheck] == randomNumber)
+                    {
+                        checkNum = false;
+                        break;
+                    }
+                }
+
+                if (checkNum)
+                {
+                    outputArray[checkJob] = randomNumber;
+                    ++checkJob;
+                }
+            }
+
+            return outputArray;
+        }
+
+        public static int correctAnswer(int[] inputArray)
+        {
+            Random random = new Random();
+            int randomNumber = random.Next(9);
+
+            int returnNumber = inputArray[randomNumber];
+
+            return returnNumber;
+        }
+
 
         public static void Render(Stage currentScene, Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
             Toilet[] toiletDoor, Bedroom[] bedroomDoor, Frontdoor[] frontDoor,
