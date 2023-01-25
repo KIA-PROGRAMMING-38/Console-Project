@@ -32,7 +32,6 @@ namespace Moon_Taker
             "방향키로 움직이세요!",
             "A키를 눌러 동기들의 응원을 확인하세요!",
             "막혔을 땐 R키로 재시작해봐요!",
-            "블록과 적은 가시함정 위에서 대문자로 표시됩니다!"
         };
 
         static public string[] objectDescription =

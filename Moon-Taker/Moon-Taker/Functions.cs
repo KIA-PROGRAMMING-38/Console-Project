@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using System.Windows;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.ComponentModel.DataAnnotations;
 using System.Security.AccessControl;
 using System.Transactions;
 using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
+using System.Media;
 
 namespace Moon_Taker
 {
@@ -70,7 +69,7 @@ namespace Moon_Taker
             player = null;
             previousPlayer = null;
             moon = null;
-            mapSize = new MapSize { X = stage[0].Length, Y = stage.Length };
+            mapSize = new MapSize { x = stage[0].Length, y = stage.Length };
 
             int wallId = 0;
             int enemyId = 0;
@@ -84,53 +83,53 @@ namespace Moon_Taker
                     switch ($"{stage[y][x]}")
                     {
                         case Constants.player:
-                            player = new Player { X = x, Y = y };
-                            previousPlayer = new PreviousPlayer { X = x, Y = y };
+                            player = new Player { x = x, y = y };
+                            previousPlayer = new PreviousPlayer { x = x, y = y };
                             break;
                         case Constants.wall:
-                            wall[wallId] = new Wall { X = x, Y = y };
+                            wall[wallId] = new Wall { x = x, y = y };
                             ++wallId;
                             break;
                         case Constants.enemy:
-                            enemy[enemyId] = new Enemy { X = x, Y = y, IsAlive = true };
-                            previousEnemy[enemyId] = new PreviousEnemy { X = x, Y = y };
+                            enemy[enemyId] = new Enemy { x = x, y = y, isAlive = true };
+                            previousEnemy[enemyId] = new PreviousEnemy { x = x, y = y };
                             ++enemyId;
                             break;
                         case Constants.enemyOnTrap:
-                            enemy[enemyId] = new Enemy { X = x, Y = y, IsAlive = true };
-                            previousEnemy[enemyId] = new PreviousEnemy { X = x, Y = y };
+                            enemy[enemyId] = new Enemy { x = x, y = y, isAlive = true };
+                            previousEnemy[enemyId] = new PreviousEnemy { x = x, y = y };
                             ++enemyId;
-                            trap[trapId] = new Trap { X = x, Y = y };
+                            trap[trapId] = new Trap { x = x, y = y };
                             ++trapId;
                             break;
                         case Constants.block:
-                            block[blockId] = new Block { X = x, Y = y };
-                            previousBlock[blockId] = new PreviousBlock { X = x, Y = y };
+                            block[blockId] = new Block { x = x, y = y };
+                            previousBlock[blockId] = new PreviousBlock { x = x, y = y };
                             ++blockId;
                             break;
                         case Constants.blockOnTrap:
-                            block[blockId] = new Block { X = x, Y = y };
-                            previousBlock[blockId] = new PreviousBlock { X = x, Y = y };
+                            block[blockId] = new Block { x = x, y = y };
+                            previousBlock[blockId] = new PreviousBlock { x = x, y = y };
                             ++blockId;
-                            trap[trapId] = new Trap { X = x, Y = y };
+                            trap[trapId] = new Trap { x = x, y = y };
                             ++trapId;
                             break;
                         case Constants.activatedTrap:
-                            trap[trapId] = new Trap { X = x, Y = y, IsActivated = true};
+                            trap[trapId] = new Trap { x = x, y = y, isActivated = true};
                             ++trapId;
                             break;
                         case Constants.deactivatedTrap:
-                            trap[trapId] = new Trap { X = x, Y = y, IsActivated = false};
+                            trap[trapId] = new Trap { x = x, y = y, isActivated = false};
                             ++trapId;
                             break;
                         case Constants.key:
-                            key = new Key { X = x, Y = y };
+                            key = new Key { x = x, y = y };
                             break;
                         case Constants.door:
-                            door = new Door { X = x, Y = y };
+                            door = new Door { x = x, y = y };
                             break;
                         case Constants.moon:
-                            moon = new Moon { X = x, Y = y };
+                            moon = new Moon { x = x, y = y };
                             break;
                         case Constants.blank:
                             break;
@@ -186,7 +185,7 @@ namespace Moon_Taker
             }
             
             string advice = $"{someAdvice[adviceNumber].name}: {someAdvice[adviceNumber].advice}".PadRight(100,' ');
-            Render(mapSize.X / 2, mapSize.Y + 2, advice);
+            Render(mapSize.x / 2, mapSize.y + 2, advice);
             return;
         }
         public static void WaitForNextInput(ConsoleKey someKey, Action action1)
@@ -243,15 +242,21 @@ namespace Moon_Taker
             }
             return;
         }
-        public static void SavePreviousObject(out int previousX, out int previousY, int currentX, int currentY)
+        public static void SavePreviousObject(out int previousx, out int previousy, int currentx, int currenty)
         {
-            previousX = currentX;
-            previousY = currentY;
+            previousx = currentx;
+            previousy = currenty;
             return;
         }
         public static void ClearObject(int x, int y)
         {
             Render(x, y, " ");
+        }
+        public static void PlayBGM(string musicPath)
+        {
+            SoundPlayer soundPlayer = new SoundPlayer(musicPath);
+            soundPlayer.Load();
+            soundPlayer.Play();
         }
     }
 }

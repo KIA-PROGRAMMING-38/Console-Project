@@ -11,9 +11,11 @@ namespace Moon_Taker
     {
         public static int MenuNum = 0;
         public static bool isGameStarted = false;
+        public static bool isBGMPlaying = false;
         public static int stageNumber = Functions.CheckStageNumber();
 
         public static string[] stageFilePath = new string[stageNumber + 1];
         public static string adviceFilePath = @"Assets\Advice\Advice.txt";
+        public static string traceFilePath = @"Assets\Trace.txt";
     }
 }

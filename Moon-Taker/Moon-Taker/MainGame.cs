@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Media;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Moon_Taker
 {
@@ -24,6 +24,8 @@ namespace Moon_Taker
                 Scene.SelectMenu(ref GameSettings.MenuNum, ref moveMenu);
                 if (moveMenu == ConsoleKey.E)
                 {
+                    SoundPlayer soundPlayer = new SoundPlayer("Select.wav");
+                    soundPlayer.PlaySync();
                     if (GameSettings.MenuNum == 0)
                     {
                         Scene.EnterSynopsisScene();
@@ -65,6 +67,11 @@ namespace Moon_Taker
 
             while (GameSettings.isGameStarted)
             {
+                if (false == GameSettings.isBGMPlaying)
+                {
+                    Functions.PlayBGM("BGM.wav");
+                    GameSettings.isBGMPlaying = true;
+                }
                 if (StageSettings.isStageReseted)
                 {
                     Console.Clear();
@@ -79,34 +86,34 @@ namespace Moon_Taker
                     Functions.ResetStageSetting(StageSettings.doesKeyExist, StageSettings.stageMovePoint);
                 }
                 
-                if (false == Actions.IsCollided(player.X, player.Y, previousPlayer.X, previousPlayer.Y))
+                if (false == Actions.IsCollided(player.x, player.y, previousPlayer.x, previousPlayer.y))
                 {
-                    Functions.ClearObject(previousPlayer.X, previousPlayer.Y);
+                    Functions.ClearObject(previousPlayer.x, previousPlayer.y);
                 }
                 
                 for (int enemyId = 0; enemyId < enemies.Length; enemyId++)
                 {
-                    if (Actions.IsCollided(enemies[enemyId].X, enemies[enemyId].Y, previousEnemies[enemyId].X, previousEnemies[enemyId].Y))
+                    if (Actions.IsCollided(enemies[enemyId].x, enemies[enemyId].y, previousEnemies[enemyId].x, previousEnemies[enemyId].y))
                     {
                         continue;
                     }
-                    Functions.ClearObject(previousEnemies[enemyId].X, previousEnemies[enemyId].Y);
+                    Functions.ClearObject(previousEnemies[enemyId].x, previousEnemies[enemyId].y);
                 }
 
                 for (int blockId = 0; blockId < blocks.Length; blockId++)
                 {
-                    if (Actions.IsCollided(blocks[blockId].X, blocks[blockId].Y, previousBlocks[blockId].X, previousBlocks[blockId].Y))
+                    if (Actions.IsCollided(blocks[blockId].x, blocks[blockId].y, previousBlocks[blockId].x, previousBlocks[blockId].y))
                     {
                         continue;
                     }
-                    Functions.ClearObject(previousBlocks[blockId].X, previousBlocks[blockId].Y);
+                    Functions.ClearObject(previousBlocks[blockId].x, previousBlocks[blockId].y);
                 }
 
                 for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
                 {
                     for (int trapId = 0; trapId < traps.Length; ++trapId)
                     {
-                        if (Actions.IsCollided(traps[trapId].X, traps[trapId].Y, enemies[enemyId].X, enemies[enemyId].Y))
+                        if (Actions.IsCollided(traps[trapId].x, traps[trapId].y, enemies[enemyId].x, enemies[enemyId].y))
                         {
                             enemies[enemyId].isOnTrap = true;
                             break;
@@ -119,7 +126,7 @@ namespace Moon_Taker
                 {
                     for (int trapId = 0; trapId < traps.Length; ++trapId)
                     {
-                        if (Actions.IsCollided(traps[trapId].X, traps[trapId].Y, blocks[blockId].X, blocks[blockId].Y))
+                        if (Actions.IsCollided(traps[trapId].x, traps[trapId].y, blocks[blockId].x, blocks[blockId].y))
                         {
                             blocks[blockId].isOnTrap = true;
                             break;
@@ -130,30 +137,30 @@ namespace Moon_Taker
 
                 for (int wallId = 0; wallId < walls.Length; ++wallId)
                 {
-                    Functions.Render(walls[wallId].X, walls[wallId].Y, Constants.wall, Constants.wallColor);
+                    Functions.Render(walls[wallId].x, walls[wallId].y, Constants.wall, Constants.wallColor);
                 }
                 for (int trapId = 0; trapId < traps.Length; ++trapId)
                 {
-                    if (traps[trapId].IsActivated)
+                    if (traps[trapId].isActivated)
                     {
-                        Functions.Render(traps[trapId].X, traps[trapId].Y, Constants.activatedTrap, Constants.trapColor);
+                        Functions.Render(traps[trapId].x, traps[trapId].y, Constants.activatedTrap, Constants.trapColor);
                     }
                     else
                     {
-                        Functions.Render(traps[trapId].X, traps[trapId].Y, Constants.deactivatedTrap, Constants.trapColor);
+                        Functions.Render(traps[trapId].x, traps[trapId].y, Constants.deactivatedTrap, Constants.trapColor);
                     }
                 }
                 for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
                 {
-                    if (enemies[enemyId].IsAlive)
+                    if (enemies[enemyId].isAlive)
                     {
                         if (enemies[enemyId].isOnTrap)
                         {
-                            Functions.Render(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemyOnTrap, Constants.enemyColor);
+                            Functions.Render(enemies[enemyId].x, enemies[enemyId].y, Constants.enemyOnTrap, Constants.enemyColor);
                         }
                         else
                         {
-                            Functions.Render(enemies[enemyId].X, enemies[enemyId].Y, Constants.enemy, Constants.enemyColor);
+                            Functions.Render(enemies[enemyId].x, enemies[enemyId].y, Constants.enemy, Constants.enemyColor);
                         }
                     }
                 }
@@ -161,28 +168,28 @@ namespace Moon_Taker
                 {
                     if (blocks[blockId].isOnTrap)
                     {
-                        Functions.Render(blocks[blockId].X, blocks[blockId].Y, Constants.blockOnTrap, Constants.blockColor);
+                        Functions.Render(blocks[blockId].x, blocks[blockId].y, Constants.blockOnTrap, Constants.blockColor);
                     }
                     else
                     {
-                        Functions.Render(blocks[blockId].X, blocks[blockId].Y, Constants.block, Constants.blockColor);
+                        Functions.Render(blocks[blockId].x, blocks[blockId].y, Constants.block, Constants.blockColor);
                     }
                 }
                 if (StageSettings.doesKeyExist)
                 {
                     if (false == ObjectStatus.hasKey)
                     {
-                        Functions.Render(key.X, key.Y, Constants.key, Constants.keyColor);
+                        Functions.Render(key.x, key.y, Constants.key, Constants.keyColor);
                     }
                     if (false == ObjectStatus.isDoorOpened)
                     {
-                        Functions.Render(door.X, door.Y, Constants.door, Constants.doorColor);
+                        Functions.Render(door.x, door.y, Constants.door, Constants.doorColor);
                     }
                 }
 
                 LookUpTable.objectColor[LookUpTable.objectColor.Length - 1] = Functions.RandomColor();
-                Functions.Render(moon.X, moon.Y, Constants.moon, LookUpTable.objectColor[LookUpTable.objectColor.Length - 1]);
-                Functions.Render(player.X, player.Y, Constants.player, Constants.playerColor);
+                Functions.Render(moon.x, moon.y, Constants.moon, LookUpTable.objectColor[LookUpTable.objectColor.Length - 1]);
+                Functions.Render(player.x, player.y, Constants.player, Constants.playerColor);
 
                 for (int stageId = 1; stageId < Stage.Length; ++stageId)
                 {
@@ -205,7 +212,7 @@ namespace Moon_Taker
                             Functions.Render(LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
                         }
                     }
-                    Functions.Render(mapSize.X / 2, mapSize.Y + 1, "남은 ");
+                    Functions.Render(mapSize.x / 2, mapSize.y + 1, "남은 ");
                     Functions.Render("행동 점수", Constants.movePointColor);
                     Functions.Render($" : {ObjectStatus.playerMovePoint}".PadLeft(2, ' '));
                 }
@@ -229,34 +236,34 @@ namespace Moon_Taker
                 ConsoleKey Input = Console.ReadKey().Key;
                 Functions.Render("\b ");
 
-                Functions.SavePreviousObject(out previousPlayer.X, out previousPlayer.Y, player.X, player.Y);
+                Functions.SavePreviousObject(out previousPlayer.x, out previousPlayer.y, player.x, player.y);
                 for (int enemyId = 0; enemyId < enemies.Length; enemyId++)
                 {
-                    Functions.SavePreviousObject(out previousEnemies[enemyId].X , out previousEnemies[enemyId].Y, 
-                        enemies[enemyId].X, enemies[enemyId].Y);
+                    Functions.SavePreviousObject(out previousEnemies[enemyId].x , out previousEnemies[enemyId].y, 
+                        enemies[enemyId].x, enemies[enemyId].y);
                 }
                 for (int blockId = 0; blockId < blocks.Length; blockId++)
                 {
-                    Functions.SavePreviousObject(out previousBlocks[blockId].X, out previousBlocks[blockId].Y,
-                        blocks[blockId].X, blocks[blockId].Y);
+                    Functions.SavePreviousObject(out previousBlocks[blockId].x, out previousBlocks[blockId].y,
+                        blocks[blockId].x, blocks[blockId].y);
                 }
 
                 switch (Input)
                 {
                     case ConsoleKey.RightArrow:
-                        Actions.MovePlayerToRight(ref player.X, mapSize.X);
+                        Actions.MovePlayerToRight(ref player.x, mapSize.x);
                         --ObjectStatus.playerMovePoint;
                         break;
                     case ConsoleKey.LeftArrow:
-                        Actions.MovePlayerToLeft(ref player.X, mapSize.X);
+                        Actions.MovePlayerToLeft(ref player.x, mapSize.x);
                         --ObjectStatus.playerMovePoint;
                         break;
                     case ConsoleKey.DownArrow:
-                        Actions.MovePlayerToDown(ref player.Y, mapSize.Y);
+                        Actions.MovePlayerToDown(ref player.y, mapSize.y);
                         --ObjectStatus.playerMovePoint;
                         break;
                     case ConsoleKey.UpArrow:
-                        Actions.MovePlayerToUp(ref player.Y, mapSize.Y);
+                        Actions.MovePlayerToUp(ref player.y, mapSize.y);
                         --ObjectStatus.playerMovePoint;
                         break;
                     case ConsoleKey.R:
@@ -273,13 +280,13 @@ namespace Moon_Taker
                 {
                     if (Input == ConsoleKey.RightArrow || Input == ConsoleKey.LeftArrow || Input == ConsoleKey.DownArrow || Input == ConsoleKey.UpArrow)
                     {
-                        traps[trapId].IsActivated = true ^ traps[trapId].IsActivated;
+                        traps[trapId].isActivated = true ^ traps[trapId].isActivated;
                     }
                 }
 
                 for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
                 {
-                    if (false == Actions.IsCollided(player.X, player.Y, enemies[enemyId].X, enemies[enemyId].Y))
+                    if (false == Actions.IsCollided(player.x, player.y, enemies[enemyId].x, enemies[enemyId].y))
                     {
                         continue;
                     }
@@ -287,27 +294,27 @@ namespace Moon_Taker
                     switch (Input)
                     {
                         case ConsoleKey.RightArrow:
-                            Actions.PushRight(ref enemies[enemyId].X, ref player.X);
-                            Actions.CollidSolidOnLeft(ref player.X);
+                            Actions.PushRight(ref enemies[enemyId].x, ref player.x);
+                            Actions.CollidSolidOnLeft(ref player.x);
                             break;
                         case ConsoleKey.LeftArrow:
-                            Actions.PushLeft(ref enemies[enemyId].X, ref player.X);
-                            Actions.CollidSolidOnRight(ref player.X);
+                            Actions.PushLeft(ref enemies[enemyId].x, ref player.x);
+                            Actions.CollidSolidOnRight(ref player.x);
                             break;
                         case ConsoleKey.DownArrow:
-                            Actions.PushDown(ref enemies[enemyId].Y, ref player.Y);
-                            Actions.CollidSolidOnUp(ref player.Y);
+                            Actions.PushDown(ref enemies[enemyId].y, ref player.y);
+                            Actions.CollidSolidOnUp(ref player.y);
                             break;
                         case ConsoleKey.UpArrow:
-                            Actions.PushUp(ref enemies[enemyId].Y, ref player.Y);
-                            Actions.CollidSolidOnDown(ref player.Y);
+                            Actions.PushUp(ref enemies[enemyId].y, ref player.y);
+                            Actions.CollidSolidOnDown(ref player.y);
                             break;
                     }
                 }
 
                 for (int blockId = 0; blockId < blocks.Length; ++blockId)
                 {
-                    if (false == Actions.IsCollided(player.X, player.Y, blocks[blockId].X, blocks[blockId].Y))
+                    if (false == Actions.IsCollided(player.x, player.y, blocks[blockId].x, blocks[blockId].y))
                     {
                         continue;
                     }
@@ -316,43 +323,43 @@ namespace Moon_Taker
                     switch (Input)
                     {
                         case ConsoleKey.RightArrow:
-                            Actions.PushRight(ref blocks[blockId].X, ref player.X);
-                            Actions.CollidSolidOnLeft(ref player.X);
+                            Actions.PushRight(ref blocks[blockId].x, ref player.x);
+                            Actions.CollidSolidOnLeft(ref player.x);
                             break;
                         case ConsoleKey.LeftArrow:
-                            Actions.PushLeft(ref blocks[blockId].X, ref player.X);
-                            Actions.CollidSolidOnRight(ref player.X);
+                            Actions.PushLeft(ref blocks[blockId].x, ref player.x);
+                            Actions.CollidSolidOnRight(ref player.x);
                             break;
                         case ConsoleKey.DownArrow:
-                            Actions.PushDown(ref blocks[blockId].Y, ref player.Y);
-                            Actions.CollidSolidOnUp(ref player.Y);
+                            Actions.PushDown(ref blocks[blockId].y, ref player.y);
+                            Actions.CollidSolidOnUp(ref player.y);
                             break;
                         case ConsoleKey.UpArrow:
-                            Actions.PushUp(ref blocks[blockId].Y, ref player.Y);
-                            Actions.CollidSolidOnDown(ref player.Y);
+                            Actions.PushUp(ref blocks[blockId].y, ref player.y);
+                            Actions.CollidSolidOnDown(ref player.y);
                             break;
                     }
                 }
 
                 for (int wallId = 0; wallId < walls.Length; wallId++)
                 {
-                    if (false == Actions.IsCollided(player.X, player.Y, walls[wallId].X, walls[wallId].Y))
+                    if (false == Actions.IsCollided(player.x, player.y, walls[wallId].x, walls[wallId].y))
                     {
                         continue;
                     }
                     switch (Input)
                     {
                         case ConsoleKey.RightArrow:
-                            Actions.CollidSolidOnLeft(ref player.X);
+                            Actions.CollidSolidOnLeft(ref player.x);
                             break;
                         case ConsoleKey.LeftArrow:
-                            Actions.CollidSolidOnRight(ref player.X);
+                            Actions.CollidSolidOnRight(ref player.x);
                             break;
                         case ConsoleKey.DownArrow:
-                            Actions.CollidSolidOnUp(ref player.Y);
+                            Actions.CollidSolidOnUp(ref player.y);
                             break;
                         case ConsoleKey.UpArrow:
-                            Actions.CollidSolidOnDown(ref player.Y);
+                            Actions.CollidSolidOnDown(ref player.y);
                             break;
                     }
                 }
@@ -363,15 +370,15 @@ namespace Moon_Taker
                     {
                         break;
                     }
-                    if (enemies[ObjectStatus.pushedEnemyId].IsAlive == false)
+                    if (enemies[ObjectStatus.pushedEnemyId].isAlive == false)
                     {
                         continue;
                     }
-                    if (Actions.IsCollided(walls[wallId].X, walls[wallId].Y, enemies[ObjectStatus.pushedEnemyId].X, enemies[ObjectStatus.pushedEnemyId].Y))
+                    if (Actions.IsCollided(walls[wallId].x, walls[wallId].y, enemies[ObjectStatus.pushedEnemyId].x, enemies[ObjectStatus.pushedEnemyId].y))
                     {
-                        enemies[ObjectStatus.pushedEnemyId].X = 0;
-                        enemies[ObjectStatus.pushedEnemyId].Y = 0;
-                        enemies[ObjectStatus.pushedEnemyId].IsAlive = false;
+                        enemies[ObjectStatus.pushedEnemyId].x = 0;
+                        enemies[ObjectStatus.pushedEnemyId].y = 0;
+                        enemies[ObjectStatus.pushedEnemyId].isAlive = false;
                         Console.Beep();
                     }
                 }
@@ -382,22 +389,22 @@ namespace Moon_Taker
                     {
                         break;
                     }
-                    if (Actions.IsCollided(walls[wallId].X, walls[wallId].Y, blocks[ObjectStatus.pushedBlockId].X, blocks[ObjectStatus.pushedBlockId].Y)
-                        || Actions.IsCollided(blocks[ObjectStatus.pushedBlockId].X, blocks[ObjectStatus.pushedBlockId].Y, moon.X, moon.Y))
+                    if (Actions.IsCollided(walls[wallId].x, walls[wallId].y, blocks[ObjectStatus.pushedBlockId].x, blocks[ObjectStatus.pushedBlockId].y)
+                        || Actions.IsCollided(blocks[ObjectStatus.pushedBlockId].x, blocks[ObjectStatus.pushedBlockId].y, moon.x, moon.y))
                     {
                         switch (Input)
                         {
                             case ConsoleKey.RightArrow:
-                                Actions.CollidSolidOnLeft(ref blocks[ObjectStatus.pushedBlockId].X);
+                                Actions.CollidSolidOnLeft(ref blocks[ObjectStatus.pushedBlockId].x);
                                 break;
                             case ConsoleKey.LeftArrow:
-                                Actions.CollidSolidOnRight(ref blocks[ObjectStatus.pushedBlockId].X);
+                                Actions.CollidSolidOnRight(ref blocks[ObjectStatus.pushedBlockId].x);
                                 break;
                             case ConsoleKey.DownArrow:
-                                Actions.CollidSolidOnUp(ref blocks[ObjectStatus.pushedBlockId].Y);
+                                Actions.CollidSolidOnUp(ref blocks[ObjectStatus.pushedBlockId].y);
                                 break;
                             case ConsoleKey.UpArrow:
-                                Actions.CollidSolidOnDown(ref blocks[ObjectStatus.pushedBlockId].Y);
+                                Actions.CollidSolidOnDown(ref blocks[ObjectStatus.pushedBlockId].y);
                                 break;
                         }
                     }
@@ -405,15 +412,15 @@ namespace Moon_Taker
 
                 for (int collidedenemyId = 0; collidedenemyId < enemies.Length; ++collidedenemyId)
                 {
-                    if (ObjectStatus.pushedEnemyId == collidedenemyId || enemies[collidedenemyId].IsAlive == false)
+                    if (ObjectStatus.pushedEnemyId == collidedenemyId || enemies[collidedenemyId].isAlive == false)
                     {
                         continue;
                     }
-                    if (Actions.IsCollided(enemies[ObjectStatus.pushedEnemyId].X, enemies[ObjectStatus.pushedEnemyId].Y, enemies[collidedenemyId].X, enemies[collidedenemyId].Y))
+                    if (Actions.IsCollided(enemies[ObjectStatus.pushedEnemyId].x, enemies[ObjectStatus.pushedEnemyId].y, enemies[collidedenemyId].x, enemies[collidedenemyId].y))
                     {
-                        enemies[ObjectStatus.pushedEnemyId].X = 0;
-                        enemies[ObjectStatus.pushedEnemyId].Y = 0;
-                        enemies[ObjectStatus.pushedEnemyId].IsAlive = false;
+                        enemies[ObjectStatus.pushedEnemyId].x = 0;
+                        enemies[ObjectStatus.pushedEnemyId].y = 0;
+                        enemies[ObjectStatus.pushedEnemyId].isAlive = false;
                         Console.Beep();
                     }
                 }
@@ -424,21 +431,21 @@ namespace Moon_Taker
                     {
                         continue;
                     }
-                    if (Actions.IsCollided(blocks[ObjectStatus.pushedBlockId].X, blocks[ObjectStatus.pushedBlockId].Y, blocks[collidedBlockId].X, blocks[collidedBlockId].Y))
+                    if (Actions.IsCollided(blocks[ObjectStatus.pushedBlockId].x, blocks[ObjectStatus.pushedBlockId].y, blocks[collidedBlockId].x, blocks[collidedBlockId].y))
                     {
                         switch (Input)
                         {
                             case ConsoleKey.RightArrow:
-                                Actions.CollidSolidOnLeft(ref blocks[ObjectStatus.pushedBlockId].X);
+                                Actions.CollidSolidOnLeft(ref blocks[ObjectStatus.pushedBlockId].x);
                                 break;
                             case ConsoleKey.LeftArrow:
-                                Actions.CollidSolidOnRight(ref blocks[ObjectStatus.pushedBlockId].X);
+                                Actions.CollidSolidOnRight(ref blocks[ObjectStatus.pushedBlockId].x);
                                 break;
                             case ConsoleKey.DownArrow:
-                                Actions.CollidSolidOnUp(ref blocks[ObjectStatus.pushedBlockId].Y);
+                                Actions.CollidSolidOnUp(ref blocks[ObjectStatus.pushedBlockId].y);
                                 break;
                             case ConsoleKey.UpArrow:
-                                Actions.CollidSolidOnDown(ref blocks[ObjectStatus.pushedBlockId].Y);
+                                Actions.CollidSolidOnDown(ref blocks[ObjectStatus.pushedBlockId].y);
                                 break;
                         }
                     }
@@ -450,18 +457,18 @@ namespace Moon_Taker
                     {
                         break;
                     }
-                    if (Actions.IsCollided(enemies[ObjectStatus.pushedEnemyId].X, enemies[ObjectStatus.pushedEnemyId].Y, blocks[blockId].X, blocks[blockId].Y))
+                    if (Actions.IsCollided(enemies[ObjectStatus.pushedEnemyId].x, enemies[ObjectStatus.pushedEnemyId].y, blocks[blockId].x, blocks[blockId].y))
                     {
-                        enemies[ObjectStatus.pushedEnemyId].X = 0;
-                        enemies[ObjectStatus.pushedEnemyId].Y = 0;
-                        enemies[ObjectStatus.pushedEnemyId].IsAlive = false;
+                        enemies[ObjectStatus.pushedEnemyId].x = 0;
+                        enemies[ObjectStatus.pushedEnemyId].y = 0;
+                        enemies[ObjectStatus.pushedEnemyId].isAlive = false;
                         Console.Beep();
                     };
                 }
 
                 for (int trapId = 0; trapId < traps.Length; ++trapId)
                 {
-                    if (traps[trapId].IsActivated == true && Actions.IsCollided(traps[trapId].X, traps[trapId].Y, player.X, player.Y))
+                    if (traps[trapId].isActivated == true && Actions.IsCollided(traps[trapId].x, traps[trapId].y, player.x, player.y))
                     {
                         ObjectStatus.playerMovePoint -= 1;
                         Console.Beep();
@@ -470,28 +477,28 @@ namespace Moon_Taker
 
                 if (StageSettings.doesKeyExist)
                 {
-                    if (Actions.IsCollided(player.X, player.Y, key.X, key.Y))
+                    if (Actions.IsCollided(player.x, player.y, key.x, key.y))
                     {
                         ObjectStatus.hasKey = true;
                     }
 
-                    if (Actions.IsCollided(player.X, player.Y, door.X, door.Y))
+                    if (Actions.IsCollided(player.x, player.y, door.x, door.y))
                     {
                         if (false == ObjectStatus.hasKey)
                         {
                             switch (Input)
                             {
                                 case ConsoleKey.RightArrow:
-                                    Actions.CollidSolidOnLeft(ref player.X);
+                                    Actions.CollidSolidOnLeft(ref player.x);
                                     break;
                                 case ConsoleKey.LeftArrow:
-                                    Actions.CollidSolidOnRight(ref player.X);
+                                    Actions.CollidSolidOnRight(ref player.x);
                                     break;
                                 case ConsoleKey.DownArrow:
-                                    Actions.CollidSolidOnUp(ref player.Y);
+                                    Actions.CollidSolidOnUp(ref player.y);
                                     break;
                                 case ConsoleKey.UpArrow:
-                                    Actions.CollidSolidOnDown(ref player.Y);
+                                    Actions.CollidSolidOnDown(ref player.y);
                                     break;
                             }
                         }
@@ -502,7 +509,7 @@ namespace Moon_Taker
                     }
                 }
 
-                if (Actions.IsCollided(player.X, player.Y, moon.X, moon.Y))
+                if (Actions.IsCollided(player.x, player.y, moon.x, moon.y))
                 {
                     if (StageSettings.currentStage < GameSettings.stageNumber)
                     {

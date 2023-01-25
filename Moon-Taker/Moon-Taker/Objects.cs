@@ -10,67 +10,67 @@ namespace Moon_Taker
 
     public class Player
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class PreviousPlayer
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class Wall
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class Enemy
     {
-        public int X;
-        public int Y;
-        public bool IsAlive;
+        public int x;
+        public int y;
+        public bool isAlive;
         public bool isOnTrap = false;
     }
     public class PreviousEnemy
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class Block
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
         public bool isOnTrap = false;
     }
     public class PreviousBlock
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class Trap
     {
-        public int X;
-        public int Y;
-        public bool IsActivated = true;
+        public int x;
+        public int y;
+        public bool isActivated = true;
     }
     public class Moon
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class Key
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class Door
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class MapSize
     {
-        public int X;
-        public int Y;
+        public int x;
+        public int y;
     }
     public class Advice
     {
