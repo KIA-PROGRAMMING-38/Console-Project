@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Console_Project_Refactoring.Assets.StageData
 {
-    internal class MapObject
+    class FormatObject
     {
     }
 }

@@ -8,4 +8,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\CandidateList\Motive\" />
+    <Folder Include="Assets\CandidateList\Weapon\" />
+    <Folder Include="Assets\CandidateList\Suspect\" />
+  </ItemGroup>
+
 </Project>

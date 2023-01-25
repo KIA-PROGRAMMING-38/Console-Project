@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ny3MmTQI6hgHdxdONGPPwthLyIKconMXxUFMA6lFN9bQdcipWWd66TvJLb5hhEnftk1s4EWaKkfIlPthRqj95Q==",
+  "dgSpecHash": "dfNukc74q6dva6l9/E3nFLp29+flDreR1FQPpxLH46h7eU3nAb72WM1bLnJ55T/8rNIIYi9kitXTD8MKtWaRaw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\82103\\Documents\\카카오톡 받은 파일\\Console-ReProject\\Console-ReProject\\Console-ReProject\\Console-ReProject.csproj",
+  "projectFilePath": "C:\\Users\\82103\\Documents\\gitProject\\Console-Project\\Joo jinsoo\\Console-ReProject\\Console-ReProject\\Console-ReProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\82103\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
     "C:\\Users\\82103\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",

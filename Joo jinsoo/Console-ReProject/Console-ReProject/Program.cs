@@ -214,9 +214,9 @@ namespace Console_ReProject
             MadeMapMataData();
             MadeInteractionData();
 
-            SoundPlayer BackGroundMusic = new SoundPlayer("MainBGM.wav");
-            BackGroundMusic.Load();
-            BackGroundMusic.Play();
+            //SoundPlayer BackGroundMusic = new SoundPlayer("MainBGM.wav");
+            //BackGroundMusic.Load();
+            //BackGroundMusic.Play();
 
             // 게임루프 돌입
             while (true)
