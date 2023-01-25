@@ -1,0 +1,15 @@
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\bin\Debug\net6.0\Console-Project Refactoring.exe
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\bin\Debug\net6.0\Console-Project Refactoring.deps.json
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\bin\Debug\net6.0\Console-Project Refactoring.runtimeconfig.json
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\bin\Debug\net6.0\Console-Project Refactoring.dll
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\bin\Debug\net6.0\Console-Project Refactoring.pdb
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.csproj.AssemblyReference.cache
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.AssemblyInfoInputs.cache
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.AssemblyInfo.cs
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.csproj.CoreCompileInputs.cache
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.dll
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\refint\Console-Project Refactoring.dll
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.pdb
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\Console-Project Refactoring.genruntimeconfig.cache
+C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-Project Refactoring\Console-Project Refactoring\Console-Project Refactoring\obj\Debug\net6.0\ref\Console-Project Refactoring.dll
