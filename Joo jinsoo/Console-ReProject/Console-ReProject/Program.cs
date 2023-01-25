@@ -6,6 +6,7 @@ using Console_ReProject.Object.Door;
 using Console_ReProject.Object.MapExceptionObject;
 using Microsoft.VisualBasic;
 using System.IO.IsolatedStorage;
+using System.Media;
 
 namespace Console_ReProject
 {
@@ -33,6 +34,7 @@ namespace Console_ReProject
 
             bool[] answerOpportunity = new bool[4];
             int opportunityCount = 0;
+            
 
             MapIcon[,] mapMetaData = new MapIcon[(MAP_OFFSET_X * 2) + MAP_MAX_X, (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
             MapIcon checkData = MapIcon.Default;
@@ -77,6 +79,7 @@ namespace Console_ReProject
 
             bool[] checkAnswer = new bool[3];
             int checkAnswerCount = 0;
+            
 
 
             int[] initialHint = new int[ObjectCoordinate.INITIAL_HINT];
@@ -85,6 +88,7 @@ namespace Console_ReProject
             bool[] checkHint = new bool[12];
             bool[] alreadySearchHint = new bool[3];
             bool[] afterAppearHint = new bool[3];
+            bool[] checkAppearHintSwtich = new bool[2];
 
             for (int i = 0; i - 1 < checkHint.Length; ++i)
             {
@@ -167,7 +171,7 @@ namespace Console_ReProject
             }
              
             Console.Clear();
-             
+
             //// 프롤로그 진입
             //string[] victimPicture = Game.LoadMessage((int)Message.VictimPicture);
             //for (int i = 0; i < victimPicture.Length; ++i)
@@ -185,7 +189,17 @@ namespace Console_ReProject
             //
             //    Thread.Sleep(5000);
             //}
-            
+
+            string[] tutorial = Game.LoadTutorialMessage();
+            Console.Clear();
+
+            for (int i = 0; i < tutorial.Length; ++i)
+            {
+                Console.WriteLine(tutorial[i]);
+            }
+
+            key = Console.ReadKey().Key;
+
             Console.Clear();
 
             // 씬 초기설정
@@ -210,6 +224,9 @@ namespace Console_ReProject
             MadeMapMataData();
             MadeInteractionData();
 
+            SoundPlayer BackGroundMusic = new SoundPlayer("MainBGM.wav");
+            BackGroundMusic.Load();
+            BackGroundMusic.Play();
 
             // 게임루프 돌입
             while (true)
@@ -268,6 +285,24 @@ namespace Console_ReProject
             void Render()
             #region Render
             {
+                // 남은 기회 렌더링
+                Console.ForegroundColor = ConsoleColor.White;
+                Game.ObjectRender(MAP_MAX_X, 1, "남은기회");
+
+                if (answerOpportunity[0] == false)
+                    Game.ObjectRender(MAP_MAX_X + 9, 1, "O");
+                else if (answerOpportunity[0] == true)
+                    Game.ObjectRender(MAP_MAX_X + 9, 1, "@");
+                if (answerOpportunity[1] == false)
+                    Game.ObjectRender(MAP_MAX_X + 11, 1, "O");
+                else if (answerOpportunity[1] == true)
+                    Game.ObjectRender(MAP_MAX_X + 11, 1, "@");
+                if (answerOpportunity[2] == false)
+                    Game.ObjectRender(MAP_MAX_X + 13, 1, "O");
+                else if (answerOpportunity[2] == true)
+                    Game.ObjectRender(MAP_MAX_X + 13, 1, "@");
+
+
                 // 스테이지 구성요소 렌더링
                 Console.ForegroundColor = ConsoleColor.White;
                 for (int i = 0; i < exceptionObj_1.Length; ++i)
@@ -497,17 +532,36 @@ namespace Console_ReProject
                         }
                         if (answerCount == 3)
                         {
-                            Console.Clear();
-
-                            Console.ForegroundColor = ConsoleColor.Cyan;
-                            string[] endString = Game.LoadGoodEndMessage();
-                            for (int i = 0; i < endString.Length; ++i)
+                            if (answerOpportunity[0] == false)
                             {
-                                Console.WriteLine(endString[i]);
-                            }
+                                Console.Clear();
+                                Console.ResetColor();
 
-                            key = Console.ReadKey().Key;
-                            Environment.Exit(1);
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                string[] endString = Game.LoadTrueEndMessage();
+                                for (int i = 0; i < endString.Length; ++i)
+                                {
+                                    Console.WriteLine(endString[i]);
+                                }
+
+                                key = Console.ReadKey().Key;
+                                Environment.Exit(1);
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.ResetColor();
+
+                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                                string[] endString = Game.LoadGoodEndMessage();
+                                for (int i = 0; i < endString.Length; ++i)
+                                {
+                                    Console.WriteLine(endString[i]);
+                                }
+
+                                key = Console.ReadKey().Key;
+                                Environment.Exit(1);
+                            }
                         }
                         else
                         {
@@ -517,6 +571,7 @@ namespace Console_ReProject
                             if (opportunityCount == 4)
                             {
                                 Console.Clear();
+                                Console.ResetColor();
 
                                 Console.ForegroundColor = ConsoleColor.DarkRed;
                                 string[] endString = Game.LoadBadEndMessage();
@@ -717,11 +772,6 @@ namespace Console_ReProject
                 {
                     mapMetaData[walls[i].X, walls[i].Y] = MapIcon.Default;
                 }
-
-                //for (int i = 0; i < interactiveFields.Length; ++i)
-                //{
-                //    mapMetaData[interactiveFields[i].X, interactiveFields[i].Y] = MapIcon.Default;
-                //}
 
                 if (mapMetaData[bedroomDoor[0].X, bedroomDoor[0].Y] == MapIcon.Bed)
                 {
@@ -1039,6 +1089,7 @@ namespace Console_ReProject
 
             void AppearMessage(string[] str, InteractionObject someCoordinate)
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 str = Player.LoadMessage((int)someCoordinate);
                 player.IsOnInteraction = true;
                 if (key == ConsoleKey.R && player.IsOnInteraction == true)
