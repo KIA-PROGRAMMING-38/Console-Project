@@ -12,5 +12,6 @@ namespace Wooseok_Console_Project
         public int y;
         public int prex;
         public int prey;
+        public int Line4Direction;
     }
 }

@@ -21,17 +21,7 @@ namespace Wooseok_Console_Project
         };
 
         
-        /// <summary>
-        /// 초기세팅을 해준다!
-        /// </summary>
-        public void Setting()
-        {
-            Console.Clear();
-            Console.Title = "군대 시뮬레이션";
-            Console.CursorVisible = false;
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Red;
-        }
+        
 
 
         
@@ -163,6 +153,23 @@ namespace Wooseok_Console_Project
             }
         }
 
+
+
+
+
+
+
+        /// <summary>
+        /// 초기세팅을 해준다!
+        /// </summary>
+        public void Setting()
+        {
+            Console.Clear();
+            Console.Title = "군대 시뮬레이션";
+            Console.CursorVisible = false;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Red;
+        }
 
 
     }

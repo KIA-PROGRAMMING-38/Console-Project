@@ -13,9 +13,10 @@ namespace Wooseok_Console_Project
         public int maxx = 55;
         public int maxy = 18;
 
-        public bool Stage1Clear = false;
-        public bool Stage2Clear = false;    
-        public bool Stage3Clear = false;
+        public bool Stage1Ongoing = true;
+        public bool Stage2Ongoing = false;    
+        public bool Stage3Ongoing = false;
+        public bool Stage4Ongoing = false;
 
         public static string[] LoadStage(int stagenumber)
         {
@@ -45,11 +46,11 @@ namespace Wooseok_Console_Project
 
 
 
-        public static void ParseStage(string[] stage, out Player Player, out Wall[] wall, out Goal[] goal, out Box[] box, out Line4[] line4, out PX px )
+        public static void ParseStage(string[] stage, out Player Player, out Wall[] wall, out Goal[] goal, out Box[] box, out Line4[] line4 )
         {
             string[] counts = stage[0].Split(" "); // 0번째 행에 오브젝트의 숫자를 써놨다
             Player = null;
-            px = null;
+            
             wall = new Wall[int.Parse(counts[0])];
             goal = new Goal[int.Parse(counts[1])];
             box = new Box[int.Parse(counts[2])];
@@ -86,9 +87,7 @@ namespace Wooseok_Console_Project
                             line4[Line4Index] = new Line4 { x = x, y = y - 1 };
                             ++Line4Index;
                             break;
-                        case 'S':
-                            px = new PX { x = x, y = y - 1 };
-                            break;
+                        
                         case ' ':
                             // 아무것도 안함
                             break;

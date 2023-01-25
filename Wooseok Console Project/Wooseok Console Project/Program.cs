@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using System.Security.Cryptography.X509Certificates;
 using Wooseok_Console_Project;
 
 class Program
@@ -40,12 +41,13 @@ class Program
         #endregion
 
         #region 오브젝트 추가하기
-        Player player;
-        Box[] box;
-        Wall[] wall;
-        Goal[] goal;
-        Line4[] line4;
-        PX px;
+        Player player = null;
+        Box[] box = null;
+        Wall[] wall = null;
+        Goal[] goal = null;
+        Line4[] line4 = null;
+        
+        
 
         #endregion
 
@@ -135,7 +137,7 @@ class Program
         Scene scene = new Scene(); // Scene 객체 생성
         Game game = new();
         PLAYERDIRECTION PlayerDirection = PLAYERDIRECTION.NONE; // 플레이어 방향 ENUM 초기화
-        LINE4DIRECTION Line4Direction= LINE4DIRECTION.NONE; // 병장 방향 ENUM 초기화
+        LINE4DIRECTION line4direction= LINE4DIRECTION.NONE; // 병장 방향 ENUM 초기화
 
         #region 시작화면
 
@@ -471,24 +473,27 @@ class Program
         #endregion
 
         #region 채점 부분
-
+        bool RenderMark = true;
         string MarkPath = Path.Combine("Assets", "Scenes", "MarkScene.txt"); ;
         string[] MarkShow = File.ReadAllLines(MarkPath);
         while (scene.MarkOn) // 채점 scene
         {
             // Render
-            Console.ForegroundColor = ConsoleColor.White;
-            Function.RenderText(MarkPath, MarkShow); // 텍스트 파일 불러오기
+            if (RenderMark == true)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Function.RenderText(MarkPath, MarkShow); // 텍스트 파일 불러오기
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Function.Render(33, 3, $"+{quiz.Score}"); // 점수 그리기
-            Function.Render(45, 18, ChosenOne.name); // 선택된 캐릭터 이름 그리기
+                Console.ForegroundColor = ConsoleColor.Green;
+                Function.Render(33, 3, $"+{quiz.Score}"); // 점수 그리기
+                Function.Render(45, 18, ChosenOne.name); // 선택된 캐릭터 이름 그리기
+                RenderMark = false;
+            }
 
             // input
             ConsoleKey key = Console.ReadKey(true).Key;
 
             // update
-
             if (key == ConsoleKey.Enter)
             {
                 Console.Clear();
@@ -496,21 +501,22 @@ class Program
                 scene.MarkOn = false;
                 scene.ExplanationOn = true;
             }
-            else
-            {
-                // 암것도 안함
-            }
         }
         #endregion
 
         #region 캐릭터 설명부분
-
+        bool RenderExplanation = true;
         string ExplanationPath = "";
         string[] ExplanationShow = default;
         while (scene.ExplanationOn) // 캐릭터설명 scene
         {
             // render
-            Function.RenderExplanation(ChosenOne, ExplanationPath, ExplanationShow);
+            if (RenderExplanation == true)
+            {
+                Function.RenderExplanation(ChosenOne, ExplanationPath, ExplanationShow);
+                RenderExplanation = false;
+            }
+            
 
             // input
             ConsoleKey key = Console.ReadKey(true).Key;
@@ -530,13 +536,18 @@ class Program
 
         #region 소코반 전 미션설명 부분
 
+        bool RenderPre = true;
         string PrePath = Path.Combine("Assets", "Scenes", "PresokobanScene.txt"); ;
         string[] PreShow = File.ReadAllLines(PrePath);
         while (scene.PresokobanOn) // Presokoban scene
         {
             // render
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Function.RenderText(PrePath, PreShow);
+            if (RenderPre == true)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Function.RenderText(PrePath, PreShow);
+                RenderPre = false;
+            }
 
             // input
             ConsoleKey key = Console.ReadKey(true).Key;
@@ -553,14 +564,18 @@ class Program
 
         #endregion
 
-
-
+        #region 
+        bool RenderShopping = true;
         string ShoppingPath = Path.Combine("Assets", "Scenes", "ShoppingScene.txt");
         string[] ShoppingShow = File.ReadAllLines(ShoppingPath);
         while (scene.ShoppingOn) // 상점이용 scene
         {
             // render
-            Function.RenderText(ShoppingPath, ShoppingShow);
+            if (RenderShopping == true)
+            {
+                Function.RenderText(ShoppingPath, ShoppingShow);
+                RenderShopping = false;
+            }
 
             // input
             ConsoleKey key = Console.ReadKey(true).Key;
@@ -576,21 +591,29 @@ class Program
             }
 
         }
-
+        #endregion
 
         string[] data1 = Game.LoadStage(1); // 스테이지 1 로드하기
         string[] data2 = Game.LoadStage(2); // 스테이지 2 로드하기
         string[] data3 = Game.LoadStage(3); // 스테이지 3 로드하기
 
-        if (game.Stage1Clear == false)
+    LOOP_CHANGE:
+        if (game.Stage1Ongoing == true)
         {
             Game.RenderStage(data1); // 스테이지 1 렌더하기
+            Game.ParseStage(data1, out player, out wall, out goal, out box, out line4); // 스테이지 파싱하기
+        }
+        if (game.Stage2Ongoing == true)
+        {
+            Game.RenderStage(data2); // 스테이지 2 렌더하기
+            Game.ParseStage(data2, out player, out wall, out goal, out box, out line4); // 스테이지 파싱하기
+        }
+        if (game.Stage3Ongoing == true)
+        {
+            Game.RenderStage(data3); // 스테이지 3 렌더하기
+            Game.ParseStage(data3, out player, out wall, out goal, out box, out line4); // 스테이지 파싱하기
         }
         
-        
-        Game.ParseStage(data1, out player, out wall, out goal, out box, out line4, out px); // 스테이지 파싱하기
-
-
         int BoxOnGoalCount = 0;
         bool[] BoxOnGoal = new bool[box.Length]; // 골위에 올라간 박스 확인용
         int pushed = 0; // 민 박스 확인용
@@ -598,8 +621,15 @@ class Program
         while (scene.SokobanOn) // 소코반 scene
         {
             // render
-            
-            Function.Render(player.x, player.y, "P"); // 플레이어를 render
+
+            Console.ForegroundColor = ConsoleColor.Blue; // 골을 렌더
+            for (int i = 0; i < goal.Length; ++i)
+            {
+                Function.Render(goal[i].x, goal[i].y, "*"); 
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;// 플레이어를 render
+            Function.Render(player.x, player.y, "P"); 
             if (player.x == player.prex && player.y == player.prey)
             {
                 // 암것도안함
@@ -609,16 +639,16 @@ class Program
                 Function.Render(player.prex, player.prey, " ");
             }
 
-            
-
+            Console.ForegroundColor = ConsoleColor.Yellow;// 벽을 렌더
             for (int i = 0; i < wall.Length; ++i)
             {
-                Function.Render(wall[i].x, wall[i].y, "W"); // 벽을 렌더
+                Function.Render(wall[i].x, wall[i].y, "W"); 
             }
 
+            Console.ForegroundColor = ConsoleColor.Red;// 병장을 렌더
             for (int i = 0; i < line4.Length; ++i)
             {
-                Function.Render(line4[i].x, line4[i].y, "4"); // 병장을 렌더
+                Function.Render(line4[i].x, line4[i].y, "4"); 
 
                 if (line4[i].x == line4[i].prex && line4[i].y == line4[i].prey)
                 {
@@ -629,18 +659,11 @@ class Program
                     Function.Render(line4[i].prex, line4[i].prey, " ");
                 }
             }
-
             
-
-
-            for (int i = 0; i < goal.Length; ++i)
-            {
-                Function.Render(goal[i].x, goal[i].y, "*"); // 골을 렌더
-            }
-
+            Console.ForegroundColor = ConsoleColor.Green;// box를 렌더
             for (int i = 0; i < box.Length; ++i)
             {
-                Function.Render(box[i].x, box[i].y, "B"); // box를 렌더
+                Function.Render(box[i].x, box[i].y, "B"); 
             }
 
             
@@ -672,55 +695,145 @@ class Program
             // 병장 무작위 움직이는거 구현
             Line4Move();
 
-            // 병장 벽에 막히는 거 구현 아니 벽 왜 뚫음???? ㅅㅂ 어이가 없네
+            // 병장 벽에 막히는 거 구현 
             Line4VsWall();
 
             // 병장 박스에 막히는 거 구현
             Line4VsBox();
 
-            
-
-
-
-
-
+            // 플레이어가 병장이랑 조우하면 배틀모드돌입
+            //PlayerMeetLine4();
 
             // 골에 박스 몇개들어갔는지 확인하는거 구현
             BoxOnGoalCount = CountBoxOnGoal(box, goal, ref BoxOnGoal);
 
-            if (BoxOnGoalCount == goal.Length) // 만약 모든 박스가 골에 들어갔다면
+
+            if (game.Stage1Ongoing == true && BoxOnGoalCount == goal.Length) // 1번 스테이지에 모든 박스가 골에 들어갔다면
             {
                 Console.Clear();
                 key = default;
-                scene.SokobanOn = false; // 소코반 모드 꺼주고
-                scene.EncounterOn = true; // 일단 실험용
+                game.Stage1Ongoing = false;
+                game.Stage2Ongoing = true; // 2번 stage로 간다
+                goto LOOP_CHANGE;
+            }
 
+            if (game.Stage2Ongoing == true && BoxOnGoalCount == goal.Length) // 2번 스테이지에 모든 박스가 골에 들어갔다면
+            {
+                Console.Clear();
+                key = default;
+                game.Stage2Ongoing = false;
+                game.Stage3Ongoing = true; // 3번 stage로 간다
+                goto LOOP_CHANGE;
+            }
+
+            if (game.Stage3Ongoing == true && BoxOnGoalCount == goal.Length) // 3번 스테이지에 모든 박스가 골에 들어갔다면
+            {
+                Console.Clear();
+                key = default;
+                game.Stage3Ongoing = false;
+                scene.SokobanOn = false;
+                scene.ClearOn = true; // 군의관에게로 간다
             }
 
         }
 
-
-        
-
+        #region 병장 조우 부분
+        bool RenderEncounter = true;
+        string EncounterPath = Path.Combine("Assets", "Scenes", "EncounterScene.txt");
+        string[] EncounterShow = File.ReadAllLines(EncounterPath);
         while (scene.EncounterOn) // 병장 조우 scene
         {
-            Console.WriteLine("소코반 클리어");
-        }
+            // render
+            if (RenderEncounter == true)
+            {
+                Function.RenderText(EncounterPath, EncounterShow);
+                RenderEncounter = false;
+            }
+            
+            // input
+            ConsoleKey key = Console.ReadKey(true).Key;
 
+            // update
+            if (key == ConsoleKey.Enter) // 엔터 누르면
+            {
+                scene.EncounterOn = false;
+                scene.BattleOn = true; // 배틀 모드 돌임
+            }
+        }
+        #endregion
+
+        #region 병장과의 배틀 부분
+        bool Victory = false; // 승리 패배에 따라 변환할 것
+        
+        string BattlePath = Path.Combine("Assets", "Scenes", "BattleScene.txt");
+        string[] BattleShow = File.ReadAllLines(BattlePath);
         while (scene.BattleOn) // 병장 배틀 scene
         {
+            // render
+            Function.RenderText(BattlePath, BattleShow);
+
+            // input
+            ConsoleKey key = Console.ReadKey(true).Key;
+            // update
+
+            if (ChosenOne.hp <= 0)
+            {
+                Victory = true;
+            }
+
 
         }
+        #endregion
 
+
+        string VictoryPath = Path.Combine("Assets", "Scenes", "VictoryScene.txt");
+        string[] VictoryShow = File.ReadAllLines(VictoryPath);
+        string LosePath = Path.Combine("Assets", "Scenes", "LoseScene.txt");
+        string[] LoseShow = File.ReadAllLines(LosePath);
         while (scene.ResultOn) // 배틀 결과 scene 승리 or 패배
         {
+            // render
+            if (Victory == true)
+            {
+                Function.RenderText(VictoryPath, VictoryShow);
+            }
+            else
+            {
+                Function.RenderText(LosePath, LoseShow);
+            }
+
+            // input
+            ConsoleKey key = Console.ReadKey(true).Key;
+
+            // update
 
         }
 
+        #region 소코반 클리어 부분
+        bool RenderClear = true;
+        string ClearPath = Path.Combine("Assets", "Scenes", "ClearScene.txt");
+        string[] ClearShow = File.ReadAllLines(ClearPath);
         while (scene.ClearOn) // 소코반 완료 scene
         {
+            // render
+            if (RenderClear == true)
+            {
+                Function.RenderText(ClearPath, ClearShow);
+                RenderClear = false;
+            }
+            // input
+            ConsoleKey key = Console.ReadKey(true).Key;
 
+            // update
+            if (key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                key = default;
+                scene.ClearOn = false;
+                scene.DisabledOn = true;
+            }
         }
+        #endregion
 
         while (scene.DisabledOn) // 의가사전역 scene
         {
@@ -924,23 +1037,29 @@ class Program
                 switch (ranmove)
                 {
                     case 0: // 나띵
-                        Line4Direction = LINE4DIRECTION.NONE;  // 노방향
+                        line4[i].Line4Direction = (int)LINE4DIRECTION.NONE;  // 노방향 // 0
                         break;
                     case 1: // 1 이면 오른쪽 방향
                         MoveRight(ref line4[i].x);
-                        Line4Direction = LINE4DIRECTION.RIGHT; // 오른쪽 방향
+                        line4[i].Line4Direction = (int)LINE4DIRECTION.RIGHT; // 오른쪽 방향(1)
                         break;
                     case 2: // 2 면 왼쪽 방향 
                         MoveLeft(ref line4[i].x);
-                        Line4Direction = LINE4DIRECTION.LEFT;
+                        line4[i].Line4Direction = (int)LINE4DIRECTION.LEFT; // 왼쪽 방향(2)
+                        //MoveLeft(ref line4[i].x);
+                        //Line4Direction = LINE4DIRECTION.LEFT;
                         break;
                     case 3: // 위쪽 방향
                         MoveUp(ref line4[i].y);
-                        Line4Direction = LINE4DIRECTION.UP;
+                        line4[i].Line4Direction = (int)LINE4DIRECTION.UP; // 위쪽 방향(3)
+                        //MoveUp(ref line4[i].y);
+                        //Line4Direction = LINE4DIRECTION.UP;
                         break;
                     case 4: // 아래쪽 방향
                         MoveDown(ref line4[i].y);
-                        Line4Direction = LINE4DIRECTION.DOWN;
+                        line4[i].Line4Direction = (int)LINE4DIRECTION.DOWN; // 아래쪽 방향(4)
+                        //MoveDown(ref line4[i].y);
+                        //Line4Direction = LINE4DIRECTION.DOWN;
                         break;
                 }
             }
@@ -956,18 +1075,18 @@ class Program
                 {
                     if (Collision(line4[k].x, line4[k].y, wall[i].x, wall[i].y))
                     {
-                        switch (Line4Direction)
+                        switch (line4[k].Line4Direction)
                         {
-                            case LINE4DIRECTION.RIGHT:
+                            case (int)LINE4DIRECTION.RIGHT:
                                 BlocksRightmove(out line4[k].x, ref wall[i].x);
                                 break;
-                            case LINE4DIRECTION.LEFT:
+                            case (int)LINE4DIRECTION.LEFT:
                                 BlocksLeftmove(out line4[k].x, ref wall[i].x);
                                 break;
-                            case LINE4DIRECTION.UP:
+                            case (int)LINE4DIRECTION.UP:
                                 BlocksUpmove(out line4[k].y, ref wall[i].y);
                                 break;
-                            case LINE4DIRECTION.DOWN:
+                            case (int)LINE4DIRECTION.DOWN:
                                 BlocksDownmove(out line4[k].y, ref wall[i].y);
                                 break;
 
@@ -988,18 +1107,18 @@ class Program
                 {
                     if (Collision(line4[k].x, line4[k].y, box[i].x, box[i].y))
                     {
-                        switch (Line4Direction)
+                        switch (line4[k].Line4Direction)
                         {
-                            case LINE4DIRECTION.RIGHT:
+                            case (int)LINE4DIRECTION.RIGHT:
                                 BlocksRightmove(out line4[k].x, ref box[i].x);
                                 break;
-                            case LINE4DIRECTION.LEFT:
+                            case (int)LINE4DIRECTION.LEFT:
                                 BlocksLeftmove(out line4[k].x, ref box[i].x);
                                 break;
-                            case LINE4DIRECTION.UP:
+                            case (int)LINE4DIRECTION.UP:
                                 BlocksUpmove(out line4[k].y, ref box[i].y);
                                 break;
-                            case LINE4DIRECTION.DOWN:
+                            case (int)LINE4DIRECTION.DOWN:
                                 BlocksDownmove(out line4[k].y, ref box[i].y);
                                 break;
 
@@ -1007,11 +1126,25 @@ class Program
                     }
                 }
             }
-
         }
 
 
-
+        // 플레이어가 병장이랑 만나면 배틀모드에 돌입하는 함수
+        void PlayerMeetLine4()
+        {
+            ConsoleKey key = default;
+            for (int i = 0; i < line4.Length; ++i)
+            {
+                if (player.x == line4[i].x && player.y == line4[i].y)
+                {
+                    Console.Clear();
+                    key = default;
+                    scene.SokobanOn = false;
+                    scene.EncounterOn = true;
+                    break;
+                }
+            }
+        }
 
 
 
