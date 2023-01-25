@@ -19,7 +19,6 @@ namespace ConsoleGame
         public static SceneKind _currentScene;
         public static SceneKind _capturedScene;
 
-        public static Thread shootingBullet = new Thread(() => Bullet.Shooting());
         public static Thread obstacleCreate = new Thread(() => Obstacle.Create());
         public static Thread obstacleFly = new Thread(() => Obstacle.Fly());
         public static Thread targetCreate = new Thread(() => Target.Create());
@@ -92,7 +91,7 @@ namespace ConsoleGame
 
         public static void InitTitle()
         {
-            Console.SetWindowSize(120, 30);
+            Console.SetWindowSize(1920, 1080);
         }
 
         public static void RenderTitle()
@@ -169,7 +168,6 @@ namespace ConsoleGame
         public static void InitInGame()
         {
             Console.SetWindowSize(50, 30);
-            shootingBullet.Start();
             obstacleCreate.Start();
             obstacleFly.Start();
             targetCreate.Start();
@@ -200,7 +198,9 @@ namespace ConsoleGame
                     Player.Move();
                     break;
             }
-            
+            Bullet.Shoot();
+            Bullet.Fly();
+            Bullet.IsCollisionWithSomething();
         }
 
         public static void InitGameInfo()

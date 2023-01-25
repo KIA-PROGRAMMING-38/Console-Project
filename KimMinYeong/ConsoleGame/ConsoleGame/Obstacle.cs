@@ -18,6 +18,16 @@ namespace ConsoleGame
 
         private static Random random = new Random();
 
+        public static int[] GetX()
+        {
+            return _x;
+        }
+
+        public static int[] GetY()
+        {
+            return _y;
+        }
+
         public static void Create()
         {
             while (true)
