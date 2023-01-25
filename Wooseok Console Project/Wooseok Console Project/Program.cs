@@ -712,10 +712,20 @@ class Program
 
             RenderLine4(); // 병장 렌더
             
-            Console.ForegroundColor = ConsoleColor.Green;// box를 렌더
-            for (int i = 0; i < box.Length; ++i)
+            
+            for (int i = 0; i < box.Length; ++i)// box를 렌더
             {
-                Function.Render(box[i].x, box[i].y, "B"); 
+                if (BoxOnGoal[i] == false)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Function.Render(box[i].x, box[i].y, "B");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Function.Render(box[i].x, box[i].y, "X");
+                }
+                
             }
 
             // input
@@ -1092,6 +1102,7 @@ class Program
         bool RenderDisable = true;
         string DisablePath = Path.Combine("Assets", "Scenes", "DisabledScene.txt");
         string[] DisableShow = File.ReadAllLines(DisablePath);
+        Console.ForegroundColor = ConsoleColor.White;
         while (scene.DisabledOn) // 의가사전역 scene
         {
             // render
