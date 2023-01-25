@@ -16,7 +16,7 @@ namespace Console_Project_Refactoring.Assets.StageData
 
             if (false == File.Exists(stageFilePath))
             {
-                Console.WriteLine($"스테이지 파일이 없습니다. 스테이지 번호{stageNumber}.txt");
+                Console.WriteLine($"스테이지 포맷 파일이 없습니다. 스테이지 번호{stageNumber}.txt");
             }
 
             return File.ReadAllLines(stageFilePath);

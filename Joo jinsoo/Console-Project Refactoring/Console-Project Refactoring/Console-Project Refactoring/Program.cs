@@ -22,8 +22,13 @@ namespace Console_Project_Refactoring
             const int MAP_MAX_Y = 12;
             MapIcon[,] mapMetaData = new MapIcon[(MAP_OFFSET_X * 2) + MAP_MAX_X,
                 (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
+            InteractionObject[,] mapInteractionData = new InteractionObject[(MAP_OFFSET_X * 2) + MAP_MAX_X,
+                (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
 
             Stage currentScene = Stage.Default;
+            Stage captureSCene = Stage.Default;
+
+            int answerCount = 0;
 
             Player player = new Player
             {
@@ -38,27 +43,55 @@ namespace Console_Project_Refactoring
             LivingroomDoor_First[] firstLRDoor = null;
             LivingroomDoor_Second[] secondLRDoor = null;
             LivingroomDoor_Third[] thirdLRDoor = null;
+            Interactive_A[] interactiveFieldA;
+            Interactive_B[] interactiveFieldB;
+            Interactive_C[] interactiveFieldC;
+            Interactive_D[] interactiveFieldD;
+            Interactive_E[] interactiveFieldE;
+            Interactive_F[] interactiveFieldF;
+            Interactive_G[] interactiveFieldG;
+            Interactive_H[] interactiveFieldH;
+            Interactive_I[] interactiveFieldI;
+            Interactive_J[] interactiveFieldJ;
+            Interactive_K[] interactiveFieldK;
+            Interactive_L[] interactiveFieldL;
 
 
             // 초기 스테이지 룩업테이블 구성
+            currentScene = Stage.Livingroom;
+            string[] lines = StageFormat.LoadStageFormat((int)currentScene);
+            StageFormat.ParseStage(lines, out walls);
+            string[] dividedRoomDoor = InteractedObject.LoadDividedroomDoor();
+            InteractedObject.ParseStageDoorID(dividedRoomDoor, out bedroomDoor, out toiletDoor,
+                out utilityroomDoor, out frontDoor);
+            string[] livingroomDoor = InteractedObject.LoadDLivingroomDoor();
+            InteractedObject.ParseLivingroomDoorID(livingroomDoor, out firstLRDoor,
+                out secondLRDoor, out thirdLRDoor);
+            string[] interactionFields = InteractedObject.LoadInteractionStage((int)currentScene);
+            InteractedObject.ParseInteractionID(interactionFields, out interactiveFieldA, 
+                out interactiveFieldB, out interactiveFieldC, out interactiveFieldD,
+                out interactiveFieldE, out interactiveFieldF, out interactiveFieldG,
+                out interactiveFieldH, out interactiveFieldI, out interactiveFieldJ,
+                out interactiveFieldK, out interactiveFieldL);
             GameSystem.MadeMapMetaData(mapMetaData, currentScene, player, walls, utilityroomDoor, toiletDoor,
                 bedroomDoor, frontDoor, firstLRDoor, secondLRDoor, thirdLRDoor);
+            GameSystem.MadeInteractionData();
 
-            // 초기 상호작용 룩업테이블 구성
-            string[] lines = StageFormat.LoadStageFormat(0);
+            //ConsoleKey key = Console.ReadKey().Key;
 
-            for (int i = 1; i < lines.Length; ++i)
-            {
-                Console.WriteLine(lines[i]);
-            }
-
-            int a = 0;
+            Console.WriteLine("check");
 
             while (true)
             {
-                // if 씬이 바뀔 때마다 설정 초기화
+                if (captureSCene == currentScene)
+                {
 
+                }
 
+                answerCount = 0;
+                captureSCene = currentScene;
+                player.pastX = player.X;
+                player.pastY = player.Y;
 
                 // render
 
@@ -67,9 +100,9 @@ namespace Console_Project_Refactoring
                 // process input
 
 
-                
-                // update
 
+                // update
+                //Player.MovePlayer(key, ref player.X, ref player.Y, player.X, player.Y);
 
 
                 // afterupdate
@@ -77,7 +110,6 @@ namespace Console_Project_Refactoring
 
 
             }
-
         }
     }
 }
