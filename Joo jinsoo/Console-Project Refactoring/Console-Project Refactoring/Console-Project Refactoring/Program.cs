@@ -92,6 +92,11 @@ namespace Console_Project_Refactoring
             {
                 if (captureScene != currentScene)
                 {
+                    GameSystem.MapMetaDataClear(GameSystem.mapMetaData, player, walls, utilityroomDoor,
+                    toiletDoor, bedroomDoor, frontDoor, firstLRDoor,
+                    secondLRDoor, thirdLRDoor);
+                    
+
                     lines = StageFormat.LoadStageFormat((int)currentScene);
                     StageFormat.ParseStage(lines, out walls, out exceptionObj_01, out exceptionObj_02,
                 out exceptionObj_03, out exceptionObj_04, out exceptionObj_05, out exceptionObj_06,
@@ -102,7 +107,21 @@ namespace Console_Project_Refactoring
                         out interactiveFieldE, out interactiveFieldF, out interactiveFieldG,
                         out interactiveFieldH, out interactiveFieldI, out interactiveFieldJ,
                         out interactiveFieldK, out interactiveFieldL);
+                    GameSystem.MadeInteractionData(GameSystem.mapInteractionData, currentScene,
+                    interactiveFieldA, interactiveFieldB, interactiveFieldC,
+                    interactiveFieldD, interactiveFieldE, interactiveFieldF,
+                    interactiveFieldG, interactiveFieldH, interactiveFieldI,
+                    interactiveFieldJ, interactiveFieldK, interactiveFieldL);
+
                 }
+
+                GameSystem.MadeMapMetaData(GameSystem.mapMetaData, currentScene, player, walls, utilityroomDoor, toiletDoor,
+                bedroomDoor, frontDoor, firstLRDoor, secondLRDoor, thirdLRDoor);
+                GameSystem.MadeInteractionData(GameSystem.mapInteractionData, currentScene,
+                interactiveFieldA, interactiveFieldB, interactiveFieldC,
+                interactiveFieldD, interactiveFieldE, interactiveFieldF,
+                interactiveFieldG, interactiveFieldH, interactiveFieldI,
+                interactiveFieldJ, interactiveFieldK, interactiveFieldL);
 
                 Console.Clear();
 
@@ -124,6 +143,8 @@ namespace Console_Project_Refactoring
                 GameSystem.AfterUpdate(ref currentScene, player, walls, utilityroomDoor,
                     toiletDoor, bedroomDoor, frontDoor, firstLRDoor,
                     secondLRDoor, thirdLRDoor);
+
+                
 
 
             }

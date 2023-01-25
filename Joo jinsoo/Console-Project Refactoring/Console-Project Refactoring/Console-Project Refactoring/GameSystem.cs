@@ -517,13 +517,54 @@ namespace Console_Project_Refactoring
                     break;
 
                 case MapIcon.Living_3:
-                    currentScene = Stage.Bedroom;
+                    currentScene = Stage.Livingroom;
                     player.X = bedroomDoor[0].X + 1;
                     player.Y = bedroomDoor[0].Y;
 
                     break;
 
             }
+        }
+
+        public static void MapMetaDataClear(MapIcon[,] mapMetaData,
+            Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
+            Toilet[] toiletDoor, Bedroom[] bedroomDoor, Frontdoor[] frontDoor,
+            LivingroomDoor_First[] firstLRDoor, LivingroomDoor_Second[] secondLRDoor,
+            LivingroomDoor_Third[] thirdLRDoor
+            )
+        {
+            mapMetaData[player.X, player.Y] = MapIcon.Default;
+
+            for (int i = 0; i < walls.Length; ++i)
+            {
+                mapMetaData[walls[i].X, walls[i].Y] = MapIcon.Default;
+            }
+
+            //for (int i = 0; i < interactiveFields.Length; ++i)
+            //{
+            //    mapMetaData[interactiveFields[i].X, interactiveFields[i].Y] = MapIcon.Default;
+            //}
+
+            mapMetaData[bedroomDoor[0].X, bedroomDoor[0].Y] = MapIcon.Default;
+            mapMetaData[bedroomDoor[1].X, bedroomDoor[1].Y] = MapIcon.Default;
+
+            mapMetaData[toiletDoor[0].X, toiletDoor[0].Y] = MapIcon.Default;
+            mapMetaData[toiletDoor[1].X, toiletDoor[1].Y] = MapIcon.Default;
+
+            mapMetaData[utilityroomDoor[0].X, utilityroomDoor[0].Y] = MapIcon.Default;
+            mapMetaData[utilityroomDoor[1].X, utilityroomDoor[1].Y] = MapIcon.Default;
+
+            mapMetaData[frontDoor[0].X, frontDoor[0].Y] = MapIcon.Default;
+            mapMetaData[frontDoor[1].X, frontDoor[1].Y] = MapIcon.Default;
+
+            mapMetaData[firstLRDoor[0].X, firstLRDoor[0].Y] = MapIcon.Default;
+            mapMetaData[firstLRDoor[1].X, firstLRDoor[1].Y] = MapIcon.Default;
+
+            mapMetaData[secondLRDoor[0].X, secondLRDoor[0].Y] = MapIcon.Default;
+            mapMetaData[secondLRDoor[1].X, secondLRDoor[1].Y] = MapIcon.Default;
+
+            mapMetaData[thirdLRDoor[0].X, thirdLRDoor[0].Y] = MapIcon.Default;
+            mapMetaData[thirdLRDoor[1].X, thirdLRDoor[1].Y] = MapIcon.Default;
         }
     }
 }
