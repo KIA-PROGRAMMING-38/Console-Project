@@ -15,6 +15,7 @@ namespace Packman
             FirePunchMissile,
             FireCollectGoldBullet,
             FireKillMonsterBullet,
+            Stealth,
             End,
         }
 
@@ -24,14 +25,19 @@ namespace Packman
             public int RemainUseCount;
         }
 
-        Player _player = null;
+        private Player _player = null;
 
-        SkillInfo[] _skillInfoes = null;
+        private SkillInfo[] _skillInfoes = null;
 
         private int _stunBulletID = 0;
         private int _punchMissileID = 0;
         private int _collectGoldBulletID = 0;
         private int _monsterKillBulletID = 0;
+
+        public int GetSkillRemainCount( SkillKind skillKind)
+        {
+            return _skillInfoes[(int)skillKind].RemainUseCount;
+        }
 
         public PlayerSkill()
         {
@@ -84,6 +90,10 @@ namespace Packman
                 case SkillKind.FireKillMonsterBullet:
                     OnUseFireKillMonsterBulletSKill();
                     break;
+
+                case SkillKind.Stealth:
+                    OnUseStealthSkill();
+                    break;
                 default:
                     return;
             }
@@ -135,6 +145,11 @@ namespace Packman
             ++_monsterKillBulletID;
 
             CollisionManager.Instance.RenewProjectileInstance();
+        }
+
+        private void OnUseStealthSkill()
+        {
+            _player.SetStealthMode( !_player.IsStealthMode );
         }
 
         /// <summary>

@@ -36,21 +36,24 @@ namespace Packman
         public const string PLAYER_IMAGE = "☹";
 		public const string MONSTER_IMAGE = "★";
 		public const string MONSTER_STUN_STATE_IMAGE = "☆";
+		public const string MONSTER_DEAD_STATE_IMAGE = "_";
         //public const string MONSTER_IMAGE = "M";
         public const string GOLD_IMAGE = "⊙";
         //public const string GOLD_IMAGE = "G";
         // 투사체 관련 이미지..
         public const string STUN_IMAGE = "z";
         public const string PUNCH_IMAGE = "p";
-        public const string MONSTER_KILL_PROJECTILE_IMAGE = "→";
+        public const string MONSTER_KILL_PROJECTILE_IMAGE = "→←↓↑";
         public const string COLLECT_GOLD_PROJECTILE_IMAGE = "c";
 
         // Color 관련 상수들..
         // 오브젝트 Color..
         public const ConsoleColor PLAYER_COLOR = ConsoleColor.Yellow;
-        public const ConsoleColor MONSTER_COLOR = ConsoleColor.Red;
+        public const ConsoleColor MONSTER_COLOR = ConsoleColor.Gray;
+        public const ConsoleColor MONSTER_CHASE_PATTERN_COLOR = ConsoleColor.DarkGray;
         public const ConsoleColor MONSTER_STUN_STATE_COLOR = ConsoleColor.DarkBlue;
-        public const ConsoleColor MONSTER_FORCED_PUSH_STATE_COLOR = ConsoleColor.Gray;
+        public const ConsoleColor MONSTER_FORCED_PUSH_STATE_COLOR = ConsoleColor.Cyan;
+        public const ConsoleColor MONSTER_DEAD_STATE_COLOR = ConsoleColor.Red;
         public const ConsoleColor MAP_WALL_COLOR = ConsoleColor.Blue;
         public const ConsoleColor GOLD_COLOR = ConsoleColor.DarkYellow;
         // 맵 Color..

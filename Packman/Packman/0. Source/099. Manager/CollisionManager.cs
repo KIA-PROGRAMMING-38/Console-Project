@@ -16,9 +16,14 @@ namespace Packman
         public void RenewObjectInstance()
         {
             _player = ObjectManager.Instance.GetGameObject<Player>();
-            _monsters = ObjectManager.Instance.GetAllGameObject<Monster>();
+            RenewMonsterInstance();
             RenewItemInstance();
             RenewProjectileInstance();
+        }
+
+        public void RenewMonsterInstance()
+        {
+            _monsters = ObjectManager.Instance.GetAllGameObject<Monster>();
         }
 
         public void RenewItemInstance()
@@ -33,17 +38,27 @@ namespace Packman
 
         public void Update()
         {
-            // Collision Player To Monster..
-            if(null != _monsters )
-            {
-                foreach ( Monster monster in _monsters )
-                {
-                    if ( true == CollisionHelper.CollisionObjectToObject( _player, monster ) )
-                    {
-                        _player.OnCollision( monster );
-                        monster.OnCollision( _player );
+            RenewObjectInstance();
 
-                        break;
+            // Collision Player To Monster..
+            if ( null != _monsters )
+            {
+                if ( !_player.IsStealthMode )
+                {
+                    foreach ( Monster monster in _monsters )
+                    {
+                        if ( true == monster.IsDead )
+                        {
+                            continue;
+                        }
+
+                        if ( true == CollisionHelper.CollisionObjectToObject( _player, monster ) )
+                        {
+                            _player.OnCollision( monster );
+                            monster.OnCollision( _player );
+
+                            break;
+                        }
                     }
                 }
             }
@@ -61,7 +76,7 @@ namespace Packman
                 }
             }
 
-            if( null != _projectiles)
+            if ( null != _projectiles && null != _monsters )
             {
                 List<GameObject> collisionObjects = new List<GameObject>();
 
@@ -69,6 +84,11 @@ namespace Packman
                 {
                     foreach ( var monster in _monsters )
                     {
+                        if ( true == monster.IsDead )
+                        {
+                            continue;
+                        }
+
                         // 현재 위치가 같은지 검사..
                         bool isSamePosition = CollisionHelper.CollisionObjectToObject(projectile, monster);
 
@@ -84,7 +104,7 @@ namespace Packman
                         }
                     }
 
-                    for( int index = 0; index < collisionObjects.Count; index += 2 )
+                    for ( int index = 0; index < collisionObjects.Count; index += 2 )
                     {
                         collisionObjects[index].OnCollision( collisionObjects[index + 1] );
                         collisionObjects[index + 1].OnCollision( collisionObjects[index] );

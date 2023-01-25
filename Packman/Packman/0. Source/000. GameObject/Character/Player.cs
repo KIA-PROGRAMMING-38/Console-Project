@@ -22,10 +22,12 @@ namespace Packman
         private const ConsoleKey moveLeftKey = ConsoleKey.LeftArrow;
         private const ConsoleKey moveUpKey = ConsoleKey.UpArrow;
         private const ConsoleKey moveDownKey = ConsoleKey.DownArrow;
+        private const ConsoleKey moveStopKey = ConsoleKey.Spacebar;
         private const ConsoleKey fireStunGunKey = ConsoleKey.Q;
         private const ConsoleKey firePunchMissileKey = ConsoleKey.W;
         private const ConsoleKey fireCollectGoldBulletKey = ConsoleKey.E;
         private const ConsoleKey fireKillMonsterBulletKey = ConsoleKey.R;
+        private const ConsoleKey stealthModeKey = ConsoleKey.G;
 
         // 플레이어의 움직임 방향..
         private int _moveDirX = 0;
@@ -40,10 +42,17 @@ namespace Packman
         private int _curMP = 10;
         private int _maxMP = 10;
 
+        private bool _isStealthMode = false;
+
+        private bool _isPause = false;
+
         public int CurMP { get { return _curMP; } }
         public int MaxMP { get { return _maxMP; } }
         public int LookDirX { get { return _lookDirX; } }
         public int LookDirY { get { return _lookDirY; } }
+
+        public bool IsStealthMode { get { return _isStealthMode; } }
+        public PlayerSkill SkillComponent { get { return _skillComponent; } }
 
         public Player( int x, int y, Map map )
             : base( x, y, Constants.PLAYER_IMAGE, Constants.PLAYER_COLOR, Constants.PLAYER_RENDER_ORDER, map, Constants.PLAYER_MOVE_DELAY )
@@ -58,6 +67,11 @@ namespace Packman
                 _skillComponent.AddSkill( SkillKind.FireKillMonsterBullet );
                 _skillComponent.AddSkill( SkillKind.FireCollectGoldBullet );
             }
+
+            _skillComponent.SetSkillRemainUseCount( SkillKind.Stealth, _curMP );
+
+            _lookDirX = 1;
+            _lookDirY = 0;
         }
 
         /// <summary>
@@ -100,9 +114,17 @@ namespace Packman
         {
             base.Update();
 
+            if ( true == _isPause )
+            {
+                return;
+            }
+
             UpdateMovement();
         }
 
+        /// <summary>
+        /// 정리할 작업이 있다면 여기서 ㄱㄱ..
+        /// </summary>
         public override void Release()
         {
             base.Release();
@@ -110,9 +132,101 @@ namespace Packman
             RemoveKeyPressEvent();
         }
 
+        /// <summary>
+        /// 플레이어를 잠시 멈춥니다..
+        /// </summary>
+        /// <param name="isPause"> isPause 가 true 일 경우 잠시 멈춤 </param>
+        public void Pause(bool isPause)
+        {
+            _isPause = isPause;
+
+            if ( _isPause )
+            {
+                RemoveKeyPressEvent();
+                _movementComponent.Reset();
+                SetMoveDirection( 0, 0 );
+            }
+            else
+            {
+                AddKeyPressEvent();
+            }
+        }
+
+        /// <summary>
+        /// 스킬 사용 개수 추가..
+        /// </summary>
+        /// <param name="skillKind"> 추가할 스킬 종류 </param>
         public void AddSkill( SkillKind skillKind )
         {
             _skillComponent.AddSkill( skillKind );
+        }
+
+        /// <summary>
+        /// 스텔스 모드 On/Off
+        /// </summary>
+        /// <param name="isStealthMode"> 스텔스 킬건지 끌건지 </param>
+        public void SetStealthMode(bool isStealthMode)
+        {
+            _isStealthMode = isStealthMode;
+            if ( true == _isStealthMode )
+            {
+                _image = "_";
+                OnStartStealthMode();
+            }
+            else
+            {
+                _image = Constants.PLAYER_IMAGE;
+                OnEndStealthMode();
+            }
+        }
+
+        /// <summary>
+        /// 스텔스 모드 On 시 실행되는 함수..
+        /// </summary>
+        private void OnStartStealthMode()
+        {
+            EventManager.Instance.SetTimeOut( () =>
+            {
+                if ( false == _isStealthMode )
+                    return;
+
+                --_curMP;
+                if(_curMP <= 0)
+                {
+                    _curMP = 0;
+                    SetStealthMode( false );
+                }
+                else
+                {
+                    OnStartStealthMode();
+                }
+
+                _skillComponent.SetSkillRemainUseCount( SkillKind.Stealth, CurMP );
+            }, 1.0f );
+        }
+
+        /// <summary>
+        /// 스텔스 모드 Off 시 실행되는 함수..
+        /// </summary>
+        private void OnEndStealthMode()
+        {
+            EventManager.Instance.SetTimeOut( () =>
+            {
+                if ( true == _isStealthMode )
+                    return;
+
+                ++_curMP;
+                if ( _maxMP <= _curMP )
+                {
+                    _curMP = _maxMP;
+                }
+                else
+                {
+                    OnEndStealthMode();
+                }
+
+                _skillComponent.SetSkillRemainUseCount( SkillKind.Stealth, CurMP );
+            }, 1.0f );
         }
 
         /// <summary>
@@ -124,10 +238,12 @@ namespace Packman
             _eventManager.AddInputEvent( moveLeftKey, OnMoveLeftKeyPress );
             _eventManager.AddInputEvent( moveUpKey, OnMoveUpKeyPress );
             _eventManager.AddInputEvent( moveDownKey, OnMoveDownKeyPress );
+            _eventManager.AddInputEvent( moveStopKey, OnMoveStopKeyPress );
             _eventManager.AddInputEvent( fireStunGunKey, OnPressFireStunGunKey );
             _eventManager.AddInputEvent( firePunchMissileKey, OnPressFirePunchMissileKey );
             _eventManager.AddInputEvent( fireCollectGoldBulletKey, OnPressFireCollectGoldBullet );
             _eventManager.AddInputEvent( fireKillMonsterBulletKey, OnPressFireKillMonsterBulletKey );
+            _eventManager.AddInputEvent( stealthModeKey, OnPressStealthModeKey );
         }
 
         /// <summary>
@@ -139,10 +255,12 @@ namespace Packman
             _eventManager.RemoveInputEvent( moveLeftKey, OnMoveLeftKeyPress );
             _eventManager.RemoveInputEvent( moveUpKey, OnMoveUpKeyPress );
             _eventManager.RemoveInputEvent( moveDownKey, OnMoveDownKeyPress );
+            _eventManager.RemoveInputEvent( moveStopKey, OnMoveStopKeyPress );
             _eventManager.RemoveInputEvent( fireStunGunKey, OnPressFireStunGunKey );
             _eventManager.RemoveInputEvent( firePunchMissileKey, OnPressFirePunchMissileKey );
             _eventManager.RemoveInputEvent( fireCollectGoldBulletKey, OnPressFireCollectGoldBullet );
             _eventManager.RemoveInputEvent( fireKillMonsterBulletKey, OnPressFireKillMonsterBulletKey );
+            _eventManager.RemoveInputEvent( stealthModeKey, OnPressStealthModeKey );
         }
 
         /// <summary>
@@ -181,26 +299,57 @@ namespace Packman
             SetMoveDirection( 0, 1 );
         }
 
+        /// <summary>
+        /// 움직임 멈춤 키를 눌렀을 때 호출됩니다..
+        /// </summary>
+        private void OnMoveStopKeyPress()
+        {
+            SetMoveDirection( 0, 0 );
+        }
+
+        /// <summary>
+        /// 스턴 총알 발사 키를 눌렀을 때 호출됩니다..
+        /// </summary>
         private void OnPressFireStunGunKey()
         {
             _skillComponent.UseSkill( SkillKind.FireStungun );
         }
 
+        /// <summary>
+        /// 펀치 미사일 발사 키를 눌렀을 때 호출됩니다..
+        /// </summary>
         private void OnPressFirePunchMissileKey()
         {
             _skillComponent.UseSkill( SkillKind.FirePunchMissile );
         }
 
+        /// <summary>
+        /// 골드 수집기 발사 키를 눌렀을 때 호출됩니다..
+        /// </summary>
         private void OnPressFireCollectGoldBullet()
         {
             _skillComponent.UseSkill( SkillKind.FireCollectGoldBullet );
         }
 
+        /// <summary>
+        /// 몬스터 죽이는 총알 발사 키를 눌렀을 때 호출됩니다..
+        /// </summary>
         private void OnPressFireKillMonsterBulletKey()
         {
             _skillComponent.UseSkill( SkillKind.FireKillMonsterBullet );
         }
 
+        /// <summary>
+        /// 스텔스 모드 On/Off 발사 키를 눌렀을 때 호출됩니다..
+        /// </summary>
+        private void OnPressStealthModeKey()
+        {
+            _skillComponent.UseSkill( SkillKind.Stealth );
+        }
+
+        /// <summary>
+        /// 움직이는 방향 변경 시 호출됩니다..
+        /// </summary>
         private void SetMoveDirection(int dirX, int dirY)
         {
             if(_moveDirX != dirX || _moveDirY != dirY )
@@ -213,8 +362,11 @@ namespace Packman
                 _moveDirX = dirX;
                 _moveDirY = dirY;
 
-                _lookDirX = _moveDirX;
-                _lookDirY = _moveDirY;
+                if(0 != _moveDirX || 0 != _moveDirY)
+                {
+                    _lookDirX = _moveDirX;
+                    _lookDirY = _moveDirY;
+                }
             }
             else
             {
@@ -237,6 +389,9 @@ namespace Packman
             OnMoveCharacterEvent -= OnSuccessMove;
         }
 
+        /// <summary>
+        /// 플레이어가 움직이는데 실패할 때 호출됩니다..
+        /// </summary>
         private void OnFailedMove( Character character )
         {
             _moveDirX = 0;
@@ -246,6 +401,10 @@ namespace Packman
             _nextMoveDirY = 0;
         }
 
+        /// <summary>
+        /// 충돌 시 호출됩니다..
+        /// </summary>
+        /// <param name="collisionObjectInst"> 충돌된 상대 GameObject </param>
         public override void OnCollision( GameObject collisionObjectInst )
         {
             base.OnCollision( collisionObjectInst );
@@ -257,11 +416,20 @@ namespace Packman
             }
         }
 
+        /// <summary>
+        /// 방향이 있는지 검사합니다.
+        /// </summary>
+        /// <param name="dirX"> x 방향 </param>
+        /// <param name="dirY"> y 방향 </param>
+        /// <returns></returns>
         private bool IsDirNotZero(int dirX, int dirY)
         {
             return (0 != dirX || 0 != dirY);
         }
 
+        /// <summary>
+        /// 움직임 업데이트..
+        /// </summary>
         private void UpdateMovement()
         {
             if ( IsDirNotZero(_moveDirX, _moveDirY) )
@@ -272,6 +440,9 @@ namespace Packman
             }
         }
 
+        /// <summary>
+        /// 다음 방향으로 변경해야하는지 검사..
+        /// </summary>
         private void CheckNextDirCondition()
         {
             if ( IsDirNotZero( _nextMoveDirX, _nextMoveDirY ) )

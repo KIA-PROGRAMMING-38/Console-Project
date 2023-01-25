@@ -8,9 +8,10 @@ namespace Packman
 {
     internal class SelectUI : GameObject
     {
-        private struct SelectInfo
+        private class SelectInfo
         {
-            public string Message;
+            public string[] Message;
+            public string OriginMessage;
             public Action Event;
         }
 
@@ -20,6 +21,8 @@ namespace Packman
         private List<SelectInfo> _selectInfoes = new List<SelectInfo>();
         int _maxSelectPointCount = 0;
         int _curSelectPoint = 0;
+        int _yDistance = 4;
+        int _maxMessageLength = 0;
 
         public SelectUI( int x, int y )
             : base( x, y, 2000 )
@@ -31,10 +34,17 @@ namespace Packman
         {
             SelectInfo curSelectInfo = new SelectInfo();
 
-            curSelectInfo.Message = message;
+            curSelectInfo.OriginMessage = message;
             curSelectInfo.Event = eventAction;
 
             _selectInfoes.Add( curSelectInfo );
+
+            _maxMessageLength = Math.Max( _maxMessageLength, message.Length );
+
+            for ( int i = 0; i < _selectInfoes.Count; i++ )
+            {
+                _selectInfoes[i].Message = ConvertText( _selectInfoes[i].OriginMessage, _maxMessageLength );
+            }
 
             ++_maxSelectPointCount;
         }
@@ -64,11 +74,14 @@ namespace Packman
 
             for ( int index = 0; index < _maxSelectPointCount; ++index )
             {
-                Console.SetCursorPosition( _x, _y + index );
-                Console.Write( _selectInfoes[index].Message );
+                for( int messageIndex = 0; messageIndex < 3; ++messageIndex )
+                {
+                    Console.SetCursorPosition( _x, _y + index * _yDistance + messageIndex );
+                    Console.Write( _selectInfoes[index].Message[messageIndex] );
+                }
             }
 
-            Console.SetCursorPosition( _x - 4, _y + _curSelectPoint );
+            Console.SetCursorPosition( _x - 4, _y + _curSelectPoint * _yDistance + 1 );
             Console.Write( "→" );
         }
 
@@ -126,7 +139,8 @@ namespace Packman
                 return;
             }
 
-            RenderManager.Instance.ReserveRenderRemove( _x - 4, _y + _curSelectPoint, 2 );
+            Console.SetCursorPosition( _x - 4, _y + _curSelectPoint * _yDistance + 1 );
+            Console.Write( "  " );
 
             _curSelectPoint = newSelectPoint;
         }
@@ -137,6 +151,38 @@ namespace Packman
         private void OnPressEnterKey()
         {
             _selectInfoes[_curSelectPoint].Event?.Invoke();
+        }
+
+        private string[] ConvertText( string text, int maxTextLength )
+        {
+            string[] convertText = new string[3] { "", "", "" };
+
+            int curTextLength = text.Length;
+
+            for ( int i = 0; i < maxTextLength + 2; ++i )
+            {
+                convertText[0] += "#";
+                convertText[2] += "#";
+            }
+
+            convertText[1] = "#";
+
+            int loopCount = (maxTextLength - curTextLength) / 2;
+            for ( int i = 0; i < loopCount; ++i )
+            {
+                convertText[1] += " ";
+            }
+
+            convertText[1] += text;
+
+            for ( int i = 0; i < (maxTextLength - curTextLength) - loopCount; ++i )
+            {
+                convertText[1] += " ";
+            }
+
+            convertText[1] += "#";
+
+            return convertText;
         }
     }
 }

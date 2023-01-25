@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Packman
         public Trap( int x, int y )
             : base( x, y, "A", ConsoleColor.Magenta, 2 )
         {
-            _clickUI = new FastClickUI( 0, 0 );
+            _clickUI = new FastClickUI( 0, 16 );
         }
 
         public override void Update()
@@ -30,27 +31,35 @@ namespace Packman
 
         public override void OnCollision( GameObject collisionObjectInst )
         {
-            if(true == _isTrap)
+            if ( true == _isTrap )
             {
                 return;
             }
 
             _isTrap = true;
 
-            StageManager.Instance.SetPauseGame( true );
-            StageManager.Instance.AddProcessUI( _clickUI );
+            //StageManager.Instance.SetPauseGame( true );
+            //StageManager.Instance.AddProcessUI( _clickUI );
 
             _clickUI.Initialize();
             _clickUI.OnFillMaxGauge += OnClickUIFillMaxGauge;
+            Debug.Assert( _objectManager.AddGameObject( "ClickUI", _clickUI ) );
+
+            Player player = _objectManager.GetGameObject<Player>();
+            player.Pause( true );
 
             base.OnCollision( collisionObjectInst );
         }
 
         private void OnClickUIFillMaxGauge()
         {
-            _clickUI.Release();
             _objectManager.RemoveObject( this );
+            _objectManager.RemoveObject( _clickUI );
 
+            Player player = _objectManager.GetGameObject<Player>();
+            player.Pause( false );
+
+            StageManager.Instance.SetPauseGame( true );
             StageManager.Instance.SetPauseGame( false );
         }
     }

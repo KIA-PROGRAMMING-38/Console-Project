@@ -90,8 +90,11 @@ namespace Packman
             // 인코딩은 UTF8로 설정..
             Console.OutputEncoding = Encoding.UTF8;
 
-            Console.SetWindowSize( 1920, 1080 );
-            Console.SetBufferSize( 1920, 1080 );
+            Console.SetWindowSize( 1920 * 2, 1080 * 2 );
+            Console.SetBufferSize( 1920 * 2, 1080 * 2 );
+
+            //Console.SetWindowSize( 1920, 1080 );
+            //Console.SetBufferSize( 1920, 1080 );
 
             return true;
         }

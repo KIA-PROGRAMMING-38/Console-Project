@@ -15,6 +15,7 @@ namespace Packman
             Default,        // 기본( 패턴 진행중 )..
             Stun,           // 스턴..
             ForcedToPush,   // 강제로 밀리는중..
+            Dead,           // 죽었다..
         }
 
         public enum PatternKind
@@ -43,6 +44,8 @@ namespace Packman
         private float _forcedPushY = 0.0f;
         private int _forcedPushStartX = 0;
         private int _forcedPushStartY = 0;
+        private int _forcedPushDirX = 0;
+        private int _forcedPushDirY = 0;
         // AI 와 관련된 정보들..
         private PatternKind _prevPatternKind = PatternKind.Begin;
         private PatternKind _patternKind = PatternKind.Begin;
@@ -55,14 +58,24 @@ namespace Packman
 
         // 타겟 인식 범위..
         private int _targetRecognizeRange = 5;
+        private int _targetRecognizeMaxRange = 8;
+
+        private float _startWaitTime = 0;
+
+        private const float _trapInstallTime = 3.0f;
+        private float _curRemainTrapInstallTime = 0.0f;
 
         public List<Point2D> Paths { get { return _paths; } }
+        public bool IsDead { get { return State.Dead == _curState; } }
         
 
-        public Monster( int x, int y, Map map )
+        public Monster( int x, int y, Map map, float startWaitTime )
             : base( x, y, Constants.MONSTER_IMAGE, Constants.MONSTER_COLOR, Constants.MONSTER_RENDER_ORDER, map, Constants.MONSTER_MOVE_DELAY )
         {
+            _startWaitTime = startWaitTime;
             _player = _objectManager.GetGameObject<Player>( "Player" );
+
+            _curRemainTrapInstallTime = _trapInstallTime;
         }
 
         public void Initialize()
@@ -75,8 +88,6 @@ namespace Packman
         public override void Update()
         {
             base.Update();
-
-            return;
 
             switch( _curState )
             {
@@ -100,9 +111,18 @@ namespace Packman
 			base.Render();
 		}
 
+        public override void Release()
+        {
+            base.Release();
+
+            CollisionManager.Instance.RenewMonsterInstance();
+
+            _renderManager.ReserveRenderRemove( _x, _y, 1 );
+        }
+
         public void OnDead()
         {
-
+            ChangeState( State.Dead );
         }
 
         public void OnChangedStunState( float stunEffectiveTime )
@@ -111,7 +131,7 @@ namespace Packman
             _stunEffectiveTime = stunEffectiveTime;
         }
 
-        public void OnCHangedForcedToPushState( int dirX, int dirY, float forcedPushPower )
+        public void OnChangedForcedToPushState( int dirX, int dirY, float forcedPushPower )
         {
             _forcedPushPower = forcedPushPower;
             _forcedPushPowerMinus = forcedPushPower * 4.0f;
@@ -138,13 +158,22 @@ namespace Packman
             switch ( _curState )
             {
                 case State.Default:
-                    SetPatternKind( _patternKind );
+                    EventManager.Instance.SetTimeOut( OnEnablePattern, 0.0f );
+
+                    SetPatternKind( PatternKind.Wait );
+
                     _image = Constants.MONSTER_IMAGE;
                     _color = Constants.MONSTER_COLOR;
+
+                    _curRemainTrapInstallTime = _trapInstallTime;
+
                     break;
                 case State.Stun:
                     _image = Constants.MONSTER_STUN_STATE_IMAGE;
                     _color = Constants.MONSTER_STUN_STATE_COLOR;
+
+                    _movementComponent.Reset();
+
                     break;
                 case State.ForcedToPush:
                     _image = Constants.MONSTER_STUN_STATE_IMAGE;
@@ -154,6 +183,19 @@ namespace Packman
 
                     _forcedPushStartX = _x;
                     _forcedPushStartY = _y;
+
+                    break;
+                case State.Dead:
+                    _image = Constants.MONSTER_DEAD_STATE_IMAGE;
+                    _color = Constants.MONSTER_DEAD_STATE_COLOR;
+
+                    _movementComponent.Reset();
+
+                    EventManager.Instance.SetTimeOut( () =>
+                    {
+                        _objectManager.RemoveObject( this );
+                    }, 0.5f );
+
                     break;
             }
         }
@@ -167,7 +209,6 @@ namespace Packman
             {
                 case PatternKind.Begin:
                     ActBeginPattern();
-                    _color = ConsoleColor.Green;
 
                     break;
                 case PatternKind.Wait:
@@ -177,16 +218,43 @@ namespace Packman
                 case PatternKind.Idle:
                     ActIdlePattern();
 
-                    _color = ConsoleColor.Blue;
+                    _color = Constants.MONSTER_COLOR;
+
+                    _curRemainTrapInstallTime -= TimeManager.Instance.ElaspedTime;
 
                     break;
                 case PatternKind.ChaseTarget:
                     ActChaseTargetPattern();
 
-                    _color = ConsoleColor.Red;
+                    _color = Constants.MONSTER_CHASE_PATTERN_COLOR;
+
+                    _curRemainTrapInstallTime -= TimeManager.Instance.ElaspedTime;
 
                     break;
             }
+
+            if( _curRemainTrapInstallTime <= 0.0f )
+            {
+                InstallTrap();
+                _curRemainTrapInstallTime = _trapInstallTime;
+            }
+        }
+
+        private void InstallTrap()
+        {
+            Trap trap = new Trap(_x, _y);
+            trap.Initialize();
+            Trap[] allTrap = _objectManager.GetAllGameObject<Trap>();
+
+            int trapCount = 0;
+            if(null != allTrap)
+            {
+                trapCount = allTrap.Length;
+            }
+            EventManager.Instance.SetTimeOut( () =>
+            {
+                _objectManager.AddGameObject( $"Trap{trapCount:D3}", trap );
+            }, 0.0f );
         }
 
         /// <summary>
@@ -213,15 +281,42 @@ namespace Packman
                 return;
             }
 
-            _forcedPushX += _dirX * _forcedPushPower * TimeManager.Instance.ElaspedTime;
-            _forcedPushY += _dirY * _forcedPushPower * TimeManager.Instance.ElaspedTime;
+            int moveDestinationX = _forcedPushStartX;
+            int moveDestinationY = _forcedPushStartY;
+
+            if (0 != _dirX)
+            {
+                _forcedPushX += _dirX * _forcedPushPower * TimeManager.Instance.ElaspedTime;
+                moveDestinationX += (int)_forcedPushX;
+            }
+            if ( 0 != _dirY )
+            {
+                _forcedPushY = _dirY * _forcedPushPower * TimeManager.Instance.ElaspedTime;
+                moveDestinationY += (int)_forcedPushY;
+            }
 
             _forcedPushPower -= TimeManager.Instance.ElaspedTime * _forcedPushPowerMinus;
 
-            int moveDestinationX = _forcedPushStartX + (int)_forcedPushX;
-            int moveDestinationY = _forcedPushStartY + (int)_forcedPushY;
+            bool isCanMove = true;
 
-            if ( IsCanGoPosition( moveDestinationX, moveDestinationY ) )
+            int curX = _x;
+            int curY = _y;
+            while ( true )
+            {
+                if( !IsCanGoPosition( curX, curY ) )
+                {
+                    isCanMove = false;
+                    break;
+                }
+
+                if ( curX == moveDestinationX && curY == moveDestinationY )
+                    break;
+
+                curX += _dirX;
+                curY += _dirY;
+            }
+
+            if ( isCanMove )
             {
                 _renderManager.ReserveRenderRemove( _x, _y, 1 );
 
@@ -245,17 +340,9 @@ namespace Packman
 		// ====================================================================================================================================
 		private void ActBeginPattern()
         {
-            float waitTime = 1.0f;// (float)RandomManager.Instance.GetRandomDouble(2.0, 3.0);
+            float waitTime = (float)RandomManager.Instance.GetRandomDouble(_startWaitTime * 0.8, _startWaitTime * 1.2);
 
             EventManager.Instance.SetTimeOut( OnEnablePattern, waitTime );
-
-            if ( null == _wayPointGroup )
-            {
-                _wayPointGroup = _objectManager.GetGameObject<WayPointGroup>();
-            }
-
-            _curDestinationWayPoint = _wayPointGroup.FindNearWayPoint( this );
-            ActionFindPath( _curDestinationWayPoint.X, _curDestinationWayPoint.Y );
 
             SetPatternKind( PatternKind.Wait );
         }
@@ -286,7 +373,14 @@ namespace Packman
 
         private void ActChaseTargetPattern()
         {
-			ActionFindPath( _player.X, _player.Y );
+            int dist = Math.Abs(_player.X - _x) + Math.Abs(_player.Y - _y);
+            if ( dist >= _targetRecognizeMaxRange || _player.IsStealthMode )
+            {
+                SetPatternKind( PatternKind.Idle );
+                return;
+            }
+
+            ActionFindPath( _player.X, _player.Y );
 			StartMoveAction();
 		}
 
@@ -323,6 +417,11 @@ namespace Packman
 
 		private void FindTarget()
         {
+            if ( _player.IsStealthMode )
+            {
+                return;
+            }
+
             // 몬스터가 플레이어를 바라보는 방향 구하기..
             int monsterLookPlayerDirX = _player.X - _x;
             int monsterLookPlayerDirY = _player.Y - _y;
@@ -381,6 +480,15 @@ namespace Packman
 					break;
 
 				case PatternKind.Wait:
+                    {
+                        if ( null == _wayPointGroup )
+                        {
+                            _wayPointGroup = _objectManager.GetGameObject<WayPointGroup>();
+                        }
+
+                        _curDestinationWayPoint = _wayPointGroup.FindNearWayPoint( this );
+                        ActionFindPath( _curDestinationWayPoint.X, _curDestinationWayPoint.Y );
+                    }
 					break;
 
 				case PatternKind.Idle:

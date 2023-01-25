@@ -33,18 +33,31 @@ namespace Packman
 
         public override void Update()
         {
-            if ( false ==  StageManager.Instance.IsPauseGame)
+            if ( false == StageManager.Instance.IsPauseGame)
             {
                 base.Update();
 
                 _collisionManager.Update();
             }
+
             _stageManager.Update();
+
+            if(InputManager.Instance.IsKeyDown(ConsoleKey.Z))
+            {
+                StageManager.Instance.OnPlayerDead();
+            }
+            if ( InputManager.Instance.IsKeyDown( ConsoleKey.X ) )
+            {
+                StageManager.Instance.ClearStage();
+            }
         }
 
         public override void Render()
         {
-            base.Render();
+            if ( false == StageManager.Instance.IsPauseGame )
+            {
+                base.Render();
+            }
         }
 
         public override void Release()

@@ -17,6 +17,9 @@ namespace Packman
         private SelectUI _selectUI = null;
         private TitleText _titleText = null;
 
+        private int _endingKind = 0;
+
+        public int EndingKind { get { return _endingKind; } }
         public bool IsPauseGame { get { return _isPauseGame; } }
 
         public StageManager() 
@@ -25,22 +28,24 @@ namespace Packman
 
             EventManager.Instance.AddInputEvent( ConsoleKey.Escape, OnPressEscapeKey );
 
-            int uiPosX = 30;
-            int uiPosY = 2;
+            int uiPosX = 85;
+            int uiPosY = 0;
 
             string[] titleText =
             {
-                @"___  ___ _____  _   _  _   _ ",
-                @"|  \/  ||  ___|| \ | || | | |",
-                @"| .  . || |__  |  \| || | | |",
-                @"| |\/| ||  __| | . ` || | | |",
-                @"| |  | || |___ | |\  || |_| |",
-                @"\_|  |_/\____/ \_| \_/ \___/ ",
+                @"###############################",
+                @"#___  ___ _____  _   _  _   _ #",
+                @"#|  \/  ||  ___|| \ | || | | |#",
+                @"#| .  . || |__  |  \| || | | |#",
+                @"#| |\/| ||  __| | . ` || | | |#",
+                @"#| |  | || |___ | |\  || |_| |#",
+                @"#\_|  |_/\____/ \_| \_/ \___/ #",
+                @"###############################",
             };
             _titleText = new TitleText( titleText, uiPosX, uiPosY );
             _titleText.Initialize();
 
-            _selectUI = new SelectUI( uiPosX + 5, uiPosY + titleText.Length + 2 );
+            _selectUI = new SelectUI( uiPosX + 8, uiPosY + titleText.Length + 2 );
             _selectUI.Initialize();
 
             _selectUI.AddSelectList( "Resume", ResumeGame );
@@ -111,12 +116,14 @@ namespace Packman
 
         public void OnPlayerDead()
         {
-            Game.Instance.Exit( 0 );
+            _endingKind = 1;
+            SceneManager.Instance.ChangeScene( SceneManager.SceneKind.Ending );
         }
 
-        private void ClearStage()
+        public void ClearStage()
         {
-            Game.Instance.Exit( 0 );
+            _endingKind = 0;
+            SceneManager.Instance.ChangeScene( SceneManager.SceneKind.Ending );
         }
 
         private void OnPressEscapeKey()

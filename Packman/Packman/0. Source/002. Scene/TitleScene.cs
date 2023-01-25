@@ -47,8 +47,8 @@ namespace Packman
                 @"@@@@@@@@@@@@ @@ @@       @@@@@@@@@@@ @@  @@",
                 @"@@@@@@@@@@@@ @@ @@       @@@@@@@@@@@ @@  @@",
                 @"             @@ @@                   @@  @@",
-                @"                            @@@      @@  @@",
-                @"@@@@@@@@@@@@@@@@@@          @@@      @@  @@",
+                @"                                     @@  @@",
+                @"@@@@@@@@@@@@@@@@@@          @@@            ",
                 @"@@@@@@@@@@@@@@@@@@          @@@            ",
                 @"                @@          @@@            ",
                 @"                @@          @@@            ",
@@ -65,7 +65,8 @@ namespace Packman
 
         private bool InitializeSelectUI()
         {
-            SelectUI selectUI = new SelectUI( 50, 20 );
+            SelectUI selectUI = new SelectUI( 46, 20 );
+
             selectUI.Initialize();
 
             selectUI.AddSelectList( "Game Start", GoStageScene );

@@ -10,7 +10,7 @@ namespace Packman
     {
         private string[] _titleText;
 
-        int _titleStartX = 30;
+        int _titleStartX = 0;
         int _titleStartY = 0;
 
         public TitleText( string[] titleText, int titleStartX, int titleStartY )

@@ -18,7 +18,7 @@ namespace Packman
         {
             Monster monster = (Monster)collisionObjectInst;
 
-            monster.OnCHangedForcedToPushState( _dirX, _dirY, 100.0f );
+            monster.OnChangedForcedToPushState( _dirX, _dirY, 100.0f );
 
             base.OnCollision( collisionObjectInst );
         }

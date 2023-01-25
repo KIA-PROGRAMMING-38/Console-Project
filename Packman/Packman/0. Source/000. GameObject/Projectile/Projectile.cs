@@ -73,7 +73,7 @@ namespace Packman
         private void RemoveObject()
         {
             _objectManager.RemoveObject( this );
-            CollisionManager.Instance.RenewObjectInstance();
+            CollisionManager.Instance.RenewProjectileInstance();
             RenderManager.Instance.RemoveRenderer( GetComponent<Renderer>( "Renderer" ) );
 
             _goldGroup.OnProjectileMove( this );

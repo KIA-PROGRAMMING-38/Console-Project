@@ -32,7 +32,7 @@ namespace Packman
         /// <param name="fileName"> 파일 이름 </param>
         /// <param name="fileExtension"> 파일 확장자 </param>
         /// <returns></returns>
-        private static string MakePath(string fileName, string fileExtension)
+        public static string MakePath(string fileName, string fileExtension)
         {
             return Path.Combine( "..\\..\\..\\Assets", "Data", fileName + "." + fileExtension );
         }
@@ -42,7 +42,7 @@ namespace Packman
         /// </summary>
         /// <param name="path"> 파일 경로 </param>
         /// <returns> 파일 안의 문자열들( 배열의 원소에는 한 줄의 문자열이 담겨있습니다 ) </returns>
-        private static string[] ReadFile(string path )
+        public static string[] ReadFile(string path )
         {
             Debug.Assert( File.Exists( path ) );
 
@@ -85,7 +85,6 @@ namespace Packman
             const char MONSTER_TILE_SYMBOL = 'M';
             const char PLAYER_TILE_SYMBOL = 'P';
             const char WAYPOINT_TILE_SYMBOL = '*';
-            const char TRAP_TILE_SYMBOL = 'T';
 
             // 맵 데이터 가져와 파싱..
             string[] mapMetadata = lines[0].Split(' ');
@@ -106,8 +105,9 @@ namespace Packman
 
             // 몬스터 관련 변수..
             int monsterCount = 0;
+            string[] monsterStartWaitTime = lines[lines.Length - 1].Split(' ');
 
-            int lineCount = lines.Length;
+            int lineCount = lines.Length - 1;
             for ( int y = 1; y < lineCount; ++y )
             {
                 for ( int x = 0; x < mapWidth; ++x )
@@ -140,7 +140,7 @@ namespace Packman
 
                             break;
                         case MONSTER_TILE_SYMBOL:   // 몬스터가 있는 타일..
-                            Monster monster = new Monster(curIndexX + mapPosX, curIndexY + mapPosY, map);
+                            Monster monster = new Monster(curIndexX + mapPosX, curIndexY + mapPosY, map, float.Parse(monsterStartWaitTime[monsterCount]));
                             monster.Initialize();
 
                             Debug.Assert( ObjectManager.Instance.AddGameObject( $"Monster_{monsterCount:D2}", monster ) );
@@ -161,14 +161,6 @@ namespace Packman
                             Debug.Assert( wayPoint.Initialize() );
 
                             wayPoints.Add( wayPoint );
-
-                            break;
-
-                        case TRAP_TILE_SYMBOL:
-                            Trap trap = new Trap(curIndexX + mapPosX, curIndexY + mapPosY);
-                            trap.Initialize();
-
-                            ObjectManager.Instance.AddGameObject( "Trap", trap );
 
                             break;
                         default:                // 이 외는 파일 잘못 만든 것이라 강제종료..
@@ -201,54 +193,6 @@ namespace Packman
             WayPointGroup wayPointGroup = new WayPointGroup();
             wayPointGroup.Initialize( wayPoints );
             ObjectManager.Instance.AddGameObject( "WayPointGroup", wayPointGroup );
-        }
-
-        /// <summary>
-        /// Player File 을 파싱합니다.
-        /// </summary>
-        /// <param name="fileName"> 플레이어 파일 이름 </param>
-        /// <param name="fileExtension"> 플레이어 파일 확장자 </param>
-        private static void PasingPlayerData( string fileName, string fileExtension )
-        {
-            string path = MakePath(fileName, fileExtension);
-            string[] lines = ReadFile(path);
-
-            string[] playerMetadata = lines[0].Split(' ');
-
-            int playerX = int.Parse(playerMetadata[0]);
-            int playerY = int.Parse(playerMetadata[1]);
-
-            //Player player = new Player(playerX, playerY);
-            //Debug.Assert( player.Initialize() );
-            //
-            //Debug.Assert( ObjectManager.Instance.AddGameObject( "Player", player ) );
-        }
-
-        /// <summary>
-        /// Monster File 을 파싱합니다.
-        /// </summary>
-        /// <param name="fileName"> 몬스터 파일 이름 </param>
-        /// <param name="fileExtension"> 몬스터 파일 확장자 </param>
-        private static void PasingMonsterData( string fileName, string fileExtension )
-        {
-            Map map = ObjectManager.Instance.GetGameObject<Map>();
-            Debug.Assert( null != map );
-
-            string path = MakePath(fileName, fileExtension);
-            string[] lines = ReadFile(path);
-
-            for( int curLineIndex = 0; curLineIndex < lines.Length; ++curLineIndex )
-            {
-                string[] monsterMetadata = lines[curLineIndex].Split(' ');
-
-                int monsterPosX = int.Parse(monsterMetadata[0]);
-                int monsterPosY = int.Parse(monsterMetadata[1]);
-
-                Monster monster = new Monster(monsterPosX, monsterPosY, map );
-                monster.Initialize();
-
-                Debug.Assert( ObjectManager.Instance.AddGameObject( $"Monster_{curLineIndex:D2}", monster ) );
-            }
         }
     }
 }

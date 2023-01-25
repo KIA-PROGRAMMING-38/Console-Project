@@ -13,7 +13,8 @@ namespace Packman
         {
             None,
             Title,
-            Stage
+            Stage,
+            Ending
         }
 
         private Scene? _currentScene = null;
@@ -85,6 +86,10 @@ namespace Packman
                     break;
                 case SceneKind.Stage:
                     newScene = new StageScene( 1 );
+
+                    break;
+                case SceneKind.Ending:
+                    newScene = new EndingScene();
 
                     break;
                 default:
