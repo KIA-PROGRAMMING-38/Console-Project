@@ -39,7 +39,7 @@ namespace Packman
 
             _selectInfoes.Add( curSelectInfo );
 
-            _maxMessageLength = Math.Max( _maxMessageLength, message.Length );
+            _maxMessageLength = Math.Max( _maxMessageLength, message.Length + 4 );
 
             for ( int i = 0; i < _selectInfoes.Count; i++ )
             {

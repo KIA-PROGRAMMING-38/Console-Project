@@ -165,8 +165,6 @@ namespace Packman
                     _image = Constants.MONSTER_IMAGE;
                     _color = Constants.MONSTER_COLOR;
 
-                    _curRemainTrapInstallTime = _trapInstallTime;
-
                     break;
                 case State.Stun:
                     _image = Constants.MONSTER_STUN_STATE_IMAGE;

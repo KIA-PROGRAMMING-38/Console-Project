@@ -108,6 +108,11 @@ namespace Packman
                     }
                 }
             }
+
+            if( 0 >= _remainGoldCount )
+            {
+                StageManager.Instance.ClearStage();
+            }
         }
 
         public override void Render()
