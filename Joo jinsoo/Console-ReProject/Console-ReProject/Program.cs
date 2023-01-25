@@ -171,7 +171,7 @@ namespace Console_ReProject
             }
              
             Console.Clear();
-
+             
             //// 프롤로그 진입
             //string[] victimPicture = Game.LoadMessage((int)Message.VictimPicture);
             //for (int i = 0; i < victimPicture.Length; ++i)
@@ -189,17 +189,7 @@ namespace Console_ReProject
             //
             //    Thread.Sleep(5000);
             //}
-
-            string[] tutorial = Game.LoadTutorialMessage();
-            Console.Clear();
-
-            for (int i = 0; i < tutorial.Length; ++i)
-            {
-                Console.WriteLine(tutorial[i]);
-            }
-
-            key = Console.ReadKey().Key;
-
+            
             Console.Clear();
 
             // 씬 초기설정
@@ -285,24 +275,6 @@ namespace Console_ReProject
             void Render()
             #region Render
             {
-                // 남은 기회 렌더링
-                Console.ForegroundColor = ConsoleColor.White;
-                Game.ObjectRender(MAP_MAX_X, 1, "남은기회");
-
-                if (answerOpportunity[0] == false)
-                    Game.ObjectRender(MAP_MAX_X + 9, 1, "O");
-                else if (answerOpportunity[0] == true)
-                    Game.ObjectRender(MAP_MAX_X + 9, 1, "@");
-                if (answerOpportunity[1] == false)
-                    Game.ObjectRender(MAP_MAX_X + 11, 1, "O");
-                else if (answerOpportunity[1] == true)
-                    Game.ObjectRender(MAP_MAX_X + 11, 1, "@");
-                if (answerOpportunity[2] == false)
-                    Game.ObjectRender(MAP_MAX_X + 13, 1, "O");
-                else if (answerOpportunity[2] == true)
-                    Game.ObjectRender(MAP_MAX_X + 13, 1, "@");
-
-
                 // 스테이지 구성요소 렌더링
                 Console.ForegroundColor = ConsoleColor.White;
                 for (int i = 0; i < exceptionObj_1.Length; ++i)
@@ -439,6 +411,11 @@ namespace Console_ReProject
 
                 if (alreadySearchHint[0] == true)
                 {
+                    checkAppearHintSwtich[0] = true;
+                    if (checkAppearHintSwtich[0])
+                    {
+
+                    }
                     Console.ForegroundColor = ConsoleColor.White;
                     Game.ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y,
                         mixedHintStrings[0]);
@@ -773,6 +750,11 @@ namespace Console_ReProject
                     mapMetaData[walls[i].X, walls[i].Y] = MapIcon.Default;
                 }
 
+                //for (int i = 0; i < interactiveFields.Length; ++i)
+                //{
+                //    mapMetaData[interactiveFields[i].X, interactiveFields[i].Y] = MapIcon.Default;
+                //}
+
                 if (mapMetaData[bedroomDoor[0].X, bedroomDoor[0].Y] == MapIcon.Bed)
                 {
                     mapMetaData[bedroomDoor[0].X, bedroomDoor[0].Y] = MapIcon.Default;
@@ -1089,7 +1071,6 @@ namespace Console_ReProject
 
             void AppearMessage(string[] str, InteractionObject someCoordinate)
             {
-                Console.ForegroundColor = ConsoleColor.White;
                 str = Player.LoadMessage((int)someCoordinate);
                 player.IsOnInteraction = true;
                 if (key == ConsoleKey.R && player.IsOnInteraction == true)

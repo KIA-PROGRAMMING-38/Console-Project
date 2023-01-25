@@ -306,17 +306,5 @@ namespace Console_ReProject
 
             return File.ReadAllLines(messageFilePath);
         }
-
-        public static string[] LoadTutorialMessage()
-        {
-            string messageFilePath = Path.Combine("Assets", "InGameMessage", $"KnowHandligMethod.txt");
-
-            if (false == File.Exists(messageFilePath))
-            {
-                Console.WriteLine($"메시지 파일이 없습니다.");
-            }
-
-            return File.ReadAllLines(messageFilePath);
-        }
     }
 }

@@ -35,25 +35,3 @@ C:\Users\82103\Documents\카카오톡 받은 파일\Console-ReProject\Console-Re
 C:\Users\82103\Documents\카카오톡 받은 파일\Console-ReProject\Console-ReProject\Console-ReProject\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\82103\Documents\카카오톡 받은 파일\Console-ReProject\Console-ReProject\Console-ReProject\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\82103\Documents\카카오톡 받은 파일\Console-ReProject\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.csproj.CopyComplete
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\Console-ReProject.exe
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\Console-ReProject.deps.json
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\Console-ReProject.runtimeconfig.json
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\Console-ReProject.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\Console-ReProject.pdb
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\System.Drawing.Common.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\System.Windows.Extensions.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.csproj.AssemblyReference.cache
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.AssemblyInfoInputs.cache
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.AssemblyInfo.cs
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.csproj.CoreCompileInputs.cache
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.csproj.CopyComplete
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\refint\Console-ReProject.dll
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.pdb
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\Console-ReProject.genruntimeconfig.cache
-C:\Users\82103\Documents\gitProject\Console-Project\Joo jinsoo\Console-ReProject\Console-ReProject\obj\Debug\net6.0\ref\Console-ReProject.dll
