@@ -69,9 +69,9 @@ namespace Console_Project_Refactoring
         public const char toiletDoor = 'T';
         public const char frontDoor = 'F';
 
-        public const char firstLivingroomDoor = '1';
-        public const char secondLivingroomDoor = '2';
-        public const char thirdLivingroomDoor = '3';
+        public const char firstLivingroomDoor = 'F';
+        public const char secondLivingroomDoor = 'S';
+        public const char thirdLivingroomDoor = 'T';
 
         public const char interactiveA = 'a'; // 1
         public const char interactiveB = 'b'; // 2
@@ -101,21 +101,68 @@ namespace Console_Project_Refactoring
         public static void Render(Stage currentScene, Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
             Toilet[] toiletDoor, Bedroom[] bedroomDoor, Frontdoor[] frontDoor,
             LivingroomDoor_First[] firstLRDoor, LivingroomDoor_Second[] secondLRDoor,
-            LivingroomDoor_Third[] thirdLRDoor)
+            LivingroomDoor_Third[] thirdLRDoor, ExceptionObj_01[] exceptionObj_01,
+            ExceptionObj_02[] exceptionObj_02, ExceptionObj_03[] exceptionObj_03,
+            ExceptionObj_04[] exceptionObj_04, ExceptionObj_05[] exceptionObj_05,
+            ExceptionObj_06[] exceptionObj_06, ExceptionObj_07[] exceptionObj_07,
+            ExceptionObj_08[] exceptionObj_08, ExceptionObj_09[] exceptionObj_09,
+            ExceptionObj_10[] exceptionObj_10)
         {
-            
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_01.Length; ++i)
+            {
+                ObjectRender(exceptionObj_01[i].X, exceptionObj_01[i].Y, "-");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_02.Length; ++i)
+            {
+                ObjectRender(exceptionObj_02[i].X, exceptionObj_02[i].Y, "|");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_03.Length; ++i)
+            {
+                ObjectRender(exceptionObj_03[i].X, exceptionObj_03[i].Y, "*");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_04.Length; ++i)
+            {
+                ObjectRender(exceptionObj_04[i].X, exceptionObj_04[i].Y, "@");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_05.Length; ++i)
+            {
+                ObjectRender(exceptionObj_05[i].X, exceptionObj_05[i].Y, "=");
+            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            for (int i = 0; i < exceptionObj_06.Length; ++i)
+            {
+                ObjectRender(exceptionObj_06[i].X, exceptionObj_06[i].Y, "&");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_07.Length; ++i)
+            {
+                ObjectRender(exceptionObj_07[i].X, exceptionObj_07[i].Y, "+");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_08.Length; ++i)
+            {
+                ObjectRender(exceptionObj_08[i].X, exceptionObj_08[i].Y, "/");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_09.Length; ++i)
+            {
+                ObjectRender(exceptionObj_09[i].X, exceptionObj_09[i].Y, "\\");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int i = 0; i < exceptionObj_10.Length; ++i)
+            {
+                ObjectRender(exceptionObj_10[i].X, exceptionObj_10[i].Y, "_");
+            }
 
             if (currentScene == Stage.Livingroom)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_OFFSET_X, 1, "거실");
-
-                
-                string[] stage = StageFormat.LoadStageFormat((int)Stage.Livingroom);
-                for (int i = 2; i < stage.Length; ++i)
-                {
-                    Console.WriteLine(stage[i]);
-                }
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 ObjectRender(bedroomDoor[0].X, bedroomDoor[0].Y, "B");
@@ -136,12 +183,6 @@ namespace Console_Project_Refactoring
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_OFFSET_X, 1, "다용도실");
 
-                string[] stage = StageFormat.LoadStageFormat((int)Stage.Utilityroom);
-                for (int i = 2; i < stage.Length; ++i)
-                {
-                    Console.WriteLine(stage[i]);
-                }
-
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 ObjectRender(firstLRDoor[0].X, firstLRDoor[0].Y, "L");
                 ObjectRender(firstLRDoor[1].X, firstLRDoor[1].Y, "L");
@@ -151,12 +192,6 @@ namespace Console_Project_Refactoring
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_OFFSET_X, 1, "화장실");
 
-                string[] stage = StageFormat.LoadStageFormat((int)Stage.Toilet);
-                for (int i = 2; i < stage.Length; ++i)
-                {
-                    Console.WriteLine(stage[i]);
-                }
-
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 ObjectRender(secondLRDoor[0].X, secondLRDoor[0].Y, "L");
                 ObjectRender(secondLRDoor[1].X, secondLRDoor[1].Y, "L");
@@ -165,12 +200,6 @@ namespace Console_Project_Refactoring
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_OFFSET_X, 1, "침실");
-
-                string[] stage = StageFormat.LoadStageFormat((int)Stage.Bedroom);
-                for (int i = 2; i < stage.Length; ++i)
-                {
-                    Console.WriteLine(stage[i]);
-                }
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 ObjectRender(thirdLRDoor[0].X, thirdLRDoor[0].Y, "L");
@@ -341,6 +370,159 @@ namespace Console_Project_Refactoring
                     mapInteractionData[interactiveFieldL[i].X, interactiveFieldL[i].Y]
                         = InteractionObject.BedroomDesk;
                 }
+            }
+        }
+
+        public static void AfterUpdate(ref Stage currentScene, Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
+            Toilet[] toiletDoor, Bedroom[] bedroomDoor, Frontdoor[] frontDoor,
+            LivingroomDoor_First[] firstLRDoor, LivingroomDoor_Second[] secondLRDoor,
+            LivingroomDoor_Third[] thirdLRDoor)
+        {
+            MapIcon checkData = mapMetaData[player.X, player.Y];
+
+            switch (checkData)
+            {
+                case MapIcon.Default:
+
+                    break;
+
+                case MapIcon.Wall:
+                    player.X = player.pastX;
+                    player.Y = player.pastY;
+
+                    break;
+
+                case MapIcon.Utility:
+                    currentScene = Stage.Utilityroom;
+                    player.X = firstLRDoor[1].X + 1;
+                    player.Y = firstLRDoor[1].Y;
+
+                    break;
+
+                case MapIcon.Toilet:
+                    currentScene = Stage.Toilet;
+                    player.X = secondLRDoor[0].X;
+                    player.Y = secondLRDoor[0].Y + 1;
+
+                    break;
+
+                case MapIcon.Bed:
+                    currentScene = Stage.Bedroom;
+                    player.X = thirdLRDoor[0].X - 1;
+                    player.Y = thirdLRDoor[0].Y;
+
+                    break;
+
+                case MapIcon.Front:
+                    Console.Clear();
+                    player.X = player.pastX;
+                    player.Y = player.pastY;
+
+                    //string[] readResultMessage = Game.LoadMessage(2);
+                    //for (int i = 0; i < readResultMessage.Length; ++i)
+                    //{
+                    //    Console.ForegroundColor = ConsoleColor.Blue;
+                    //    Console.WriteLine(readResultMessage[i]);
+                    //}
+                    //
+                    //string readAnswer1 = Console.ReadLine();
+                    //string readAnswer2 = Console.ReadLine();
+                    //string readAnswer3 = Console.ReadLine();
+                    //
+                    //if (readAnswer1 == corretAnswerMurderer[0])
+                    //{
+                    //    ++answerCount;
+                    //}
+                    //if (readAnswer2 == corretAnswerWeapon[0])
+                    //{
+                    //    ++answerCount;
+                    //}
+                    //if (readAnswer3 == corretAnswerMotive[0])
+                    //{
+                    //    ++answerCount;
+                    //}
+                    //if (answerCount == 3)
+                    //{
+                    //    if (answerOpportunity[0] == false)
+                    //    {
+                    //        Console.Clear();
+                    //        Console.ResetColor();
+                    //
+                    //        Console.ForegroundColor = ConsoleColor.Cyan;
+                    //        string[] endString = Game.LoadTrueEndMessage();
+                    //        for (int i = 0; i < endString.Length; ++i)
+                    //        {
+                    //            Console.WriteLine(endString[i]);
+                    //        }
+                    //
+                    //        key = Console.ReadKey().Key;
+                    //        Environment.Exit(1);
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.Clear();
+                    //        Console.ResetColor();
+                    //
+                    //        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    //        string[] endString = Game.LoadGoodEndMessage();
+                    //        for (int i = 0; i < endString.Length; ++i)
+                    //        {
+                    //            Console.WriteLine(endString[i]);
+                    //        }
+                    //
+                    //        key = Console.ReadKey().Key;
+                    //        Environment.Exit(1);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    answerOpportunity[opportunityCount] = true;
+                    //    ++opportunityCount;
+                    //
+                    //    if (opportunityCount == 4)
+                    //    {
+                    //        Console.Clear();
+                    //        Console.ResetColor();
+                    //
+                    //        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    //        string[] endString = Game.LoadBadEndMessage();
+                    //        for (int i = 0; i < endString.Length; ++i)
+                    //        {
+                    //            Console.WriteLine(endString[i]);
+                    //        }
+                    //
+                    //        key = Console.ReadKey().Key;
+                    //        Environment.Exit(2);
+                    //    }
+                    //    else
+                    //        Console.WriteLine("잘못된 추리입니다");
+                    //
+                    //    key = Console.ReadKey().Key;
+                    //}
+
+                    break;
+
+                case MapIcon.Living_1:
+                    currentScene = Stage.Livingroom;
+                    player.X = utilityroomDoor[1].X - 1;
+                    player.Y = utilityroomDoor[1].Y;
+
+                    break;
+
+                case MapIcon.Living_2:
+                    currentScene = Stage.Livingroom;
+                    player.X = toiletDoor[0].X;
+                    player.Y = toiletDoor[0].Y - 1;
+
+                    break;
+
+                case MapIcon.Living_3:
+                    currentScene = Stage.Bedroom;
+                    player.X = bedroomDoor[0].X + 1;
+                    player.Y = bedroomDoor[0].Y;
+
+                    break;
+
             }
         }
     }
