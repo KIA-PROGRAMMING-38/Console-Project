@@ -20,13 +20,15 @@ namespace Packman
             Debug.Assert( true == InitializeTitleText() );
             Debug.Assert( true == InitializeSelectUI() );
 
-            return true;
+            SoundManager.Instance.Play( "Title Background", true );
+
+			return true;
         }
 
         public override void Update()
         {
             base.Update();
-        }
+		}
 
         public override void Render()
         {

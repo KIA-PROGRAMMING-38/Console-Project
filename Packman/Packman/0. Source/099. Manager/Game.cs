@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,15 +19,10 @@ namespace Packman
         /// <returns></returns>
         public bool Initialize()
         {
-            if ( false == InitConsoleSetting() )
-            {
-                return false;
-            }
+            Debug.Assert( true == InitConsoleSetting() );
+			Debug.Assert( true == InitializeSingletons() );
 
-            if ( false == InitializeSingletons() )
-            {
-                return false;
-            }
+            
 
             return true;
         }
@@ -45,8 +41,9 @@ namespace Packman
             while ( true )
             {
                 timeManagerInstance.Update();
+				Console.CursorVisible = false;
 
-                if ( true == timeManagerInstance.UpdatePassFrameInterval() )
+				if ( true == timeManagerInstance.UpdatePassFrameInterval() )
                 {
                     inputManagerInstance.Update();
                     eventManagerInstance.Update();
@@ -63,6 +60,7 @@ namespace Packman
         public void Release()
         {
             TimeManager.Instance.Release();
+            SoundManager.Instance.Release();
         }
 
         /// <summary>
@@ -90,8 +88,8 @@ namespace Packman
             // 인코딩은 UTF8로 설정..
             Console.OutputEncoding = Encoding.UTF8;
 
-            Console.SetWindowSize( 1920 * 2, 1080 * 2 );
-            Console.SetBufferSize( 1920 * 2, 1080 * 2 );
+            //Console.SetWindowSize( 1920, 1080 );
+            //Console.SetBufferSize( 1920, 1080 );
 
             //Console.SetWindowSize( 1920, 1080 );
             //Console.SetBufferSize( 1920, 1080 );
@@ -114,7 +112,27 @@ namespace Packman
                 return false;
             }
 
-            return true;
+            InitializeSoundManager();
+
+			return true;
         }
+
+        private void InitializeSoundManager()
+        {
+            string path = Path.Combine( "..\\..\\..\\Assets", "Sound", "TitleBackground" + "." + "wav" );
+			SoundManager.Instance.AddSound( "Title Background", path );
+
+			path = Path.Combine( "..\\..\\..\\Assets", "Sound", "StageBackground" + "." + "wav" );
+			SoundManager.Instance.AddSound( "Stage Background", path );
+
+			path = Path.Combine( "..\\..\\..\\Assets", "Sound", "EndingSuccess_00" + "." + "wav" );
+			SoundManager.Instance.AddSound( "Ending Success 00", path );
+
+			path = Path.Combine( "..\\..\\..\\Assets", "Sound", "EndingFailedBackground" + "." + "wav" );
+			SoundManager.Instance.AddSound( "Ending Failed Background", path );
+
+			path = Path.Combine( "..\\..\\..\\Assets", "Sound", "EndingSuccessBackground" + "." + "wav" );
+			SoundManager.Instance.AddSound( "Ending Success Background", path );
+		}
     }
 }

@@ -11,6 +11,15 @@ namespace Packman
     {
         private Dictionary<string, SoundPlayer> _sounds = new Dictionary<string, SoundPlayer>();
 
+        public void Release()
+        {
+            foreach(var sound in _sounds)
+            {
+                sound.Value.Dispose();
+            }
+            _sounds.Clear();
+		}
+
         public bool AddSound( string soundID, string filePath )
         {
             if ( null != FindSound( soundID ) )
@@ -28,8 +37,11 @@ namespace Packman
 
         public void Play(string soundID, bool _isLooping = false )
         {
+            return;
+
             SoundPlayer sound = FindSound(soundID);
-            if(null != sound)
+
+			if (null != sound)
             {
                 if( _isLooping )
                 {

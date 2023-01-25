@@ -36,6 +36,12 @@ namespace Packman
                         filePath = FileLoader.MakePath("Ending_Success", "txt");
                         speechFilePath = FileLoader.MakePath( "Ending_Success_Speech", "txt" );
                         endingWordFilePath = FileLoader.MakePath( "GoodEnding", "txt" );
+
+                        SoundManager.Instance.Play( "Ending Success 00" );
+                        EventManager.Instance.SetTimeOut( () =>
+                        {
+                            SoundManager.Instance.Play( "Ending Success Background", true );
+                        }, 1.0f );
                     }
                     break;
                 case 1:
@@ -43,7 +49,9 @@ namespace Packman
                         filePath = FileLoader.MakePath("Ending_Failed", "txt");
                         speechFilePath = FileLoader.MakePath( "Ending_Failed_Speech", "txt" );
                         endingWordFilePath = FileLoader.MakePath( "BadEnding", "txt" );
-                    }
+
+						SoundManager.Instance.Play( "Ending Failed Background" );
+					}
                     break;
             }
 

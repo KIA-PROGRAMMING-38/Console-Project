@@ -11,7 +11,7 @@ namespace Packman
             //
             //string asdf = "========================";
             //Console.WriteLine( "AAA" );
-            //Console.WriteLine( "Σ" );
+            //Console.WriteLine( "※" );
             //int asdffff = asdf.Length;
 
             //string path = Path.Combine( "../../../Resources", "Data", "Stage1.txt" );

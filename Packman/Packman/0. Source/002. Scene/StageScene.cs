@@ -24,11 +24,13 @@ namespace Packman
         {
             FileLoader.Load( $"Stage{_stageNum:D2}", "txt" );
 
-            InitStageUI( 0, 2 );
+            InitStageUI( 2, 2 );
 
             CollisionManager.Instance.RenewObjectInstance();
 
-            return true;
+			SoundManager.Instance.Play( "Stage Background", true );
+
+			return true;
         }
 
         public override void Update()
@@ -41,15 +43,6 @@ namespace Packman
             }
 
             _stageManager.Update();
-
-            if(InputManager.Instance.IsKeyDown(ConsoleKey.Z))
-            {
-                StageManager.Instance.OnPlayerDead();
-            }
-            if ( InputManager.Instance.IsKeyDown( ConsoleKey.X ) )
-            {
-                StageManager.Instance.ClearStage();
-            }
         }
 
         public override void Render()
@@ -63,7 +56,6 @@ namespace Packman
         public override void Release()
         {
             base.Release();
-
             _stageManager.SetPauseGame( false );
         }
 

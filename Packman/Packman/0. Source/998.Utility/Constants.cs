@@ -34,17 +34,22 @@ namespace Packman
 
         // Image 관련 상수들..
         public const string PLAYER_IMAGE = "☹";
-		public const string MONSTER_IMAGE = "★";
-		public const string MONSTER_STUN_STATE_IMAGE = "☆";
+		//public const string MONSTER_IMAGE = "★";
+		public const string MONSTER_IMAGE = "M";
+		public const string MONSTER_STUN_STATE_IMAGE = "M";
 		public const string MONSTER_DEAD_STATE_IMAGE = "_";
-        //public const string MONSTER_IMAGE = "M";
-        public const string GOLD_IMAGE = "⊙";
-        //public const string GOLD_IMAGE = "G";
-        // 투사체 관련 이미지..
-        public const string STUN_IMAGE = "z";
+		//public const string MONSTER_IMAGE = "M";
+		//public const string GOLD_IMAGE = "⊙";
+		public const string GOLD_IMAGE = "$";
+		//public const string GOLD_IMAGE = "G";
+		// 투사체 관련 이미지..
+		public const string STUN_IMAGE = "z";
         public const string PUNCH_IMAGE = "p";
-        public const string MONSTER_KILL_PROJECTILE_IMAGE = "→←↓↑";
-        public const string COLLECT_GOLD_PROJECTILE_IMAGE = "c";
+        //public const string MONSTER_KILL_PROJECTILE_IMAGE = "→←↓↑";
+        public const string MONSTER_KILL_PROJECTILE_IMAGE = "BBBB";
+
+		//public const string COLLECT_GOLD_PROJECTILE_IMAGE = "c";
+		public const string COLLECT_GOLD_PROJECTILE_IMAGE = "∞";
 
         // Color 관련 상수들..
         // 오브젝트 Color..

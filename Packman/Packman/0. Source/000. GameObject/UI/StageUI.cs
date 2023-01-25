@@ -61,6 +61,20 @@ namespace Packman
 
         public override void Render()
         {
+			Console.SetCursorPosition( _x - 2, _y - 2 );
+            Console.Write( _backgroundImage[0] );
+
+			Console.SetCursorPosition( _x - 2, _y + (_backgroundImage.Length - 1) - 2 );
+			Console.Write( _backgroundImage[_backgroundImage.Length - 1] );
+
+			for ( int i = 1; i < _backgroundImage.Length - 1; ++i )
+            {
+                Console.SetCursorPosition( _x - 2, _y - 2 + i );
+                Console.Write( _backgroundImage[i] );
+				Console.SetCursorPosition( _x - 2 + _backgroundImage[0].Length - 1, _y - 2 + i );
+				Console.Write( _backgroundImage[i] );
+			}
+
             int yOffset = 0;
             for( int index = 0; index < _textCount; ++index )
             {
@@ -88,9 +102,9 @@ namespace Packman
                 new TextInfo { Text = "주먹 날리기 : W 키( 남은 개수 : )", LineAlignmentCount = 1 },
                 new TextInfo { Text = "                                      ", LineAlignmentCount = 0 },
                 new TextInfo { Text = "골드 수집기 발사 : E 키( 남은 개수 : )", LineAlignmentCount = 1 },
-                new TextInfo { Text = "                                             ", LineAlignmentCount = 0 },
+                new TextInfo { Text = "                                          ", LineAlignmentCount = 0 },
                 new TextInfo { Text = "몬스터 죽이는 총알 발사 : R 키( 남은 개수 : )", LineAlignmentCount = 1 },
-                new TextInfo { Text = "                                         ", LineAlignmentCount = 0 },
+                new TextInfo { Text = "                                       ", LineAlignmentCount = 0 },
                 new TextInfo { Text = "스텔스 모드(Toggle) : G 키( 마나를 사용 )", LineAlignmentCount = 1 },
 
 
@@ -100,17 +114,17 @@ namespace Packman
 
             _textCount = _texts.Length;
 
-            _backgroundImage = new string[_texts.Length + 2];
-            _backgroundImage[0] = "======================================================================";
-            _backgroundImage[1] = "|";
-            _backgroundImage[2] = "|";
-            _backgroundImage[3] = "|";
-            _backgroundImage[4] = "|";
-            _backgroundImage[5] = "|";
-            _backgroundImage[6] = "|";
-            _backgroundImage[7] = "|";
-            _backgroundImage[8] = "|";
-            _backgroundImage[9] = "|";
+            _backgroundImage = new string[_texts.Length + 4];
+            _backgroundImage[0] = "=============================================";
+            _backgroundImage[1] =  "|";
+            _backgroundImage[2] =  "|";
+            _backgroundImage[3] =  "|";
+            _backgroundImage[4] =  "|";
+            _backgroundImage[5] =  "|";
+            _backgroundImage[6] =  "|";
+            _backgroundImage[7] =  "|";
+            _backgroundImage[8] =  "|";
+            _backgroundImage[9] =  "|";
             _backgroundImage[10] = "|";
             _backgroundImage[11] = "|";
             _backgroundImage[12] = "|";
@@ -120,7 +134,9 @@ namespace Packman
             _backgroundImage[16] = "|";
             _backgroundImage[17] = "|";
             _backgroundImage[18] = "|";
-            _backgroundImage[19] = "======================================================================";
+            _backgroundImage[19] = "|";
+            _backgroundImage[20] = "|";
+			_backgroundImage[21] = "=============================================";
         }
     }
 }
