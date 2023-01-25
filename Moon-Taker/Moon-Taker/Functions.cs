@@ -27,6 +27,44 @@ namespace Moon_Taker
             Console.SetCursorPosition(x, y);
             Render(someString, myColor);
         }
+        public static void SelectMenu(ref int MenuNum, ref ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    MenuNum = (2 + MenuNum) % 3;
+                    break;
+                case ConsoleKey.DownArrow:
+                    MenuNum = (4 + MenuNum) % 3;
+                    break;
+                default:
+                    Console.Write("\b \b");
+                    return;
+            }
+
+            if (MenuNum == 0)
+            {
+                Functions.Render(9, 14, ">");
+                Functions.Render(9, 16, " ");
+                Functions.Render(9, 18, " ");
+            }
+            else if (MenuNum == 1)
+            {
+                Functions.Render(9, 14, " ");
+                Functions.Render(9, 16, ">");
+                Functions.Render(9, 18, " ");
+            }
+            else if (MenuNum == 2)
+            {
+                Functions.Render(9, 14, " ");
+                Functions.Render(9, 16, " ");
+                Functions.Render(9, 18, ">");
+            }
+            else
+            {
+                Scene.EnterErrorScene("메뉴조작에 이상이 감지되었습니다.", -3);
+            }
+        }
         public static int CheckStageNumber()
         {
             int stageNumber = 1;
@@ -187,6 +225,37 @@ namespace Moon_Taker
             string advice = $"{someAdvice[adviceNumber].name}: {someAdvice[adviceNumber].advice}".PadRight(100,' ');
             Render(mapSize.x / 2, mapSize.y + 2, advice);
             return;
+        }
+        public static void ParseTrace(string[] traceFile, out Trace[] trace)
+        {
+            trace = new Trace[traceFile.Length];
+            for (int traceId = 0; traceId < traceFile.Length; traceId++)
+            {
+                trace[traceId] = new Trace
+                {
+                    name = traceFile[traceId].Split("\t")[0],
+                    description = traceFile[traceId].Split("\t")[1],
+                    isUseful = bool.Parse(traceFile[traceId].Split("\t")[2]),
+                    SuccessString = traceFile[traceId].Split("\t")[3],
+                    FailureString = traceFile[traceId].Split("\t")[4],
+                };
+            }
+            return;
+        }
+        public static void ChooseOX(ConsoleKey yesOrNo, ref bool isO)
+        {
+            if (yesOrNo == ConsoleKey.DownArrow || yesOrNo == ConsoleKey.UpArrow)
+            {
+                isO = true ^ isO;
+            }
+            if(isO == true)
+            {
+                Render(0, 4, ">");
+                Render(0, 5, " ");
+                return;
+            }
+                Render(0, 4, " ");
+                Render(0, 5, ">");
         }
         public static void WaitForNextInput(ConsoleKey someKey, Action action1)
         {

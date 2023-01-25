@@ -10,6 +10,7 @@ namespace Moon_Taker
 
     {
         public static bool isStageReseted = true;
+        public static bool isStageCleared = false;
         public static int currentStage = 1;
 
         public static int stageMovePoint;

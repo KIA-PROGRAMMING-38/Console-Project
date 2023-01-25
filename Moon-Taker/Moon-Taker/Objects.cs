@@ -78,4 +78,12 @@ namespace Moon_Taker
         public string advice;
         public int weight;
     }
+    public class Trace
+    {
+        public string name;
+        public string description;
+        public bool isUseful;
+        public string SuccessString;
+        public string FailureString;
+    }
 }

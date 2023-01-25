@@ -21,7 +21,7 @@ namespace Moon_Taker
                 }
                 ConsoleKey moveMenu = Console.ReadKey().Key;
 
-                Scene.SelectMenu(ref GameSettings.MenuNum, ref moveMenu);
+                Functions.SelectMenu(ref GameSettings.MenuNum, ref moveMenu);
                 if (moveMenu == ConsoleKey.E)
                 {
                     SoundPlayer soundPlayer = new SoundPlayer("Select.wav");
@@ -53,7 +53,8 @@ namespace Moon_Taker
             Key key = new Key();
             Door door = new Door();
             MapSize mapSize = new MapSize();
-            Advice[] advice = new Advice[0];
+            Advice[] advices = new Advice[0];
+            Trace[] traces = new Trace[0];
 
             string[][] Stage = new string[GameSettings.stageNumber + 1][];
             Functions.CheckStageNumber();
@@ -62,8 +63,10 @@ namespace Moon_Taker
             {
                 Stage[stageId] = Functions.LoadFile(GameSettings.stageFilePath[stageId]);
             }
-            string[] advices = Functions.LoadFile(GameSettings.adviceFilePath);
-            Functions.ParseAdvice(advices, out advice);
+            string[] advice = Functions.LoadFile(GameSettings.adviceFilePath);
+            string[] trace = Functions.LoadFile(GameSettings.traceFilePath);
+            Functions.ParseAdvice(advice, out advices);
+            Functions.ParseTrace(trace, out traces);
 
             while (GameSettings.isGameStarted)
             {
@@ -220,11 +223,11 @@ namespace Moon_Taker
                 if (ObjectStatus.isAdviceToggled)
                 {
                     int adviceNumber = -1;
-                    Functions.PickAdviceNumber(advice, ref adviceNumber);
-                    Functions.WriteAdvice(advice, mapSize, ref adviceNumber);
-                    if (advice[adviceNumber].name == "최선문" && StageSettings.currentStage != GameSettings.stageNumber)
+                    Functions.PickAdviceNumber(advices, ref adviceNumber);
+                    Functions.WriteAdvice(advices, mapSize, ref adviceNumber);
+                    if (advices[adviceNumber].name == "최선문" && StageSettings.currentStage != GameSettings.stageNumber)
                     {
-                        Scene.EnterBlessedScene(advice, adviceNumber);
+                        Scene.EnterBlessedScene(advices, adviceNumber);
                     }
                     ObjectStatus.isAdviceToggled = false;
                     if (StageSettings.isBlessed)
@@ -513,18 +516,34 @@ namespace Moon_Taker
                 {
                     if (StageSettings.currentStage < GameSettings.stageNumber)
                     {
-                        Scene.EnterStageClearScene(ref StageSettings.currentStage);
+                        bool isYes = true;
+                        Scene.EnterFoundTraceScene(traces);
+                        while (false == StageSettings.isStageCleared)
+                        {
+                            ConsoleKey yesOrNo = Console.ReadKey().Key;
+                            Functions.ChooseOX(yesOrNo,ref isYes);
+                            if (yesOrNo == ConsoleKey.E)
+                            {
+                                if (isYes ^ traces[StageSettings.currentStage - 1].isUseful)
+                                {
+                                    Scene.EnterBadChoiceScene(traces);
+                                    break;
+                                }
+                                else
+                                {
+                                    Scene.EnterStageClearScene(traces);
+                                    break;
+                                }
+                            }
+                        }
                         continue;
                     }
-                    else if (StageSettings.currentStage == GameSettings.stageNumber)
-                    {
                         Scene.EnterGameClearScene();
-                    }
                 }
 
                 if (ObjectStatus.playerMovePoint <= 0)
                 {
-                    Scene.EnterGameOverScene(ObjectStatus.playerMovePoint);
+                    Scene.EnterGameOverScene();
                 }
             LoopEnd:;
             }

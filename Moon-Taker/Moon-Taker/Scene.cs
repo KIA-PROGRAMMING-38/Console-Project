@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing.Text;
 using System.Linq;
 using System.Media;
 using System.Runtime.CompilerServices;
@@ -89,7 +91,7 @@ namespace Moon_Taker
                    "메인메뉴로 돌아가려면 E를 누르세요.");
             Functions.WaitForNextInput(ConsoleKey.E, GoToTitle);
         }
-        public static void EnterGameOverScene(int playerMovePoint)
+        public static void EnterGameOverScene()
         {
             Functions.PlayBGM("GameOver.wav");
             GameSettings.isBGMPlaying = false;
@@ -105,12 +107,22 @@ namespace Moon_Taker
             Functions.Render("R키를 눌러 재시작하세요.");
             Functions.WaitForNextInput(ConsoleKey.R, StageReseted);
         }
-        public static void EnterStageClearScene(ref int stageNumber)
+        public static void EnterBadChoiceScene(Trace[] trace)
+        {
+            Functions.PlayBGM("GameOver.wav");
+            GameSettings.isBGMPlaying = false;
+            Console.Clear();
+            Functions.Render(trace[StageSettings.currentStage - 1].FailureString);
+            Functions.Render($"\n잘못된 선택이었네요...\nR키를 눌러 재시작하세요.", ConsoleColor.DarkRed);
+            Functions.WaitForNextInput(ConsoleKey.R, StageReseted);
+        }
+        public static void EnterStageClearScene(Trace[] trace)
         {
             Functions.PlayBGM("StageClear.wav");
             GameSettings.isBGMPlaying = false;
             Console.Clear();
-            Functions.Render($"{StageSettings.currentStage} 스테이지 클리어!\nE키를 눌러 다음 스테이지로 이동하세요!", ConsoleColor.Yellow);
+            Functions.Render(trace[StageSettings.currentStage - 1].SuccessString);
+            Functions.Render($"\n{StageSettings.currentStage} 스테이지 클리어!\nE키를 눌러 다음 스테이지로 이동하세요!", ConsoleColor.Yellow);
             Functions.WaitForNextInput(ConsoleKey.E, StageClear);
         }
         public static void EnterBlessedScene(Advice[] someAdvice, int adviceNumber)
@@ -188,45 +200,17 @@ namespace Moon_Taker
             Functions.WaitForNextInput(ConsoleKey.Escape, FoundError);
         }
 
-        public static void SelectMenu(ref int MenuNum, ref ConsoleKey key)
+        public static void EnterFoundTraceScene(Trace[] traces)
         {
-            switch (key)
-            {
-                case ConsoleKey.UpArrow:
-                    MenuNum = (2 + MenuNum) % 3;
-                    break;
-                case ConsoleKey.DownArrow:
-                    MenuNum = (4 + MenuNum) % 3;
-                    break;
-                default:
-                    Console.Write("\b \b");
-                    return;
-            }
-
-            if (MenuNum == 0)
-            {
-                Functions.Render(9, 14, ">");
-                Functions.Render(9, 16, " ");
-                Functions.Render(9, 18, " ");
-            }
-            else if (MenuNum == 1)
-            {
-                Functions.Render(9, 14, " ");
-                Functions.Render(9, 16, ">");
-                Functions.Render(9, 18, " ");
-            }
-            else if (MenuNum == 2)
-            {
-                Functions.Render(9, 14, " ");
-                Functions.Render(9, 16, " ");
-                Functions.Render(9, 18, ">");
-            }
-            else
-            {
-                EnterErrorScene("메뉴조작에 이상이 감지되었습니다.", -3);
-            }
+            Console.Clear();
+            Console.WriteLine(traces[StageSettings.currentStage - 1].name);
+            Console.WriteLine(traces[StageSettings.currentStage - 1].description);
+            Console.WriteLine("이 흔적을 가져갈까요?");
+            Functions.Render(0, 4, ">");
+            Functions.Render(3, 4, "YES");
+            Functions.Render(3, 5, "NO");
         }
-
+        
         public static bool isFirstScene = true;
 
         public static Action GameStart = () => GameSettings.isGameStarted = true;
