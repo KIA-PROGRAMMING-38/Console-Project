@@ -8,7 +8,7 @@
         public override void Start()
         {
             AddComponent(new Collider());
-            AddComponent(new Renderer('F', 1));
+            AddComponent(new Renderer(GameDataManager.FEED_ICON, 1, ConsoleColor.DarkCyan));
             renderer = GetComponent<Renderer>();
 
             StartComponents();

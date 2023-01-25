@@ -17,7 +17,7 @@ namespace SnakeGame
         {
             Console.OutputEncoding = Encoding.UTF8;         
             Console.CursorVisible = false;
-            Console.SetBufferSize(1920, 1080);
+            //Console.SetBufferSize(1920, 1080);
 
             // 1. 씬 정보 로드
             SceneManager.Instance.Load();
@@ -37,7 +37,6 @@ namespace SnakeGame
             while (true)
             {
                 TimeManager.Instance.Update();
-                //x InputManager.Instance.Update(); 
 
                 if (IsGameSet == true)
                 {

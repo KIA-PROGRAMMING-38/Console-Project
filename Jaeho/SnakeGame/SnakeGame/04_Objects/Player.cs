@@ -15,8 +15,7 @@ namespace SnakeGame
 
             AddComponent(new PlayerMovement());
             AddComponent(new Collider());
-            //◯☺ ▢
-            AddComponent(new Renderer('▢', 5, ConsoleColor.Yellow));
+            AddComponent(new Renderer(GameDataManager.PLAYER_ICON, 5, ConsoleColor.Yellow));
             PrevPos = Position;
             _renderer = GetComponent<Renderer>();
 
@@ -37,7 +36,7 @@ namespace SnakeGame
                 case "Wall":
                     SoundManager.Instance.Play("CollisionSound");
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 1700, 3, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 700, 3, 1);
                     break;
                 case "Feed":
                     AddBody();
@@ -47,11 +46,33 @@ namespace SnakeGame
                         feed.IsAlive = false;
                     }
                     GameDataManager.Instance.CurrentFeedCount += 1;
+                    if(RandomManager.Instance.GetRandomRangeInt(1, 10) <= 10)
+                    {
+                        Task.Factory.StartNew(() =>
+                        {
+                            long time = 2000;
+                            int speed = 5;
+                            int prevTimeScale = TimeManager.TimeScale;
+
+                            if (TimeManager.TimeScale == speed) return;
+
+                            TimeManager.TimeScale *= speed;
+
+                            Console.SetCursorPosition(GameDataManager.MAP_MAX_X + 2, 0);
+                            Console.Write($"배속 : {speed}");
+                            while (time > 0 || SceneManager.Instance.ChangeFlag )
+                            {
+                                time -= TimeManager.Instance.ElapsedMs;
+                                Thread.Sleep((int)TimeManager.Instance.ElapsedMs);
+                            }
+                            TimeManager.TimeScale = prevTimeScale;
+                        });
+                    }
                     break;
                 case "SnakeBody":
                     SoundManager.Instance.Play("CollisionSound");
                     SceneManager.Instance.ChangeFlagOn("DeadScene");
-                    MapShaker.Instance.SetShakeFlag(true, 3000, 4, 1);
+                    MapShaker.Instance.SetShakeFlag(true, 2000, 4, 1);
                     break;
                 default:
                     break;

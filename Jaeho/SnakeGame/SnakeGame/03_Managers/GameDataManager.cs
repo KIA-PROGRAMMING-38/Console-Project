@@ -20,7 +20,15 @@ namespace SnakeGame
             public bool[,] MapSpawnableTable;
         }
 
+        //◯☺ ▢ 𐍈 ꔮ ё Ö
+        public const char PLAYER_ICON = 'Ö';
+        public const char SNAKEBODY_ICON = '▢';
+
+        //▮ ▢ ◯▮
+        public  const char WALL_ICON = 'W';
+        public  const char FEED_ICON = '☺';
         public  static readonly string ResourcePath = Path.Combine(@"..\..\..\","07_Assets");
+
         private int _needStageClearFeedCount = 0;
         private int _currentFeedCount = 0;
 
@@ -36,7 +44,7 @@ namespace SnakeGame
 
 
         public const  int ANCHOR_LEFT = 36;
-        public const  int ANCHOR_TOP = 7;
+        public const  int ANCHOR_TOP = 10;
 
         public static int MAP_MAX_X { get { return ANCHOR_LEFT + _mapMaxX; } }
         public static int MAP_MIN_X { get  { return ANCHOR_LEFT + _mapMinX; } }

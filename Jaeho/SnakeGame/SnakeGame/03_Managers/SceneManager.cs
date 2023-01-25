@@ -12,7 +12,8 @@ namespace SnakeGame
             _nextScene = string.Empty;
         }
 
-        public  bool    _changeFlag;
+        private  bool    _changeFlag;
+        public bool ChangeFlag { get { return _changeFlag; } }
         public  string  _nextScene;
         private Scene   _currentScene;
 

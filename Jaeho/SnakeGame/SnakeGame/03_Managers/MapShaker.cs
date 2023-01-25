@@ -36,12 +36,13 @@
                 long time = _millsecond;
                 while (time > 0)
                 {
-                    time -= TimeManager.Instance.ElapsedMs;
+                    time -= TimeManager.Instance.ElapsedMs / 2;
                     int xRandomValue = RandomManager.Instance.GetRandomRangeInt(-_shakePowerX, _shakePowerX);
                     int yRandomValue = RandomManager.Instance.GetRandomRangeInt(-_shakePowerY, _shakePowerY);
                     Console.MoveBufferArea(startPos.X, startPos.Y, mapWidth, mapHeight, startPos.X + xRandomValue, startPos.Y + yRandomValue);
-                    Thread.Sleep(TimeManager.MS_PER_FRAME / 3);
+                    Thread.Sleep((int)TimeManager.Instance.ElapsedMs/4);
                     Console.MoveBufferArea(startPos.X + xRandomValue, startPos.Y + yRandomValue, mapWidth, mapHeight, startPos.X, startPos.Y);
+                    Thread.Sleep((int)TimeManager.Instance.ElapsedMs/4);
                 }
                 
                 _shakeFlagOn = false;

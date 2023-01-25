@@ -23,8 +23,7 @@ namespace SnakeGame
         public override void Start()
         {
             AddComponent(new Collider());
-            // ▬  ▢
-            _renderer = new Renderer('◯', 2, ConsoleColor.Gray);
+            _renderer = new Renderer(GameDataManager.SNAKEBODY_ICON, 2, ConsoleColor.Gray);
             AddComponent(_renderer);
             Parent = null;
             Next = null;
