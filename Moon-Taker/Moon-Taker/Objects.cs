@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Moon_Taker
 {
-
     public class Player
     {
         public int x;

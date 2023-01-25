@@ -37,11 +37,11 @@ namespace Moon_Taker
         static public string[] objectDescription =
         {
             $"{Constants.player} : 유재광   ",
-            $"{Constants.wall} : 벽",
+            $"{Constants.wall} : 벽           ",
             $"{Constants.enemy} : 적       ",
-            $"{Constants.block} : 블록",
+            $"{Constants.block} : 블록         ",
             $"{Constants.activatedTrap} : 가시함정 ",
-            $"{Constants.key} : 열쇠     ",
+             $"{Constants.key} : 열쇠         ",
             $"{Constants.door} : 문       ",
             $"{Constants.moon} : 교수님의 흔적",
         };

@@ -166,10 +166,12 @@ namespace Moon_Taker
             Functions.WaitForNextInput(ConsoleKey.E, StageClear);
             return;
         }
-        public static void EnterGameClearScene()
+        public static void EnterGameClearScene(Trace[] traces)
         {
+            Functions.PlayBGM("GameClear.wav");
             Console.Clear();
-            string gameClear = "축하합니다!\n\n";
+                        Functions.Render(traces[StageSettings.currentStage - 1].SuccessString);
+            string gameClear = "\n\n축하합니다!\n\n";
             for (int i = 0; i < gameClear.Length; i++)
             {
                 Functions.Render($"{gameClear[i]}", Functions.RandomColor());

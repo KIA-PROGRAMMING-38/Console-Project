@@ -194,37 +194,36 @@ namespace Moon_Taker
                 Functions.Render(moon.x, moon.y, Constants.moon, LookUpTable.objectColor[LookUpTable.objectColor.Length - 1]);
                 Functions.Render(player.x, player.y, Constants.player, Constants.playerColor);
 
-                for (int stageId = 1; stageId < Stage.Length; ++stageId)
-                {
-                    if (stageId != StageSettings.currentStage)
-                    {
-                        continue;
-                    }
+
                     for (int i = 0; i < LookUpTable.controlHelp.Length; ++i)
                     {
-                        Functions.Render(Stage[stageId][0].Length + 2, i, LookUpTable.controlHelp[i]);
+                        Functions.Render(Stage[StageSettings.currentStage][0].Length + 4, i, LookUpTable.controlHelp[i]);
                     }
+                    Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.controlHelp.Length + 2, "/------------------------------\\");
                     for (int i = 0; i < LookUpTable.objectDescription.Length; ++i)
                     {
                         if (i % 2 == 0)
                         {
-                            Functions.Render(Stage[stageId][0].Length + 2, (i / 2) + LookUpTable.controlHelp.Length + 1, LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
+                            Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, (i / 2) + LookUpTable.controlHelp.Length + 3, "|");
+                            Functions.Render(Stage[StageSettings.currentStage][0].Length + 4, (i / 2) + LookUpTable.controlHelp.Length + 3, LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
                         }
                         else
                         {
                             Functions.Render(LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
+                            Functions.Render("|");
                         }
                     }
-                    Functions.Render(mapSize.x / 2, mapSize.y + 1, "남은 ");
+                    Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.objectDescription.Length + 2, "\\------------------------------/");
+                    Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.objectDescription.Length + 4, "남은 ");
                     Functions.Render("행동 점수", Constants.movePointColor);
                     Functions.Render($" : {ObjectStatus.playerMovePoint}".PadLeft(2, ' '));
-                }
+
 
                 if (ObjectStatus.isAdviceToggled)
                 {
                     int adviceNumber = -1;
                     Functions.PickAdviceNumber(advices, ref adviceNumber);
-                    Functions.WriteAdvice(advices, mapSize, ref adviceNumber);
+                    Functions.WriteAdvice(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.objectDescription.Length + 5, advices, ref adviceNumber);
                     if (advices[adviceNumber].name == "최선문" && StageSettings.currentStage != GameSettings.stageNumber)
                     {
                         Scene.EnterBlessedScene(advices, adviceNumber);
@@ -514,13 +513,13 @@ namespace Moon_Taker
 
                 if (Actions.IsCollided(player.x, player.y, moon.x, moon.y))
                 {
-                    if (StageSettings.currentStage < GameSettings.stageNumber)
-                    {
                         bool isYes = true;
                         Scene.EnterFoundTraceScene(traces);
                         while (false == StageSettings.isStageCleared)
                         {
+                            Console.SetCursorPosition(0, 5);
                             ConsoleKey yesOrNo = Console.ReadKey().Key;
+                            Console.Write("\b \b");
                             Functions.ChooseOX(yesOrNo,ref isYes);
                             if (yesOrNo == ConsoleKey.E)
                             {
@@ -529,16 +528,18 @@ namespace Moon_Taker
                                     Scene.EnterBadChoiceScene(traces);
                                     break;
                                 }
-                                else
+                                if (StageSettings.currentStage < GameSettings.stageNumber)
                                 {
                                     Scene.EnterStageClearScene(traces);
                                     break;
                                 }
+                                else if (StageSettings.currentStage == GameSettings.stageNumber)
+                                {
+                                    Scene.EnterGameClearScene(traces);
+                                }
                             }
                         }
                         continue;
-                    }
-                        Scene.EnterGameClearScene();
                 }
 
                 if (ObjectStatus.playerMovePoint <= 0)

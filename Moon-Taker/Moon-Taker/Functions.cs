@@ -215,7 +215,7 @@ namespace Moon_Taker
             }
             return;
         }
-        public static void WriteAdvice(Advice[] someAdvice, MapSize mapSize, ref int adviceNumber)
+        public static void WriteAdvice(int x, int y, Advice[] someAdvice, ref int adviceNumber)
         {
             if (adviceNumber == -1)
             {
@@ -223,7 +223,7 @@ namespace Moon_Taker
             }
             
             string advice = $"{someAdvice[adviceNumber].name}: {someAdvice[adviceNumber].advice}".PadRight(100,' ');
-            Render(mapSize.x / 2, mapSize.y + 2, advice);
+            Render(x, y, advice);
             return;
         }
         public static void ParseTrace(string[] traceFile, out Trace[] trace)
