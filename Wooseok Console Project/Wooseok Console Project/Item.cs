@@ -6,15 +6,10 @@ using System.Threading.Tasks;
 
 namespace Wooseok_Console_Project
 {
-    internal class Player
+    internal class Item
     {
-        public int x;
-        public int y;
-        public string symbol;
-        public int prex;
-        public int prey;
-        
-       
-
+        public int id;
+        public string name;
+        public int weight;
     }
 }

@@ -19,7 +19,6 @@ namespace Wooseok_Console_Project
         public string passiveeffect;
 
         public int atk;
-        public int saveatk;
         public string attackeffect;
 
         public string skill1;
@@ -30,6 +29,9 @@ namespace Wooseok_Console_Project
 
         public string skill3;
         public string skill3effect;
+        
+        public int dmg;
 
+        
     }
 }

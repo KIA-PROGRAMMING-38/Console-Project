@@ -38,6 +38,10 @@ class Program
         SoundPlayer MusicVictory = new SoundPlayer(@"Assets\Music\Victory.wav");
         SoundPlayer MusicBattle = new SoundPlayer(@"Assets\Music\Battle.wav");
         SoundPlayer MusicLose = new SoundPlayer(@"Assets\Music\Lose.wav");
+        SoundPlayer MusicClap = new SoundPlayer(@"Assets\Music\박수소리.wav");
+        SoundPlayer MusicRead = new SoundPlayer(@"Assets\Music\대기음악.wav");
+        SoundPlayer MusicAnxiety = new SoundPlayer(@"Assets\Music\불안한소리.wav");
+        SoundPlayer MusicFinish = new SoundPlayer(@"Assets\Music\국기경례.wav");
         #endregion
 
         #region 오브젝트 추가하기
@@ -46,11 +50,12 @@ class Program
         Wall[] wall = null;
         Goal[] goal = null;
         Line4[] line4 = null;
-        
-        
-
+        Random random = new Random(); // random 객체 생성
+        Scene scene = new Scene(); // Scene 객체 생성
+        Game game = new();
+        PLAYERDIRECTION PlayerDirection = PLAYERDIRECTION.NONE; // 플레이어 방향 ENUM 초기화
+        LINE4DIRECTION line4direction = LINE4DIRECTION.NONE; // 병장 방향 ENUM 초기화
         #endregion
-
 
         #region 캐릭터 생성하기
         Character ChosenOne = new(); // 선택한 캐릭터
@@ -65,7 +70,8 @@ class Program
             atk = 3,
             attackeffect = "네? 라고 대답함",
             skill1 = "관등성명대기(MP 5)",
-            skill1effect = "관등성명을 댐으로써 병장의 흥미가 떨어짐(병장 MP 3~5 감소)"
+            skill1effect = "관등성명을 댐으로써 병장의 흥미가 떨어짐(병장 MP 3~5 감소)",
+            dmg = 0
         };
 
         Character ee = new()
@@ -78,7 +84,8 @@ class Program
             atk = 3,
             attackeffect = "잘 못들었습니다?",
             skill1 = "마음의 편지 쓰기(MP 5)",
-            skill1effect = "마음의 편지를 씀으로써 병장의 휴가가 잘렸다(병장 HP 3 ~ 5 감소)"
+            skill1effect = "마음의 편지를 씀으로써 병장의 휴가가 잘렸다(병장 HP 3 ~ 5 감소)",
+            dmg = 0
         };
 
         Character il = new() // 일병 객체 생성
@@ -91,7 +98,8 @@ class Program
             atk = 3,
             attackeffect = "잘 못슴다?",
             skill1 = "담배 물리기(MP 5)",
-            skill1effect = "담배를 권함으로써 병장이 3턴동안 흡연을 한다 [병장 3턴 Freeze]"
+            skill1effect = "담배를 권함으로써 병장이 3턴동안 흡연을 한다 [병장 3턴 Freeze]" ,
+            dmg = 0
         };
 
         Character sang = new() // 상병 객체 생성
@@ -104,7 +112,8 @@ class Program
             atk = 3,
             attackeffect = "자몽소다?",
             skill1 = "무시하기 (MP 5)",
-            skill1effect = "\"집에 갈 양반이 왜 아직도 실세놀이를 하고 계십니까?\" [병장 MP 5~10 감소]"
+            skill1effect = "\"집에 갈 양반이 왜 아직도 실세놀이를 하고 계십니까?\" [병장 MP 5~10 감소]" ,
+            dmg = 0
         };
 
         Character Byeong = new() // 병장 객체 생성
@@ -119,7 +128,6 @@ class Program
             passiveeffect = "동기들을 먼저 보내고 혼자만 남아 현타를 맞음[매턴 20% 확률로 턴 중지]",
 
             atk = 5,
-            saveatk = 5,
             attackeffect = "야 여동생이나 누나 있냐?",
 
             skill1 = "군가 부르게 하기 (MP 2)",
@@ -129,17 +137,23 @@ class Program
             skill2effect = "개빠졌네 진짜?? 군대가 니 집 안방이냐??[플레이어 HP 3 ~ 5 감소]",
 
             skill3 = "맞선임 호출하기 (MP 5)",
-            skill3effect = "야, 니 맞선임 누구냐??[플레이어 HP 5 ~ 10 감소]"
+            skill3effect = "야, 니 맞선임 누구냐??[플레이어 HP 5 ~ 10 감소]",
+            dmg = 0
         };
         #endregion
 
-        Random random = new Random(); // random 객체 생성
-        Scene scene = new Scene(); // Scene 객체 생성
-        Game game = new();
-        PLAYERDIRECTION PlayerDirection = PLAYERDIRECTION.NONE; // 플레이어 방향 ENUM 초기화
-        LINE4DIRECTION line4direction= LINE4DIRECTION.NONE; // 병장 방향 ENUM 초기화
+        #region 아이템테이블 만들기
 
-        #region 시작화면
+        Item[] itemlist =
+        {
+            new Item { id = 1, name = "꽈배기", weight = 40},
+            new Item { id = 2, name = "군장", weight = 30},
+            new Item { id = 3, name = "가스조절기", weight = 20},
+            new Item { id = 4, name = "포상휴가증", weight = 10},
+        };
+        #endregion
+
+        #region 시작 Scene
 
         string StartPath = Path.Combine("Assets", "Scenes", "StartScene.txt");
         string[] StartShow = File.ReadAllLines(StartPath);
@@ -171,7 +185,7 @@ class Program
         }
         #endregion
 
-        #region 퀴즈부분
+        #region 퀴즈 Scene
         Quiz quiz = new();
         string QuizPath = ""; // 경로 default
         string[] QuizShow = default; // 실제파일 default
@@ -434,6 +448,7 @@ class Program
                     quiz.RenderQ10 = false;
                     scene.QuizOn = false;
                     scene.MarkOn = true;
+                    MusicSong1.Stop(); // 군가끄기
                 }
                 else if (key == ConsoleKey.A || key == ConsoleKey.B || key == ConsoleKey.C)
                 {
@@ -442,6 +457,7 @@ class Program
                     quiz.RenderQ10 = false;
                     scene.QuizOn = false;
                     scene.MarkOn = true;
+                    MusicSong1.Stop(); // 군가끄기
                 }
                 else
                 {
@@ -472,7 +488,8 @@ class Program
         }
         #endregion
 
-        #region 채점 부분
+        #region 채점 Scene
+        MusicClap.PlayLooping(); // 박수소리 틀기
         bool RenderMark = true;
         string MarkPath = Path.Combine("Assets", "Scenes", "MarkScene.txt"); ;
         string[] MarkShow = File.ReadAllLines(MarkPath);
@@ -500,11 +517,13 @@ class Program
                 key = default;
                 scene.MarkOn = false;
                 scene.ExplanationOn = true;
+                MusicClap.Stop(); // 박수소리 끄기
             }
         }
         #endregion
 
-        #region 캐릭터 설명부분
+        #region 캐릭터설명 Scene
+        MusicRead.PlayLooping(); // 대기음악 키기
         bool RenderExplanation = true;
         string ExplanationPath = "";
         string[] ExplanationShow = default;
@@ -528,13 +547,13 @@ class Program
                 key = default;
                 scene.ExplanationOn = false;
                 scene.PresokobanOn = true;
-                MusicSong1.Stop(); // 군가끄기
+                
             }
 
         }
         #endregion
 
-        #region 소코반 전 미션설명 부분
+        #region 소코반설명 Scene
 
         bool RenderPre = true;
         string PrePath = Path.Combine("Assets", "Scenes", "PresokobanScene.txt"); ;
@@ -559,13 +578,17 @@ class Program
                 key = default;
                 scene.PresokobanOn = false;
                 scene.ShoppingOn = true;
+                
+                
             }
         }
 
         #endregion
 
-        #region 
+        #region 쇼핑 Scene
         bool RenderShopping = true;
+        Item outcome = null;
+        int money = 500;
         string ShoppingPath = Path.Combine("Assets", "Scenes", "ShoppingScene.txt");
         string[] ShoppingShow = File.ReadAllLines(ShoppingPath);
         while (scene.ShoppingOn) // 상점이용 scene
@@ -577,27 +600,71 @@ class Program
                 RenderShopping = false;
             }
 
+            Console.ForegroundColor = ConsoleColor.Magenta; // 소지금 그려주기
+            Function.Render(43,30,$"{money}");
+
+            if (outcome != null) // 뽑은 아이템 그려주기
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Function.Render(97, 6, "               ");
+                Function.Render(97, 6, outcome.name);
+            }
+
             // input
             ConsoleKey key = Console.ReadKey(true).Key;
 
             // update
-            if (key == ConsoleKey.Enter)
+            if (0 < money && key == ConsoleKey.Spacebar) // 스페이스바 누르면 갓챠
+            {
+                int randomnumber = random.Next(1,101); // 1부터 100까지 중 난수 하나를 뽑음
+                outcome = Gacha(randomnumber);
+                money -= 100;
+            }
+
+            if (key == ConsoleKey.Enter) // 엔터 누르면 소코반 씬으로
             {
                 Console.Clear();
                 key = default;
                 scene.ShoppingOn = false;
                 scene.SokobanOn = true;
-
+                MusicRead.Stop(); // 대기음악 끄기
             }
 
         }
         #endregion
 
+        #region 아이템효과 적용하기
+        if (outcome != null)// 소지한 아이템에 따른 플레이어 status 향상
+        {
+            switch (outcome.name)
+            {
+                case "꽈배기":
+                    ChosenOne.hp += 2;
+                    break;
+                case "군장":
+                    ChosenOne.hp += 5;
+                    break;
+                case "가스조절기":
+                    ChosenOne.atk += 3;
+                    break;
+                case "포상휴가증":
+                    ChosenOne.hp += 10;
+                    ChosenOne.atk += 5;
+                    break;
+            }
+        }
+        #endregion
+
+        LOOP_SOKOBAN:
+
+        #region 소코반 Scene
+        
         string[] data1 = Game.LoadStage(1); // 스테이지 1 로드하기
         string[] data2 = Game.LoadStage(2); // 스테이지 2 로드하기
         string[] data3 = Game.LoadStage(3); // 스테이지 3 로드하기
 
-    LOOP_CHANGE:
+        LOOP_CHANGE:
+        Console.ForegroundColor = ConsoleColor.Gray;
         if (game.Stage1Ongoing == true)
         {
             Game.RenderStage(data1); // 스테이지 1 렌더하기
@@ -621,52 +688,35 @@ class Program
         while (scene.SokobanOn) // 소코반 scene
         {
             // render
+            Console.ForegroundColor = ConsoleColor.White;
 
+            RenderPlayerHP();
+            RenderPlayerMP();
+            RenderSide();
+            
             Console.ForegroundColor = ConsoleColor.Blue; // 골을 렌더
             for (int i = 0; i < goal.Length; ++i)
             {
                 Function.Render(goal[i].x, goal[i].y, "*"); 
             }
 
-            Console.ForegroundColor = ConsoleColor.White;// 플레이어를 render
-            Function.Render(player.x, player.y, "P"); 
-            if (player.x == player.prex && player.y == player.prey)
-            {
-                // 암것도안함
-            }
-            else // 현좌표와 전좌표가 겹치지 않을때만 지워줌
-            {
-                Function.Render(player.prex, player.prey, " ");
-            }
-
+            Console.ForegroundColor = ConsoleColor.White;// 플레이어 render
+            Function.Render(player.x, player.y, "P");
+            RenderPrePlayer(); // 플레이어 전 좌표 render
+            
             Console.ForegroundColor = ConsoleColor.Yellow;// 벽을 렌더
             for (int i = 0; i < wall.Length; ++i)
             {
                 Function.Render(wall[i].x, wall[i].y, "W"); 
             }
 
-            Console.ForegroundColor = ConsoleColor.Red;// 병장을 렌더
-            for (int i = 0; i < line4.Length; ++i)
-            {
-                Function.Render(line4[i].x, line4[i].y, "4"); 
-
-                if (line4[i].x == line4[i].prex && line4[i].y == line4[i].prey)
-                {
-                    // 암것도안함
-                }
-                else // 현좌표와 전좌표가 겹치지 않을때만 지워줌
-                {
-                    Function.Render(line4[i].prex, line4[i].prey, " ");
-                }
-            }
+            RenderLine4(); // 병장 렌더
             
             Console.ForegroundColor = ConsoleColor.Green;// box를 렌더
             for (int i = 0; i < box.Length; ++i)
             {
                 Function.Render(box[i].x, box[i].y, "B"); 
             }
-
-            
 
             // input
             ConsoleKey key = Console.ReadKey(true).Key;
@@ -702,11 +752,10 @@ class Program
             Line4VsBox();
 
             // 플레이어가 병장이랑 조우하면 배틀모드돌입
-            //PlayerMeetLine4();
+            PlayerMeetLine4();
 
             // 골에 박스 몇개들어갔는지 확인하는거 구현
             BoxOnGoalCount = CountBoxOnGoal(box, goal, ref BoxOnGoal);
-
 
             if (game.Stage1Ongoing == true && BoxOnGoalCount == goal.Length) // 1번 스테이지에 모든 박스가 골에 들어갔다면
             {
@@ -733,11 +782,14 @@ class Program
                 game.Stage3Ongoing = false;
                 scene.SokobanOn = false;
                 scene.ClearOn = true; // 군의관에게로 간다
+                MusicWalk.Stop(); // 걷는 소리 끄기
             }
 
         }
+        #endregion
 
-        #region 병장 조우 부분
+        #region 병장 조우 Scene
+        MusicLaugh.PlayLooping(); // 웃는 소리 켜기
         bool RenderEncounter = true;
         string EncounterPath = Path.Combine("Assets", "Scenes", "EncounterScene.txt");
         string[] EncounterShow = File.ReadAllLines(EncounterPath);
@@ -756,49 +808,232 @@ class Program
             // update
             if (key == ConsoleKey.Enter) // 엔터 누르면
             {
-                scene.EncounterOn = false;
-                scene.BattleOn = true; // 배틀 모드 돌임
+                scene.EncounterOn = false; // 조우 scene 끄고
+                scene.BattleOn = true; // 배틀 모드 돌입
+                MusicLaugh.Stop(); // 웃는소리 끄기
             }
         }
         #endregion
 
-        #region 병장과의 배틀 부분
+        #region 배틀 Scene
+        MusicBattle.PlayLooping(); // 배틀소리 켜기
         bool Victory = false; // 승리 패배에 따라 변환할 것
-        
         string BattlePath = Path.Combine("Assets", "Scenes", "BattleScene.txt");
         string[] BattleShow = File.ReadAllLines(BattlePath);
+        bool ByeongTurn = true; // 병장 턴 활성기
+        int ByeongPending = 0; // 병장 턴 조절기
+        int PassiveNumber = 0; // 패시브 관련 정수
+        
+        #region 텍스트 출력용 정리
+        string ByeongWhat = "[병장은 무엇을 할까?]";
+        string ByeongPassive = $"Passive({Byeong.passive}) → {Byeong.passiveeffect}"; ;
+        string ByeongAttack = $"Attack({Byeong.attackeffect}) → [플레이어 HP {Byeong.atk} 감소]";
+        string ByeongSkill1 = $"Skill1({Byeong.skill1}) → {Byeong.skill1effect}";
+        string ByeongSkill2 = $"Skill2({Byeong.skill2}) → {Byeong.skill2effect}";
+        string ByeongSkill3 = $"Skill3({Byeong.skill3}) → {Byeong.skill3effect}";
+
+
+        string PlayerWhat = $"[{ChosenOne.name}은 무엇을 할까?]";
+        string PlayerPassive = $"Passive({ChosenOne.passive}) → {ChosenOne.passiveeffect}";
+        string PlayerAttack = $"A: Attack({ChosenOne.attackeffect}) → [병장 HP {ChosenOne.atk} 감소]";
+        string PlayerSkill = $"S: Skill({ChosenOne.skill1}) → {ChosenOne.skill1effect}";
+        #endregion
+
+        Console.ForegroundColor = ConsoleColor.Blue;
         while (scene.BattleOn) // 병장 배틀 scene
         {
             // render
+            Console.Clear(); // 여긴 클리어해줘야함
             Function.RenderText(BattlePath, BattleShow);
+            RenderText(); // 텍스트를 그려준다
 
             // input
             ConsoleKey key = Console.ReadKey(true).Key;
+
             // update
+            ByeongPending = Math.Max(ByeongPending - 1, 0); // 병장 턴 delay 0으로 계속 만들기
+
+            // 병장 턴
+            if (0 == ByeongPending)
+            {
+                if (ByeongTurn == true)
+                {
+                    int Byeongplay = random.Next(1, 5); // 1부터 4중 하나를 뽑음
+
+                    switch (Byeongplay)
+                    {
+                        case 1: // 1번이 나오면 그냥 공격
+                            Byeong.dmg = Byeong.atk;
+                            ChosenOne.hp -= Byeong.dmg;
+                            break;
+                        case 2: // 2번이 나오면 군가 부르게 하기
+                            if (2 <= Byeong.mp)
+                            {
+                                Byeong.dmg = random.Next(1, 4);
+                                ChosenOne.hp -= Byeong.dmg;
+                            }
+                            break;
+                        case 3: // 3번이 나오면 기강 잡기
+                            if (3 <= Byeong.mp)
+                            {
+                                Byeong.dmg = random.Next(3, 6);
+                                ChosenOne.hp -= Byeong.dmg;
+                            }
+                            break;
+                        case 4: // 4번이 나오면 맞선임 호출하기
+                            if (5 <= Byeong.mp)
+                            {
+                                Byeong.dmg = random.Next(5, 11);
+                                ChosenOne.hp -= Byeong.dmg;
+                            }
+                            ; break;
+                    }
+                }
+            }
+
+
+
+            // 플레이어 턴
+
+            switch (ChosenOne.passive)
+            {
+                case "존댓말 하기":
+                    Byeong.atk = Byeong.atk + 5; // 병장 atk +5
+
+                    break;
+                case "얼 타기":
+                    Byeong.atk = Byeong.atk + 3; // 병장 atk +3
+
+                    break;
+                case "작업노예": // 25% 확률로 데미지 반감
+                    PassiveNumber = random.Next(1, 5); // 1~4 까지의 난수를 뽑는다
+                    if (PassiveNumber == 1)
+                    {
+                        Byeong.dmg = Byeong.dmg / 2; // 병장 atk 반감시키기
+                    }
+                    break;
+                case "개기기": // 20%의 확률로 자기 공격력 +1
+                    PassiveNumber = random.Next(1, 6); // 1~5 까지의 난수를 뽑는다
+                    if (PassiveNumber == 1)
+                    {
+                        ChosenOne.atk += 1;
+                    }
+                    break;
+            }
+
+            switch (ChosenOne.name)
+            {
+                case "신병": // 만약 선택된 캐릭터의 id가 신병인데
+                    switch (key) // 입력한 키가 
+                    {
+                        case ConsoleKey.A: // A면
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP를 atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S: // S면
+                            if (5 <= ChosenOne.mp)
+                            {
+                                Byeong.mp -= random.Next(3, 6); // 병장 MP를 3~5 사이의 난수만큼 빼버리기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+                case "이병":
+                    switch (key)
+                    {
+                        case ConsoleKey.A:
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S:
+                            if (5 <= ChosenOne.mp)
+                            {
+                                Byeong.hp -= random.Next(5, 9); // 병장 hp 5~8만큼 빼버리기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+                case "일병":
+                    switch (key)
+                    {
+                        case ConsoleKey.A:
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S:
+                            if (5 <= ChosenOne.mp)
+                            {
+                                ByeongPending = 3; // 병장 턴 pending 3으로 만들기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+                case "상병":
+                    switch (key)
+                    {
+                        case ConsoleKey.A:
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S:
+                            if (5 <= ChosenOne.mp)
+                            {
+                                Byeong.mp -= random.Next(5, 11); // 병장 mp 5~10만큼 빼버리기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+            }
+
+
+            
+
+
 
             if (ChosenOne.hp <= 0)
             {
-                Victory = true;
+                Console.Clear();
+                key = default;
+                Victory = false;
+                scene.BattleOn = false;
+                scene.ResultOn = true;
+                ResetByeong(); // 병장을 원상태로 돌려놓는다
             }
-
+            else if (Byeong.hp <= 0)
+            {
+                Console.Clear();
+                key = default;
+                Victory = true;
+                scene.BattleOn = false;
+                scene.ResultOn = true;
+                ResetByeong(); // 병장을 원상태로 돌려놓는다
+            }
 
         }
         #endregion
 
-
+        #region 결과 Scene
         string VictoryPath = Path.Combine("Assets", "Scenes", "VictoryScene.txt");
         string[] VictoryShow = File.ReadAllLines(VictoryPath);
         string LosePath = Path.Combine("Assets", "Scenes", "LoseScene.txt");
         string[] LoseShow = File.ReadAllLines(LosePath);
+
+        Console.ForegroundColor = ConsoleColor.Blue;
         while (scene.ResultOn) // 배틀 결과 scene 승리 or 패배
         {
             // render
             if (Victory == true)
             {
+                MusicVictory.PlayLooping();
                 Function.RenderText(VictoryPath, VictoryShow);
             }
             else
             {
+                MusicLose.PlayLooping();
                 Function.RenderText(LosePath, LoseShow);
             }
 
@@ -806,10 +1041,26 @@ class Program
             ConsoleKey key = Console.ReadKey(true).Key;
 
             // update
+            if (Victory == true && key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                key = default;
+                scene.ResultOn = false;
+                scene.SokobanOn = true;
+                goto LOOP_SOKOBAN;
+            }
+            else if (Victory == false && key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                key = default;
+                scene.ResultOn = false;
+            }
 
         }
+        #endregion
 
         #region 소코반 클리어 부분
+        MusicAnxiety.PlayLooping(); // 불안한 음악 켜기
         bool RenderClear = true;
         string ClearPath = Path.Combine("Assets", "Scenes", "ClearScene.txt");
         string[] ClearShow = File.ReadAllLines(ClearPath);
@@ -827,6 +1078,7 @@ class Program
             // update
             if (key == ConsoleKey.Enter)
             {
+                MusicAnxiety.Stop(); // 불안한 음악 끄기
                 Console.Clear();
                 key = default;
                 scene.ClearOn = false;
@@ -835,16 +1087,36 @@ class Program
         }
         #endregion
 
+        #region 의가사전역 scene
+        MusicFinish.PlayLooping(); // 끝 곡 켜기
+        bool RenderDisable = true;
+        string DisablePath = Path.Combine("Assets", "Scenes", "DisabledScene.txt");
+        string[] DisableShow = File.ReadAllLines(DisablePath);
         while (scene.DisabledOn) // 의가사전역 scene
         {
+            // render
+            if (RenderDisable == true)
+            {
+                Function.RenderText(DisablePath, DisableShow);
+            }
+
+            // input
+            ConsoleKey key = Console.ReadKey(true).Key;
+
+            // update
+            if (key == ConsoleKey.Enter)
+            {
+                MusicFinish.Stop(); // 끝 곡 끄기
+                Console.Clear();
+                scene.DisabledOn = false ;
+                break;
+            }
 
         }
 
+        #endregion
 
-
-
-
-
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #region 함수모음집(static 써도 안되는것들 ㅠ 어케 쓰는지 모르게쒀)
 
         // 플레이어 이동함수
@@ -1141,13 +1413,176 @@ class Program
                     key = default;
                     scene.SokobanOn = false;
                     scene.EncounterOn = true;
+                    MusicWalk.Stop(); // 걷는소리 끄기
                     break;
                 }
             }
         }
 
+        // 가챠 함수
+        Item Gacha(int randomnumber)
+        {
+            Item output = null;
+            int addedweight = 0;
+
+            for (int i = 0; i < itemlist.Length; ++i)
+            {
+                addedweight += itemlist[i].weight;
+                if (randomnumber <= addedweight)
+                {
+                    output = itemlist[i];
+                    break;
+                }
+            }
+            return output;
+        }
+
+        // HP를 그려주는 함수
+        void RenderPlayerHP()
+        {
+            Function.Render(63, 3, $"HP({ChosenOne.hp}) ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            for (int i = 0; i < ChosenOne.hp; ++i)
+            {
+                Function.Render(70 + (i * 2), 3, "■");
+            }
+        }
+
+        // MP를 그려주는 함수
+        void RenderPlayerMP()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Function.Render(63, 5, $"MP({ChosenOne.mp}) ");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            for (int i = 0; i < ChosenOne.mp; ++i)
+            {
+                Function.Render(70 + (i * 2), 5, "■");
+            }
+        }
+
+        void RenderPrePlayer()
+        {
+            if (player.x == player.prex && player.y == player.prey)
+            {
+                // 암것도안함
+            }
+            else if (player.x != player.prex || player.y != player.prey) // 현좌표와 전좌표가 겹치지 않을때만 지워줌
+            {
+                Function.Render(player.prex, player.prey, " ");
+            }
+        }
+
+        // 병장을 렌더
+        void RenderLine4()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            for (int i = 0; i < line4.Length; ++i)
+            {
+                Function.Render(line4[i].x, line4[i].y, "4");
+
+                if (line4[i].x == line4[i].prex && line4[i].y == line4[i].prey)
+                {
+                    // 암것도안함
+                }
+                else // 현좌표와 전좌표가 겹치지 않을때만 지워줌
+                {
+                    Function.Render(line4[i].prex, line4[i].prey, " ");
+                }
+            }
+        }
+
+        // 텍스트를 그리는 함수
+        void RenderText()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Function.Render(55, 18, ByeongWhat);// 병장은 무엇을 할까?
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Function.Render(55, 20, ByeongPassive); // 병장의 패시브를 그려준다
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Function.Render(55, 22, ByeongAttack); // 병장의 공격을 그려준다
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Function.Render(55, 24, ByeongSkill1); // 병장의 스킬을 그려준다
+            Function.Render(55, 26, ByeongSkill2); // 병장의 스킬을 그려준다
+            Function.Render(55, 28, ByeongSkill3); // 병장의 스킬을 그려준다
+
+            Console.ForegroundColor = ConsoleColor.White; // 신병은 무엇을 할까?
+            Function.Render(5, 34, PlayerWhat);
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Function.Render(5, 36, PlayerPassive); // 패시브를 그려준다
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Function.Render(5, 38, PlayerAttack); // Attack을 그려준다
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Function.Render(5, 40, PlayerSkill); // Skill을 그려준다
+
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Function.Render(53, 3, "[병장]");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Function.Render(56, 5, $"HP({Byeong.hp})");
+            for (int i = 0; i < Byeong.hp; ++i)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Function.Render(63 + (i * 2), 5, "■");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Function.Render(56, 6, $"MP({Byeong.mp})");
+            for (int i = 0; i < Byeong.mp; ++i)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Function.Render(63 + (i * 2), 6, "■");
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Function.Render(55, 7, $"ATK = {Byeong.atk}");
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Function.Render(53, 10, "[플레이어]");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Function.Render(56, 12, $"HP({ChosenOne.hp})");
+            for (int i = 0; i < ChosenOne.hp; ++i)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Function.Render(63 + (i * 2), 12, "■");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+            Function.Render(56, 13, $"MP({ChosenOne.mp})");
+            for (int i = 0; i < ChosenOne.mp; ++i)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Function.Render(63 + (i * 2), 13, "■");
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Function.Render(55, 14, $"ATK = {ChosenOne.atk}");
+        }
 
 
+        // 옆에 오브젝트 기호 그리기
+        void RenderSide()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Function.Render(65, 9, "B = 박스");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Function.Render(65, 11, "4 = 병장");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Function.Render(65, 13, "* = 골");
+        }
+
+
+        // 병장을 원상태로 돌려놓는 함수
+        void ResetByeong()
+        {
+            Byeong.hp = 20;
+            Byeong.mp = 10;
+            Byeong.atk = 5;
+        }
 
         // 부딪힐때 true or false 함수
         bool Collision(int x1, int y1, int x2, int y2)
@@ -1206,5 +1641,7 @@ class Program
 
         #endregion
     }
+
+    
 
 }

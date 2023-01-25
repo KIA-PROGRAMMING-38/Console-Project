@@ -10,6 +10,7 @@ namespace Wooseok_Console_Project
     {
         public int x;
         public int y;
+
         
     }
 }
