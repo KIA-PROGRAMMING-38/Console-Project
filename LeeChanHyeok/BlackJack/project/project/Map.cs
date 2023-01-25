@@ -11,18 +11,20 @@ namespace project
         //메뉴 선택
         public int playerX = 123;
         public int playerY = 12;
+        public int PreY = 0;
         //메뉴 범위 좌표
         public int MIN_Y = 12;
-        public int MAX_Y = 18;
+        public int MAX_Y = 21;
         //소지금
         public int[] money = { 1000000 };
 
         //메뉴
         public Menu[] menu = new Menu[]
         {
-                new Menu{X = 126, Y= 12, menuButten = "▶ " + "Raise"},
-                new Menu{X = 126, Y = 15, menuButten = "▶ " + "Check"},
-                new Menu{X = 126, Y = 18, menuButten = "▶ " + "Fold"}
+                new Menu{X = 126, Y= 12,  menuButten = "▶ " + "레이스"},
+                new Menu{X = 126, Y = 15, menuButten = "▶ " + "체크"},
+                new Menu{X = 126, Y = 18, menuButten = "▶ " + "넘겨"},
+                new Menu{X = 126, Y = 21, menuButten = "▶ " + "포기"}
         };
         #region 맵 배열
 
@@ -48,8 +50,8 @@ namespace project
             const int COMMEND_MAPX_COUNT = 35;
             const int COMMEND_MAPY_COUNT = 3;
             const int MENU_MAPX_COUNT = 35;
-            const int MENU_MAPY_COUNT = 10;
-            const int MENU_COUNT = 3;
+            const int MENU_MAPY_COUNT = 14;
+            const int MENU_COUNT = 4;
             const int DEALER_MAPX_COUNT = 12;
             const int DEALER_MAPY_COUNT = 9;
             const int PLAYER_MAPX_COUNT = 12;
@@ -89,7 +91,7 @@ namespace project
             for (int menuId = 0; menuId < MENU_MAPX_COUNT; ++menuId)
             {
                 MapExtent(mapX[2] + menuId, mapY[5], "#");
-                MapExtent(mapX[2] + menuId, mapY[6], "#");
+                MapExtent(mapX[2] + menuId, mapY[9], "#");
             }
             for (int menuId = 0; menuId < MENU_MAPY_COUNT; ++menuId)
             {
@@ -104,6 +106,7 @@ namespace project
             }
             #endregion
             #region 메뉴 선택 오브젝트
+            MapExtent(playerX, PreY, "  ");
             MapExtent(playerX, playerY, "→");
             #endregion
             #region 딜러 카드 테두리

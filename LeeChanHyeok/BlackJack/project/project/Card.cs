@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace project
 {
-    internal class Player
+    class Card
     {
+        public string[] value = new string[3];
+        public int cardIndex = 0;
     }
 }
