@@ -14,17 +14,6 @@ namespace Console_Project_Refactoring
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.Clear();
 
-            // 초기 변수와 상수 선언
-            // 맵 크기 X = 10 24 10 / Y = 3 12 3
-            const int MAP_OFFSET_X = 10;
-            const int MAP_OFFSET_Y = 3;
-            const int MAP_MAX_X = 24;
-            const int MAP_MAX_Y = 12;
-            MapIcon[,] mapMetaData = new MapIcon[(MAP_OFFSET_X * 2) + MAP_MAX_X,
-                (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
-            InteractionObject[,] mapInteractionData = new InteractionObject[(MAP_OFFSET_X * 2) + MAP_MAX_X,
-                (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
-
             Stage currentScene = Stage.Default;
             Stage captureSCene = Stage.Default;
 
@@ -32,8 +21,8 @@ namespace Console_Project_Refactoring
 
             Player player = new Player
             {
-                X = 15,
-                Y = 15
+                X = 12,
+                Y = 6
             };
             Wall[] walls = null;
             Utilityroom[] utilityroomDoor = null;
@@ -73,36 +62,41 @@ namespace Console_Project_Refactoring
                 out interactiveFieldE, out interactiveFieldF, out interactiveFieldG,
                 out interactiveFieldH, out interactiveFieldI, out interactiveFieldJ,
                 out interactiveFieldK, out interactiveFieldL);
-            GameSystem.MadeMapMetaData(mapMetaData, currentScene, player, walls, utilityroomDoor, toiletDoor,
+            GameSystem.MadeMapMetaData(GameSystem.mapMetaData, currentScene, player, walls, utilityroomDoor, toiletDoor,
                 bedroomDoor, frontDoor, firstLRDoor, secondLRDoor, thirdLRDoor);
-            GameSystem.MadeInteractionData();
+            GameSystem.MadeInteractionData(GameSystem.mapInteractionData, currentScene,
+               interactiveFieldA, interactiveFieldB, interactiveFieldC,
+               interactiveFieldD, interactiveFieldE, interactiveFieldF,
+               interactiveFieldG, interactiveFieldH, interactiveFieldI,
+               interactiveFieldJ, interactiveFieldK, interactiveFieldL);
 
-            //ConsoleKey key = Console.ReadKey().Key;
+            
 
             Console.WriteLine("check");
+
+            ConsoleKey key = Console.ReadKey().Key;
 
             while (true)
             {
                 if (captureSCene == currentScene)
                 {
-
+                    
                 }
+
+                Console.Clear();
 
                 answerCount = 0;
                 captureSCene = currentScene;
                 player.pastX = player.X;
                 player.pastY = player.Y;
 
-                // render
+                GameSystem.Render(currentScene, player, walls, utilityroomDoor,
+                    toiletDoor, bedroomDoor, frontDoor, firstLRDoor, 
+                    secondLRDoor, thirdLRDoor);
 
+                key = Console.ReadKey().Key;
 
-
-                // process input
-
-
-
-                // update
-                //Player.MovePlayer(key, ref player.X, ref player.Y, player.X, player.Y);
+                Player.MovePlayer(key, ref player.X, ref player.Y, player.X, player.Y);
 
 
                 // afterupdate

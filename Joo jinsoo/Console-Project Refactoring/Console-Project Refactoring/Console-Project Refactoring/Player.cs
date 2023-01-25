@@ -12,6 +12,7 @@ namespace Console_Project_Refactoring
         public int Y;
         public int pastX;
         public int pastY;
+        public bool IsOnInteraction;
 
         // 이동 함수
         public static void MoveToLeftOfTarget(out int x, int targetX) =>
