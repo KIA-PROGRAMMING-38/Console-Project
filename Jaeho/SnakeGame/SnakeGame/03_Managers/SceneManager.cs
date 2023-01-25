@@ -75,7 +75,7 @@ namespace SnakeGame
             {
                 _currentScene.ClearScene();
             }
-
+            TimeManager.Instance.ResetTimeScale();
             Scene Scene;
             isSuccess = Scenes.TryGetValue(sceneName, out Scene);
             Debug.Assert(isSuccess, "Cant Find Scene ");

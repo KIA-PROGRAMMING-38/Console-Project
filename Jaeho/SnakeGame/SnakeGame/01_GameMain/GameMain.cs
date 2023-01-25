@@ -6,7 +6,7 @@ namespace SnakeGame
         
         static void Main()
         {
-            Console.SetWindowSize(120, 40);
+            Console.SetWindowSize(120, 34);
             Console.SetWindowPosition(0, 0);
             GameManager.Instance.Initialize();
             GameManager.Instance.GameLoop();

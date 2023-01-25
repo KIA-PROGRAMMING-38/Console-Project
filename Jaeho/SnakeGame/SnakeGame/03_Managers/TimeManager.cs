@@ -26,6 +26,11 @@ namespace SnakeGame
 
         public long ElapsedMs { get { return _elapsed; } }
 
+        public void ResetTimeScale()
+        {
+            TimeScale = 1;
+        }
+
         public void Update()
         {
             _elapsed = stopwatch.ElapsedMilliseconds - _currentMs;

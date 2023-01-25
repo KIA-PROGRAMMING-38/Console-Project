@@ -46,25 +46,29 @@ namespace SnakeGame
                         feed.IsAlive = false;
                     }
                     GameDataManager.Instance.CurrentFeedCount += 1;
-                    if(RandomManager.Instance.GetRandomRangeInt(1, 10) <= 10)
+                    if(RandomManager.Instance.GetRandomRangeInt(1, 10) <= 5)
                     {
                         Task.Factory.StartNew(() =>
                         {
-                            long time = 2000;
+                            long time = 1000;
                             int speed = 5;
                             int prevTimeScale = TimeManager.TimeScale;
 
                             if (TimeManager.TimeScale == speed) return;
+                            
 
                             TimeManager.TimeScale *= speed;
 
-                            Console.SetCursorPosition(GameDataManager.MAP_MAX_X + 2, 0);
-                            Console.Write($"배속 : {speed}");
+                            string playSpeed = $"배속 : {speed}";
+                            Console.SetCursorPosition(GameDataManager.MAP_MIN_X + GameDataManager.MAP_WIDTH / 2 - playSpeed.Length/2, 8);
+                            Console.Write(playSpeed);
                             while (time > 0 || SceneManager.Instance.ChangeFlag )
                             {
                                 time -= TimeManager.Instance.ElapsedMs;
                                 Thread.Sleep((int)TimeManager.Instance.ElapsedMs);
                             }
+                            Console.SetCursorPosition(GameDataManager.MAP_MIN_X + GameDataManager.MAP_WIDTH / 2 - playSpeed.Length / 2, 8);
+                            Console.Write($"               ");
                             TimeManager.TimeScale = prevTimeScale;
                         });
                     }
@@ -87,16 +91,16 @@ namespace SnakeGame
             switch (GetComponent<PlayerMovement>().MoveDirection)
             {
                 case PlayerMovement.Direction.Left:
-                    result.X += 1;
+                    result.X = Math.Min(GameDataManager.MAP_MAX_X - 1, result.X + 1);
                     break;
                 case PlayerMovement.Direction.Right:
-                    result.X -= 1;
+                    result.X = Math.Max(GameDataManager.MAP_MIN_X + 1, result.X - 1);
                     break;
                 case PlayerMovement.Direction.Up:
-                    result.Y += 1;
+                    result.Y = Math.Min(GameDataManager.MAP_MAX_Y - 1, result.Y + 1);
                     break;
                 case PlayerMovement.Direction.Down:
-                    result.Y -= 1;
+                    result.Y = Math.Max(GameDataManager.MAP_MIN_Y + 1, result.Y - 1);
                     break;
             }
 
