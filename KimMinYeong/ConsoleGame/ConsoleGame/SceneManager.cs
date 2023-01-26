@@ -294,7 +294,7 @@ namespace ConsoleGame
             // 결과 화면 렌더 구현
             Console.SetCursorPosition(0, 0);
             Console.WriteLine(SceneData.gifts[_selectedGift]);
-            Console.SetCursorPosition(0, 5);
+            Console.SetCursorPosition(0, 4);
             for(int index = 0; index < SceneData.endInfo.Length; ++index)
             {
                 Console.WriteLine(SceneData.endInfo[index]);
