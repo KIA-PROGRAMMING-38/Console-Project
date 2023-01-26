@@ -20,9 +20,6 @@ namespace ConsoleGame
         public static SceneKind _currentScene;
         public static SceneKind _capturedScene;
 
-        public static Thread obstacleCreate = new Thread(() => Obstacle.Create());
-        public static Thread obstacleFly = new Thread(() => Obstacle.Fly());
-
         public static bool IsSceneChange()
         {
             if(_currentScene == _capturedScene)
@@ -79,6 +76,7 @@ namespace ConsoleGame
                     RenderGameInfo();
                     break;
                 case SceneKind.Ending:
+                    UpdateEnding();
                     RenderEnding();
                     break;
                 default:
@@ -90,7 +88,8 @@ namespace ConsoleGame
 
         public static void InitTitle()
         {
-            Console.SetWindowSize(1920, 1080);
+            Console.SetWindowSize(118, 30);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public static void RenderTitle()
@@ -166,21 +165,26 @@ namespace ConsoleGame
 
         public static Stopwatch createTargetWatch = new Stopwatch();
         public static Stopwatch flyTargetWatch = new Stopwatch();
+        public static Stopwatch createObstWatch = new Stopwatch();
+        public static Stopwatch flyObstWatch = new Stopwatch();
         public static Stopwatch bulletWatch = new Stopwatch();
         public static void InitInGame()
         {
             Console.SetWindowSize(50, 30);
-            obstacleCreate.Start();
-            obstacleFly.Start();
-            //targetCreate.Start();
-            //targetFly.Start();
+            Target.InitTargetData();
+            Obstacle.InitObstData();
+            Player._currentX = 0;
 
-            // 스탑워치 start 여기서 해야할듯?
+            // 스탑워치 start
             createTargetWatch.Restart();
             flyTargetWatch.Restart();
+            createObstWatch.Restart();
+            flyObstWatch.Restart();
             bulletWatch.Restart();
             Target.Create();
             Target.Fly();
+            Obstacle.Create();
+            Obstacle.Fly();
             Bullet.Shoot();
             Bullet.Fly();
             Bullet.IsCollisionWithSomething();
@@ -201,6 +205,18 @@ namespace ConsoleGame
                     break;
             }
 
+            if(createObstWatch.ElapsedMilliseconds > 3000)
+            {
+                Obstacle.Create();
+                createObstWatch.Restart();
+            }
+
+            if(flyObstWatch.ElapsedMilliseconds > 800)
+            {
+                Obstacle.Fly();
+                flyObstWatch.Restart();
+            }
+
             if(createTargetWatch.ElapsedMilliseconds > 5000)
             {
                 Target.Create();
@@ -213,14 +229,15 @@ namespace ConsoleGame
                 flyTargetWatch.Restart();
             }
 
-            if(bulletWatch.ElapsedMilliseconds > 300)
+            if(bulletWatch.ElapsedMilliseconds > 200)
             {
                 Bullet.Shoot();
                 Bullet.Fly();
-                Bullet.IsCollisionWithSomething();
+                // Bullet.IsCollisionWithSomething();  충돌 판정까지 불렛의 함수 속도에 맞추니까 타이밍이 안맞는 경우 충돌해도 사라지지 않고 뚫고 지나가는 현상 발생
                 bulletWatch.Restart();
             }
 
+            Bullet.IsCollisionWithSomething();
             Target.IsEnoughDeadNumber();
         }
 
@@ -263,12 +280,30 @@ namespace ConsoleGame
             _selectedGift = random.Next(SceneData.gifts.Length);
         }
 
+        public static void UpdateEnding()
+        {
+            switch(Input.CheckInputKey())
+            {
+                case ConsoleKey.Enter:
+                    _currentScene = SceneKind.Title;
+                    break;
+                case ConsoleKey.Spacebar:
+                    Console.Clear();
+                    Console.WriteLine("게임을 종료하였습니다.");
+                    Environment.Exit(1);
+                    break;
+            }
+        }
+
         public static void RenderEnding()
         {
             // 결과 화면 렌더 구현
-            Console.Clear();
             Console.WriteLine(SceneData.gifts[_selectedGift]);
-            Thread.Sleep(1000);
+            Console.SetCursorPosition(0, 4);
+            for(int index = 0; index < SceneData.infos.Length; ++index)
+            {
+                Console.WriteLine(SceneData.endInfo[index]);
+            }
         }
     }
 }

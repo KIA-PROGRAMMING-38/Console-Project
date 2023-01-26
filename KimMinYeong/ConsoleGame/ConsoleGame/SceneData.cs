@@ -9,7 +9,7 @@ namespace ConsoleGame
     public static class SceneData
     {
         // Title Data
-        public static string[] gameTitle = File.ReadAllLines("..\\..\\..\\Title.txt");
+        public static string[] gameTitle = File.ReadAllLines("Assets\\Title.txt");
         public static string titleOption1 = "1. 게임 시작";
         public static string titleOption2 = "2. 게임 정보";
         public static string titleOption3 = "3. 게임 종료";
@@ -35,6 +35,7 @@ namespace ConsoleGame
         public const int Y_OF_DEADCOUNT = 25;
 
         // Ending Data
-        public static string[] gifts = { "선물1", "선물2" };
+        public static string[] gifts = { "", "1등상", "2등상" };
+        public static string[] endInfo = { "Title로 돌아가려면 엔터를 누르세요.", "게임을 종료하려면 스페이스바를 누르세요." };
     }
 }

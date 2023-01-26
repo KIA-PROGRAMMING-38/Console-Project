@@ -72,6 +72,7 @@ namespace ConsoleGame
                 }
 
                 Console.SetCursorPosition(_x[bulletId], _y[bulletId]);
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(_icon);
             }
         }

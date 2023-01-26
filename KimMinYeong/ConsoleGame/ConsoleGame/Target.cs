@@ -30,6 +30,20 @@ namespace ConsoleGame
             return _y;
         }
 
+        public static void InitTargetData()
+        {
+            if(_countDeadTarget == 0) { return; }
+
+            _countDeadTarget = 0;
+            for(int index = 0; index < _x.Length; ++index)
+            {
+                _x[index] = 0;
+                _y[index] = 0;
+                _hp[index] = _maxHp;
+                _isDead[index] = false;
+            }
+        }
+
         public static void IsEnoughDeadNumber()
         {
             if (_countDeadTarget == 3)
@@ -108,6 +122,7 @@ namespace ConsoleGame
                 if (_y[targetId] != SceneData.MAX_OF_INGAME_Y && _isDead[targetId] != true)
                 {
                     Console.SetCursorPosition(_x[targetId], _y[targetId]);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(_hp[targetId]);
                 }
             }

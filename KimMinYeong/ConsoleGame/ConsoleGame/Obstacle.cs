@@ -8,9 +8,9 @@ namespace ConsoleGame
 {
     public static class Obstacle
     {
-        private static int[] _x = new int[5];
-        private static int[] _preY = new int[5];
-        private static int[] _y = new int[5];
+        private static int[] _x = new int[7];
+        private static int[] _preY = new int[7];
+        private static int[] _y = new int[7];
 
         private static string _icon = "~~~";
         private static int _index = 0;
@@ -28,28 +28,35 @@ namespace ConsoleGame
             return _y;
         }
 
+        public static void InitObstData()
+        {
+            for(int index = 0; index < _x.Length; ++index)
+            {
+                _x[index] = 0;
+                _y[index] = 0;
+            }
+
+            _isAvailableCreateNewObst = true;
+        }
+
         public static void Create()
         {
-            while (true)
+            if (_isAvailableCreateNewObst)
             {
-                if (_isAvailableCreateNewObst)
+                _x[_index] = random.Next(SceneData.MIN_OF_INGAME_X, SceneData.MAX_OF_INGAME_X);
+                _y[_index] = SceneData.MIN_OF_INGAME_Y + 1;
+
+                if (_index == 6)  // 한 화면에 동시에 존재할 수 있는 장애물의 개수 (속도에따라 달라질듯)
                 {
-                    _x[_index] = random.Next(SceneData.MIN_OF_INGAME_X, SceneData.MAX_OF_INGAME_X);
-                    _y[_index] = SceneData.MIN_OF_INGAME_Y + 1;
-
-                    if (_index == 3)  // 한 화면에 동시에 존재할 수 있는 장애물의 개수 (속도에따라 달라질듯)
-                    {
-                        _index = 0;
-                    }
-                    else
-                    {
-                        ++_index;
-                    }
+                    _index = 0;
                 }
-
-                CheckAvailableCreateNewObst();
-                Thread.Sleep(3000);
+                else
+                {
+                    ++_index;
+                }
             }
+
+            CheckAvailableCreateNewObst();
         }
 
         public static void CheckAvailableCreateNewObst()
@@ -68,25 +75,20 @@ namespace ConsoleGame
 
         public static void Fly()
         {
-            while (true)
+            for (int obstId = 0; obstId < _x.Length; ++obstId)
             {
-                for(int obstId = 0; obstId < _x.Length; ++obstId)
+                if (_y[obstId] == 0)
                 {
-                    if (_y[obstId] == 0)
-                    {
-                        continue;
-                    }
-
-                    _preY[obstId] = _y[obstId];
-                    _y[obstId] += 1;
-
-                    if (_y[obstId] == SceneData.MAX_OF_INGAME_Y)
-                    {
-                        _y[obstId] = 0;
-                    }
+                    continue;
                 }
 
-                Thread.Sleep(500);
+                _preY[obstId] = _y[obstId];
+                _y[obstId] += 1;
+
+                if (_y[obstId] == SceneData.MAX_OF_INGAME_Y)
+                {
+                    _y[obstId] = 0;
+                }
             }
         }
 
@@ -105,6 +107,7 @@ namespace ConsoleGame
                 if (_y[obstId] != SceneData.MAX_OF_INGAME_Y)
                 {
                     Console.SetCursorPosition(_x[obstId], _y[obstId]);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.Write(_icon);
                 }
             }
