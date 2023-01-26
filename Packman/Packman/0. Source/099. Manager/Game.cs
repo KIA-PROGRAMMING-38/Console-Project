@@ -22,7 +22,7 @@ namespace Packman
             Debug.Assert( true == InitConsoleSetting() );
 			Debug.Assert( true == InitializeSingletons() );
 
-            
+            Thread.Sleep( 1000 );
 
             return true;
         }
@@ -40,14 +40,17 @@ namespace Packman
 
             while ( true )
             {
+                // 실행 시간 계속 누적..
                 timeManagerInstance.Update();
-				Console.CursorVisible = false;
 
+                // 현재 프레임을 실행할 시간이라면..
 				if ( true == timeManagerInstance.UpdatePassFrameInterval() )
                 {
+                    // 입력과 이벤트 관련 처리 먼저..
                     inputManagerInstance.Update();
                     eventManagerInstance.Update();
 
+                    // 실제 씬 Update Render 하기..
                     sceneManagerInstance.Update();
                     sceneManagerInstance.Render();
                 }

@@ -42,6 +42,7 @@ namespace Packman
                 _isChangeScene = false;
             }
 
+            // 현재 씬 업데이트..
             if ( null != _currentScene )
             {
                 _currentScene.Update();
@@ -53,6 +54,7 @@ namespace Packman
         /// </summary>
         public void Render()
         {
+            // 현재 씬 그린다..
             if ( null != _currentScene )
             {
                 _currentScene.Render();

@@ -81,12 +81,12 @@ namespace Packman
                 Console.Clear();
 
                 Map map = ObjectManager.Instance.GetGameObject<Map>();
+                GoldGroup goldGroup = ObjectManager.Instance.GetGameObject<GoldGroup>();
+
                 if ( null != map )
                 {
                     map.Render();
                 }
-
-                GoldGroup goldGroup = ObjectManager.Instance.GetGameObject<GoldGroup>();
                 if ( null != goldGroup )
                 {
                     goldGroup.Render();

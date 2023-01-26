@@ -13,6 +13,7 @@ namespace Packman
         private Player _player = null;
         private List<Character> _characters = null;
         private CollectGoldBullet[] _collectGoldBullets = null;
+        private Trap[] _traps = null;
 
         // 룩업테이블로 사용할 예정( y, x 좌표를 넣으면 Gold 인스턴스를 뱉게끔 )
         private Gold[,] _goldTable;
@@ -37,6 +38,10 @@ namespace Packman
             _remainGoldCount = 0;
         }
 
+        /// <summary>
+        /// Gold Group 초기화..
+        /// </summary>
+        /// <param name="golds"> 필드에 있는 모든 골드들 </param>
         public void Initialize( LinkedList<Gold> golds )
         {
             Debug.Assert( base.Initialize() );
@@ -53,7 +58,31 @@ namespace Packman
             _remainGoldCount = golds.Count;
         }
 
+        /// <summary>
+        /// Gold Group 갱신..
+        /// </summary>
         public override void Update()
+        {
+            // 필요한 정보들을 갱신..
+            UpdateNecessaryData();
+
+            // 현재 플레이어가 밟고 있는 타일에 있는 골드 제거..
+            RemovePlayerOnGold();
+
+            // 현재 골드 수집기가 밟고 있는 타일에 있는 골드 제거..
+            RemoveCollectGoldBulletOnGold();
+
+            // 현재 함정이 있는 타일에 있는 골드 제거..
+            RemoveTrapOnGold();
+
+            // 모든 골드를 먹었다면(필드에 남아있는 골드가 0개라면)..
+            CheckIsRemainGoldIsZero();
+        }
+
+        /// <summary>
+        /// 필요한 정보들을 가져온다..
+        /// </summary>
+        private void UpdateNecessaryData()
         {
             if ( null == _player )
             {
@@ -74,47 +103,13 @@ namespace Packman
                 }
             }
 
-            //base.Update();
-
-            // 현재 플레이어가 밟고 있는 타일에 있는 골드 제거..
-            if ( null != _player )
-            {
-                Gold findGold = GetGold( _player.X, _player.Y );
-                if ( null != findGold )
-                {
-                    _objectManager.RemoveObject( findGold );
-
-                    _goldTable[_player.Y, _player.X] = null;
-
-                    --_remainGoldCount;
-                }
-            }
-
-            // 현재 골드 수집기가 밟고 있는 타일에 있는 골드 제거..
+            _traps = _objectManager.GetAllGameObject<Trap>();
             _collectGoldBullets = _objectManager.GetAllGameObject<CollectGoldBullet>();
-            if ( null != _collectGoldBullets )
-            {
-                foreach ( var collectGoldBullet in _collectGoldBullets )
-                {
-                    Gold findGold = GetGold( collectGoldBullet.X, collectGoldBullet.Y );
-
-                    if(null != findGold )
-                    {
-                        _objectManager.RemoveObject( findGold );
-
-                        _goldTable[collectGoldBullet.Y, collectGoldBullet.X] = null;
-
-                        --_remainGoldCount;
-                    }
-                }
-            }
-
-            if( 0 >= _remainGoldCount )
-            {
-                StageManager.Instance.ClearStage();
-            }
         }
 
+        /// <summary>
+        /// 현재 필드에 남아 있는 모든 골드들 그린다..
+        /// </summary>
         public override void Render()
         {
             base.Render();
@@ -132,11 +127,89 @@ namespace Packman
             }
         }
 
+        /// <summary>
+        /// 플레이어가 있는 위치에 골드 제거..
+        /// </summary>
+        private void RemovePlayerOnGold()
+        {
+            if ( null != _player )
+            {
+                RemoveGold( _player.X, _player.Y );
+            }
+        }
+
+        /// <summary>
+        /// 골드 수집기가 있는 위치에 골드 제거..
+        /// </summary>
+        private void RemoveCollectGoldBulletOnGold()
+        {
+            if ( null != _collectGoldBullets )
+            {
+                foreach ( var collectGoldBullet in _collectGoldBullets )
+                {
+                    RemoveGold( collectGoldBullet.X, collectGoldBullet.Y );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Trap 이 있는 위치에 골드 제거..
+        /// </summary>
+        private void RemoveTrapOnGold()
+        {
+            if ( null != _traps )
+            {
+                foreach ( var trap in _traps )
+                {
+                    RemoveGold( trap.X, trap.Y );
+                }
+            }
+        }
+
+        /// <summary>
+        /// 현재 필드에 남은 골드가 0개인지 체크..
+        /// </summary>
+        private void CheckIsRemainGoldIsZero()
+        {
+            if ( 0 >= _remainGoldCount )
+            {
+                StageManager.Instance.ClearStage();
+            }
+        }
+
+        /// <summary>
+        /// x, y 위치에 있는 골드를 제거한다..
+        /// </summary>
+        /// <param name="x"> x 위치 </param>
+        /// <param name="y"> y 위치 </param>
+        private void RemoveGold(int x, int y)
+        {
+            Gold findGold = GetGold( x, y );
+            if ( null != findGold )
+            {
+                _objectManager.RemoveObject( findGold );
+
+                _goldTable[y, x] = null;
+
+                --_remainGoldCount;
+            }
+        }
+
+        /// <summary>
+        /// x, y 위치에 골드를 반환한다..
+        /// </summary>
+        /// <param name="x"> x 위치 </param>
+        /// <param name="y"> y 위치 </param>
+        /// <returns></returns>
         private Gold GetGold(int x, int y)
         {
             return _goldTable[y, x];
         }
 
+        /// <summary>
+        /// 캐릭터가 움직일 때 호출되는 함수..
+        /// </summary>
+        /// <param name="character"> 움직인 Character Instance </param>
         private void OnCharacterMove( Character character )
         {
             Debug.Assert( null != character );
@@ -148,6 +221,10 @@ namespace Packman
             }
         }
 
+        /// <summary>
+        /// Projectile 이 움직일 때 호출되는 함수..
+        /// </summary>
+        /// <param name="projectile"> 움직인 Projectile Instance </param>
         public void OnProjectileMove( Projectile projectile )
         {
             Debug.Assert( null != projectile );

@@ -9,7 +9,7 @@ namespace Packman
     internal class CollectGoldBullet : Projectile
     {
         public CollectGoldBullet( int x, int y, int dirX, int dirY )
-            : base( x, y, Constants.COLLECT_GOLD_PROJECTILE_IMAGE, Constants.COLLECT_GOLD_PROJECTILE_COLOR, dirX, dirY, 40, MoveKind.Bend )
+            : base( x, y, Constants.COLLECT_GOLD_PROJECTILE_IMAGE, Constants.COLLECT_GOLD_PROJECTILE_COLOR, dirX, dirY, 100, MoveKind.Bend )
         {
 
         }

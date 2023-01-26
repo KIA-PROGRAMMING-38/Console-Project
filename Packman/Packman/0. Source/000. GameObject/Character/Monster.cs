@@ -62,7 +62,7 @@ namespace Packman
 
         private float _startWaitTime = 0;
 
-        private const float _trapInstallTime = 3.0f;
+        private const float _trapInstallTime = 5.0f;
         private float _curRemainTrapInstallTime = 0.0f;
 
         public List<Point2D> Paths { get { return _paths; } }
@@ -88,6 +88,8 @@ namespace Packman
         public override void Update()
         {
             base.Update();
+
+            return;
 
             switch( _curState )
             {

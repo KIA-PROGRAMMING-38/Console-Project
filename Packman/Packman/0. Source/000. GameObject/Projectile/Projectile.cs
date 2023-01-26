@@ -58,6 +58,11 @@ namespace Packman
             UpdateMovement();
         }
 
+        public override void Render()
+        {
+            base.Render();
+        }
+
         public override void Release()
         {
             base.Release();

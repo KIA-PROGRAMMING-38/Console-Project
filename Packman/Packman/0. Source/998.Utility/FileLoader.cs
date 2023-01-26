@@ -55,15 +55,6 @@ namespace Packman
         /// <param name="lines"> Steg File 의 문자열들 </param>
         private static void PasingStageData( string[] lines )
         {
-            //string[] mapFileMetadata = lines[0].Split(' ');
-            //string[] playerFileMetadata = lines[1].Split(' ');
-            //string[] MonsterFileMetadata = lines[2].Split(' ');
-            //
-            //// 각 파일별로 파싱 진행..
-            //PasingMapData( mapFileMetadata[0], mapFileMetadata[1] );
-            //PasingPlayerData( playerFileMetadata[0], playerFileMetadata[1] );
-            //PasingMonsterData( MonsterFileMetadata[0], MonsterFileMetadata[1] );
-
             PasingMapData( lines );
         }
 
@@ -81,7 +72,7 @@ namespace Packman
             // 파싱 시 각 문자열들이 어떤 의미를 가지는지 미리 선언..
             const char EMPTY_TILE_SYMBOL = '0';
             const char GOLD_TILE_SYMBOL = ' ';
-            const char BLOCK_TILE_SYMBOL = '#';
+            const char BLOCK_TILE_SYMBOL = '▮';
             const char MONSTER_TILE_SYMBOL = 'M';
             const char PLAYER_TILE_SYMBOL = 'P';
             const char WAYPOINT_TILE_SYMBOL = '*';
@@ -115,6 +106,7 @@ namespace Packman
                 {
                     // 파싱..
                     Tile.Kind curTileKind = Tile.Kind.Empty;
+                    string curTileImage = " ";
 
                     int curIndexX = x;
                     int curIndexY = y - 1;
@@ -132,6 +124,7 @@ namespace Packman
                             isCreateGold = false;
 
                             curTileKind = Tile.Kind.Block;
+                            curTileImage = "▮";
 
                             break;
                         case GOLD_TILE_SYMBOL:     // Gold가 있는 타일..
@@ -156,7 +149,7 @@ namespace Packman
 
                             break;
                         case WAYPOINT_TILE_SYMBOL:  // WayPoint 가 있는 타일..
-                            isCreateGold = true;
+                            isCreateGold = false;
 
                             WayPoint wayPoint = new WayPoint( curIndexX + mapPosX, curIndexY + mapPosY, 0 );
                             Debug.Assert( wayPoint.Initialize() );
@@ -165,13 +158,13 @@ namespace Packman
 
                             break;
                         default:                // 이 외는 파일 잘못 만든 것이라 강제종료..
-                            tileImages[curIndexY, curIndexX] = lines[y][x].ToString();
-                            curTileKind = Tile.Kind.Block;
-                            //Debug.Assert( false );
-                            break;
+                            Debug.Assert( false );
+                            
+                            return;
                     }
 
                     tileKind[curIndexY, curIndexX] = curTileKind;
+                    tileImages[curIndexY, curIndexX] = curTileImage;
 
                     if ( true == isCreateGold )
                     {
