@@ -7,11 +7,12 @@ namespace Packman
     {
         static void Main()
         {
-            if ( true == Game.Instance.Initialize() )
+            Game game = Game.Instance;
+
+			if ( true == game.Initialize() )
             {
-                Game.Instance.Run();
-            
-                Game.Instance.Release();
+				game.Run();
+				game.Release();
             }
         }
     }

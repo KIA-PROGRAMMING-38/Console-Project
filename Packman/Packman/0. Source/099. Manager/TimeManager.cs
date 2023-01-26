@@ -23,12 +23,17 @@ namespace Packman
 
         public float RunTime { get { return runTime; } }
 
+        public TimeManager()
+        {
+			stopwatch = new Stopwatch();
+
+			stopwatch.Start();
+
+			runTime = prevRunTime = MilliSecondToSecond( stopwatch.ElapsedMilliseconds );
+		}
+
         public bool Initialize( int framePerSecond )
         {
-            stopwatch = new Stopwatch();
-
-            stopwatch.Start();
-
             if ( framePerSecond <= 0 )
             {
                 return false;
@@ -36,13 +41,23 @@ namespace Packman
 
             frameInterval = 1.0f / framePerSecond;
             deltaTime = 0.0f;
-            runTime = prevRunTime = MilliSecondToSecond( stopwatch.ElapsedMilliseconds );
 
             return true;
         }
 
         public void Update()
         {
+            if( null == stopwatch )
+            {
+                stopwatch = new Stopwatch();
+                stopwatch.Start();
+                if(null == stopwatch )
+                {
+                    Console.WriteLine( "StopWatch 왜 안되냐고" );
+                    return;
+                }    
+			}    
+
             prevRunTime = runTime;
             runTime = MilliSecondToSecond( stopwatch.ElapsedMilliseconds );
 
@@ -51,7 +66,7 @@ namespace Packman
 
         public void Release()
         {
-            stopwatch?.Stop();
+            stopwatch.Stop();
         }
 
         /// <summary>

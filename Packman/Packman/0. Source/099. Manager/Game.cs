@@ -19,10 +19,8 @@ namespace Packman
         /// <returns></returns>
         public bool Initialize()
         {
-            Debug.Assert( true == InitConsoleSetting() );
+			Debug.Assert( true == InitConsoleSetting() );
 			Debug.Assert( true == InitializeSingletons() );
-
-            Thread.Sleep( 1000 );
 
             return true;
         }
@@ -46,6 +44,9 @@ namespace Packman
                 // 현재 프레임을 실행할 시간이라면..
 				if ( true == timeManagerInstance.UpdatePassFrameInterval() )
                 {
+                    // Win10 에서 전체화면 하면 커서 계속 보여서 계속 없애줌..
+                    Console.CursorVisible = false;
+
                     // 입력과 이벤트 관련 처리 먼저..
                     inputManagerInstance.Update();
                     eventManagerInstance.Update();

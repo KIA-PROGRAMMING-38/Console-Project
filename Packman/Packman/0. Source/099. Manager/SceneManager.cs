@@ -34,7 +34,7 @@ namespace Packman
 
                 // 새로운 씬 생성..
                 Scene? newScene = MakeScene( _nextSceneKind );
-                Debug.Assert( null != newScene );   // 새로운 씬이 없으면 아나되니까 Assert씀..
+                Debug.Assert( null != newScene );   // 새로운 씬이 없으면 안되니까 Assert씀..
 
                 // 현재 씬에 넣고 상태도 변경..
                 _curSceneKind = _nextSceneKind;

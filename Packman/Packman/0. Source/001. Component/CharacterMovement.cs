@@ -12,7 +12,8 @@ namespace Packman
         private Action<int, int> _moveAction;
 
         private float _moveDelay = 0.0f;
-        private bool _isCharacterWaitMove = false;
+		private float _remainMoveDelay = 0.0f;
+		private bool _isCharacterWaitMove = false;
         private bool _isCharacterFirstMove = false;
         private bool _isIgnoreMoveEvent = false;
 
@@ -24,7 +25,8 @@ namespace Packman
 
             _moveAction = moveAction;
             _moveDelay = moveDelay;
-        }
+            _remainMoveDelay = 0.0f;
+		}
 
         public void Reset()
         {
@@ -41,7 +43,18 @@ namespace Packman
                     return;
                 }
 
-                _isCharacterWaitMove = true;
+                // 움직임키 계속 누를 시 빠르게 이동하는 버그 처리 부분..
+                // 일정 시간안에 움직임을 실행하려고 할 경우 return..
+				if ( _remainMoveDelay + _moveDelay <= TimeManager.Instance.RunTime )
+				{
+					_remainMoveDelay = TimeManager.Instance.RunTime;
+				}
+				else
+				{
+					return;
+				}
+
+				_isCharacterWaitMove = true;
 
                 EventManager.Instance.SetTimeOut(
                     () => {
