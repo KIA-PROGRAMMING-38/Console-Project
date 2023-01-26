@@ -410,11 +410,6 @@ namespace Console_ReProject
 
                 if (alreadySearchHint[0] == true)
                 {
-                    checkAppearHintSwtich[0] = true;
-                    if (checkAppearHintSwtich[0])
-                    {
-
-                    }
                     Console.ForegroundColor = ConsoleColor.White;
                     Game.ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y,
                         mixedHintStrings[0]);

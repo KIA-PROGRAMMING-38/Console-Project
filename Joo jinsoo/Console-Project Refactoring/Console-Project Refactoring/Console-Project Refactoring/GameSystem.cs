@@ -388,7 +388,7 @@ namespace Console_Project_Refactoring
                 ObjectRender(MAP_OFFSET_X * 3 + 4, 1, "@");
             }
 
-
+            
 
         }
         public static void ObjectRender(int x, int y, string icon)

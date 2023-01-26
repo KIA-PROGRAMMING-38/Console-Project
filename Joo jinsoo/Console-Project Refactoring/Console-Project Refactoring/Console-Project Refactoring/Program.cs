@@ -229,8 +229,6 @@ namespace Console_Project_Refactoring
                 
 
             }
-
-
         }
     }
 }
