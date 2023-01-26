@@ -28,7 +28,7 @@ namespace Way_back_home
 
 
             // 기호 상수 정의
-            const int GOAL_COUNT = 9; //----------------------------------------------------------------------------------------
+            const int GOAL_COUNT = 9;
             const int WALL_COUNT = 187;
             const int BOX_COUNT = GOAL_COUNT;
 
@@ -43,7 +43,7 @@ namespace Way_back_home
             int pushedBoxId = 0; // 1이면 박스1, 2이면 박스2
 
             // 박스 위치를 저장하기 위한 변수
-            int[] boxPositionsX = { 80, 8, 54, 84, 30, 48, 10, 40, 34 }; //----------------------------------------------------------------
+            int[] boxPositionsX = { 80, 8, 54, 84, 30, 48, 10, 40, 34 }; 
             int[] boxPositionsY = { 15, 6, 11, 2, 18, 3, 9, 15, 7 };
 
             // 벽 위치를 저장하기 위한 변수
@@ -51,7 +51,7 @@ namespace Way_back_home
             int[] wallPositionY = { 3,  8, 5, 5, 3, 4,  8, 3, 3,  3,  3,  4,  5,  6,  7, 6, 7, 8,11, 9,10,11,11, 11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11, 8, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 4, 2, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 9,10,11,12,12,12,12,12,11,10, 9, 8, 7, 6, 5, 4, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4,  4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,17,17,17,17,17,17,17,17,17,17,17,17,17,16,15,14,13,12,11,18,19,20,21,22,22,22,22,22,21,20,19,18,17,16,15,14,20,20,20,20,20,20,20,20,20,20,20,20,20,20,19,18,17,16,15,14,13,12};
 
             // 골 위치를 저장하기 위한 변수
-            int[] goalPositionX = { 4, 44, 2, 20, 74, 64, 52, 38, 18 }; //--------------------------------------------------------------------
+            int[] goalPositionX = { 4, 44, 2, 20, 74, 64, 52, 38, 18 }; 
             int[] goalPositionY = { 10, 2, 4, 14, 2, 12, 19, 17, 8 };
 
             // 골에 몇번 박스가 들어가 있는지 저장하기 위한 변수
@@ -61,7 +61,9 @@ namespace Way_back_home
 
             // 대사 하나씩 변경
             string[] dialogs = new string[GOAL_COUNT + 1]
-                { " ",
+           {     
+
+                 " ",
                  "Mommy..? I Love you too~",
                  "Mommy. Mommy..? Mo..m..m..y..... Where are you..",
                  "Why? It's not my fault! No! Stop!! Don't hurt me..! No!!!",
@@ -119,7 +121,6 @@ namespace Way_back_home
                     break;
                 }
 
-
             }
 
 
@@ -128,10 +129,11 @@ namespace Way_back_home
                 // 이전 프레임을 지운다.
                 Console.Clear();
                 Console.OutputEncoding = Encoding.UTF8;
-                // -----------------------------------------------------Render-----------------------------------------------------
+                // -------------------------------------------------------------Render-------------------------------------------------------------
                 // 플레이어 출력하기
                 Console.SetCursorPosition(playerX, playerY);
                 Console.Write("🐈");
+                
 
                 // 박스 출력하기 
                 for (int i = 0; i < BOX_COUNT; ++i)
@@ -154,13 +156,15 @@ namespace Way_back_home
                    
                     if (isBoxOnGoal[goalId] == true)
                     {
-                        //Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.Write("☘️");
+                        ConsoleColor temp1 = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write("🖤");
+                        Console.ForegroundColor = temp1;
                         
                     }
                     else
                     {
-                        Console.Write("💚");
+                        Console.Write("🤍");
                     }
                                         
                 }
@@ -176,7 +180,11 @@ namespace Way_back_home
                 }
 
                 Console.SetCursorPosition(7, 27);
+                ConsoleColor temp2 = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.Write(dialogs[goalCount]);
+                Console.ForegroundColor = temp2;
+                
 
                 // 벽 출력하기
                 for (int i = 0; i < WALL_COUNT; i++)
@@ -189,11 +197,11 @@ namespace Way_back_home
                 }
 
 
-                // --------------------------------------------------ProcessINput--------------------------------------------------
+                // ----------------------------------------------------------ProcessINput----------------------------------------------------------
 
                 ConsoleKey key = Console.ReadKey().Key; // 저장을 해야 사용할 수 있다
 
-                // -----------------------------------------------------Update-----------------------------------------------------
+                // -------------------------------------------------------------Update-------------------------------------------------------------
 
                 // 플레이어 업데이트(이동 처리)
                 if (key == ConsoleKey.LeftArrow) // ← 왼쪽으로 이동
@@ -413,7 +421,6 @@ namespace Way_back_home
                     }
                 }
 
-
                 // 골인 지점 만들기
                 // 1) Box1번과 Goal1번이 만났을 때
                 // 2) Box1번과 Goal2번이 만났을 때
@@ -440,37 +447,6 @@ namespace Way_back_home
                     }
                 }
 
-                //int boxInGoalCount = 0;
-                //for (int goalId2 = 0; goalId2 < GOAL_COUNT; goalId2 ++)
-                //{
-                //    isBoxInGoal[goalId2] = true;
-
-                //    for (int boxId = 0; boxId < BOX_COUNT; boxId ++)
-                //    {
-                //        if (goalPositionX[goalId2] == boxPositionsX[boxId] && goalPositionY[goalId2] == boxPositionsY[boxId])
-                //        {
-
-                //            ++ boxInGoalCount;
-                //            isBoxInGoal[goalId2] = false;
-
-                //            break; // goal하나에 박스 하나만 올라가 있기 때문에 멈춤
-                //        }
-
-                //    }
-                //}
-
-
-                if (boxOnGoalCount == 1)
-                {
-                    Console.SetCursorPosition(20, 25);
-                    Console.Write("텍스트1");
-                }
-                if (boxOnGoalCount == 2)
-                {
-                    Console.SetCursorPosition(20, 26);
-                    Console.Write("텍스트2");
-                }
-
                 if (boxOnGoalCount == GOAL_COUNT)
                 {
                     Console.Clear();
@@ -485,15 +461,15 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 3);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 4); //2
                     Console.WriteLine("\"...ory~ ..k...p~~\"");
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
 
                     Console.SetCursorPosition(1, 5);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 6); //3
                     Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -502,7 +478,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 7);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 8); //4
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -511,7 +487,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 9);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 10); //5
                     Console.WriteLine("\"It's morning~!! Wake up~~\"");
@@ -520,7 +496,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 11);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 12); //6
                     Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -529,7 +505,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 13);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 14); //7
                     Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -538,7 +514,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 15);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 16); //8
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -547,7 +523,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 17);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 18); //9
                     Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -556,7 +532,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 19);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 20); //10
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -565,30 +541,30 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 21);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 22); //11
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine(".....");
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
 
                     Console.SetCursorPosition(6, 22); //11
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine("I'm at home already.");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
 
                     Console.SetCursorPosition(1, 23);
                     Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 24);
                     Console.WriteLine(" ");
-                    Thread.Sleep(2000);
+                    Thread.Sleep(000);
 
                     Console.SetCursorPosition(1, 25); //12
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\"Meaw~\"");
-                    Thread.Sleep(4000);
+                    Thread.Sleep(3000);
 
                     Console.Clear();
 
