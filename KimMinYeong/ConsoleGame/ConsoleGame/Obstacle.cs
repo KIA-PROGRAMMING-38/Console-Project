@@ -46,7 +46,7 @@ namespace ConsoleGame
                 _x[_index] = random.Next(SceneData.MIN_OF_INGAME_X, SceneData.MAX_OF_INGAME_X);
                 _y[_index] = SceneData.MIN_OF_INGAME_Y + 1;
 
-                if (_index == 6)  // 한 화면에 동시에 존재할 수 있는 장애물의 개수 (속도에따라 달라질듯)
+                if (_index == 5)  // 한 화면에 동시에 존재할 수 있는 장애물의 개수 (속도에따라 달라질듯)
                 {
                     _index = 0;
                 }
