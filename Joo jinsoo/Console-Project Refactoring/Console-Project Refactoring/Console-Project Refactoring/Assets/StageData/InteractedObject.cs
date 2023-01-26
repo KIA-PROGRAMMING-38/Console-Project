@@ -66,60 +66,7 @@ namespace Console_Project_Refactoring.Assets.StageData
         public int Y;
     }
 
-    class Interactive_D
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_E
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_F
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_G
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_H
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_I
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_J
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_K
-    {
-        public int X;
-        public int Y;
-    }
-
-    class Interactive_L
-    {
-        public int X;
-        public int Y;
-    }
-
+ 
 
 
 
@@ -252,39 +199,16 @@ namespace Console_Project_Refactoring.Assets.StageData
         }
 
         public static void ParseInteractionID(string[] stage, out Interactive_A[] interactiveFieldA,
-    out Interactive_B[] interactiveFieldB, out Interactive_C[] interactiveFieldC,
-    out Interactive_D[] interactiveFieldD, out Interactive_E[] interactiveFieldE,
-    out Interactive_F[] interactiveFieldF, out Interactive_G[] interactiveFieldG,
-    out Interactive_H[] interactiveFieldH, out Interactive_I[] interactiveFieldI,
-    out Interactive_J[] interactiveFieldJ, out Interactive_K[] interactiveFieldK,
-    out Interactive_L[] interactiveFieldL)
+    out Interactive_B[] interactiveFieldB, out Interactive_C[] interactiveFieldC)
         {
             string[] stageMetadata = stage[0].Split(" ");
             interactiveFieldA = new Interactive_A[int.Parse(stageMetadata[0])];
             interactiveFieldB = new Interactive_B[int.Parse(stageMetadata[1])];
             interactiveFieldC = new Interactive_C[int.Parse(stageMetadata[2])];
-            interactiveFieldD = new Interactive_D[int.Parse(stageMetadata[3])];
-            interactiveFieldE = new Interactive_E[int.Parse(stageMetadata[4])];
-            interactiveFieldF = new Interactive_F[int.Parse(stageMetadata[5])];
-            interactiveFieldG = new Interactive_G[int.Parse(stageMetadata[6])];
-            interactiveFieldH = new Interactive_H[int.Parse(stageMetadata[7])];
-            interactiveFieldI = new Interactive_I[int.Parse(stageMetadata[8])];
-            interactiveFieldJ = new Interactive_J[int.Parse(stageMetadata[9])];
-            interactiveFieldK = new Interactive_K[int.Parse(stageMetadata[10])];
-            interactiveFieldL = new Interactive_L[int.Parse(stageMetadata[11])];
 
             int interactiveFieldAIndex = 0;
             int interactiveFieldBIndex = 0;
             int interactiveFieldCIndex = 0;
-            int interactiveFieldDIndex = 0;
-            int interactiveFieldEIndex = 0;
-            int interactiveFieldFIndex = 0;
-            int interactiveFieldGIndex = 0;
-            int interactiveFieldHIndex = 0;
-            int interactiveFieldIIndex = 0;
-            int interactiveFieldJIndex = 0;
-            int interactiveFieldKIndex = 0;
-            int interactiveFieldLIndex = 0;
 
             for (int y = 1; y < stage.Length; ++y)
             {
@@ -308,57 +232,9 @@ namespace Console_Project_Refactoring.Assets.StageData
                             ++interactiveFieldCIndex;
 
                             break;
-                        case MapSymbol.interactiveD:
-                            interactiveFieldD[interactiveFieldDIndex] = new Interactive_D { X = x, Y = y - 1 };
-                            ++interactiveFieldDIndex;
-
-                            break;
-                        case MapSymbol.interactiveE:
-                            interactiveFieldE[interactiveFieldEIndex] = new Interactive_E { X = x, Y = y - 1 };
-                            ++interactiveFieldEIndex;
-
-                            break;
-                        case MapSymbol.interactiveF:
-                            interactiveFieldF[interactiveFieldFIndex] = new Interactive_F { X = x, Y = y - 1 };
-                            ++interactiveFieldFIndex;
-
-                            break;
-                        case MapSymbol.interactiveG:
-                            interactiveFieldG[interactiveFieldGIndex] = new Interactive_G { X = x, Y = y - 1 };
-                            ++interactiveFieldGIndex;
-
-                            break;
-                        case MapSymbol.interactiveH:
-                            interactiveFieldH[interactiveFieldHIndex] = new Interactive_H { X = x, Y = y - 1 };
-                            ++interactiveFieldHIndex;
-
-                            break;
-                        case MapSymbol.interactiveI:
-                            interactiveFieldI[interactiveFieldIIndex] = new Interactive_I { X = x, Y = y - 1 };
-                            ++interactiveFieldIIndex;
-
-                            break;
-                        case MapSymbol.interactiveJ:
-                            interactiveFieldJ[interactiveFieldJIndex] = new Interactive_J { X = x, Y = y - 1 };
-                            ++interactiveFieldJIndex;
-
-                            break;
-                        case MapSymbol.interactiveK:
-                            interactiveFieldK[interactiveFieldKIndex] = new Interactive_K { X = x, Y = y - 1 };
-                            ++interactiveFieldKIndex;
-
-                            break;
-                        case MapSymbol.interactiveL:
-                            interactiveFieldL[interactiveFieldLIndex] = new Interactive_L { X = x, Y = y - 1 };
-                            ++interactiveFieldLIndex;
-
-                            break;
-
                     }
                 }
             }
         }
-
-        
     }
 }

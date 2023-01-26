@@ -75,15 +75,6 @@ namespace Console_Project_Refactoring
             Interactive_A[] interactiveFieldA;
             Interactive_B[] interactiveFieldB;
             Interactive_C[] interactiveFieldC;
-            Interactive_D[] interactiveFieldD;
-            Interactive_E[] interactiveFieldE;
-            Interactive_F[] interactiveFieldF;
-            Interactive_G[] interactiveFieldG;
-            Interactive_H[] interactiveFieldH;
-            Interactive_I[] interactiveFieldI;
-            Interactive_J[] interactiveFieldJ;
-            Interactive_K[] interactiveFieldK;
-            Interactive_L[] interactiveFieldL;
 
             string[] prologue = GameSystem.LoadPrologue(0);
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -134,17 +125,11 @@ namespace Console_Project_Refactoring
                 out secondLRDoor, out thirdLRDoor);
             string[] interactionFields = InteractedObject.LoadInteractionStage((int)currentScene);
             InteractedObject.ParseInteractionID(interactionFields, out interactiveFieldA, 
-                out interactiveFieldB, out interactiveFieldC, out interactiveFieldD,
-                out interactiveFieldE, out interactiveFieldF, out interactiveFieldG,
-                out interactiveFieldH, out interactiveFieldI, out interactiveFieldJ,
-                out interactiveFieldK, out interactiveFieldL);
+                out interactiveFieldB, out interactiveFieldC);
             GameSystem.MadeMapMetaData(GameSystem.mapMetaData, currentScene, player, walls, utilityroomDoor, toiletDoor,
                 bedroomDoor, frontDoor, firstLRDoor, secondLRDoor, thirdLRDoor);
             GameSystem.MadeInteractionData(GameSystem.mapInteractionData, currentScene,
-               interactiveFieldA, interactiveFieldB, interactiveFieldC,
-               interactiveFieldD, interactiveFieldE, interactiveFieldF,
-               interactiveFieldG, interactiveFieldH, interactiveFieldI,
-               interactiveFieldJ, interactiveFieldK, interactiveFieldL);
+               interactiveFieldA, interactiveFieldB, interactiveFieldC);
 
             while (true)
             {
@@ -154,34 +139,22 @@ namespace Console_Project_Refactoring
                     toiletDoor, bedroomDoor, frontDoor, firstLRDoor,
                     secondLRDoor, thirdLRDoor);
                     GameSystem.MapInteractionDataClear(GameSystem.mapInteractionData, currentScene,
-                    interactiveFieldA, interactiveFieldB, interactiveFieldC,
-                    interactiveFieldD, interactiveFieldE, interactiveFieldF,
-                    interactiveFieldG, interactiveFieldH, interactiveFieldI,
-                    interactiveFieldJ, interactiveFieldK, interactiveFieldL);
+                    interactiveFieldA, interactiveFieldB, interactiveFieldC);
 
                     lines = StageFormat.LoadStageFormat((int)currentScene);
                     StageFormat.ParseStage(lines, out walls);
                     interactionFields = InteractedObject.LoadInteractionStage((int)currentScene);
                     InteractedObject.ParseInteractionID(interactionFields, out interactiveFieldA,
-                        out interactiveFieldB, out interactiveFieldC, out interactiveFieldD,
-                        out interactiveFieldE, out interactiveFieldF, out interactiveFieldG,
-                        out interactiveFieldH, out interactiveFieldI, out interactiveFieldJ,
-                        out interactiveFieldK, out interactiveFieldL);
+                        out interactiveFieldB, out interactiveFieldC);
                     GameSystem.MadeInteractionData(GameSystem.mapInteractionData, currentScene,
-                    interactiveFieldA, interactiveFieldB, interactiveFieldC,
-                    interactiveFieldD, interactiveFieldE, interactiveFieldF,
-                    interactiveFieldG, interactiveFieldH, interactiveFieldI,
-                    interactiveFieldJ, interactiveFieldK, interactiveFieldL);
+                    interactiveFieldA, interactiveFieldB, interactiveFieldC);
 
                 }
 
                 GameSystem.MadeMapMetaData(GameSystem.mapMetaData, currentScene, player, walls, utilityroomDoor, toiletDoor,
                 bedroomDoor, frontDoor, firstLRDoor, secondLRDoor, thirdLRDoor);
                 GameSystem.MadeInteractionData(GameSystem.mapInteractionData, currentScene,
-                interactiveFieldA, interactiveFieldB, interactiveFieldC,
-                interactiveFieldD, interactiveFieldE, interactiveFieldF,
-                interactiveFieldG, interactiveFieldH, interactiveFieldI,
-                interactiveFieldJ, interactiveFieldK, interactiveFieldL);
+                interactiveFieldA, interactiveFieldB, interactiveFieldC);
 
                 Console.Clear();
 

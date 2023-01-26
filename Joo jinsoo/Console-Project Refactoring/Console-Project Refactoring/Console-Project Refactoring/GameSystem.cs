@@ -395,12 +395,7 @@ namespace Console_Project_Refactoring
 
         public static void MadeInteractionData(InteractionObject[,] mapInteractionData, 
                 Stage currentScene, Interactive_A[] interactiveFieldA,
-                Interactive_B[] interactiveFieldB, Interactive_C[] interactiveFieldC,
-                Interactive_D[] interactiveFieldD, Interactive_E[] interactiveFieldE,
-                Interactive_F[] interactiveFieldF, Interactive_G[] interactiveFieldG,
-                Interactive_H[] interactiveFieldH, Interactive_I[] interactiveFieldI,
-                Interactive_J[] interactiveFieldJ, Interactive_K[] interactiveFieldK,
-                Interactive_L[] interactiveFieldL)
+                Interactive_B[] interactiveFieldB, Interactive_C[] interactiveFieldC)
         {
             if (currentScene == Stage.Livingroom)
             {
@@ -425,63 +420,63 @@ namespace Console_Project_Refactoring
 
             if (currentScene == Stage.Utilityroom)
             {
-                for (int i = 0; i < interactiveFieldD.Length; ++i)
+                for (int i = 0; i < interactiveFieldA.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldD[i].X, interactiveFieldD[i].Y]
+                    mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
                         = InteractionObject.UtilityroomCloset;
                 }
 
-                for (int i = 0; i < interactiveFieldE.Length; ++i)
+                for (int i = 0; i < interactiveFieldB.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldE[i].X, interactiveFieldE[i].Y]
+                    mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
                         = InteractionObject.UtilityroomSecretroom;
                 }
 
-                for (int i = 0; i < interactiveFieldF.Length; ++i)
+                for (int i = 0; i < interactiveFieldC.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldF[i].X, interactiveFieldF[i].Y]
+                    mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
                         = InteractionObject.UtilityroomMirror;
                 }
             }
 
             if (currentScene == Stage.Toilet)
             {
-                for (int i = 0; i < interactiveFieldG.Length; ++i)
+                for (int i = 0; i < interactiveFieldA.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldG[i].X, interactiveFieldG[i].Y]
+                    mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
                         = InteractionObject.ToiletBathtub;
                 }
 
-                for (int i = 0; i < interactiveFieldH.Length; ++i)
+                for (int i = 0; i < interactiveFieldB.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldH[i].X, interactiveFieldH[i].Y]
+                    mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
                         = InteractionObject.ToiletSink;
                 }
 
-                for (int i = 0; i < interactiveFieldI.Length; ++i)
+                for (int i = 0; i < interactiveFieldC.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldI[i].X, interactiveFieldI[i].Y]
+                    mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
                         = InteractionObject.ToiletLavatory;
                 }
             }
 
             if (currentScene == Stage.Bedroom)
             {
-                for (int i = 0; i < interactiveFieldJ.Length; ++i)
+                for (int i = 0; i < interactiveFieldA.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldJ[i].X, interactiveFieldJ[i].Y]
+                    mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
                         = InteractionObject.BedroomBookshelf;
                 }
 
-                for (int i = 0; i < interactiveFieldK.Length; ++i)
+                for (int i = 0; i < interactiveFieldB.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldK[i].X, interactiveFieldK[i].Y]
+                    mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
                         = InteractionObject.BedroomPillow;
                 }
 
-                for (int i = 0; i < interactiveFieldL.Length; ++i)
+                for (int i = 0; i < interactiveFieldC.Length; ++i)
                 {
-                    mapInteractionData[interactiveFieldL[i].X, interactiveFieldL[i].Y]
+                    mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
                         = InteractionObject.BedroomDesk;
                 }
             }
@@ -824,84 +819,93 @@ namespace Console_Project_Refactoring
 
         public static void MapInteractionDataClear(InteractionObject[,] mapInteractionData,
                 Stage currentScene, Interactive_A[] interactiveFieldA,
-                Interactive_B[] interactiveFieldB, Interactive_C[] interactiveFieldC,
-                Interactive_D[] interactiveFieldD, Interactive_E[] interactiveFieldE,
-                Interactive_F[] interactiveFieldF, Interactive_G[] interactiveFieldG,
-                Interactive_H[] interactiveFieldH, Interactive_I[] interactiveFieldI,
-                Interactive_J[] interactiveFieldJ, Interactive_K[] interactiveFieldK,
-                Interactive_L[] interactiveFieldL)
+                Interactive_B[] interactiveFieldB, Interactive_C[] interactiveFieldC)
         {
-            for (int i = 0; i < interactiveFieldA.Length; ++i)
+            if (currentScene != Stage.Livingroom)
             {
-                mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
-                    = InteractionObject.Default;
+                for (int i = 0; i < interactiveFieldA.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldB.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldC.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
+                        = InteractionObject.Default;
+                }
             }
 
-            for (int i = 0; i < interactiveFieldB.Length; ++i)
+            if (currentScene != Stage.Utilityroom)
             {
-                mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
-                    = InteractionObject.Default;
+                for (int i = 0; i < interactiveFieldA.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldB.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldC.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
+                        = InteractionObject.Default;
+                }
             }
 
-            for (int i = 0; i < interactiveFieldC.Length; ++i)
+            if (currentScene != Stage.Toilet)
             {
-                mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
-                    = InteractionObject.Default;
+                for (int i = 0; i < interactiveFieldA.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldB.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldC.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
+                        = InteractionObject.Default;
+                }
             }
 
-            for (int i = 0; i < interactiveFieldD.Length; ++i)
+            if (currentScene != Stage.Bedroom)
             {
-                mapInteractionData[interactiveFieldD[i].X, interactiveFieldD[i].Y]
-                    = InteractionObject.Default;
+                for (int i = 0; i < interactiveFieldA.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldB.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
+                        = InteractionObject.Default;
+                }
+
+                for (int i = 0; i < interactiveFieldC.Length; ++i)
+                {
+                    mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
+                        = InteractionObject.Default;
+                }
             }
 
-            for (int i = 0; i < interactiveFieldE.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldE[i].X, interactiveFieldE[i].Y]
-                    = InteractionObject.Default;
-            }
 
-            for (int i = 0; i < interactiveFieldF.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldF[i].X, interactiveFieldF[i].Y]
-                    = InteractionObject.Default;
-            }
-
-            for (int i = 0; i < interactiveFieldG.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldG[i].X, interactiveFieldG[i].Y]
-                    = InteractionObject.Default;
-            }
-
-            for (int i = 0; i < interactiveFieldH.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldH[i].X, interactiveFieldH[i].Y]
-                    = InteractionObject.Default;
-            }
-
-            for (int i = 0; i < interactiveFieldI.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldI[i].X, interactiveFieldI[i].Y]
-                    = InteractionObject.Default;
-            }
-
-            for (int i = 0; i < interactiveFieldJ.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldJ[i].X, interactiveFieldJ[i].Y]
-                    = InteractionObject.Default;
-            }
-
-            for (int i = 0; i < interactiveFieldK.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldK[i].X, interactiveFieldK[i].Y]
-                    = InteractionObject.Default;
-            }
-
-            for (int i = 0; i < interactiveFieldL.Length; ++i)
-            {
-                mapInteractionData[interactiveFieldL[i].X, interactiveFieldL[i].Y]
-                    = InteractionObject.Default;
-            }
         }
 
         public static void StageStatus()
