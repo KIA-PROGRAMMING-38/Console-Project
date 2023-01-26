@@ -318,7 +318,19 @@ class Program
             switch (direction)
             {
                 case Direction.Left:
-                    MoveToLeftOfTarget(out villain.X, in villain.X);
+                    if (villain.X == MIN_X)
+                    {
+                        villain.X = MAX_X;
+                        --villain.Y;
+
+                        if (villain.Y == (MIN_Y - 1)) // 동일연산자가 먼저 계산됨.
+                        {
+                            villain.VillainDirection = Direction.Right;
+                            villain.X = MIN_X;
+                            ++villain.Y;
+                        }
+                    }
+                    else MoveToLeftOfTarget(out villain.X, in villain.X);
                     break;
 
                 case Direction.Right:
@@ -334,6 +346,8 @@ class Program
                             --villain.Y;
                         }
                     }
+                    // else하지않으면 위의 if문에서 빠져나온 뒤에도 실행된 다음에 랜더함으로 1부터 시작하게 된다.
+                    // 0부터 시작하게 할려면 else해줘야 함.
                     else MoveToRightOfTarget(out villain.X, in villain.X);
                     break;
 
@@ -357,10 +371,7 @@ class Program
                 Thread.Sleep(100);
                 //Update------------------------
                 MoveVillian(villain.VillainDirection, villain);
-            }
-
-            
-
+            } 
         }
 
         void Render()
