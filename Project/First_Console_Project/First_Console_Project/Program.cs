@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Dynamic;
 using System.Text;
+using System.Media;
 
 namespace Way_back_home
 {
@@ -35,6 +36,9 @@ namespace Way_back_home
             // 플레이어 위치를 저장하기 위한 변수
             int playerX = 100;
             int playerY = 0;
+            int playerprex = 101;
+            int playerprey = 0;
+            
 
             // 플레이어의 이동 방향을 저장하기 위한 변수
             Direction playerMoveDirection = Direction.None;
@@ -68,10 +72,10 @@ namespace Way_back_home
                  "Mommy. Mommy..? Mo..m..m..y..... Where are you..",
                  "Why? It's not my fault! No! Stop!! Don't hurt me..! No!!!",
                  "It's so dark and cold here.. I'm hungry.. Please let me out of here.. please...plea..se..",
-                 "Mommy....?! Nooooooo!!! Don't!!!!!!! Kaaaaaaaaaaaaaaaa!!!! Don't you dare touch me!!!",
-                 "It's not my fault.. Please don't blame me.. Stop....please stop... ",
-                 "Get away from me!!!! Your not my Mommy anymore! Your an evil",
-                 "Somebody Help me.. Please...",
+                 "Mommy....?! Nooooooo!!! Don't!!!!!!! Kaaaaaaaaaaaaaaaa!!!! Don't you dare touch me!!     ",
+                 "It's not my fault.. Please don't blame me.. Stop....please stop...                       ",
+                 "Get away from me!!!! Your not my Mommy anymore! Your an evil                             ",
+                 "Somebody Help me.. Please...                                                             ",
                  " "
                 };
 
@@ -97,6 +101,7 @@ namespace Way_back_home
             while (true)
             {
 
+                
                 Console.SetCursorPosition(42, 9);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.Write("-- M A N U A L --");
@@ -118,6 +123,8 @@ namespace Way_back_home
                 ConsoleKey Key = Console.ReadKey().Key;
                 if (Key == ConsoleKey.Enter)
                 {
+                    Console.Clear(); // 깜빡이 방지 위해 만들어줌
+                    
                     break;
                 }
 
@@ -127,13 +134,25 @@ namespace Way_back_home
             while (true)
             {
                 // 이전 프레임을 지운다.
-                Console.Clear();
+                //Console.Clear();
                 Console.OutputEncoding = Encoding.UTF8;
                 // -------------------------------------------------------------Render-------------------------------------------------------------
                 // 플레이어 출력하기
-                Console.SetCursorPosition(playerX, playerY);
-                Console.Write("🐈");
-                
+                //for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
+                //{
+                //    if (playerprex == goalPositionX[goalId] && playerprey == goalPositionY[goalId])
+                //    {
+                //        // 아무것도 안해주고
+                //    }
+                //    else
+                //    {
+                //        Console.SetCursorPosition(playerprex, playerprey);
+                //        Console.Write("  ");
+                //        Console.SetCursorPosition(playerX, playerY);
+                //        Console.Write("🐈");
+                //    }
+                //}
+
 
                 // 박스 출력하기 
                 for (int i = 0; i < BOX_COUNT; ++i)
@@ -147,37 +166,59 @@ namespace Way_back_home
                 }
 
                 // 골인 출력하기
+              
+
+                for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
+                {
+                    if (playerprex == goalPositionX[goalId] && playerprey == goalPositionY[goalId])
+                    {
+                        // 아무것도 안해주고
+                    }
+                    else
+                    {
+                        
+                        Console.SetCursorPosition(playerprex, playerprey);
+                        Console.Write("  ");
+                        Console.SetCursorPosition(playerX, playerY);
+                        Console.Write("🐈");
+
+                    }
+                }
+
+
                 for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
                 {
                     int goalX = goalPositionX[goalId];
                     int goalY = goalPositionY[goalId];
 
                     Console.SetCursorPosition(goalX, goalY);
-                   
+
                     if (isBoxOnGoal[goalId] == true)
                     {
                         ConsoleColor temp1 = Console.ForegroundColor;
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.Write("🖤");
                         Console.ForegroundColor = temp1;
-                        
+
                     }
                     else
                     {
                         Console.Write("🤍");
                     }
-                                        
+
                 }
 
+
                 int goalCount = 0;
-                for (int dialogId = 0; dialogId < GOAL_COUNT; ++dialogId)
+                for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
                 {
-                    if (isBoxOnGoal[dialogId] == true)
+                    if (isBoxOnGoal[goalId] == true)
                     {
                         ++goalCount;
                         
                     }
                 }
+
 
                 Console.SetCursorPosition(7, 27);
                 ConsoleColor temp2 = Console.ForegroundColor;
@@ -203,6 +244,9 @@ namespace Way_back_home
 
                 // -------------------------------------------------------------Update-------------------------------------------------------------
 
+                playerprex = playerX;
+                playerprey = playerY;
+                
                 // 플레이어 업데이트(이동 처리)
                 if (key == ConsoleKey.LeftArrow) // ← 왼쪽으로 이동
                 {
@@ -561,10 +605,25 @@ namespace Way_back_home
                     Console.WriteLine(" ");
                     Thread.Sleep(000);
 
+                    // Toryvoice.PlayLooping();
+                    SoundPlayer Toryvoice = new SoundPlayer(@"Music\송토리목소리.wav");
+                    Toryvoice.PlayLooping();
+
                     Console.SetCursorPosition(1, 25); //12
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\"Meaw~\"");
-                    Thread.Sleep(3000);
+                    Thread.Sleep(1000);
+                    Toryvoice.Stop();
+
+                    Console.SetCursorPosition(1, 26);
+                    Console.WriteLine(" ");
+                    Thread.Sleep(1000);
+
+                    Console.SetCursorPosition(1, 2);
+                    Console.WriteLine(" ");
+                    Thread.Sleep(1000);
+
+
 
                     Console.Clear();
 
