@@ -296,6 +296,8 @@ namespace Console_Project_Refactoring
                 ObjectRender(frontDoor[1].X, frontDoor[1].Y, "F");
             }
 
+            
+
             if (currentScene == Stage.Utilityroom)
             {
                 Console.ForegroundColor = ConsoleColor.White;
@@ -361,17 +363,29 @@ namespace Console_Project_Refactoring
                     mixedHintString[2]);
             }
 
+            Console.ForegroundColor = ConsoleColor.White;
+            ObjectRender(MAP_OFFSET_X * 2, 1, "남은 기회");
+            ObjectRender(MAP_OFFSET_X * 3, 1, "O O O O");
+
             if (answerOpportunity[0])
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y + 4,
                     addHintString[0]);
+
+                ObjectRender(MAP_OFFSET_X * 3, 1, "@");
             }
             if (answerOpportunity[1])
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y + 5,
                     addHintString[1]);
+
+                ObjectRender(MAP_OFFSET_X * 3 + 2, 1, "@");
+            }
+            if (answerOpportunity[2])
+            {
+                ObjectRender(MAP_OFFSET_X * 3 + 4, 1, "@");
             }
 
 
@@ -822,7 +836,6 @@ namespace Console_Project_Refactoring
 
                 inputkey = Console.ReadKey().Key;
             }
-
         }
 
         public static void MapMetaDataClear(MapIcon[,] mapMetaData,
