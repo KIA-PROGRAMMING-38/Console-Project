@@ -16,6 +16,7 @@ namespace Console_Project_Refactoring
 
             Stage currentScene = Stage.Default;
             Stage captureScene = Stage.Livingroom;
+            
 
             GameSystem.murdererList = GameSystem.RandomCrimePick(GameSystem.CRIME_EVIDENCE,
                 GameSystem.MURDERER_COUNT);
@@ -41,9 +42,22 @@ namespace Console_Project_Refactoring
             mixedHintString[0] = hintString[mixedHintStringNumber[0] - 1];
             mixedHintString[1] = hintString[mixedHintStringNumber[1] - 1];
             mixedHintString[2] = hintString[mixedHintStringNumber[2] - 1];
+            string[] addHintString = new string[GameSystem.ADD_HINT_LIST];
+            addHintString[0] = GameSystem.OutputTextToThirdLine(GameSystem.LoadMurderer(answerNumber[0]));
+            addHintString[1] = GameSystem.OutputTextToThirdLine(GameSystem.LoadMotive(answerNumber[2]));
 
-
+            InteractionObject[] existHint = GameClear.RandomExistHint(answerNumber);
+            int appearHintStringCount = 0;
             int answerCount = 0;
+            bool[] checkHint = new bool[existHint.Length];
+            for (int i = 0; i - 1 < checkHint.Length - 1; ++i)
+            {
+                if (existHint[i] != InteractionObject.Default)
+                {
+                    checkHint[i] = true;
+                }
+            }
+            bool[] alreadySearchHint = new bool[GameSystem.ANSWER_LIST];
 
             Player player = new Player
             {
@@ -81,6 +95,42 @@ namespace Console_Project_Refactoring
             Interactive_K[] interactiveFieldK;
             Interactive_L[] interactiveFieldL;
 
+            string[] prologue = GameSystem.LoadPrologue(0);
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            for (int i = 0; i < prologue.Length; ++i)
+            {
+                Console.WriteLine(prologue[i]);
+            }
+
+            ConsoleKey key = Console.ReadKey().Key;
+
+            //for (int i = 1; i < 4; ++i)
+            //{
+            //    Console.Clear();
+            //
+            //    prologue = GameSystem.LoadPrologue(i);
+            //    for (int j = 0; j < prologue.Length; ++j)
+            //    {
+            //        Console.WriteLine(prologue[j]);
+            //    }
+            //
+            //    if (i == 1)
+            //    {
+            //        ++i;
+            //        prologue = GameSystem.LoadPrologue(i);
+            //        for (int j = 0; j < prologue.Length; ++j)
+            //        {
+            //            Console.WriteLine(prologue[j]);
+            //
+            //            Thread.Sleep(5000);
+            //        }
+            //    }
+            //
+            //    if (i == 3)
+            //    {
+            //        key = Console.ReadKey().Key;
+            //    }
+            //}
 
             // 초기 스테이지 룩업테이블 구성
             currentScene = Stage.Livingroom;
@@ -108,12 +158,6 @@ namespace Console_Project_Refactoring
                interactiveFieldG, interactiveFieldH, interactiveFieldI,
                interactiveFieldJ, interactiveFieldK, interactiveFieldL);
 
-            
-
-            Console.WriteLine("check");
-
-            ConsoleKey key = Console.ReadKey().Key;
-
             while (true)
             {
                 if (captureScene != currentScene)
@@ -121,7 +165,11 @@ namespace Console_Project_Refactoring
                     GameSystem.MapMetaDataClear(GameSystem.mapMetaData, player, walls, utilityroomDoor,
                     toiletDoor, bedroomDoor, frontDoor, firstLRDoor,
                     secondLRDoor, thirdLRDoor);
-                    
+                    GameSystem.MapInteractionDataClear(GameSystem.mapInteractionData, currentScene,
+                    interactiveFieldA, interactiveFieldB, interactiveFieldC,
+                    interactiveFieldD, interactiveFieldE, interactiveFieldF,
+                    interactiveFieldG, interactiveFieldH, interactiveFieldI,
+                    interactiveFieldJ, interactiveFieldK, interactiveFieldL);
 
                     lines = StageFormat.LoadStageFormat((int)currentScene);
                     StageFormat.ParseStage(lines, out walls, out exceptionObj_01, out exceptionObj_02,
@@ -156,24 +204,33 @@ namespace Console_Project_Refactoring
                 player.pastX = player.X;
                 player.pastY = player.Y;
 
+                GameSystem.StageStatus();
                 GameSystem.Render(currentScene, player, walls, utilityroomDoor,
                     toiletDoor, bedroomDoor, frontDoor, firstLRDoor, 
                     secondLRDoor, thirdLRDoor, exceptionObj_01, exceptionObj_02,
                     exceptionObj_03, exceptionObj_04, exceptionObj_05, exceptionObj_06,
-                    exceptionObj_07, exceptionObj_08, exceptionObj_09, exceptionObj_10);
+                    exceptionObj_07, exceptionObj_08, exceptionObj_09, exceptionObj_10,
+                    alreadySearchHint, mixedHintString, GameClear.answerOpportunity, addHintString);
 
                 key = Console.ReadKey().Key;
 
                 Player.MovePlayer(key, ref player.X, ref player.Y, player.X, player.Y);
 
                 GameSystem.AfterUpdate(ref currentScene, player, walls, utilityroomDoor,
-                    toiletDoor, bedroomDoor, frontDoor, firstLRDoor,
+                    toiletDoor, bedroomDoor, firstLRDoor,
                     secondLRDoor, thirdLRDoor);
+
+                GameSystem.Interaction(currentScene, player, key, ref checkHint,
+                    ref appearHintStringCount, ref alreadySearchHint);
+
+                GameClear.InputAnswer(player, frontDoor, corretAnswerMurderer[0],
+                    corretAnswerWeapon[0], corretAnswerMotive[0], answerCount, key);
 
                 
 
-
             }
+
+
         }
     }
 }

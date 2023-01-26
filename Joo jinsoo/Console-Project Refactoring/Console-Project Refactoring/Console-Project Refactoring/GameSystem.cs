@@ -98,6 +98,7 @@ namespace Console_Project_Refactoring
         public const int WEAPON_COUNT = 10;
         public const int MOTIVE_COUNT = 9;
         public const int ANSWER_LIST = 3;
+        public const int ADD_HINT_LIST = 2;
 
         public static MapIcon[,] mapMetaData = new MapIcon[(MAP_OFFSET_X * 2) + MAP_MAX_X,
             (MAP_OFFSET_Y * 2) + MAP_MAX_Y];
@@ -107,7 +108,18 @@ namespace Console_Project_Refactoring
         public static int[] murdererList = new int[CRIME_EVIDENCE];
         public static int[] weaponList = new int[CRIME_EVIDENCE];
         public static int[] motiveList = new int[CRIME_EVIDENCE];
-        
+
+        public static string[] LoadPrologue(int prologueNumber)
+        {
+            string motiveFilePath = Path.Combine("..\\..\\..\\Assets", "MessageData", $"GamePrologue{prologueNumber:D2}.txt");
+
+            if (false == File.Exists(motiveFilePath))
+            {
+                Console.WriteLine($"파일이 없습니다. GamePrologue{prologueNumber:D2}.txt");
+            }
+
+            return File.ReadAllLines(motiveFilePath);
+        }
 
         public static string[] LoadMurderer(int suspectNumber)
         {
@@ -142,6 +154,8 @@ namespace Console_Project_Refactoring
 
             return File.ReadAllLines(motiveFilePath);
         }
+
+
         public static string OutputTextToFirstLine(string[] fileText)
         {
             string outputText = fileText[0];
@@ -187,6 +201,8 @@ namespace Console_Project_Refactoring
             return outputArray;
         }
 
+
+
         public static int correctAnswer(int[] inputArray)
         {
             Random random = new Random();
@@ -206,7 +222,9 @@ namespace Console_Project_Refactoring
             ExceptionObj_04[] exceptionObj_04, ExceptionObj_05[] exceptionObj_05,
             ExceptionObj_06[] exceptionObj_06, ExceptionObj_07[] exceptionObj_07,
             ExceptionObj_08[] exceptionObj_08, ExceptionObj_09[] exceptionObj_09,
-            ExceptionObj_10[] exceptionObj_10)
+            ExceptionObj_10[] exceptionObj_10, bool[] alreadySearchHint,
+            string[] mixedHintString, bool[] answerOpportunity,
+            string[] addHintString)
         {
             Console.ForegroundColor = ConsoleColor.White;
             for (int i = 0; i < exceptionObj_01.Length; ++i)
@@ -267,13 +285,13 @@ namespace Console_Project_Refactoring
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 ObjectRender(bedroomDoor[0].X, bedroomDoor[0].Y, "B");
                 ObjectRender(bedroomDoor[1].X, bedroomDoor[1].Y, "B");
-                
+
                 ObjectRender(toiletDoor[0].X, toiletDoor[0].Y, "T");
                 ObjectRender(toiletDoor[1].X, toiletDoor[1].Y, "T");
-                
+
                 ObjectRender(utilityroomDoor[0].X, utilityroomDoor[0].Y, "U");
                 ObjectRender(utilityroomDoor[1].X, utilityroomDoor[1].Y, "U");
-                
+
                 ObjectRender(frontDoor[0].X, frontDoor[0].Y, "F");
                 ObjectRender(frontDoor[1].X, frontDoor[1].Y, "F");
             }
@@ -323,6 +341,40 @@ namespace Console_Project_Refactoring
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 ObjectRender(player.X, player.Y, "P");
             }
+
+            if (alreadySearchHint[0] == true)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y,
+                    mixedHintString[0]);
+            }
+            if (alreadySearchHint[1] == true)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y + 1,
+                    mixedHintString[1]);
+            }
+            if (alreadySearchHint[2] == true)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y + 2,
+                    mixedHintString[2]);
+            }
+
+            if (answerOpportunity[0])
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y + 4,
+                    addHintString[0]);
+            }
+            if (answerOpportunity[1])
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                ObjectRender(MAP_MAX_X * 3 + 4, MAP_OFFSET_Y + 5,
+                    addHintString[1]);
+            }
+
+
 
         }
         public static void ObjectRender(int x, int y, string icon)
@@ -393,7 +445,6 @@ namespace Console_Project_Refactoring
                 {
                     mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
                         = InteractionObject.LivingroomTable;
-
                 }
 
                 for (int i = 0; i < interactiveFieldB.Length; ++i)
@@ -474,7 +525,7 @@ namespace Console_Project_Refactoring
         }
 
         public static void AfterUpdate(ref Stage currentScene, Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
-            Toilet[] toiletDoor, Bedroom[] bedroomDoor, Frontdoor[] frontDoor,
+            Toilet[] toiletDoor, Bedroom[] bedroomDoor, 
             LivingroomDoor_First[] firstLRDoor, LivingroomDoor_Second[] secondLRDoor,
             LivingroomDoor_Third[] thirdLRDoor)
         {
@@ -513,94 +564,7 @@ namespace Console_Project_Refactoring
 
                     break;
 
-                case MapIcon.Front:
-                    Console.Clear();
-                    player.X = player.pastX;
-                    player.Y = player.pastY;
-
-                    //string[] readResultMessage = Game.LoadMessage(2);
-                    //for (int i = 0; i < readResultMessage.Length; ++i)
-                    //{
-                    //    Console.ForegroundColor = ConsoleColor.Blue;
-                    //    Console.WriteLine(readResultMessage[i]);
-                    //}
-                    //
-                    //string readAnswer1 = Console.ReadLine();
-                    //string readAnswer2 = Console.ReadLine();
-                    //string readAnswer3 = Console.ReadLine();
-                    //
-                    //if (readAnswer1 == corretAnswerMurderer[0])
-                    //{
-                    //    ++answerCount;
-                    //}
-                    //if (readAnswer2 == corretAnswerWeapon[0])
-                    //{
-                    //    ++answerCount;
-                    //}
-                    //if (readAnswer3 == corretAnswerMotive[0])
-                    //{
-                    //    ++answerCount;
-                    //}
-                    //if (answerCount == 3)
-                    //{
-                    //    if (answerOpportunity[0] == false)
-                    //    {
-                    //        Console.Clear();
-                    //        Console.ResetColor();
-                    //
-                    //        Console.ForegroundColor = ConsoleColor.Cyan;
-                    //        string[] endString = Game.LoadTrueEndMessage();
-                    //        for (int i = 0; i < endString.Length; ++i)
-                    //        {
-                    //            Console.WriteLine(endString[i]);
-                    //        }
-                    //
-                    //        key = Console.ReadKey().Key;
-                    //        Environment.Exit(1);
-                    //    }
-                    //    else
-                    //    {
-                    //        Console.Clear();
-                    //        Console.ResetColor();
-                    //
-                    //        Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    //        string[] endString = Game.LoadGoodEndMessage();
-                    //        for (int i = 0; i < endString.Length; ++i)
-                    //        {
-                    //            Console.WriteLine(endString[i]);
-                    //        }
-                    //
-                    //        key = Console.ReadKey().Key;
-                    //        Environment.Exit(1);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    answerOpportunity[opportunityCount] = true;
-                    //    ++opportunityCount;
-                    //
-                    //    if (opportunityCount == 4)
-                    //    {
-                    //        Console.Clear();
-                    //        Console.ResetColor();
-                    //
-                    //        Console.ForegroundColor = ConsoleColor.DarkRed;
-                    //        string[] endString = Game.LoadBadEndMessage();
-                    //        for (int i = 0; i < endString.Length; ++i)
-                    //        {
-                    //            Console.WriteLine(endString[i]);
-                    //        }
-                    //
-                    //        key = Console.ReadKey().Key;
-                    //        Environment.Exit(2);
-                    //    }
-                    //    else
-                    //        Console.WriteLine("잘못된 추리입니다");
-                    //
-                    //    key = Console.ReadKey().Key;
-                    //}
-
-                    break;
+             
 
                 case MapIcon.Living_1:
                     currentScene = Stage.Livingroom;
@@ -625,6 +589,241 @@ namespace Console_Project_Refactoring
 
             }
         }
+        public static void FindHintString(ref int appearHintStringCount, ref bool[] checkHint, in int a, ref bool[] alreadySearchHint)
+        {
+            if (appearHintStringCount < 3)
+            {
+                if (checkHint[a] == true)
+                {
+                    checkHint[a] = false;
+                    alreadySearchHint[appearHintStringCount] = true;
+                    ++appearHintStringCount;
+                }
+            }
+        }
+
+        public static void Interaction(Stage currentScene, Player player,
+            ConsoleKey key, ref bool[] checkHint, ref int appearHintStringCount,
+            ref bool[] alreadySearchHint)
+        {
+            InteractionObject checkData = mapInteractionData[player.X, player.Y];
+            string[] outputMessage = default;
+            Console.ForegroundColor = ConsoleColor.White;
+
+            if (checkData == InteractionObject.Default)
+                player.IsOnInteraction = false;
+
+            if (currentScene == Stage.Livingroom)
+            {
+                switch (checkData)
+                {
+                    case InteractionObject.LivingroomTable:
+                        AppearMessage(outputMessage, InteractionObject.LivingroomTable,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[0] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    0, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.LivingroomKitchen:
+                        AppearMessage(outputMessage, InteractionObject.LivingroomKitchen,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[1] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    1, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.LivingroomCloset:
+                        AppearMessage(outputMessage, InteractionObject.LivingroomCloset,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[2] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    2, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+                }
+            }
+
+            if (currentScene == Stage.Utilityroom)
+            {
+                switch (checkData)
+                {
+
+                    case InteractionObject.UtilityroomCloset:
+                        AppearMessage(outputMessage, InteractionObject.UtilityroomCloset,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[3] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    3, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.UtilityroomSecretroom:
+                        AppearMessage(outputMessage, InteractionObject.UtilityroomSecretroom,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[4] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    4, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.UtilityroomMirror:
+                        AppearMessage(outputMessage, InteractionObject.UtilityroomMirror,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[5] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    5, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+                }
+            }
+
+            if (currentScene == Stage.Toilet)
+            {
+                switch (checkData)
+                {
+                    case InteractionObject.ToiletBathtub:
+                        AppearMessage(outputMessage, InteractionObject.ToiletBathtub,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[6] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    6, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.ToiletSink:
+                        AppearMessage(outputMessage, InteractionObject.ToiletSink,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[7] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    7, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.ToiletLavatory:
+                        AppearMessage(outputMessage, InteractionObject.ToiletLavatory,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[8] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    8, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+                }
+            }
+
+            if (currentScene == Stage.Bedroom)
+            {
+                switch (checkData)
+                {
+                    case InteractionObject.BedroomBookshelf:
+                        AppearMessage(outputMessage, InteractionObject.BedroomBookshelf,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[9] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    9, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.BedroomPillow:
+                        AppearMessage(outputMessage, InteractionObject.BedroomPillow,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[10] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    10, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+
+                    case InteractionObject.BedroomDesk:
+                        AppearMessage(outputMessage, InteractionObject.BedroomDesk,
+                            player, key);
+                        if (key == ConsoleKey.R)
+                        {
+                            if (checkHint[11] == true)
+                            {
+                                FindHintString(ref appearHintStringCount, ref checkHint,
+                                    11, ref alreadySearchHint);
+                            }
+                        }
+
+                        break;
+                }
+            }
+
+        }
+
+        public static void AppearMessage(string[] str, InteractionObject someCoordinate,
+            Player player, ConsoleKey inputkey)
+        {
+            str = Player.LoadMessage((int)someCoordinate);
+            player.IsOnInteraction = true;
+            if (inputkey == ConsoleKey.R && player.IsOnInteraction == true)
+            {
+                Console.SetCursorPosition(MAP_OFFSET_X, MAP_OFFSET_Y * 2 + MAP_MAX_Y - 1);
+                Console.WriteLine(str[0]);
+                Console.SetCursorPosition(MAP_OFFSET_X, MAP_OFFSET_Y * 2 + MAP_MAX_Y);
+                Console.WriteLine(str[1]);
+
+                inputkey = Console.ReadKey().Key;
+            }
+
+        }
 
         public static void MapMetaDataClear(MapIcon[,] mapMetaData,
             Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
@@ -639,11 +838,6 @@ namespace Console_Project_Refactoring
             {
                 mapMetaData[walls[i].X, walls[i].Y] = MapIcon.Default;
             }
-
-            //for (int i = 0; i < interactiveFields.Length; ++i)
-            //{
-            //    mapMetaData[interactiveFields[i].X, interactiveFields[i].Y] = MapIcon.Default;
-            //}
 
             mapMetaData[bedroomDoor[0].X, bedroomDoor[0].Y] = MapIcon.Default;
             mapMetaData[bedroomDoor[1].X, bedroomDoor[1].Y] = MapIcon.Default;
@@ -665,6 +859,117 @@ namespace Console_Project_Refactoring
 
             mapMetaData[thirdLRDoor[0].X, thirdLRDoor[0].Y] = MapIcon.Default;
             mapMetaData[thirdLRDoor[1].X, thirdLRDoor[1].Y] = MapIcon.Default;
+        }
+
+        public static void MapInteractionDataClear(InteractionObject[,] mapInteractionData,
+                Stage currentScene, Interactive_A[] interactiveFieldA,
+                Interactive_B[] interactiveFieldB, Interactive_C[] interactiveFieldC,
+                Interactive_D[] interactiveFieldD, Interactive_E[] interactiveFieldE,
+                Interactive_F[] interactiveFieldF, Interactive_G[] interactiveFieldG,
+                Interactive_H[] interactiveFieldH, Interactive_I[] interactiveFieldI,
+                Interactive_J[] interactiveFieldJ, Interactive_K[] interactiveFieldK,
+                Interactive_L[] interactiveFieldL)
+        {
+            for (int i = 0; i < interactiveFieldA.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldA[i].X, interactiveFieldA[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldB.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldB[i].X, interactiveFieldB[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldC.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldC[i].X, interactiveFieldC[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldD.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldD[i].X, interactiveFieldD[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldE.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldE[i].X, interactiveFieldE[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldF.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldF[i].X, interactiveFieldF[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldG.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldG[i].X, interactiveFieldG[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldH.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldH[i].X, interactiveFieldH[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldI.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldI[i].X, interactiveFieldI[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldJ.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldJ[i].X, interactiveFieldJ[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldK.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldK[i].X, interactiveFieldK[i].Y]
+                    = InteractionObject.Default;
+            }
+
+            for (int i = 0; i < interactiveFieldL.Length; ++i)
+            {
+                mapInteractionData[interactiveFieldL[i].X, interactiveFieldL[i].Y]
+                    = InteractionObject.Default;
+            }
+        }
+
+        public static void StageStatus()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            ObjectRender(MAP_OFFSET_X * 2 + MAP_MAX_X, MAP_OFFSET_Y, "용의자");
+            ObjectRender(MAP_OFFSET_X * 3 + MAP_MAX_X, MAP_OFFSET_Y, "살해도구");
+            ObjectRender(MAP_OFFSET_X * 4 + MAP_MAX_X + 1, MAP_OFFSET_Y, "살해동기");
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            for (int murdererListPick = 0; murdererListPick < CRIME_EVIDENCE; ++murdererListPick)
+            {
+                ObjectRender(MAP_OFFSET_X * 2 + MAP_MAX_X, MAP_OFFSET_Y + murdererListPick + 1,
+                   OutputTextToFirstLine(LoadMurderer(murdererList[murdererListPick])));
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            for (int weaponListPick = 0; weaponListPick < CRIME_EVIDENCE; ++weaponListPick)
+            {
+                ObjectRender(MAP_OFFSET_X * 3 + MAP_MAX_X, MAP_OFFSET_Y + weaponListPick + 1,
+                   OutputTextToFirstLine(LoadWeapon(weaponList[weaponListPick])));
+            }
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            for (int motiveListPick = 0; motiveListPick < CRIME_EVIDENCE; ++motiveListPick)
+            {
+                ObjectRender(MAP_OFFSET_X * 4 + MAP_MAX_X + 1, MAP_OFFSET_Y + motiveListPick + 1,
+                   OutputTextToFirstLine(LoadMotive(motiveList[motiveListPick])));
+            }
         }
     }
 }

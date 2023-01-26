@@ -275,7 +275,6 @@ namespace Console_ReProject
             void Render()
             #region Render
             {
-                // 스테이지 구성요소 렌더링
                 Console.ForegroundColor = ConsoleColor.White;
                 for (int i = 0; i < exceptionObj_1.Length; ++i)
                 {
@@ -354,8 +353,8 @@ namespace Console_ReProject
                     Game.ObjectRender(frontDoor[1].X, frontDoor[1].Y, "F");
                 }
 
+
                 // 그 외 방일 때 출력
-                
                 if (captureScene == Stage.Stage02)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
