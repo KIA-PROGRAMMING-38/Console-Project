@@ -85,7 +85,7 @@ namespace Packman
         public const int MAP_RANGE_MAX_Y = 25;
 
         // 움직임 스피드와 관련된 상수들..
-        public const float PLAYER_MOVE_DELAY = 0.1f;
-        public const float MONSTER_MOVE_DELAY = PLAYER_MOVE_DELAY * 1.5f;
+        public const float PLAYER_MOVE_DELAY = 0.12f;
+        public const float MONSTER_MOVE_DELAY = PLAYER_MOVE_DELAY * 2.5f;
     }
 }

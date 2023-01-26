@@ -72,13 +72,15 @@ namespace Packman
 
             if(_isPauseGame)
             {
-
+                
             }
             else
             {
                 _ui.Clear();
 
                 Console.Clear();
+
+                RenderManager.Instance.Release();
 
                 Map map = ObjectManager.Instance.GetGameObject<Map>();
                 GoldGroup goldGroup = ObjectManager.Instance.GetGameObject<GoldGroup>();

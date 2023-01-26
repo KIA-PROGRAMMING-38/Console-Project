@@ -102,7 +102,7 @@ namespace Packman
                 case State.ForcedToPush:
                     UpdateForcedToPushPower();
 
-                    break;
+                    break; 
             }
         }
 

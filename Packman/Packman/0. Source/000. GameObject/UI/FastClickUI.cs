@@ -43,7 +43,7 @@ namespace Packman
         private string[] _gaugeBar = null;
 
         float _curGauge = 0.0f;
-        float _gaugePower = 0.1f;
+        float _gaugePower = 0.15f;
         bool _isFullGauge = false;
 
         ConsoleColor[] _colors = { ConsoleColor.Gray, ConsoleColor.DarkGray };
