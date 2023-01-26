@@ -14,7 +14,7 @@ namespace Packman
         private FastClickUI _clickUI = null;
 
         public Trap( int x, int y )
-            : base( x, y, "A", ConsoleColor.Magenta, 2 )
+            : base( x, y, Constants.TRAP_IMAGE, Constants.TRAP_COLOR, 2 )
         {
             _clickUI = new FastClickUI( 0, 16 );
         }

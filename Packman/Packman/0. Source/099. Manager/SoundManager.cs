@@ -37,8 +37,6 @@ namespace Packman
 
         public void Play(string soundID, bool _isLooping = false )
         {
-            return;
-
             SoundPlayer sound = FindSound(soundID);
 
 			if (null != sound)

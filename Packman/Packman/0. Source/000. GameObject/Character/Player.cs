@@ -60,13 +60,10 @@ namespace Packman
             _skillComponent = new PlayerSkill();
             AddComponent( "Skill", _skillComponent );
 
-            for( int i = 0; i < 100; ++i )
-            {
-                _skillComponent.AddSkill( SkillKind.FireStungun );
-                _skillComponent.AddSkill( SkillKind.FirePunchMissile );
-                _skillComponent.AddSkill( SkillKind.FireKillMonsterBullet );
-                _skillComponent.AddSkill( SkillKind.FireCollectGoldBullet );
-            }
+            _skillComponent.SetSkillRemainUseCount( SkillKind.FireStungun, 100 );
+            _skillComponent.SetSkillRemainUseCount( SkillKind.FirePunchMissile, 100 );
+            _skillComponent.SetSkillRemainUseCount( SkillKind.FireKillMonsterBullet, 2 );
+            _skillComponent.SetSkillRemainUseCount( SkillKind.FireCollectGoldBullet, 2 );
 
             _skillComponent.SetSkillRemainUseCount( SkillKind.Stealth, _curMP );
 

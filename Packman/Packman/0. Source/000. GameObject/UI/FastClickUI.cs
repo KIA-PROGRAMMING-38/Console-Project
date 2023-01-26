@@ -53,8 +53,8 @@ namespace Packman
             : base( x, y, 2100 )
         {
             _gaugeBar = new string[GAUGE_BAR_WIDTH + 1];
-            string image = "■";
-            string accImage = "■";
+            string image = "▮";
+            string accImage = "▮";
             for ( int i = 1; i < _gaugeBar.Length; ++i )
             {
                 _gaugeBar[i] = accImage;

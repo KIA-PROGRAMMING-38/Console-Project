@@ -96,7 +96,8 @@ namespace Packman
             Map map = new Map(mapPosX, mapPosY);
             // 맵의 타일들에게 필요한 정보 미리 생성..
             Tile.Kind[,] tileKind = new Tile.Kind[mapHeight, mapWidth];
-            
+            string[,] tileImages = new string[mapHeight, mapWidth];
+
             // Gold 는 GoldGroup이 관리할 것이기 때문에 저장한 후 한번에 넘길 것..
             LinkedList<Gold> goldList = new LinkedList<Gold>();
 
@@ -164,8 +165,10 @@ namespace Packman
 
                             break;
                         default:                // 이 외는 파일 잘못 만든 것이라 강제종료..
-                            Debug.Assert( false );
-                            return;
+                            tileImages[curIndexY, curIndexX] = lines[y][x].ToString();
+                            curTileKind = Tile.Kind.Block;
+                            //Debug.Assert( false );
+                            break;
                     }
 
                     tileKind[curIndexY, curIndexX] = curTileKind;
@@ -181,7 +184,7 @@ namespace Packman
             }
 
             // Map 초기화 및 ObjectManager 에 넣어주기..
-            Debug.Assert( map.Initialize( mapWidth, mapHeight, tileKind ) );
+            Debug.Assert( map.Initialize( mapWidth, mapHeight, tileImages, tileKind ) );
             ObjectManager.Instance.AddGameObject( "Map", map );
 
             // Gold Group 객체 생성 및 ObjectManager 에 넣어주기..

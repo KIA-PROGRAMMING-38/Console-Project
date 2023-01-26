@@ -18,23 +18,25 @@ namespace Packman
         
         public Kind MyKind { get { return _kind; } }
 
-        public Tile( int x, int y, Kind kind, ConsoleColor color )
+        public Tile( int x, int y, string image, Kind kind, ConsoleColor color )
             : base( x, y, Constants.TILE_RENDER_ORDER )
         {
             _kind = kind;
             _color = color;
 
-            switch ( _kind )
-            {
-                case Kind.Empty:
-                    _image = " ";
-                    break;
+            _image = image;
 
-                case Kind.Block:
-                    _image = "─";
-                    //_image = "□";
-                    break;
-            }
+            //switch ( _kind )
+            //{
+            //    case Kind.Empty:
+            //        _image = " ";
+            //        break;
+            //
+            //    case Kind.Block:
+            //        _image = "─";
+            //        //_image = "□";
+            //        break;
+            //}
         }
 
         public override void Update()

@@ -29,7 +29,7 @@ namespace Packman
         /// <param name="height"> Map Height </param>
         /// <param name="tileKindTable"> Tile의 상태를 저장하는 룩업테이블 </param>
         /// <returns></returns>
-        public bool Initialize( int width, int height, Tile.Kind[,]? tileKindTable )
+        public bool Initialize( int width, int height, string[,] tileImages, Tile.Kind[,] tileKindTable )
         {
             base.Initialize();
 
@@ -52,7 +52,7 @@ namespace Packman
                     int tileX = x + _x;
                     int tileY = y + _y;
 
-                    Tile newTile = new Tile( tileX, tileY, tileKindTable[y, x], Constants.MAP_WALL_COLOR );
+                    Tile newTile = new Tile( tileX, tileY, tileImages[y, x], tileKindTable[y, x], Constants.MAP_WALL_COLOR );
                     Debug.Assert( newTile.Initialize() );
 
                     _tiles[y, x] = newTile;

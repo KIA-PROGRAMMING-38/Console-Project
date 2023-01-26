@@ -116,27 +116,11 @@ namespace Packman
 
             _backgroundImage = new string[_texts.Length + 4];
             _backgroundImage[0] = "=============================================";
-            _backgroundImage[1] =  "|";
-            _backgroundImage[2] =  "|";
-            _backgroundImage[3] =  "|";
-            _backgroundImage[4] =  "|";
-            _backgroundImage[5] =  "|";
-            _backgroundImage[6] =  "|";
-            _backgroundImage[7] =  "|";
-            _backgroundImage[8] =  "|";
-            _backgroundImage[9] =  "|";
-            _backgroundImage[10] = "|";
-            _backgroundImage[11] = "|";
-            _backgroundImage[12] = "|";
-            _backgroundImage[13] = "|";
-            _backgroundImage[14] = "|";
-            _backgroundImage[15] = "|";
-            _backgroundImage[16] = "|";
-            _backgroundImage[17] = "|";
-            _backgroundImage[18] = "|";
-            _backgroundImage[19] = "|";
-            _backgroundImage[20] = "|";
-			_backgroundImage[21] = "=============================================";
+            for( int i = 1; i < _texts.Length + 4 - 1; ++i )
+            {
+                _backgroundImage[i] = "|";
+            }
+			_backgroundImage[_backgroundImage.Length - 1] = "=============================================";
         }
     }
 }
