@@ -28,7 +28,7 @@ namespace SnakeGame
         public  const char WALL_ICON = '▮';
         public  const char FEED_ICON = '☺';
 
-        public  static readonly string ResourcePath = Path.Combine("Assets");
+        public  static readonly string ResourcePath = Path.Combine(@"..\..\..\","07_Assets");
 
         private int _needStageClearFeedCount = 0;
         private int _currentFeedCount = 0;

@@ -46,19 +46,21 @@ namespace SnakeGame
                         feed.IsAlive = false;
                     }
                     GameDataManager.Instance.CurrentFeedCount += 1;
+
+                    // 피드 먹으면 랜덤으로 이속 증가
                     if(RandomManager.Instance.GetRandomRangeInt(1, 10) <= 5)
                     {
                         Task.Factory.StartNew(() =>
                         {
                             long time = 1000;
-                            int speed = RandomManager.Instance.GetRandomRangeInt(2,5);
+                            int speed = RandomManager.Instance.GetRandomRangeInt(2,3);
                             int prevTimeScale = TimeManager.TimeScale;
 
                             if (TimeManager.TimeScale == speed) return;
                             
 
                             TimeManager.TimeScale *= speed;
-
+;
                             string playSpeed = $"배속 : {speed}";
                             Console.SetCursorPosition(GameDataManager.MAP_MIN_X + GameDataManager.MAP_WIDTH / 2 - playSpeed.Length/2, 8);
                             Console.Write(playSpeed);
@@ -69,6 +71,7 @@ namespace SnakeGame
                             }
                             Console.SetCursorPosition(GameDataManager.MAP_MIN_X + GameDataManager.MAP_WIDTH / 2 - playSpeed.Length / 2, 8);
                             Console.Write($"               ");
+                            
                             TimeManager.TimeScale = prevTimeScale;
                         });
                     }
