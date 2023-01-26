@@ -85,33 +85,33 @@ namespace Console_Project_Refactoring
 
             ConsoleKey key = Console.ReadKey().Key;
 
-            //for (int i = 1; i < 4; ++i)
-            //{
-            //    Console.Clear();
-            //
-            //    prologue = GameSystem.LoadPrologue(i);
-            //    for (int j = 0; j < prologue.Length; ++j)
-            //    {
-            //        Console.WriteLine(prologue[j]);
-            //    }
-            //
-            //    if (i == 1)
-            //    {
-            //        ++i;
-            //        prologue = GameSystem.LoadPrologue(i);
-            //        for (int j = 0; j < prologue.Length; ++j)
-            //        {
-            //            Console.WriteLine(prologue[j]);
-            //
-            //            Thread.Sleep(5000);
-            //        }
-            //    }
-            //
-            //    if (i == 3)
-            //    {
-            //        key = Console.ReadKey().Key;
-            //    }
-            //}
+            for (int i = 1; i < 4; ++i)
+            {
+                Console.Clear();
+            
+                prologue = GameSystem.LoadPrologue(i);
+                for (int j = 0; j < prologue.Length; ++j)
+                {
+                    Console.WriteLine(prologue[j]);
+                }
+            
+                if (i == 1)
+                {
+                    ++i;
+                    prologue = GameSystem.LoadPrologue(i);
+                    for (int j = 0; j < prologue.Length; ++j)
+                    {
+                        Console.WriteLine(prologue[j]);
+            
+                        Thread.Sleep(5000);
+                    }
+                }
+            
+                if (i == 3)
+                {
+                    key = Console.ReadKey().Key;
+                }
+            }
 
             // 초기 스테이지 룩업테이블 구성
             currentScene = Stage.Livingroom;
