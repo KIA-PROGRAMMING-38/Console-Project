@@ -30,8 +30,8 @@
 
             // 플레이어 위치를 저장하기 위한 변수
             // 기준점에서 x는  오른쪽으로 갈수록 값이 증가, y 값은 아래로 갈수록 값이 증가
-            int playerX = 3;
-            int playerY = 24;
+            int playerX = 1;
+            int playerY = 1;
             //  이런 변수를 보면 두개의 네모 박스가 생각이 나야함. 박스안에 데이터 이름 주소가 생각이 나야함.
 
             // 박스를 밀고있는 플레이어가 어떤 박스를 밀고 있는지 알기 위해 새로운 객체를 만들어야함.
@@ -79,7 +79,7 @@
 
                 // 플레이어를 그린다.
                 Console.SetCursorPosition(playerX, playerY);
-                Console.Write("Q");
+                Console.Write("♣");
 
                 // 박스를 그린다  
 
@@ -339,10 +339,10 @@
                 if (BoxOnGoalCount == GOAL_COUNT)
                 {
                     Console.Clear();
-                    Console.Write("클리어");
+                    Console.Write("CLEAR");
                     break;
                 }
-            }           //  벽 테두리 포문으로 만들기 (완료) > 좀더 간추리기
-        }               //  박스랑 골이랑 연동되는거 처리하기
+            }           
+        }               
     }
 }
