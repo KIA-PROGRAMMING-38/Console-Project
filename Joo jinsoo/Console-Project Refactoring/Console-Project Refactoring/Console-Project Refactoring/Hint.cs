@@ -13,6 +13,8 @@ namespace Console_Project_Refactoring
 
         public static bool[] answerOpportunity = new bool[4];
 
+
+        // 힌트 위치 랜덤으로 지정
         public static InteractionObject[] RandomExistHint(int[] answerList)
         {
             const int InteractionObjectLength = 13;

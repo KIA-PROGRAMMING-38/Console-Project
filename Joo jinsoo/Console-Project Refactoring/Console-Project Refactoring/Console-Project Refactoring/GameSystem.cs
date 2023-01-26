@@ -336,6 +336,7 @@ namespace Console_Project_Refactoring
             Console.Write(icon);
         }
 
+        // 맵 데이터 룩업테이블 작성
         public static void MadeMapMetaData(MapIcon[,] mapMetaData,
             in Stage currentScene, Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
             Toilet[] toiletDoor, Bedroom[] bedroomDoor, Frontdoor[] frontDoor,
@@ -383,6 +384,7 @@ namespace Console_Project_Refactoring
             }
         }
 
+        // 상호작용 필드 데이터 저장
         public static void MadeInteractionData(InteractionObject[,] mapInteractionData, 
                 Stage currentScene, Interactive_A[] interactiveFieldA,
                 Interactive_B[] interactiveFieldB, Interactive_C[] interactiveFieldC)
