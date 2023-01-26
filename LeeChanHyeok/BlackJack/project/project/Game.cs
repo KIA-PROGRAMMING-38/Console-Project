@@ -45,8 +45,6 @@ namespace project
             
             if (cardDealer.cardIndex == 0)
             {
-                mapRender.money -= backGroundMoney;
-                
                 patternIndex = random.Next(cardInfo.pattern.Length);
                 patterns = cardInfo.pattern[patternIndex];
                 GameCoordinate(coordinate.dealerFrontCardPatternCoordinate[cardDealer.cardIndex].X, coordinate.dealerFrontCardPatternCoordinate[cardDealer.cardIndex].Y);
@@ -84,7 +82,7 @@ namespace project
             // 레이스 선택 시
             if (mapRender.playerX + 3 == mapRender.menu[0].X && mapRender.playerY == mapRender.menu[0].Y)
             {
-                mapRender.money = mapRender.money - (backGroundMoney * 2);
+                mapRender.money -= (backGroundMoney * 2);
                 
                 patternIndex = random.Next(cardInfo.pattern.Length);
                 patterns = cardInfo.pattern[patternIndex];
@@ -127,9 +125,6 @@ namespace project
             // 체크 선택시
             if (mapRender.playerX + 3 == mapRender.menu[1].X && mapRender.playerY == mapRender.menu[1].Y)
             {
-
-                mapRender.money -= 0;
-                                
                 patternIndex = random.Next(cardInfo.pattern.Length);
                 patterns = cardInfo.pattern[patternIndex];
                 GameCoordinate(coordinate.dealerFrontCardPatternCoordinate[cardDealer.cardIndex].X, coordinate.dealerFrontCardPatternCoordinate[cardDealer.cardIndex].Y);
@@ -212,15 +207,11 @@ namespace project
             }
 
             //파산 후
-            if(cardDealer.cardIndex == 3 && cardUser.cardIndex == 3)
+            if (mapRender.money < 0)
             {
-
-                if (mapRender.money < 1)
-                {
-                    Console.Clear();
-                    Console.Write("파산!");
-                    Environment.Exit(0);
-                }
+                Console.Clear();
+                Console.Write("파산!");
+                Environment.Exit(0);
             }
         }
 
@@ -230,12 +221,9 @@ namespace project
             {
                 if (1 <= bet)
                 {
-                    mapRender.money = ((backGroundMoney * 2) * 2) * bet;
+                    mapRender.money += ((backGroundMoney * 2) + backGroundMoney) * bet;
                 }
-                else
-                {
-                    mapRender.money += backGroundMoney;
-                }
+                
                 Console.SetCursorPosition(71, 20);
                 Console.Write("Player가 승리하였습니다.");
                 Thread.Sleep(1000);
@@ -243,6 +231,7 @@ namespace project
                 saveUser = 0;
                 cardDealer.cardIndex = 0;
                 cardUser.cardIndex = 0;
+                bet = 0;
                 Console.Clear();
                 return;
                 
@@ -298,19 +287,17 @@ namespace project
             {
                 Console.SetCursorPosition(71, 20);
                 Console.Write("Dealer 버스트!");
-                Thread.Sleep(1000);
                 if (1 <= bet)
                 {
-                    mapRender.money = ((backGroundMoney * 2) * 2) * bet;
+                    ++bet;
+                    mapRender.money += ((backGroundMoney * 2) + backGroundMoney) * bet;
                 }
-                else
-                {
-                    mapRender.money += backGroundMoney * cardDealer.cardIndex;
-                }
+                Thread.Sleep(1000);
                 saveDealer = 0;
                 saveUser = 0;
                 cardDealer.cardIndex = 0;
                 cardUser.cardIndex = 0;
+                bet = 0;
                 Console.Clear();
                 return true;
             }
