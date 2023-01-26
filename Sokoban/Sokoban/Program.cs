@@ -81,7 +81,7 @@
                 Console.SetCursorPosition(playerX, playerY);
                 Console.Write("♣");
 
-                // 박스를 그린다  
+                // 박스를 그린다
 
                 for (int boxi = 0; boxi < BOX_COUNT; ++boxi)
                 {
