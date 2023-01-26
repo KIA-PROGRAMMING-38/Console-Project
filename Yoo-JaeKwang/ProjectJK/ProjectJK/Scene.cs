@@ -108,7 +108,7 @@ namespace ProjectJK
             if (Stage.IsStageChange())
             {
                 Stage.ChangeStage(ref walls, ref villageNPCs, ref stageUpPortal, ref stageDownPortal,
-                                   ref slimes, ref foxes, ref goblins);
+                                   ref slimes, ref foxes, ref goblins, kingSlime);
             }
 
             Stage.Update(player, walls, villageNPCs, stageUpPortal, stageDownPortal,

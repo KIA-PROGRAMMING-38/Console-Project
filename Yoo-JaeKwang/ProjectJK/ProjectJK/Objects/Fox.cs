@@ -24,7 +24,6 @@ namespace ProjectJK.Objects
 
         public static void InitFoxRender(Fox[] fox)
         {
-            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Fox", ConsoleColor.Black);
             Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {fox[0].ATK:D3}", ConsoleColor.Black);
             Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {fox[0].DEF:D3}", ConsoleColor.Black);
         }
@@ -60,7 +59,7 @@ namespace ProjectJK.Objects
         }
         public static void RenderHP(Fox fox)
         {
-            Game.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{fox.CurrentHP:D3} / {fox.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.BattleCursor_X + 12, Game.BattleCursor_Y + 1, $"{fox.CurrentHP:D3} / {fox.MaxHP:D3}", ConsoleColor.Black);
         }
         public static void Update(Fox[] fox, Player player, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
         {

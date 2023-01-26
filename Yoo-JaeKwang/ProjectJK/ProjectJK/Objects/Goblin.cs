@@ -24,7 +24,6 @@ namespace ProjectJK.Objects
 
         public static void InitGoblinRender(Goblin[] goblin)
         {
-            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Goblin", ConsoleColor.Black);
             Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {goblin[0].ATK:D3}", ConsoleColor.Black);
             Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {goblin[0].DEF:D3}", ConsoleColor.Black);
         }
@@ -60,7 +59,7 @@ namespace ProjectJK.Objects
         }
         public static void RenderHP(Goblin goblin)
         {
-            Game.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{goblin.CurrentHP:D3} / {goblin.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.BattleCursor_X + 12, Game.BattleCursor_Y + 1, $"{goblin.CurrentHP:D3} / {goblin.MaxHP:D3}", ConsoleColor.Black);
         }
         public static void Update(Goblin[] goblin, Player player, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
         {

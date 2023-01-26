@@ -137,7 +137,7 @@ namespace ProjectJK.Objects
                 player.Money = 99999999;
             }
         }
-        public static void Die(Player player)
+        public static void Die(Player player, SelectCursor selectCursor)
         {
             if (player.CurrentHP <= 0)
             {
@@ -154,6 +154,9 @@ namespace ProjectJK.Objects
                 }
                 player.IsOnBattle = false;
                 player.CanMove = true;
+                selectCursor.X = Game.DialogCursor_X;
+                selectCursor.Y = Game.DialogCursor_Y;
+                selectCursor.PastY = Game.DialogCursor_Y;
                 Stage.SetNextStage(StageNum.Stage00);
             }
         }
@@ -728,9 +731,9 @@ namespace ProjectJK.Objects
                             if (player.ATK - slimes[player.MonsterIndex].DEF > 0)
                             {
                                 slimes[player.MonsterIndex].CurrentHP -= player.ATK - slimes[player.MonsterIndex].DEF;
-                                Slime.RenderHP(slimes[player.MonsterIndex]);
                                 if (slimes[player.MonsterIndex].CurrentHP <= 0)
                                 {
+                                    slimes[player.MonsterIndex].CurrentHP = 0;
                                     slimes[player.MonsterIndex].Alive = false;
                                     player.CurrentEXP += slimes[player.MonsterIndex].EXP;
                                     player.Money += slimes[player.MonsterIndex].Money;
@@ -742,6 +745,7 @@ namespace ProjectJK.Objects
                                     selectCursor.PastY = Game.DialogCursor_Y;
                                     RenderNow(player);
                                 }
+                                Slime.RenderHP(slimes[player.MonsterIndex]);
                             }
                             if (slimes[player.MonsterIndex].Alive && slimes[player.MonsterIndex].ATK - player.DEF > 0)
                             {
@@ -786,9 +790,9 @@ namespace ProjectJK.Objects
                             if (player.ATK - foxes[player.MonsterIndex].DEF > 0)
                             {
                                 foxes[player.MonsterIndex].CurrentHP -= player.ATK - foxes[player.MonsterIndex].DEF;
-                                Fox.RenderHP(foxes[player.MonsterIndex]);
                                 if (foxes[player.MonsterIndex].CurrentHP <= 0)
                                 {
+                                    foxes[player.MonsterIndex].CurrentHP = 0;
                                     foxes[player.MonsterIndex].Alive = false;
                                     player.CurrentEXP += foxes[player.MonsterIndex].EXP;
                                     player.Money += foxes[player.MonsterIndex].Money;
@@ -800,6 +804,7 @@ namespace ProjectJK.Objects
                                     selectCursor.PastY = Game.DialogCursor_Y;
                                     RenderNow(player);
                                 }
+                                Fox.RenderHP(foxes[player.MonsterIndex]);
                             }
                             if (foxes[player.MonsterIndex].Alive && foxes[player.MonsterIndex].ATK - player.DEF > 0)
                             {
@@ -844,9 +849,9 @@ namespace ProjectJK.Objects
                             if (player.ATK - goblins[player.MonsterIndex].DEF > 0)
                             {
                                 goblins[player.MonsterIndex].CurrentHP -= player.ATK - goblins[player.MonsterIndex].DEF;
-                                Goblin.RenderHP(goblins[player.MonsterIndex]);
                                 if (goblins[player.MonsterIndex].CurrentHP <= 0)
                                 {
+                                    goblins[player.MonsterIndex].CurrentHP = 0;
                                     goblins[player.MonsterIndex].Alive = false;
                                     player.CurrentEXP += goblins[player.MonsterIndex].EXP;
                                     player.Money += goblins[player.MonsterIndex].Money;
@@ -858,6 +863,7 @@ namespace ProjectJK.Objects
                                     selectCursor.PastY = Game.DialogCursor_Y;
                                     RenderNow(player);
                                 }
+                                Goblin.RenderHP(goblins[player.MonsterIndex]);
                             }
                             if (goblins[player.MonsterIndex].Alive && goblins[player.MonsterIndex].ATK - player.DEF > 0)
                             {
@@ -902,9 +908,9 @@ namespace ProjectJK.Objects
                             if (player.ATK - kingSlime.DEF > 0)
                             {
                                 kingSlime.CurrentHP -= player.ATK - kingSlime.DEF;
-                                KingSlime.RenderHP(kingSlime);
                                 if (kingSlime.CurrentHP <= 0)
                                 {
+                                    kingSlime.CurrentHP = 0;
                                     kingSlime.Alive = false;
                                     player.CurrentEXP += kingSlime.EXP;
                                     player.Money += kingSlime.Money;
@@ -917,12 +923,12 @@ namespace ProjectJK.Objects
                                     selectCursor.PastY = Game.DialogCursor_Y;
                                     RenderNow(player);
                                 }
+                                KingSlime.RenderHP(kingSlime);
                             }
                             if (kingSlime.Alive && kingSlime.ATK - player.DEF > 0)
                             {
                                 player.CurrentHP -= kingSlime.ATK - player.DEF;
                                 Game.ObjRender(Game.Level_HP_Money_X, Game.HP_STATUS_Y + 1, $" {player.CurrentHP:D3}/{player.MaxHP:D3}", ConsoleColor.Black);
-
                             }
                         }
                     }

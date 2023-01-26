@@ -26,7 +26,6 @@ namespace ProjectJK.Objects
 
         public static void InitSlimeRender(Slime[] slime)
         {
-            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Slime", ConsoleColor.Black);
             Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {slime[0].ATK:D3}", ConsoleColor.Black);
             Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {slime[0].DEF:D3}", ConsoleColor.Black);
         }
@@ -63,7 +62,7 @@ namespace ProjectJK.Objects
         }
         public static void RenderHP(Slime slime)
         {
-            Game.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{slime.CurrentHP:D3} / {slime.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.BattleCursor_X + 12, Game.BattleCursor_Y + 1, $"{slime.CurrentHP:D3} / {slime.MaxHP:D3}", ConsoleColor.Black);
         }
         public static void Update(Slime[] slime, Player player, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
         {

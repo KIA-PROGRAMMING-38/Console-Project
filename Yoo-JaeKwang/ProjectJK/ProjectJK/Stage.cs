@@ -36,7 +36,7 @@ namespace ProjectJK
             _isStageChange = true;
         }
         public static void ChangeStage(ref Wall[] walls, ref VillageNPC[] villageNPCs, ref StageUpPortal stageUpPortal, ref StageDownPortal stageDownPortal,
-                                    ref Slime[] slimes, ref Fox[] foxes, ref Goblin[] goblins)
+                                    ref Slime[] slimes, ref Fox[] foxes, ref Goblin[] goblins, KingSlime kingSlime)
         {
             if (_isStageChange)
             {
@@ -46,11 +46,11 @@ namespace ProjectJK
 
                 _nextStage = default;
 
-                InitStage(ref walls, ref villageNPCs, ref stageUpPortal, ref stageDownPortal, ref slimes, ref foxes, ref goblins);
+                InitStage(ref walls, ref villageNPCs, ref stageUpPortal, ref stageDownPortal, ref slimes, ref foxes, ref goblins, kingSlime);
             }
         }
         public static void InitStage(ref Wall[] walls, ref VillageNPC[] villageNPCs, ref StageUpPortal stageUpPortal, ref StageDownPortal stageDownPortal,
-                                    ref Slime[] slimes, ref Fox[] foxes, ref Goblin[] goblins)
+                                    ref Slime[] slimes, ref Fox[] foxes, ref Goblin[] goblins, KingSlime kingSlime)
         {
             switch (_currentStage)
             {
@@ -67,7 +67,7 @@ namespace ProjectJK
                     InitStage03(out walls, out stageUpPortal, out stageDownPortal, out goblins);
                     break;
                 case StageNum.Stage04:
-                    InitStage04(out walls, out stageDownPortal);
+                    InitStage04(out walls, out stageDownPortal, kingSlime);
                     break;
 
             }
@@ -104,6 +104,7 @@ namespace ProjectJK
             Wall.Render(walls);
             StageUpPortal.Render(stageUpPortal);
             StageDownPortal.Render(stageDownPortal);
+            Slime.InitSlimeRender(slimes);
         }
         public static void InitStage02(out Wall[] walls, out StageUpPortal stageUpPortal, out StageDownPortal stageDownPortal, out Fox[] foxes)
         {
@@ -120,6 +121,7 @@ namespace ProjectJK
             Wall.Render(walls);
             StageUpPortal.Render(stageUpPortal);
             StageDownPortal.Render(stageDownPortal);
+            Fox.InitFoxRender(foxes);
         }
         public static void InitStage03(out Wall[] walls, out StageUpPortal stageUpPortal, out StageDownPortal stageDownPortal, out Goblin[] goblins)
         {
@@ -136,8 +138,9 @@ namespace ProjectJK
             Wall.Render(walls);
             StageUpPortal.Render(stageUpPortal);
             StageDownPortal.Render(stageDownPortal);
+            Goblin.InitGoblinRender(goblins);
         }
-        public static void InitStage04(out Wall[] walls, out StageDownPortal stageDownPortal)
+        public static void InitStage04(out Wall[] walls, out StageDownPortal stageDownPortal, KingSlime kingSlime)
         {
             Console.Clear();
             _lines = LoadUIFrame(StageNum.Stage04);
@@ -151,6 +154,7 @@ namespace ProjectJK
             ParseStage04(_lines, out walls, out stageDownPortal);
             Wall.Render(walls);
             StageDownPortal.Render(stageDownPortal);
+            KingSlime.InitKingSlimeRender(kingSlime);
         }
         private static string[] LoadStage(StageNum stageNum)
         {
@@ -523,7 +527,7 @@ namespace ProjectJK
 
             Player.LevelUp(player);
             Player.LimitState(player);
-            Player.Die(player);
+            Player.Die(player, selectCursor);
         }
         public static void UpdateStage02(Player player, Wall[] walls, Fox[] foxes, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal, SelectCursor selectCursor)
         {
@@ -545,7 +549,7 @@ namespace ProjectJK
 
             Player.LevelUp(player);
             Player.LimitState(player);
-            Player.Die(player);
+            Player.Die(player, selectCursor);
         }
         public static void UpdateStage03(Player player, Wall[] walls, Goblin[] goblins, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal, SelectCursor selectCursor)
         {
@@ -567,7 +571,7 @@ namespace ProjectJK
 
             Player.LevelUp(player);
             Player.LimitState(player);
-            Player.Die(player);
+            Player.Die(player, selectCursor);
         }
         public static void UpdateStage04(Player player, Wall[] walls, KingSlime kingSlime, StageDownPortal stageDownPortal, SelectCursor selectCursor)
         {
@@ -587,7 +591,7 @@ namespace ProjectJK
 
             Player.LevelUp(player);
             Player.LimitState(player);
-            Player.Die(player);
+            Player.Die(player, selectCursor);
         }
 
     }
