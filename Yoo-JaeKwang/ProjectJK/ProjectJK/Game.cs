@@ -10,7 +10,12 @@ using System.Threading.Tasks;
 
 namespace ProjectJK
 {
-    internal class Game
+    public enum ExitKind
+    {
+        TitleExit,
+        GameClear,
+    }
+    public class Game
     {
         public const int Level_HP_Money_X = 31;
         public const int EXP_X = 40;
@@ -23,81 +28,126 @@ namespace ProjectJK
         public const int DialogCursor_Y = 18;
         public const int BattleCursor_X = 63;
         public const int BattleCursor_Y = 10;
-
-        public bool IsGameDoing;
-        public bool IsTitleDoing;
-        public bool IsStage00Doing;
-        public bool IsStage01Doing;
-        public bool IsStage02Doing;
-        public bool IsStage03Doing;
-        public bool IsStage04Doing;
-
-        public static class Function
+               
+        public static void Initializing()
         {
-            public static void Initializing()
-            {
-                Console.ResetColor();
-                Console.CursorVisible = false;
-                Console.Title = "RPG";
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.OutputEncoding = Encoding.UTF8;
-                Console.Clear();
-            }
+            Console.ResetColor();
+            Console.CursorVisible = false;
+            Console.Title = "RPG";
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.Clear();
+        }
 
-            private static bool _isGameDoing = true;
-            public static void Run()
+        private static bool _isGameDoing = true;
+        public static void Run(Player player, Wall[] walls, VillageNPC[] villageNPCs, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal,
+                                Slime[] slimes, Fox[] foxes, Goblin[] goblins, KingSlime kingSlime, SelectCursor selectCursor)
+        {
+            while (_isGameDoing)
             {
-                while (_isGameDoing)
-                {
-
-                    Render();
-                    ProcessInput();
-                    Update();
-                }
-            }
-
-            private static void Render()
-            {
-                Scene.Render();
-            }
-
-            private static void ProcessInput()
-            {
-                Input.Process();
-            }
-
-            private static void Update()
-            {
+                Thread.Sleep(20);
                 if (Scene.IsSceneChange())
                 {
-                    Scene.ChangeScene();
+                    Scene.ChangeScene(player, ref walls, ref villageNPCs, ref stageUpPortal, selectCursor);
                 }
-                Scene.Update();
-            }
 
-            public static void ObjRender(int objX, int objY, string icon, ConsoleColor color)
+                Render(player, walls, villageNPCs, stageUpPortal, stageDownPortal,
+                     slimes, foxes, goblins, kingSlime, selectCursor);
+                ProcessInput();
+                Update(player, ref walls, ref villageNPCs, ref stageUpPortal, ref stageDownPortal,
+                     ref slimes, ref foxes, ref goblins, kingSlime, selectCursor);
+            }
+        }
+
+        private static void Render(Player player, Wall[] walls, VillageNPC[] villageNPCs, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal,
+                                Slime[] slimes, Fox[] foxes, Goblin[] goblins, KingSlime kingSlime, SelectCursor selectCursor)
+        {
+            switch (Scene.GetCurrentScene())
             {
-                Console.SetCursorPosition(objX, objY);
-                Console.ForegroundColor = color;
-                Console.Write(icon);
+                case SceneKind.Title:
+                    Scene.RenderTitle(selectCursor);
+
+                    break;
+                case SceneKind.InGame:
+                    Scene.RenderInGame(player, walls, villageNPCs, stageUpPortal, stageDownPortal,
+                     slimes, foxes, goblins, kingSlime, selectCursor);
+
+                    break;
+            }
+        }
+
+        private static void ProcessInput()
+        {
+            Input.Process();
+        }
+
+        private static void Update(Player player, ref Wall[] walls, ref VillageNPC[] villageNPCs, ref StageUpPortal stageUpPortal, ref StageDownPortal stageDownPortal,
+                               ref Slime[] slimes, ref Fox[] foxes, ref Goblin[] goblins, KingSlime kingSlime, SelectCursor selectCursor)
+        {
+            switch (Scene.GetCurrentScene())
+            {
+                case SceneKind.Title:
+                    Scene.UpdateTitle(selectCursor, player);
+
+                    break;
+
+                case SceneKind.InGame:
+                    Scene.UpdateInGame(player, ref walls, ref villageNPCs, ref stageUpPortal, ref stageDownPortal,
+                     ref slimes, ref foxes, ref goblins, kingSlime, selectCursor);
+
+                    break;
+            }
+        }
+
+        public static void ObjRender(int objX, int objY, string icon, ConsoleColor color)
+        {
+            Console.SetCursorPosition(objX, objY);
+            Console.ForegroundColor = color;
+            Console.Write(icon);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void ExitWithError(string errorMsg)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine(errorMsg);
+            Environment.Exit(1);
+        }
+
+        public static void TitleExit()
+        {
+            Console.Clear();
+            _lines = LoadExit(ExitKind.TitleExit);
+            ParseExit(_lines);
+            Environment.Exit(0);
+        }
+        public static void GameClear()
+        {
+            Console.Clear();
+            _lines = LoadExit(ExitKind.GameClear);
+            ParseExit(_lines);
+            Environment.Exit(0);
+        }
+
+        private static string[] _lines = null;
+        private static string[] LoadExit(ExitKind exitKind)
+        {
+            string exitFilePath = Path.Combine("..\\..\\..\\Assets", "Exit", $"Exit{(int)exitKind:D2}.txt");
+            if (false == File.Exists(exitFilePath))
+            {
+                ExitWithError($"종료 파일 로드 오류{exitFilePath}");
+            }
+            return File.ReadAllLines(exitFilePath);
+        }
+        private static void ParseExit(string[] lines)
+        {
+            for (int i = 0; i < lines.Length; ++i)
+            {
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine(lines[i]);
                 Console.ForegroundColor = ConsoleColor.White;
-            }
-
-            public static void ExitWithError(string errorMsg)
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine(errorMsg);
-                Environment.Exit(1);
-            }
-
-            public static void GameClear()
-            {
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("그는 더 넓은 세상으로 떠났습니다.\n\n축하합니다 게임을 클리어 하셨습니다.");
-                Environment.Exit(0);
             }
         }
     }

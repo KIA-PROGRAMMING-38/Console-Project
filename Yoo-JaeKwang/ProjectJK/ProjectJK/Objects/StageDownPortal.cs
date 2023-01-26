@@ -10,12 +10,9 @@ namespace ProjectJK.Objects
     {
         public int X;
         public int Y;
-        public static class Function
+        public static void Render(StageDownPortal stageDownPortal)
         {
-            public static void Render(StageDownPortal stageDownPortal)
-            {
-                Game.Function.ObjRender(stageDownPortal.X, stageDownPortal.Y, "℧", ConsoleColor.Black);
-            }
+            Game.ObjRender(stageDownPortal.X, stageDownPortal.Y, "℧", ConsoleColor.Black);
         }
     }
 }

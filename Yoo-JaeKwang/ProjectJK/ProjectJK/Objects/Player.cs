@@ -37,94 +37,124 @@ namespace ProjectJK.Objects
         public bool GameClear;
         public int MonsterIndex;
         public bool BeginnerSupport;
-        public static class Function
+        public static void RenderPast(Player player)
         {
-            public static void RenderPast(Player player)
+            Game.ObjRender(player.PastX, player.PastY, "☺", ConsoleColor.White);
+        }
+        public static void RenderNow(Player player)
+        {
+            Game.ObjRender(player.X, player.Y, "☺", ConsoleColor.Black);
+        }
+        public static void RenderState(Player player)
+        {
+            Game.ObjRender(Game.Level_HP_Money_X, Game.Level_EXP_Battle_Y + 1, $" {player.Level:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.EXP_X, Game.Level_EXP_Battle_Y + 1, $" {player.CurrentEXP:D3}/{player.MaxEXP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Level_HP_Money_X, Game.HP_STATUS_Y + 1, $" {player.CurrentHP:D3}/{player.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.HP_STATUS_Y + 1, $" ATK: {player.ATK:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.HP_STATUS_Y + 2, $" DEF: {player.DEF:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Level_HP_Money_X, Game.Money_STATUS_Y + 1, $" {player.Money:D8} G", ConsoleColor.Black);
+        }
+        public static void Move(Player player)
+        {
+            if (player.CanMove)
             {
-                Game.Function.ObjRender(player.PastX, player.PastY, "☺", ConsoleColor.White);
-            }
-            public static void RenderNow(Player player)
-            {
-                Game.Function.ObjRender(player.X, player.Y, "☺", ConsoleColor.Black);
-            }
-            public static void Move(Player player)
-            {
-                if (player.CanMove)
+                if (Input.IsKeyDown(ConsoleKey.LeftArrow))
                 {
-                    if (Input.IsKeyDown(ConsoleKey.LeftArrow))
-                    {
-                        player.PastX = player.X;
-                        player.PastY = player.Y;
-                        --player.X;
-                        player.MoveDirection = Direction.Left;
-                    }
-                    if (Input.IsKeyDown(ConsoleKey.RightArrow))
-                    {
-                        player.PastX = player.X;
-                        player.PastY = player.Y;
-                        ++player.X;
-                        player.MoveDirection = Direction.Right;
-                    }
-                    if (Input.IsKeyDown(ConsoleKey.UpArrow))
-                    {
-                        player.PastX = player.X;
-                        player.PastY = player.Y;
-                        --player.Y;
-                        player.MoveDirection = Direction.Up;
-                    }
-                    if (Input.IsKeyDown(ConsoleKey.DownArrow))
-                    {
-                        player.PastX = player.X;
-                        player.PastY = player.Y;
-                        ++player.Y;
-                        player.MoveDirection = Direction.Down;
-                    }
+                    player.PastX = player.X;
+                    player.PastY = player.Y;
+                    --player.X;
+                    player.MoveDirection = Direction.Left;
+                }
+                if (Input.IsKeyDown(ConsoleKey.RightArrow))
+                {
+                    player.PastX = player.X;
+                    player.PastY = player.Y;
+                    ++player.X;
+                    player.MoveDirection = Direction.Right;
+                }
+                if (Input.IsKeyDown(ConsoleKey.UpArrow))
+                {
+                    player.PastX = player.X;
+                    player.PastY = player.Y;
+                    --player.Y;
+                    player.MoveDirection = Direction.Up;
+                }
+                if (Input.IsKeyDown(ConsoleKey.DownArrow))
+                {
+                    player.PastX = player.X;
+                    player.PastY = player.Y;
+                    ++player.Y;
+                    player.MoveDirection = Direction.Down;
                 }
             }
-            
-            public static void LevelUp(Player player)
+        }
+
+        public static void LevelUp(Player player)
+        {
+            if (player.CurrentEXP >= player.MaxEXP)
             {
-                if(player.CurrentEXP >= player.MaxEXP)
-                {
-                    player.CurrentEXP -= player.MaxEXP;
-                    player.MaxEXP += 10;
-                    if (player.MaxEXP > 999)
-                    {
-                        player.MaxEXP = 999;
-                    }
-                    player.Level += 1;
-                    if (player.Level > 999)
-                    {
-                        player.Level = 999;
-                    }
-                    player.MaxHP += 10;
-                    if (player.MaxHP > 999)
-                    {
-                        player.MaxHP = 999;
-                    }
-                    player.CurrentHP = player.MaxHP;
-                    player.ATK += 1;
-                    if (player.ATK > 999)
-                    {
-                        player.ATK = 999;
-                    }
-                    player.DEF += 1;
-                    if (player.DEF > 999)
-                    {
-                        player.DEF = 999;
-                    }
-                }
+                player.CurrentEXP -= player.MaxEXP;
+                player.MaxEXP += 10;
+                player.Level += 1;
+                player.MaxHP += 10;
+                player.CurrentHP = player.MaxHP;
+                player.ATK += 1;
+                player.DEF += 1;
             }
-            public static bool Die(Player player)
+        }
+        public static void LimitState(Player player)
+        {
+            if (player.CurrentEXP > 999)
             {
-                if (player.CurrentHP <= 0)
+                player.CurrentEXP = 999;
+            }
+            if (player.MaxEXP > 999)
+            {
+                player.MaxEXP = 999;
+            }
+            if (player.Level > 999)
+            {
+                player.Level = 999;
+            }
+            if (player.CurrentHP > 999)
+            {
+                player.CurrentHP = 999;
+            }
+            if (player.MaxHP > 999)
+            {
+                player.MaxHP = 999;
+            }
+            if (player.ATK > 999)
+            {
+                player.ATK = 999;
+            }
+            if (player.DEF > 999)
+            {
+                player.DEF = 999;
+            }
+            if (player.Money > 99999999)
+            {
+                player.Money = 99999999;
+            }
+        }
+        public static void Die(Player player)
+        {
+            if (player.CurrentHP <= 0)
+            {
+                player.CurrentEXP = 0;
+                player.CurrentHP = player.MaxHP;
+                player.X = 12;
+                player.Y = 7;
+                player.PastX = 0;
+                player.PastY = 0;
+                player.Money -= player.Level * 100;
+                if (player.Money < 0)
                 {
-                    return true;
+                    player.Money = 0;
                 }
-                else
-                {
-                    return false;
-                }
+                player.IsOnBattle = false;
+                player.CanMove = true;
+                Stage.SetNextStage(StageNum.Stage00);
             }
         }
         public static class Collision
@@ -158,7 +188,7 @@ namespace ProjectJK.Objects
                         player.Y = objY - 1;
                         break;
                     default:
-                        Game.Function.ExitWithError($"플레이어 이동 방향 데이터 오류{player.MoveDirection}");
+                        Game.ExitWithError($"플레이어 이동 방향 데이터 오류{player.MoveDirection}");
                         break;
                 }
             }
@@ -175,48 +205,27 @@ namespace ProjectJK.Objects
                     break;
                 }
             }
-            public static void WithVillageNPC(Player player, VillageChief villageChief, VillageRecoveringMerchant villageRecoveringMerchant, VillageMaxHPMerchant villageMaxHPMerchant,
-                                                                                            VillageATKMerchant villageATKMerchant, VillageDEFMerchant villageDEFMerchant)
+            public static void WithVillageNPC(Player player, VillageNPC[] villageNPCs)
             {
-                WithVillageChief(player, villageChief);
-                WithVillageRecoveringMerchant(player, villageRecoveringMerchant);
-                WithVillageMaxHPMerchant(player, villageMaxHPMerchant);
-                WithVillageATKMerchant(player, villageATKMerchant);
-                WithVillageDEFMerchant(player, villageDEFMerchant);
-            }
-            private static void WithVillageChief(Player player, VillageChief villageChief)
-            {
-                if (isCollision(player, villageChief.X, villageChief.Y))
+                if (isCollision(player, villageNPCs[0].X, villageNPCs[0].Y))
                 {
-                    Back(player, villageChief.X, villageChief.Y);
+                    Back(player, villageNPCs[0].X, villageNPCs[0].Y);
                 }
-            }
-            private static void WithVillageRecoveringMerchant(Player player, VillageRecoveringMerchant villageRecoveringMerchant)
-            {
-                if (isCollision(player, villageRecoveringMerchant.X, villageRecoveringMerchant.Y))
+                if (isCollision(player, villageNPCs[1].X, villageNPCs[1].Y))
                 {
-                    Back(player, villageRecoveringMerchant.X, villageRecoveringMerchant.Y);
+                    Back(player, villageNPCs[1].X, villageNPCs[1].Y);
                 }
-            }
-            private static void WithVillageMaxHPMerchant(Player player, VillageMaxHPMerchant villageMaxHPMerchant)
-            {
-                if (isCollision(player, villageMaxHPMerchant.X, villageMaxHPMerchant.Y))
+                if (isCollision(player, villageNPCs[2].X, villageNPCs[2].Y))
                 {
-                    Back(player, villageMaxHPMerchant.X, villageMaxHPMerchant.Y);
+                    Back(player, villageNPCs[2].X, villageNPCs[2].Y);
                 }
-            }
-            private static void WithVillageATKMerchant(Player player, VillageATKMerchant villageATKMerchant)
-            {
-                if (isCollision(player, villageATKMerchant.X, villageATKMerchant.Y))
+                if (isCollision(player, villageNPCs[3].X, villageNPCs[3].Y))
                 {
-                    Back(player, villageATKMerchant.X, villageATKMerchant.Y);
+                    Back(player, villageNPCs[3].X, villageNPCs[3].Y);
                 }
-            }
-            private static void WithVillageDEFMerchant(Player player, VillageDEFMerchant villageDEFMerchant)
-            {
-                if (isCollision(player, villageDEFMerchant.X, villageDEFMerchant.Y))
+                if (isCollision(player, villageNPCs[4].X, villageNPCs[4].Y))
                 {
-                    Back(player, villageDEFMerchant.X, villageDEFMerchant.Y);
+                    Back(player, villageNPCs[4].X, villageNPCs[4].Y);
                 }
             }
             public static void WithStageUpPortal(Player player, StageUpPortal stageUpPortal)
@@ -233,11 +242,11 @@ namespace ProjectJK.Objects
                     Back(player, stageDownPortal.X, stageDownPortal.Y);
                 }
             }
-            public static void WithSlime(Player player, Slime[] slime)
+            public static void WithSlime(Player player, Slime[] slimes)
             {
-                for (int i = 0; i < slime.Length; ++i)
+                for (int i = 0; i < slimes.Length; ++i)
                 {
-                    if (isCollision(player, slime[i].X, slime[i].Y) && slime[i].Alive)
+                    if (isCollision(player, slimes[i].X, slimes[i].Y) && slimes[i].Alive)
                     {
                         player.CanMove = false;
                         player.IsOnBattle = true;
@@ -246,11 +255,11 @@ namespace ProjectJK.Objects
                     }
                 }
             }
-            public static void WithFox(Player player, Fox[] fox)
+            public static void WithFox(Player player, Fox[] foxes)
             {
-                for (int i = 0; i < fox.Length; ++i)
+                for (int i = 0; i < foxes.Length; ++i)
                 {
-                    if (isCollision(player, fox[i].X, fox[i].Y) && fox[i].Alive)
+                    if (isCollision(player, foxes[i].X, foxes[i].Y) && foxes[i].Alive)
                     {
                         player.CanMove = false;
                         player.IsOnBattle = true;
@@ -259,11 +268,11 @@ namespace ProjectJK.Objects
                     }
                 }
             }
-            public static void WithGoblin(Player player, Goblin[] goblin)
+            public static void WithGoblin(Player player, Goblin[] goblins)
             {
-                for (int i = 0; i < goblin.Length; ++i)
+                for (int i = 0; i < goblins.Length; ++i)
                 {
-                    if (isCollision(player, goblin[i].X, goblin[i].Y) && goblin[i].Alive)
+                    if (isCollision(player, goblins[i].X, goblins[i].Y) && goblins[i].Alive)
                     {
                         player.CanMove = false;
                         player.IsOnBattle = true;
@@ -283,70 +292,51 @@ namespace ProjectJK.Objects
         }
         public static class Interaction
         {
-            public static void RenderVillageNPC(Player player, VillageChief villageChief, VillageRecoveringMerchant villageRecoveringMerchant, VillageMaxHPMerchant villageMaxHPMerchant,
-                                                                                            VillageATKMerchant villageATKMerchant, VillageDEFMerchant villageDEFMerchant)
+            public static void RenderVillageNPC(Player player, VillageNPC[] villageNPCs)
             {
-                RenderVillageChief(player, villageChief);
-                RenderVillageRecoveringMerchant(player, villageRecoveringMerchant);
-                RenderVillageMaxHPMerchant(player, villageMaxHPMerchant);
-                RenderVillageATKMerchant(player, villageATKMerchant);
-                RenderVillageDEFMerchant(player, villageDEFMerchant);
-
-            }
-            private static void RenderVillageChief(Player player, VillageChief villageChief)
-            {
-                if (false == player.CanMove && IsFront(player, villageChief.X, villageChief.Y))
+                if (false == player.CanMove)
                 {
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 촌장 ", ConsoleColor.Black);
-                    if (false == player.BeginnerSupport)
+                    if (IsFront(player, villageNPCs[0].X, villageNPCs[0].Y))
                     {
-                        Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"초보자 지원 물품을 가져가게나.", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 촌장 ", ConsoleColor.Black);
+                        if (false == player.BeginnerSupport)
+                        {
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"초보자 지원 물품을 가져가게나.", ConsoleColor.Black);
+                        }
+                        else if (player.GameClear)
+                        {
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"자네는 마을의 영웅일세 고맙네", ConsoleColor.Black);
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"더 넓은 세상으로 가겠는가?", ConsoleColor.Black);
+                        }
+                        else
+                        {
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"뭐", ConsoleColor.Black);
+                        }
                     }
-                    else if (player.GameClear)
+                    if (IsFront(player, villageNPCs[1].X, villageNPCs[1].Y))
                     {
-                        Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"자네는 마을의 영웅일세 고맙네", ConsoleColor.Black);
-                        Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"더 넓은 세상으로 가겠는가?", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 회복상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 회복량: 100 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 10 ", ConsoleColor.Black);
                     }
-                    else
+                    if (IsFront(player, villageNPCs[2].X, villageNPCs[2].Y))
                     {
-                        Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"뭐", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 체력강화상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 10 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 20 ", ConsoleColor.Black);
                     }
-                }
-            }
-            private static void RenderVillageRecoveringMerchant(Player player, VillageRecoveringMerchant villageRecoveringMerchant)
-            {
-                if (false == player.CanMove && IsFront(player, villageRecoveringMerchant.X, villageRecoveringMerchant.Y))
-                {
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 회복상인 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 회복량: 100 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 10 ", ConsoleColor.Black);
-                }
-            }
-            private static void RenderVillageMaxHPMerchant(Player player, VillageMaxHPMerchant villageMaxHPMerchant)
-            {
-                if (false == player.CanMove && IsFront(player, villageMaxHPMerchant.X, villageMaxHPMerchant.Y))
-                {
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 체력강화상인 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 10 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
-                }
-            }
-            private static void RenderVillageATKMerchant(Player player, VillageATKMerchant villageATKMerchant)
-            {
-                if (false == player.CanMove && IsFront(player, villageATKMerchant.X, villageATKMerchant.Y))
-                {
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 공격강화상인 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
-                }
-            }
-            private static void RenderVillageDEFMerchant(Player player, VillageDEFMerchant villageDEFMerchant)
-            {
-                if (false == player.CanMove && IsFront(player, villageDEFMerchant.X, villageDEFMerchant.Y))
-                {
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 방어강화상인 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
+                    if (IsFront(player, villageNPCs[3].X, villageNPCs[3].Y))
+                    {
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 공격강화상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
+                    }
+                    if (IsFront(player, villageNPCs[4].X, villageNPCs[4].Y))
+                    {
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 방어강화상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
+                    }
                 }
             }
 
@@ -355,25 +345,25 @@ namespace ProjectJK.Objects
                 if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
                 {
 
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
                 }
             }
             public static void RenderStageDownPortal(Player player, StageDownPortal stageDownPortal)
             {
                 if (false == player.CanMove && IsFront(player, stageDownPortal.X, stageDownPortal.Y))
                 {
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
                 }
             }
             public static void RenderRelease(Player player)
             {
                 if (player.CanMove)
                 {
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $"━━━━━━━━━━━━━━━━━━━━━━━", ConsoleColor.Black);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"                                         ", ConsoleColor.White);
-                    Game.Function.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"                                         ", ConsoleColor.White);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $"━━━━━━━━━━━━━━━━━━━━━━━", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"                                         ", ConsoleColor.White);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"                                         ", ConsoleColor.White);
                 }
             }
             public static bool IsFront(Player player, int objX, int objY)
@@ -399,7 +389,7 @@ namespace ProjectJK.Objects
                     return false;
                 }
             }
-            public static void WithStageUpPortal(Player player, /*Game game, */StageUpPortal stageUpPortal)
+            public static void WithStageUpPortal00(Player player, StageUpPortal stageUpPortal, SelectCursor selectCursor)
             {
                 if (IsFront(player, stageUpPortal.X, stageUpPortal.Y))
                 {
@@ -407,42 +397,188 @@ namespace ProjectJK.Objects
                     {
                         player.CanMove = false;
                     }
-                    //if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
-                    //{
-                    //    if (SelectCursor.Function.SelectYes(selectCursor))
-                    //    {
-                    //        player.CanMove = true;
-                    //        game.isStage00Doing = false;
-                    //        isStage01Doing = true;
-
-                    //    }
-                    //    if (SelectCursor.Function.SelectNo(selectCursor))
-                    //    {
-                    //        player.CanMove = true;
-                    //    }
-                    //}
+                    if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage01);
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
                 }
             }
-            public static void WithStageDownPortal(Player player, StageDownPortal stageDownPortal)
+            public static void WithStageUpPortal01(Player player, StageUpPortal stageUpPortal, SelectCursor selectCursor)
             {
-                if (IsFront(player, stageDownPortal.X, stageDownPortal.Y) && Input.IsKeyDown(ConsoleKey.E))
+                if (IsFront(player, stageUpPortal.X, stageUpPortal.Y))
                 {
-                    player.CanMove = false;
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage02);
+
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+            }
+            public static void WithStageUpPortal02(Player player, StageUpPortal stageUpPortal, SelectCursor selectCursor)
+            {
+                if (IsFront(player, stageUpPortal.X, stageUpPortal.Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage03);
+
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+            }
+            public static void WithStageUpPortal03(Player player, StageUpPortal stageUpPortal, SelectCursor selectCursor)
+            {
+                if (IsFront(player, stageUpPortal.X, stageUpPortal.Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage04);
+
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+            }
+            public static void WithStageDownPortal01(Player player, StageDownPortal stageDownPortal, SelectCursor selectCursor)
+            {
+                if (IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove && IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage00);
+
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
                 }
 
             }
-            public static void WithVillageNPC(Player player, SelectCursor selectCursor, VillageChief villageChief, VillageRecoveringMerchant villageRecoveringMerchant, VillageMaxHPMerchant villageMaxHPMerchant,
-                                                                                            VillageATKMerchant villageATKMerchant, VillageDEFMerchant villageDEFMerchant)
+            public static void WithStageDownPortal02(Player player, StageDownPortal stageDownPortal, SelectCursor selectCursor)
             {
-                WithVillageChief(player, selectCursor, villageChief);
-                WithVillageRecoveringMerchant(player, selectCursor, villageRecoveringMerchant);
-                WithVillageMaxHPMerchant(player, selectCursor, villageMaxHPMerchant);
-                WithVillageATKMerchant(player, selectCursor, villageATKMerchant);
-                WithVillageDEFMerchant(player, selectCursor, villageDEFMerchant);
+                if (IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove && IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage01);
+
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+
             }
-            private static void WithVillageChief(Player player, SelectCursor selectCursor, VillageChief villageChief)
+            public static void WithStageDownPortal03(Player player, StageDownPortal stageDownPortal, SelectCursor selectCursor)
             {
-                if (IsFront(player, villageChief.X, villageChief.Y))
+                if (IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove && IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage02);
+
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+
+            }
+            public static void WithStageDownPortal04(Player player, StageDownPortal stageDownPortal, SelectCursor selectCursor)
+            {
+                if (IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove && IsFront(player, stageDownPortal.X, stageDownPortal.Y))
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            player.CanMove = true;
+                            Stage.SetNextStage(StageNum.Stage03);
+
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+
+            }
+            public static void WithVillageNPC(Player player, SelectCursor selectCursor, VillageNPC[] villageNPCs)
+            {
+                if (IsFront(player, villageNPCs[0].X, villageNPCs[0].Y))
                 {
                     if (Input.IsKeyDown(ConsoleKey.E))
                     {
@@ -452,24 +588,24 @@ namespace ProjectJK.Objects
                     {
                         if (false == player.BeginnerSupport)
                         {
-                            if (SelectCursor.Function.SelectYes(selectCursor))
+                            if (SelectCursor.SelectYes(selectCursor))
                             {
                                 player.BeginnerSupport = true;
-                                VillageChief.Function.GetBeginnerSupport(player);
+                                VillageNPC.GetBeginnerSupport(player);
                                 player.CanMove = true;
                             }
-                            if (SelectCursor.Function.SelectNo(selectCursor))
+                            if (SelectCursor.SelectNo(selectCursor))
                             {
                                 player.CanMove = true;
                             }
                         }
                         else if (player.GameClear)
                         {
-                            if (SelectCursor.Function.SelectYes(selectCursor))
+                            if (SelectCursor.SelectYes(selectCursor))
                             {
-                                Game.Function.GameClear();
+                                Game.GameClear();
                             }
-                            if (SelectCursor.Function.SelectNo(selectCursor))
+                            if (SelectCursor.SelectNo(selectCursor))
                             {
                                 player.CanMove = true;
                             }
@@ -477,21 +613,18 @@ namespace ProjectJK.Objects
                         else
                         {
 
-                            if (SelectCursor.Function.SelectYes(selectCursor))
+                            if (SelectCursor.SelectYes(selectCursor))
                             {
                                 player.CanMove = true;
                             }
-                            if (SelectCursor.Function.SelectNo(selectCursor))
+                            if (SelectCursor.SelectNo(selectCursor))
                             {
                                 player.CanMove = true;
                             }
                         }
                     }
                 }
-            }
-            private static void WithVillageRecoveringMerchant(Player player, SelectCursor selectCursor, VillageRecoveringMerchant villageRecoveringMerchant)
-            {
-                if (IsFront(player, villageRecoveringMerchant.X, villageRecoveringMerchant.Y))
+                if (IsFront(player, villageNPCs[1].X, villageNPCs[1].Y))
                 {
                     if (Input.IsKeyDown(ConsoleKey.E))
                     {
@@ -499,21 +632,18 @@ namespace ProjectJK.Objects
                     }
                     if (false == player.CanMove)
                     {
-                        if (SelectCursor.Function.SelectYes(selectCursor))
+                        if (SelectCursor.SelectYes(selectCursor))
                         {
-                            VillageRecoveringMerchant.Buy(player);
+                            VillageNPC.BuyRecovering(player);
                             player.CanMove = true;
                         }
-                        if (SelectCursor.Function.SelectNo(selectCursor))
+                        if (SelectCursor.SelectNo(selectCursor))
                         {
                             player.CanMove = true;
                         }
                     }
                 }
-            }
-            private static void WithVillageMaxHPMerchant(Player player, SelectCursor selectCursor, VillageMaxHPMerchant villageMaxHPMerchant)
-            {
-                if (IsFront(player, villageMaxHPMerchant.X, villageMaxHPMerchant.Y))
+                if (IsFront(player, villageNPCs[2].X, villageNPCs[2].Y))
                 {
                     if (Input.IsKeyDown(ConsoleKey.E))
                     {
@@ -521,21 +651,18 @@ namespace ProjectJK.Objects
                     }
                     if (false == player.CanMove)
                     {
-                        if (SelectCursor.Function.SelectYes(selectCursor))
+                        if (SelectCursor.SelectYes(selectCursor))
                         {
-                            VillageMaxHPMerchant.Buy(player);
+                            VillageNPC.BuyMaxHP(player);
                             player.CanMove = true;
                         }
-                        if (SelectCursor.Function.SelectNo(selectCursor))
+                        if (SelectCursor.SelectNo(selectCursor))
                         {
                             player.CanMove = true;
                         }
                     }
                 }
-            }
-            private static void WithVillageATKMerchant(Player player, SelectCursor selectCursor, VillageATKMerchant villageATKMerchant)
-            {
-                if (IsFront(player, villageATKMerchant.X, villageATKMerchant.Y))
+                if (IsFront(player, villageNPCs[3].X, villageNPCs[3].Y))
                 {
                     if (Input.IsKeyDown(ConsoleKey.E))
                     {
@@ -543,21 +670,18 @@ namespace ProjectJK.Objects
                     }
                     if (false == player.CanMove)
                     {
-                        if (SelectCursor.Function.SelectYes(selectCursor))
+                        if (SelectCursor.SelectYes(selectCursor))
                         {
-                            VillageATKMerchant.Buy(player);
+                            VillageNPC.BuyATK(player);
                             player.CanMove = true;
                         }
-                        if (SelectCursor.Function.SelectNo(selectCursor))
+                        if (SelectCursor.SelectNo(selectCursor))
                         {
                             player.CanMove = true;
                         }
                     }
                 }
-            }
-            private static void WithVillageDEFMerchant(Player player, SelectCursor selectCursor, VillageDEFMerchant villageDEFMerchant)
-            {
-                if (IsFront(player, villageDEFMerchant.X, villageDEFMerchant.Y))
+                if (IsFront(player, villageNPCs[4].X, villageNPCs[4].Y))
                 {
                     if (Input.IsKeyDown(ConsoleKey.E))
                     {
@@ -565,12 +689,12 @@ namespace ProjectJK.Objects
                     }
                     if (false == player.CanMove)
                     {
-                        if (SelectCursor.Function.SelectYes(selectCursor))
+                        if (SelectCursor.SelectYes(selectCursor))
                         {
-                            VillageDEFMerchant.Buy(player);
+                            VillageNPC.BuyDEF(player);
                             player.CanMove = true;
                         }
-                        if (SelectCursor.Function.SelectNo(selectCursor))
+                        if (SelectCursor.SelectNo(selectCursor))
                         {
                             player.CanMove = true;
                         }
@@ -580,7 +704,7 @@ namespace ProjectJK.Objects
         }
         public static class Battle
         {
-            public static void WithSlime(Player player, SelectCursor selectCursor, Slime[] slime)
+            public static void WithSlime(Player player, Slime[] slimes, SelectCursor selectCursor)
             {
                 if (player.IsOnBattle)
                 {
@@ -589,33 +713,44 @@ namespace ProjectJK.Objects
                         selectCursor.X = Game.BattleCursor_X;
                         selectCursor.Y = Game.BattleCursor_Y;
                         selectCursor.PastY = Game.BattleCursor_Y;
-                        slime[player.MonsterIndex].CurrentHP = slime[player.MonsterIndex].MaxHP;
+                        slimes[player.MonsterIndex].CurrentHP = slimes[player.MonsterIndex].MaxHP;
                     }
-                    if (SelectCursor.Function.SelectAttack(selectCursor))
+                    if (SelectCursor.SelectAttack(selectCursor))
                     {
-                        if (player.ATK - slime[player.MonsterIndex].DEF > 0)
+                        while (player.CurrentHP >= 0 && slimes[player.MonsterIndex].Alive)
                         {
-                            slime[player.MonsterIndex].CurrentHP -= player.ATK - slime[player.MonsterIndex].DEF;
-                            if (slime[player.MonsterIndex].CurrentHP <= 0)
+                            Thread.Sleep(20);
+                            if (player.ATK == slimes[player.MonsterIndex].DEF &&
+                                player.DEF == slimes[player.MonsterIndex].ATK)
                             {
-                                slime[player.MonsterIndex].Alive = false;
-                                player.CurrentEXP += slime[player.MonsterIndex].EXP;
-                                player.Money += slime[player.MonsterIndex].Money;
+                                break;
+                            }
+                            if (player.ATK - slimes[player.MonsterIndex].DEF > 0)
+                            {
+                                slimes[player.MonsterIndex].CurrentHP -= player.ATK - slimes[player.MonsterIndex].DEF;
+                                Slime.RenderHP(slimes[player.MonsterIndex]);
+                                if (slimes[player.MonsterIndex].CurrentHP <= 0)
+                                {
+                                    slimes[player.MonsterIndex].Alive = false;
+                                    player.CurrentEXP += slimes[player.MonsterIndex].EXP;
+                                    player.Money += slimes[player.MonsterIndex].Money;
 
-                                player.CanMove = true;
-                                player.IsOnBattle = false;
-                                selectCursor.X = Game.DialogCursor_X;
-                                selectCursor.Y = Game.DialogCursor_Y;
-                                selectCursor.PastY = Game.DialogCursor_Y;
-                                Function.RenderNow(player);
+                                    player.CanMove = true;
+                                    player.IsOnBattle = false;
+                                    selectCursor.X = Game.DialogCursor_X;
+                                    selectCursor.Y = Game.DialogCursor_Y;
+                                    selectCursor.PastY = Game.DialogCursor_Y;
+                                    RenderNow(player);
+                                }
+                            }
+                            if (slimes[player.MonsterIndex].Alive && slimes[player.MonsterIndex].ATK - player.DEF > 0)
+                            {
+                                player.CurrentHP -= slimes[player.MonsterIndex].ATK - player.DEF;
+                                Game.ObjRender(Game.Level_HP_Money_X, Game.HP_STATUS_Y + 1, $" {player.CurrentHP:D3}/{player.MaxHP:D3}", ConsoleColor.Black);
                             }
                         }
-                        if (slime[player.MonsterIndex].Alive && slime[player.MonsterIndex].ATK - player.DEF > 0)
-                        {
-                            player.CurrentHP -= slime[player.MonsterIndex].ATK - player.DEF;
-                        }
                     }
-                    if (SelectCursor.Function.SelectEscape(selectCursor))
+                    if (SelectCursor.SelectEscape(selectCursor))
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;
@@ -627,7 +762,7 @@ namespace ProjectJK.Objects
                     }
                 }
             }
-            public static void WithFox(Player player, SelectCursor selectCursor, Fox[] fox)
+            public static void WithFox(Player player, Fox[] foxes, SelectCursor selectCursor)
             {
                 if (player.IsOnBattle)
                 {
@@ -636,33 +771,44 @@ namespace ProjectJK.Objects
                         selectCursor.X = Game.BattleCursor_X;
                         selectCursor.Y = Game.BattleCursor_Y;
                         selectCursor.PastY = Game.BattleCursor_Y;
-                        fox[player.MonsterIndex].CurrentHP = fox[player.MonsterIndex].MaxHP;
+                        foxes[player.MonsterIndex].CurrentHP = foxes[player.MonsterIndex].MaxHP;
                     }
-                    if (SelectCursor.Function.SelectAttack(selectCursor))
+                    if (SelectCursor.SelectAttack(selectCursor))
                     {
-                        if (player.ATK - fox[player.MonsterIndex].DEF > 0)
+                        while (player.CurrentHP >= 0 && foxes[player.MonsterIndex].Alive)
                         {
-                            fox[player.MonsterIndex].CurrentHP -= player.ATK - fox[player.MonsterIndex].DEF;
-                            if (fox[player.MonsterIndex].CurrentHP <= 0)
+                            Thread.Sleep(20);
+                            if (player.ATK == foxes[player.MonsterIndex].DEF &&
+                                player.DEF == foxes[player.MonsterIndex].ATK)
                             {
-                                fox[player.MonsterIndex].Alive = false;
-                                player.CurrentEXP += fox[player.MonsterIndex].EXP;
-                                player.Money += fox[player.MonsterIndex].Money;
+                                break;
+                            }
+                            if (player.ATK - foxes[player.MonsterIndex].DEF > 0)
+                            {
+                                foxes[player.MonsterIndex].CurrentHP -= player.ATK - foxes[player.MonsterIndex].DEF;
+                                Fox.RenderHP(foxes[player.MonsterIndex]);
+                                if (foxes[player.MonsterIndex].CurrentHP <= 0)
+                                {
+                                    foxes[player.MonsterIndex].Alive = false;
+                                    player.CurrentEXP += foxes[player.MonsterIndex].EXP;
+                                    player.Money += foxes[player.MonsterIndex].Money;
 
-                                player.CanMove = true;
-                                player.IsOnBattle = false;
-                                selectCursor.X = Game.DialogCursor_X;
-                                selectCursor.Y = Game.DialogCursor_Y;
-                                selectCursor.PastY = Game.DialogCursor_Y;
-                                Function.RenderNow(player);
+                                    player.CanMove = true;
+                                    player.IsOnBattle = false;
+                                    selectCursor.X = Game.DialogCursor_X;
+                                    selectCursor.Y = Game.DialogCursor_Y;
+                                    selectCursor.PastY = Game.DialogCursor_Y;
+                                    RenderNow(player);
+                                }
+                            }
+                            if (foxes[player.MonsterIndex].Alive && foxes[player.MonsterIndex].ATK - player.DEF > 0)
+                            {
+                                player.CurrentHP -= foxes[player.MonsterIndex].ATK - player.DEF;
+                                Game.ObjRender(Game.Level_HP_Money_X, Game.HP_STATUS_Y + 1, $" {player.CurrentHP:D3}/{player.MaxHP:D3}", ConsoleColor.Black);
                             }
                         }
-                        if (fox[player.MonsterIndex].Alive && fox[player.MonsterIndex].ATK - player.DEF > 0)
-                        {
-                            player.CurrentHP -= fox[player.MonsterIndex].ATK - player.DEF;
-                        }
                     }
-                    if (SelectCursor.Function.SelectEscape(selectCursor))
+                    if (SelectCursor.SelectEscape(selectCursor))
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;
@@ -674,7 +820,7 @@ namespace ProjectJK.Objects
                     }
                 }
             }
-            public static void WithGoblin(Player player, SelectCursor selectCursor, Goblin[] goblin)
+            public static void WithGoblin(Player player, Goblin[] goblins, SelectCursor selectCursor)
             {
                 if (player.IsOnBattle)
                 {
@@ -683,33 +829,44 @@ namespace ProjectJK.Objects
                         selectCursor.X = Game.BattleCursor_X;
                         selectCursor.Y = Game.BattleCursor_Y;
                         selectCursor.PastY = Game.BattleCursor_Y;
-                        goblin[player.MonsterIndex].CurrentHP = goblin[player.MonsterIndex].MaxHP;
+                        goblins[player.MonsterIndex].CurrentHP = goblins[player.MonsterIndex].MaxHP;
                     }
-                    if (SelectCursor.Function.SelectAttack(selectCursor))
+                    if (SelectCursor.SelectAttack(selectCursor))
                     {
-                        if (player.ATK - goblin[player.MonsterIndex].DEF > 0)
+                        while (player.CurrentHP >= 0 && goblins[player.MonsterIndex].Alive)
                         {
-                            goblin[player.MonsterIndex].CurrentHP -= player.ATK - goblin[player.MonsterIndex].DEF;
-                            if (goblin[player.MonsterIndex].CurrentHP <= 0)
+                            Thread.Sleep(20);
+                            if (player.ATK == goblins[player.MonsterIndex].DEF &&
+                                player.DEF == goblins[player.MonsterIndex].ATK)
                             {
-                                goblin[player.MonsterIndex].Alive = false;
-                                player.CurrentEXP += goblin[player.MonsterIndex].EXP;
-                                player.Money += goblin[player.MonsterIndex].Money;
+                                break;
+                            }
+                            if (player.ATK - goblins[player.MonsterIndex].DEF > 0)
+                            {
+                                goblins[player.MonsterIndex].CurrentHP -= player.ATK - goblins[player.MonsterIndex].DEF;
+                                Goblin.RenderHP(goblins[player.MonsterIndex]);
+                                if (goblins[player.MonsterIndex].CurrentHP <= 0)
+                                {
+                                    goblins[player.MonsterIndex].Alive = false;
+                                    player.CurrentEXP += goblins[player.MonsterIndex].EXP;
+                                    player.Money += goblins[player.MonsterIndex].Money;
 
-                                player.CanMove = true;
-                                player.IsOnBattle = false;
-                                selectCursor.X = Game.DialogCursor_X;
-                                selectCursor.Y = Game.DialogCursor_Y;
-                                selectCursor.PastY = Game.DialogCursor_Y;
-                                Function.RenderNow(player);
+                                    player.CanMove = true;
+                                    player.IsOnBattle = false;
+                                    selectCursor.X = Game.DialogCursor_X;
+                                    selectCursor.Y = Game.DialogCursor_Y;
+                                    selectCursor.PastY = Game.DialogCursor_Y;
+                                    RenderNow(player);
+                                }
+                            }
+                            if (goblins[player.MonsterIndex].Alive && goblins[player.MonsterIndex].ATK - player.DEF > 0)
+                            {
+                                player.CurrentHP -= goblins[player.MonsterIndex].ATK - player.DEF;
+                                Game.ObjRender(Game.Level_HP_Money_X, Game.HP_STATUS_Y + 1, $" {player.CurrentHP:D3}/{player.MaxHP:D3}", ConsoleColor.Black);
                             }
                         }
-                        if (goblin[player.MonsterIndex].Alive && goblin[player.MonsterIndex].ATK - player.DEF > 0)
-                        {
-                            player.CurrentHP -= goblin[player.MonsterIndex].ATK - player.DEF;
-                        }
                     }
-                    if (SelectCursor.Function.SelectEscape(selectCursor))
+                    if (SelectCursor.SelectEscape(selectCursor))
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;
@@ -721,7 +878,7 @@ namespace ProjectJK.Objects
                     }
                 }
             }
-            public static void WithKingSlime(Player player, SelectCursor selectCursor, KingSlime kingSlime)
+            public static void WithKingSlime(Player player, KingSlime kingSlime, SelectCursor selectCursor)
             {
                 if (player.IsOnBattle)
                 {
@@ -732,32 +889,44 @@ namespace ProjectJK.Objects
                         selectCursor.PastY = Game.BattleCursor_Y;
                         kingSlime.CurrentHP = kingSlime.MaxHP;
                     }
-                    if (SelectCursor.Function.SelectAttack(selectCursor))
+                    if (SelectCursor.SelectAttack(selectCursor))
                     {
-                        if (player.ATK - kingSlime.DEF > 0)
+                        while (player.CurrentHP >= 0 && kingSlime.Alive)
                         {
-                            kingSlime.CurrentHP -= player.ATK - kingSlime.DEF;
-                            if (kingSlime.CurrentHP <= 0)
+                            Thread.Sleep(20);
+                            if (player.ATK == kingSlime.DEF &&
+                                player.DEF == kingSlime.ATK)
                             {
-                                kingSlime.Alive = false;
-                                player.CurrentEXP += kingSlime.EXP;
-                                player.Money += kingSlime.Money;
+                                break;
+                            }
+                            if (player.ATK - kingSlime.DEF > 0)
+                            {
+                                kingSlime.CurrentHP -= player.ATK - kingSlime.DEF;
+                                KingSlime.RenderHP(kingSlime);
+                                if (kingSlime.CurrentHP <= 0)
+                                {
+                                    kingSlime.Alive = false;
+                                    player.CurrentEXP += kingSlime.EXP;
+                                    player.Money += kingSlime.Money;
 
-                                player.CanMove = true;
-                                player.IsOnBattle = false;
-                                player.GameClear = true;
-                                selectCursor.X = Game.DialogCursor_X;
-                                selectCursor.Y = Game.DialogCursor_Y;
-                                selectCursor.PastY = Game.DialogCursor_Y;
-                                Function.RenderNow(player);
+                                    player.CanMove = true;
+                                    player.IsOnBattle = false;
+                                    player.GameClear = true;
+                                    selectCursor.X = Game.DialogCursor_X;
+                                    selectCursor.Y = Game.DialogCursor_Y;
+                                    selectCursor.PastY = Game.DialogCursor_Y;
+                                    RenderNow(player);
+                                }
+                            }
+                            if (kingSlime.Alive && kingSlime.ATK - player.DEF > 0)
+                            {
+                                player.CurrentHP -= kingSlime.ATK - player.DEF;
+                                Game.ObjRender(Game.Level_HP_Money_X, Game.HP_STATUS_Y + 1, $" {player.CurrentHP:D3}/{player.MaxHP:D3}", ConsoleColor.Black);
+
                             }
                         }
-                        if (kingSlime.Alive && kingSlime.ATK - player.DEF > 0)
-                        {
-                            player.CurrentHP -= kingSlime.ATK - player.DEF;
-                        }
                     }
-                    if (SelectCursor.Function.SelectEscape(selectCursor))
+                    if (SelectCursor.SelectEscape(selectCursor))
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;

@@ -24,15 +24,15 @@ namespace ProjectJK.Objects
 
         public static void InitGoblinRender(Goblin[] goblin)
         {
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Goblin", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {goblin[0].ATK:D3}", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {goblin[0].DEF:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Goblin", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {goblin[0].ATK:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {goblin[0].DEF:D3}", ConsoleColor.Black);
         }
         public static void RenderPast(Goblin[] goblin)
         {
             for (int i = 0; i < goblin.Length; ++i)
             {
-                Game.Function.ObjRender(goblin[i].PastX, goblin[i].PastY, "G", ConsoleColor.White);
+                Game.ObjRender(goblin[i].PastX, goblin[i].PastY, "G", ConsoleColor.White);
             }
         }
         public static void RenderNow(Goblin[] goblin)
@@ -41,7 +41,7 @@ namespace ProjectJK.Objects
             {
                 if (goblin[i].Alive)
                 {
-                    Game.Function.ObjRender(goblin[i].X, goblin[i].Y, "G", ConsoleColor.DarkGreen);
+                    Game.ObjRender(goblin[i].X, goblin[i].Y, "G", ConsoleColor.DarkGreen);
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace ProjectJK.Objects
         {
             if (player.X == goblin[player.MonsterIndex].X && player.Y == goblin[player.MonsterIndex].Y && goblin[player.MonsterIndex].Alive)
             {
-                Game.Function.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
+                Game.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
                 BattleGraphic.Goblin();
                 RenderHP(goblin[player.MonsterIndex]);
             }
@@ -58,18 +58,20 @@ namespace ProjectJK.Objects
                 BattleGraphic.Clear();
             }
         }
-        private static void RenderHP(Goblin goblin)
+        public static void RenderHP(Goblin goblin)
         {
-            Game.Function.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{goblin.CurrentHP:D3} / {goblin.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{goblin.CurrentHP:D3} / {goblin.MaxHP:D3}", ConsoleColor.Black);
         }
-        public static void Update(Goblin[] goblin, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
+        public static void Update(Goblin[] goblin, Player player, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
         {
+            Move(goblin, player);
             CollisionWithWall(goblin, walls);
             CollisionWithStageUpPortal(goblin, stageUpPortal);
             CollisionWithStageDownPortal(goblin, stageDownPortal);
             CollisionWithGoblin(goblin);
+            Respawn(goblin, player);
         }
-        public static void Move(Goblin[] goblin, Player player)
+        private static void Move(Goblin[] goblin, Player player)
         {
             for (int i = 0; i < goblin.Length; ++i)
             {
@@ -106,7 +108,7 @@ namespace ProjectJK.Objects
                         case <= 999:
                             break;
                         default:
-                            Game.Function.ExitWithError($"고블린 이동 방향 데이터 오류{_randomNum}");
+                            Game.ExitWithError($"고블린 이동 방향 데이터 오류{_randomNum}");
                             break;
                     }
                 }
@@ -140,7 +142,7 @@ namespace ProjectJK.Objects
                     goblin.Y = objY - 1;
                     break;
                 default:
-                    Game.Function.ExitWithError($"고블린 이동 방향 데이터 오류{goblin.MoveDirection}");
+                    Game.ExitWithError($"고블린 이동 방향 데이터 오류{goblin.MoveDirection}");
                     break;
             }
         }
@@ -199,7 +201,7 @@ namespace ProjectJK.Objects
                 }
             }
         }
-        public static void Respawn(Goblin[] goblin, Player player)
+        private static void Respawn(Goblin[] goblin, Player player)
         {
             if (player.CanMove)
             {
@@ -217,7 +219,7 @@ namespace ProjectJK.Objects
                             case <= 999:
                                 break;
                             default:
-                                Game.Function.ExitWithError($"고블린 리스폰 데이터 오류{_randomNum}");
+                                Game.ExitWithError($"고블린 리스폰 데이터 오류{_randomNum}");
                                 break;
                         }
                     }

@@ -26,25 +26,25 @@ namespace ProjectJK.Objects
 
         public static void InitSlimeRender(Slime[] slime)
         {
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Slime", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {slime[0].ATK:D3}", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {slime[0].DEF:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Slime", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {slime[0].ATK:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {slime[0].DEF:D3}", ConsoleColor.Black);
         }
         public static void RenderPast(Slime[] slime)
         {
             for (int i = 0; i < slime.Length; ++i)
             {
-                Game.Function.ObjRender(slime[i].PastX, slime[i].PastY, "S", ConsoleColor.White);
+                Game.ObjRender(slime[i].PastX, slime[i].PastY, "S", ConsoleColor.White);
             }
         }
         public static void RenderNow(Slime[] slime)
         {
             for (int i = 0; i < slime.Length; ++i)
             {
-            
+
                 if (slime[i].Alive)
                 {
-                    Game.Function.ObjRender(slime[i].X, slime[i].Y, "S", ConsoleColor.Blue);
+                    Game.ObjRender(slime[i].X, slime[i].Y, "S", ConsoleColor.Blue);
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace ProjectJK.Objects
         {
             if (player.X == slime[player.MonsterIndex].X && player.Y == slime[player.MonsterIndex].Y && slime[player.MonsterIndex].Alive)
             {
-                Game.Function.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
+                Game.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
                 BattleGraphic.Slime();
                 RenderHP(slime[player.MonsterIndex]);
             }
@@ -61,18 +61,20 @@ namespace ProjectJK.Objects
                 BattleGraphic.Clear();
             }
         }
-        private static void RenderHP(Slime slime)
+        public static void RenderHP(Slime slime)
         {
-            Game.Function.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{slime.CurrentHP:D3} / {slime.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{slime.CurrentHP:D3} / {slime.MaxHP:D3}", ConsoleColor.Black);
         }
-        public static void Update(Slime[] slime, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
+        public static void Update(Slime[] slime, Player player, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
         {
+            Move(slime, player);
             CollisionWithWall(slime, walls);
             CollisionWithStageUpPortal(slime, stageUpPortal);
             CollisionWithStageDownPortal(slime, stageDownPortal);
             CollisionWithSlime(slime);
+            Respawn(slime, player);
         }
-        public static void Move(Slime[] slime, Player player)
+        private static void Move(Slime[] slime, Player player)
         {
             for (int i = 0; i < slime.Length; ++i)
             {
@@ -109,7 +111,7 @@ namespace ProjectJK.Objects
                         case <= 999:
                             break;
                         default:
-                            Game.Function.ExitWithError($"슬라임 이동 방향 데이터 오류{_randomNum}");
+                            Game.ExitWithError($"슬라임 이동 방향 데이터 오류{_randomNum}");
                             break;
                     }
                 }
@@ -143,7 +145,7 @@ namespace ProjectJK.Objects
                     slime.Y = objY - 1;
                     break;
                 default:
-                    Game.Function.ExitWithError($"슬라임 이동 방향 데이터 오류{slime.MoveDirection}");
+                    Game.ExitWithError($"슬라임 이동 방향 데이터 오류{slime.MoveDirection}");
                     break;
             }
         }
@@ -189,7 +191,7 @@ namespace ProjectJK.Objects
             {
                 for (int j = 0; j < slime.Length; ++j)
                 {
-                    if(i == j)
+                    if (i == j)
                     {
                         continue;
                     }
@@ -202,7 +204,7 @@ namespace ProjectJK.Objects
                 }
             }
         }
-        public static void Respawn(Slime[] slime, Player player)
+        private static void Respawn(Slime[] slime, Player player)
         {
             if (player.CanMove)
             {
@@ -220,7 +222,7 @@ namespace ProjectJK.Objects
                             case <= 999:
                                 break;
                             default:
-                                Game.Function.ExitWithError($"슬라임 리스폰 데이터 오류{_randomNum}");
+                                Game.ExitWithError($"슬라임 리스폰 데이터 오류{_randomNum}");
                                 break;
                         }
                     }

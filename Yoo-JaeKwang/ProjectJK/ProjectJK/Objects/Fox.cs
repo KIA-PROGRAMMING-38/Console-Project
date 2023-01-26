@@ -24,15 +24,15 @@ namespace ProjectJK.Objects
 
         public static void InitFoxRender(Fox[] fox)
         {
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Fox", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {fox[0].ATK:D3}", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {fox[0].DEF:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "Fox", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {fox[0].ATK:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {fox[0].DEF:D3}", ConsoleColor.Black);
         }
         public static void RenderPast(Fox[] fox)
         {
             for (int i = 0; i < fox.Length; ++i)
             {
-                Game.Function.ObjRender(fox[i].PastX, fox[i].PastY, "F", ConsoleColor.White);
+                Game.ObjRender(fox[i].PastX, fox[i].PastY, "F", ConsoleColor.White);
             }
         }
         public static void RenderNow(Fox[] fox)
@@ -41,7 +41,7 @@ namespace ProjectJK.Objects
             {
                 if (fox[i].Alive)
                 {
-                    Game.Function.ObjRender(fox[i].X, fox[i].Y, "F", ConsoleColor.DarkGray);
+                    Game.ObjRender(fox[i].X, fox[i].Y, "F", ConsoleColor.DarkGray);
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace ProjectJK.Objects
         {
             if (player.X == fox[player.MonsterIndex].X && player.Y == fox[player.MonsterIndex].Y && fox[player.MonsterIndex].Alive)
             {
-                Game.Function.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
+                Game.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
                 BattleGraphic.Fox();
                 RenderHP(fox[player.MonsterIndex]);
             }
@@ -58,18 +58,20 @@ namespace ProjectJK.Objects
                 BattleGraphic.Clear();
             }
         }
-        private static void RenderHP(Fox fox)
+        public static void RenderHP(Fox fox)
         {
-            Game.Function.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{fox.CurrentHP:D3} / {fox.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{fox.CurrentHP:D3} / {fox.MaxHP:D3}", ConsoleColor.Black);
         }
-        public static void Update(Fox[] fox, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
+        public static void Update(Fox[] fox, Player player, Wall[] walls, StageUpPortal stageUpPortal, StageDownPortal stageDownPortal)
         {
+            Move(fox, player);
             CollisionWithWall(fox, walls);
             CollisionWithStageUpPortal(fox, stageUpPortal);
             CollisionWithStageDownPortal(fox, stageDownPortal);
             CollisionWithFox(fox);
+            Respawn(fox, player);
         }
-        public static void Move(Fox[] fox, Player player)
+        private static void Move(Fox[] fox, Player player)
         {
             for (int i = 0; i < fox.Length; ++i)
             {
@@ -106,7 +108,7 @@ namespace ProjectJK.Objects
                         case <= 999:
                             break;
                         default:
-                            Game.Function.ExitWithError($"여우 이동 방향 데이터 오류{_randomNum}");
+                            Game.ExitWithError($"여우 이동 방향 데이터 오류{_randomNum}");
                             break;
                     }
                 }
@@ -140,7 +142,7 @@ namespace ProjectJK.Objects
                     fox.Y = objY - 1;
                     break;
                 default:
-                    Game.Function.ExitWithError($"여우 이동 방향 데이터 오류{fox.MoveDirection}");
+                    Game.ExitWithError($"여우 이동 방향 데이터 오류{fox.MoveDirection}");
                     break;
             }
         }
@@ -199,7 +201,7 @@ namespace ProjectJK.Objects
                 }
             }
         }
-        public static void Respawn(Fox[] fox, Player player)
+        private static void Respawn(Fox[] fox, Player player)
         {
             if (player.CanMove)
             {
@@ -217,7 +219,7 @@ namespace ProjectJK.Objects
                             case <= 999:
                                 break;
                             default:
-                                Game.Function.ExitWithError($"여우 리스폰 데이터 오류{_randomNum}");
+                                Game.ExitWithError($"여우 리스폰 데이터 오류{_randomNum}");
                                 break;
                         }
                     }

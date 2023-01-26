@@ -24,28 +24,28 @@ namespace ProjectJK.Objects
 
         public static void InitKingSlimeRender(KingSlime kingSlime)
         {
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "KingSlime", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {kingSlime.ATK:D3}", ConsoleColor.Black);
-            Game.Function.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {kingSlime.DEF:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y, "KingSlime", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 1, $" ATK: {kingSlime.ATK:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.Status_X, Game.Money_STATUS_Y + 2, $" DEF: {kingSlime.DEF:D3}", ConsoleColor.Black);
         }
         public static void RenderPast(KingSlime kingslime)
         {
 
-            Game.Function.ObjRender(kingslime.PastX, kingslime.PastY, "∰", ConsoleColor.White);
+            Game.ObjRender(kingslime.PastX, kingslime.PastY, "∰", ConsoleColor.White);
         }
         public static void RenderNow(KingSlime kingslime)
         {
 
             if (kingslime.Alive)
             {
-                Game.Function.ObjRender(kingslime.X, kingslime.Y, "∰", ConsoleColor.DarkBlue);
+                Game.ObjRender(kingslime.X, kingslime.Y, "∰", ConsoleColor.DarkBlue);
             }
         }
         public static void RenderBattle(Player player, KingSlime kingslime)
         {
             if (player.X == kingslime.X && player.Y == kingslime.Y && kingslime.Alive)
             {
-                Game.Function.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
+                Game.ObjRender(player.X, player.Y, "B", ConsoleColor.Red);
                 BattleGraphic.KingSlime();
                 RenderHP(kingslime);
             }
@@ -54,16 +54,17 @@ namespace ProjectJK.Objects
                 BattleGraphic.Clear();
             }
         }
-        private static void RenderHP(KingSlime kingslime)
+        public static void RenderHP(KingSlime kingslime)
         {
-            Game.Function.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{kingslime.CurrentHP:D3} / {kingslime.MaxHP:D3}", ConsoleColor.Black);
+            Game.ObjRender(Game.BattleCursor_X + 11, Game.BattleCursor_Y + 1, $"{kingslime.CurrentHP:D3} / {kingslime.MaxHP:D3}", ConsoleColor.Black);
         }
-        public static void Update(KingSlime kingslime, Wall[] walls, StageDownPortal stageDownPortal)
+        public static void Update(KingSlime kingslime, Player player, Wall[] walls, StageDownPortal stageDownPortal)
         {
+            Move(kingslime, player);
             CollisionWithWall(kingslime, walls);
             CollisionWithStageDownPortal(kingslime, stageDownPortal);
         }
-        public static void Move(KingSlime kingslime, Player player)
+        private static void Move(KingSlime kingslime, Player player)
         {
 
             Random random = new Random();
@@ -99,7 +100,7 @@ namespace ProjectJK.Objects
                     case <= 999:
                         break;
                     default:
-                        Game.Function.ExitWithError($"킹슬라임 이동 방향 데이터 오류{_randomNum}");
+                        Game.ExitWithError($"킹슬라임 이동 방향 데이터 오류{_randomNum}");
                         break;
                 }
             }
@@ -132,7 +133,7 @@ namespace ProjectJK.Objects
                     kingslime.Y = objY - 1;
                     break;
                 default:
-                    Game.Function.ExitWithError($"킹슬라임 이동 방향 데이터 오류{kingslime.MoveDirection}");
+                    Game.ExitWithError($"킹슬라임 이동 방향 데이터 오류{kingslime.MoveDirection}");
                     break;
             }
         }

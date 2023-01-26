@@ -10,14 +10,11 @@ namespace ProjectJK.Objects
     {
         public int X;
         public int Y;
-        public static class Function
+        public static void Render(Wall[] walls)
         {
-            public static void Render(Wall[] walls)
+            for (int i = 0; i < walls.Length; ++i)
             {
-                for (int i = 0; i < walls.Length; ++i)
-                {
-                    Game.Function.ObjRender(walls[i].X, walls[i].Y, "#", ConsoleColor.DarkMagenta);
-                }
+                Game.ObjRender(walls[i].X, walls[i].Y, "#", ConsoleColor.DarkMagenta);
             }
         }
     }
