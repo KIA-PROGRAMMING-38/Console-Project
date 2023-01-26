@@ -108,7 +108,7 @@ class Program
                 });
 
 
-                // 어떤 박스를 밀었는지 저장해야 한다 
+                // 어떤 박스를 밀었는지 저장해야 한다
                 player.PushedBoxIndex = i;
 
                 break;
@@ -313,9 +313,9 @@ class Program
             }
         }
 
-        void MoveVillian(Direction direction, Villain villain)
+        void MoveVillian(Villain villain)
         {
-            switch (direction)
+            switch (villain.VillainDirection)
             {
                 case Direction.Left:
                     if (villain.X == MIN_X)
@@ -370,7 +370,29 @@ class Program
                 Render();
                 Thread.Sleep(100);
                 //Update------------------------
-                MoveVillian(villain.VillainDirection, villain);
+                MoveVillian(villain);
+
+                //빌런이 벽을 만나면 반대로 움직인다.
+                for(int wallId = 0; wallId < walls.Length; ++wallId)
+                {
+                    if (false == IsCollided(villain.X, villain.Y, walls[wallId].X, walls[wallId].Y))
+                    {
+                        continue;
+                    }
+
+                    switch(villain.VillainDirection)
+                    {
+                        case Direction.Right:
+                            villain.VillainDirection = Direction.Left;
+                            MoveVillian(villain);
+                            break;
+
+                        case Direction.Left:
+                            villain.VillainDirection = Direction.Right;
+                            MoveVillian(villain);
+                            break;
+                    }
+                }                                
             } 
         }
 
