@@ -6,10 +6,15 @@
     <RootNamespace>Wooseok_Console_Project</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Windows.Extensions" Version="7.0.0" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Xcopy &quot;$(ProjectDir)Assets&quot; &quot;$(OutDir)Assets&quot; /f /i /s /e /y" />
+  </Target>
 
 </Project>
