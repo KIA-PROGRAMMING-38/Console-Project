@@ -588,7 +588,7 @@ class Program
         #region 쇼핑 Scene
         bool RenderShopping = true;
         Item outcome = null;
-        int money = 500;
+        int money = 500; // 소지금
         string ShoppingPath = Path.Combine("Assets", "Scenes", "ShoppingScene.txt");
         string[] ShoppingShow = File.ReadAllLines(ShoppingPath);
         while (scene.ShoppingOn) // 상점이용 scene
@@ -618,7 +618,7 @@ class Program
             {
                 int randomnumber = random.Next(1,101); // 1부터 100까지 중 난수 하나를 뽑음
                 outcome = Gacha(randomnumber);
-                money -= 100;
+                money -= 100; // 100원 빼줘
             }
 
             if (key == ConsoleKey.Enter) // 엔터 누르면 소코반 씬으로
@@ -692,7 +692,7 @@ class Program
 
             RenderPlayerHP();
             RenderPlayerMP();
-            RenderSide();
+            RenderSide(); // 옆에 오브젝트 기호 설명 그리기
             
             Console.ForegroundColor = ConsoleColor.Blue; // 골을 렌더
             for (int i = 0; i < goal.Length; ++i)
@@ -863,157 +863,20 @@ class Program
             // update
             ByeongPending = Math.Max(ByeongPending - 1, 0); // 병장 턴 delay 0으로 계속 만들기
 
-            // 병장 턴
-            if (0 == ByeongPending)
-            {
-                if (ByeongTurn == true)
-                {
-                    int Byeongplay = random.Next(1, 5); // 1부터 4중 하나를 뽑음
+            ByeongPlayturn(); // 병장 턴 구현
 
-                    switch (Byeongplay)
-                    {
-                        case 1: // 1번이 나오면 그냥 공격
-                            Byeong.dmg = Byeong.atk;
-                            ChosenOne.hp -= Byeong.dmg;
-                            break;
-                        case 2: // 2번이 나오면 군가 부르게 하기
-                            if (2 <= Byeong.mp)
-                            {
-                                Byeong.dmg = random.Next(1, 4);
-                                ChosenOne.hp -= Byeong.dmg;
-                            }
-                            break;
-                        case 3: // 3번이 나오면 기강 잡기
-                            if (3 <= Byeong.mp)
-                            {
-                                Byeong.dmg = random.Next(3, 6);
-                                ChosenOne.hp -= Byeong.dmg;
-                            }
-                            break;
-                        case 4: // 4번이 나오면 맞선임 호출하기
-                            if (5 <= Byeong.mp)
-                            {
-                                Byeong.dmg = random.Next(5, 11);
-                                ChosenOne.hp -= Byeong.dmg;
-                            }
-                            ; break;
-                    }
-                }
-            }
+            ChosenOnePlayturn(key); // 플레이어 턴 구현
 
-
-
-            // 플레이어 턴
-
-            switch (ChosenOne.passive)
-            {
-                case "존댓말 하기":
-                    Byeong.atk = Byeong.atk + 5; // 병장 atk +5
-
-                    break;
-                case "얼 타기":
-                    Byeong.atk = Byeong.atk + 3; // 병장 atk +3
-
-                    break;
-                case "작업노예": // 25% 확률로 데미지 반감
-                    PassiveNumber = random.Next(1, 5); // 1~4 까지의 난수를 뽑는다
-                    if (PassiveNumber == 1)
-                    {
-                        Byeong.dmg = Byeong.dmg / 2; // 병장 atk 반감시키기
-                    }
-                    break;
-                case "개기기": // 20%의 확률로 자기 공격력 +1
-                    PassiveNumber = random.Next(1, 6); // 1~5 까지의 난수를 뽑는다
-                    if (PassiveNumber == 1)
-                    {
-                        ChosenOne.atk += 1;
-                    }
-                    break;
-            }
-
-            switch (ChosenOne.name)
-            {
-                case "신병": // 만약 선택된 캐릭터의 id가 신병인데
-                    switch (key) // 입력한 키가 
-                    {
-                        case ConsoleKey.A: // A면
-                            ChosenOne.dmg = ChosenOne.atk;
-                            Byeong.hp -= ChosenOne.dmg; // 병장 HP를 atk 만큼 감소시키기
-                            break;
-                        case ConsoleKey.S: // S면
-                            if (5 <= ChosenOne.mp)
-                            {
-                                Byeong.mp -= random.Next(3, 6); // 병장 MP를 3~5 사이의 난수만큼 빼버리기
-                                ChosenOne.mp -= 5;
-                            }
-                            break;
-                    }
-                    break;
-                case "이병":
-                    switch (key)
-                    {
-                        case ConsoleKey.A:
-                            ChosenOne.dmg = ChosenOne.atk;
-                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
-                            break;
-                        case ConsoleKey.S:
-                            if (5 <= ChosenOne.mp)
-                            {
-                                Byeong.hp -= random.Next(5, 9); // 병장 hp 5~8만큼 빼버리기
-                                ChosenOne.mp -= 5;
-                            }
-                            break;
-                    }
-                    break;
-                case "일병":
-                    switch (key)
-                    {
-                        case ConsoleKey.A:
-                            ChosenOne.dmg = ChosenOne.atk;
-                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
-                            break;
-                        case ConsoleKey.S:
-                            if (5 <= ChosenOne.mp)
-                            {
-                                ByeongPending = 3; // 병장 턴 pending 3으로 만들기
-                                ChosenOne.mp -= 5;
-                            }
-                            break;
-                    }
-                    break;
-                case "상병":
-                    switch (key)
-                    {
-                        case ConsoleKey.A:
-                            ChosenOne.dmg = ChosenOne.atk;
-                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
-                            break;
-                        case ConsoleKey.S:
-                            if (5 <= ChosenOne.mp)
-                            {
-                                Byeong.mp -= random.Next(5, 11); // 병장 mp 5~10만큼 빼버리기
-                                ChosenOne.mp -= 5;
-                            }
-                            break;
-                    }
-                    break;
-            }
-
-
-            
-
-
-
-            if (ChosenOne.hp <= 0)
+            if (ChosenOne.hp <= 0) // 플레이어 피가 0 이하라면
             {
                 Console.Clear();
                 key = default;
                 Victory = false;
-                scene.BattleOn = false;
-                scene.ResultOn = true;
+                scene.BattleOn = false; // 배틀모드 끄고
+                scene.ResultOn = true; // 결과모드 on
                 ResetByeong(); // 병장을 원상태로 돌려놓는다
             }
-            else if (Byeong.hp <= 0)
+            else if (Byeong.hp <= 0) // 병장 피가 0 이하라면
             {
                 Console.Clear();
                 key = default;
@@ -1127,8 +990,8 @@ class Program
 
         #endregion
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        #region 함수모음집(static 써도 안되는것들 ㅠ 어케 쓰는지 모르게쒀)
+        // ---------------------------------------------------<함수>-------------------------------------------------------
+        #region 함수모음집
 
         // 플레이어 이동함수
         void PlayerMove(ConsoleKey key)
@@ -1473,14 +1336,23 @@ class Program
 
         void RenderPrePlayer()
         {
-            if (player.x == player.prex && player.y == player.prey)
+            for (int i = 0; i < line4.Length ;++i)
             {
-                // 암것도안함
+                if (player.x == player.prex && player.y == player.prey)
+                {
+                    // 암것도안함
+                }
+                else if (player.prex == line4[i].x && player.prey == line4[i].y)
+                {
+                    // 암것도 안함
+                }
+                else if (player.x != player.prex || player.y != player.prey) // 현좌표와 전좌표가 겹치지 않을때만 지워줌
+                {
+                    Function.Render(player.prex, player.prey, " ");
+                }
             }
-            else if (player.x != player.prex || player.y != player.prey) // 현좌표와 전좌표가 겹치지 않을때만 지워줌
-            {
-                Function.Render(player.prex, player.prey, " ");
-            }
+            
+            
         }
 
         // 병장을 렌더
@@ -1495,7 +1367,11 @@ class Program
                 {
                     // 암것도안함
                 }
-                else // 현좌표와 전좌표가 겹치지 않을때만 지워줌
+                else if (line4[i].prex == player.x && line4[i].prey == player.y)
+                {
+                    // 암것도 안함
+                }
+                else if (line4[i].x != line4[i].prex || line4[i].y != line4[i].prey) // 현좌표와 전좌표가 겹치지 않을때만 지워줌
                 {
                     Function.Render(line4[i].prex, line4[i].prey, " ");
                 }
@@ -1594,6 +1470,148 @@ class Program
             Byeong.mp = 10;
             Byeong.atk = 5;
         }
+
+
+        // 병장 턴 함수
+        void ByeongPlayturn()
+        {
+            if (0 == ByeongPending)
+            {
+                if (ByeongTurn == true)
+                {
+                    int Byeongplay = random.Next(1, 5); // 1부터 4중 하나를 뽑음
+
+                    switch (Byeongplay)
+                    {
+                        case 1: // 1번이 나오면 그냥 공격
+                            Byeong.dmg = Byeong.atk;
+                            ChosenOne.hp -= Byeong.dmg;
+                            break;
+                        case 2: // 2번이 나오면 군가 부르게 하기
+                            if (2 <= Byeong.mp)
+                            {
+                                Byeong.dmg = random.Next(1, 4);
+                                ChosenOne.hp -= Byeong.dmg;
+                            }
+                            break;
+                        case 3: // 3번이 나오면 기강 잡기
+                            if (3 <= Byeong.mp)
+                            {
+                                Byeong.dmg = random.Next(3, 6);
+                                ChosenOne.hp -= Byeong.dmg;
+                            }
+                            break;
+                        case 4: // 4번이 나오면 맞선임 호출하기
+                            if (5 <= Byeong.mp)
+                            {
+                                Byeong.dmg = random.Next(5, 11);
+                                ChosenOne.hp -= Byeong.dmg;
+                            }
+                            ; break;
+                    }
+                }
+            }
+        }
+
+        // 플레이어 턴 함수
+        void ChosenOnePlayturn(ConsoleKey key)
+        {
+            
+            switch (ChosenOne.passive)
+            {
+                case "존댓말 하기":
+                    Byeong.atk = Byeong.atk + 5; // 병장 atk +5
+
+                    break;
+                case "얼 타기":
+                    Byeong.atk = Byeong.atk + 3; // 병장 atk +3
+
+                    break;
+                case "작업노예": // 25% 확률로 데미지 반감
+                    PassiveNumber = random.Next(1, 5); // 1~4 까지의 난수를 뽑는다
+                    if (PassiveNumber == 1)
+                    {
+                        Byeong.dmg = Byeong.dmg / 2; // 병장 atk 반감시키기
+                    }
+                    break;
+                case "개기기": // 20%의 확률로 자기 공격력 +1
+                    PassiveNumber = random.Next(1, 6); // 1~5 까지의 난수를 뽑는다
+                    if (PassiveNumber == 1)
+                    {
+                        ChosenOne.atk += 1;
+                    }
+                    break;
+            }
+
+            switch (ChosenOne.name)
+            {
+                case "신병": // 만약 선택된 캐릭터의 id가 신병인데
+                    switch (key) // 입력한 키가 
+                    {
+                        case ConsoleKey.A: // A면
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP를 atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S: // S면
+                            if (5 <= ChosenOne.mp)
+                            {
+                                Byeong.mp -= random.Next(3, 6); // 병장 MP를 3~5 사이의 난수만큼 빼버리기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+                case "이병":
+                    switch (key)
+                    {
+                        case ConsoleKey.A:
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S:
+                            if (5 <= ChosenOne.mp)
+                            {
+                                Byeong.hp -= random.Next(5, 9); // 병장 hp 5~8만큼 빼버리기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+                case "일병":
+                    switch (key)
+                    {
+                        case ConsoleKey.A:
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S:
+                            if (5 <= ChosenOne.mp)
+                            {
+                                ByeongPending = 3; // 병장 턴 pending 3으로 만들기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+                case "상병":
+                    switch (key)
+                    {
+                        case ConsoleKey.A:
+                            ChosenOne.dmg = ChosenOne.atk;
+                            Byeong.hp -= ChosenOne.dmg; // 병장 HP atk 만큼 감소시키기
+                            break;
+                        case ConsoleKey.S:
+                            if (5 <= ChosenOne.mp)
+                            {
+                                Byeong.mp -= random.Next(5, 11); // 병장 mp 5~10만큼 빼버리기
+                                ChosenOne.mp -= 5;
+                            }
+                            break;
+                    }
+                    break;
+            }
+        }
+
 
         // 부딪힐때 true or false 함수
         bool Collision(int x1, int y1, int x2, int y2)

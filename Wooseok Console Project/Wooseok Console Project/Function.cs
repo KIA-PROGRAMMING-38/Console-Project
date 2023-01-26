@@ -20,25 +20,6 @@ namespace Wooseok_Console_Project
             maxy = 18
         };
 
-        
-        
-
-
-        
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// 텍스트 파일을 불러온다
