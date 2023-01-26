@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Media;
 using System.Reflection.Metadata.Ecma335;
@@ -24,7 +24,7 @@ namespace Moon_Taker
                 Functions.SelectMenu(ref GameSettings.MenuNum, ref moveMenu);
                 if (moveMenu == ConsoleKey.E)
                 {
-                    SoundPlayer soundPlayer = new SoundPlayer("Select.wav");
+                    SoundPlayer soundPlayer = new SoundPlayer(@"Assets\Sound\Select.wav");
                     soundPlayer.PlaySync();
                     if (GameSettings.MenuNum == 0)
                     {
@@ -72,7 +72,7 @@ namespace Moon_Taker
             {
                 if (false == GameSettings.isBGMPlaying)
                 {
-                    Functions.PlayBGM("BGM.wav");
+                    Functions.PlayBGM("Assets\\Sound\\BGM.wav");
                     GameSettings.isBGMPlaying = true;
                 }
                 if (StageSettings.isStageReseted)
@@ -602,3 +602,5 @@ namespace Moon_Taker
         }
     }
 }
+
+

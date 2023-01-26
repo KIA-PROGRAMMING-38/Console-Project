@@ -42,7 +42,7 @@ namespace Moon_Taker
         public static void EnterSynopsisScene()
         {
             Console.Clear();
-            Functions.PlayBGM("BGM.wav");
+            Functions.PlayBGM("Assets\\Sound\\BGM.wav");
             GameSettings.isBGMPlaying = true;
             Functions.Render("시놉시스\n\n\n" +
                    "어느 화창한 날, 경일게임아카데미 프로그래밍 38기의 최선문 교수님은\n" +
@@ -93,7 +93,7 @@ namespace Moon_Taker
         }
         public static void EnterGameOverScene()
         {
-            Functions.PlayBGM("GameOver.wav");
+            Functions.PlayBGM("Assets\\Sound\\GameOver.wav");
             GameSettings.isBGMPlaying = false;
             Console.Clear();
             Functions.Render("재광은 흔적을 열심히 쫓았지만, 마음이 꺾였습니다.\n\n");
@@ -109,7 +109,7 @@ namespace Moon_Taker
         }
         public static void EnterBadChoiceScene(Trace[] trace)
         {
-            Functions.PlayBGM("GameOver.wav");
+            Functions.PlayBGM("Assets\\Sound\\GameOver.wav");
             GameSettings.isBGMPlaying = false;
             Console.Clear();
             Functions.Render(trace[StageSettings.currentStage - 1].FailureString);
@@ -118,7 +118,7 @@ namespace Moon_Taker
         }
         public static void EnterStageClearScene(Trace[] trace)
         {
-            Functions.PlayBGM("StageClear.wav");
+            Functions.PlayBGM("Assets\\Sound\\StageClear.wav");
             GameSettings.isBGMPlaying = false;
             Console.Clear();
             Functions.Render(trace[StageSettings.currentStage - 1].SuccessString);
@@ -128,7 +128,7 @@ namespace Moon_Taker
         public static void EnterBlessedScene(Advice[] someAdvice, int adviceNumber)
         {
             Console.Clear();
-            Functions.PlayBGM("Blessing.wav");
+            Functions.PlayBGM("Assets\\Sound\\Blessing.wav");
             GameSettings.isBGMPlaying = false;
             Console.WriteLine($"{someAdvice[adviceNumber].name}: {someAdvice[adviceNumber].advice}");
             Functions.Render(" _______  _______  _______ \r\n" +
@@ -168,7 +168,7 @@ namespace Moon_Taker
         }
         public static void EnterGameClearScene(Trace[] traces)
         {
-            Functions.PlayBGM("GameClear.wav");
+            Functions.PlayBGM("Assets\\Sound\\GameClear.wav");
             Console.Clear();
                         Functions.Render(traces[StageSettings.currentStage - 1].SuccessString);
             string gameClear = "\n\n축하합니다!\n\n";

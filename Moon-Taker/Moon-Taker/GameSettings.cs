@@ -16,6 +16,6 @@ namespace Moon_Taker
 
         public static string[] stageFilePath = new string[stageNumber + 1];
         public static string adviceFilePath = @"Assets\Advice\Advice.txt";
-        public static string traceFilePath = @"Assets\Trace.txt";
+        public static string traceFilePath = @"Assets\Trace\Trace.txt";
     }
 }
