@@ -5,7 +5,7 @@
         public override void Start()
         {
             base.Start();
-            SoundManager.Instance.Play(_soundName, true);
+            SoundManager.Instance.Play(_soundName, false);
             Console.Clear();
             Console.SetCursorPosition(0, 0);
 
