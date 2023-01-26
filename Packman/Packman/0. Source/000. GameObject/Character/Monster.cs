@@ -89,8 +89,6 @@ namespace Packman
         {
             base.Update();
 
-            return;
-
             switch( _curState )
             {
                 case State.Default:
