@@ -71,7 +71,7 @@ namespace Packman
         // 아이템 관련 Color..
         public const ConsoleColor TRAP_COLOR = ConsoleColor.DarkMagenta;
         // 투사체 Color..
-        public const ConsoleColor STUN_COLOR = ConsoleColor.DarkYellow;
+        public const ConsoleColor STUN_COLOR = ConsoleColor.Yellow;
         public const ConsoleColor PUNCH_COLOR = ConsoleColor.DarkRed;
         public const ConsoleColor MONSTER_KILL_PROJECTILE_COLOR = ConsoleColor.Red;
         public const ConsoleColor COLLECT_GOLD_PROJECTILE_COLOR = ConsoleColor.DarkCyan;
