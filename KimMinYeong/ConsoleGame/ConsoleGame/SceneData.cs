@@ -35,7 +35,7 @@ namespace ConsoleGame
         public const int Y_OF_DEADCOUNT = 25;
 
         // Ending Data
-        public static string[] gifts = { "", "1등상", "2등상" };
-        public static string[] endInfo = { "Title로 돌아가려면 엔터를 누르세요.", "게임을 종료하려면 스페이스바를 누르세요.", "" };
+        public static string[] gifts = { "[ 특별상 ]\n이번달 휴가 7일 추가 제공\n(수령처: 최선문 교수님)", "[ 1등상 ]\n교수님 카드로 구매한 아이스아메리카노\n(수령처: 최선문 교수님)", "[ 2등상 ]\n교수님과 식사권\n(수령처: 최선문 교수님)" };
+        public static string[] endInfo = { "-----------------------------------------", "Title로 돌아가려면 엔터를 누르세요.", "게임을 종료하려면 스페이스바를 누르세요.", " " };
     }
 }

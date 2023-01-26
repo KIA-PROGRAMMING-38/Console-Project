@@ -138,8 +138,6 @@ namespace ConsoleGame
                 case ConsoleKey.Enter:
                     CheckTitleToWhere();
                     break;
-
-
             }
         }
 
@@ -232,7 +230,6 @@ namespace ConsoleGame
             {
                 Bullet.Shoot();
                 Bullet.Fly();
-                // Bullet.IsCollisionWithSomething();  충돌 판정까지 불렛의 함수 속도에 맞추니까 타이밍이 안맞는 경우 충돌해도 사라지지 않고 뚫고 지나가는 현상 발생
                 bulletWatch.Restart();
             }
 
@@ -295,9 +292,10 @@ namespace ConsoleGame
         public static void RenderEnding()
         {
             // 결과 화면 렌더 구현
+            Console.SetCursorPosition(0, 0);
             Console.WriteLine(SceneData.gifts[_selectedGift]);
-            Console.SetCursorPosition(0, 4);
-            for(int index = 0; index < SceneData.infos.Length; ++index)
+            Console.SetCursorPosition(0, 5);
+            for(int index = 0; index < SceneData.endInfo.Length; ++index)
             {
                 Console.WriteLine(SceneData.endInfo[index]);
             }
