@@ -128,8 +128,8 @@ namespace ConsoleGame
             }
 
             Console.SetCursorPosition(SceneData.X_OF_DEADCOUNT, SceneData.Y_OF_DEADCOUNT);
-            Console.WriteLine();
-            Console.WriteLine($"죽인 타겟의 수: {_countDeadTarget}");
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine($"파괴한 타겟의 수: {_countDeadTarget}");
         }
 
 

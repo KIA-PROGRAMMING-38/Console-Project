@@ -34,5 +34,12 @@ namespace ConsoleGame
                 Input.Process();
             }
         }
+
+        public static void End()
+        {
+            Console.Clear();
+            Console.WriteLine("게임을 종료하였습니다.");
+            Environment.Exit(1);
+        }
     }
 }

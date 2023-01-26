@@ -24,7 +24,7 @@ namespace ConsoleGame
         public static int titleCursorY = 15;
 
         // GameInfo Data
-        public static string[] infos = { "게임인포입니다.", "Title로 돌아가려면 엔터를 누르세요." };
+        public static string[] infos = File.ReadAllLines("Assets\\GameInfo.txt");
 
         // InGame Data
         public const int MIN_OF_INGAME_X = 0;
@@ -36,6 +36,6 @@ namespace ConsoleGame
 
         // Ending Data
         public static string[] gifts = { "", "1등상", "2등상" };
-        public static string[] endInfo = { "Title로 돌아가려면 엔터를 누르세요.", "게임을 종료하려면 스페이스바를 누르세요." };
+        public static string[] endInfo = { "Title로 돌아가려면 엔터를 누르세요.", "게임을 종료하려면 스페이스바를 누르세요.", "" };
     }
 }

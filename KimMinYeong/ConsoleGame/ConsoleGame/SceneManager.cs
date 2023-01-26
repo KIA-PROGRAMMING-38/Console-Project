@@ -156,9 +156,7 @@ namespace ConsoleGame
                     break;
 
                 case SceneData.titleOption3Y:
-                    Console.Clear();
-                    Console.WriteLine("게임을 종료하였습니다.");
-                    Environment.Exit(1);
+                    Game.End();
                     return;
             }
         }
@@ -289,9 +287,7 @@ namespace ConsoleGame
                     _currentScene = SceneKind.Title;
                     break;
                 case ConsoleKey.Spacebar:
-                    Console.Clear();
-                    Console.WriteLine("게임을 종료하였습니다.");
-                    Environment.Exit(1);
+                    Game.End();
                     break;
             }
         }
