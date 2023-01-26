@@ -4,6 +4,7 @@
     {
         public override void Start()
         {
+            base.Start();
             SoundManager.Instance.Play(_soundName, true);
             clear = new string[] { 
             @"   ####  ##       ######    ###    ######     ####     ####",   
