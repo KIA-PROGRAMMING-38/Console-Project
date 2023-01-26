@@ -31,14 +31,14 @@ namespace ProjectJK.Objects
         public static void RenderPast(KingSlime kingslime)
         {
 
-            Game.Function.ObjRender(kingslime.PastX, kingslime.PastY, "K", ConsoleColor.White);
+            Game.Function.ObjRender(kingslime.PastX, kingslime.PastY, "∰", ConsoleColor.White);
         }
         public static void RenderNow(KingSlime kingslime)
         {
 
             if (kingslime.Alive)
             {
-                Game.Function.ObjRender(kingslime.X, kingslime.Y, "K", ConsoleColor.DarkGreen);
+                Game.Function.ObjRender(kingslime.X, kingslime.Y, "∰", ConsoleColor.DarkBlue);
             }
         }
         public static void RenderBattle(Player player, KingSlime kingslime)

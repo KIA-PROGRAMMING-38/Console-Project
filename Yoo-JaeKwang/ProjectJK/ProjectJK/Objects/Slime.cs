@@ -44,7 +44,7 @@ namespace ProjectJK.Objects
             
                 if (slime[i].Alive)
                 {
-                    Game.Function.ObjRender(slime[i].X, slime[i].Y, "S", ConsoleColor.DarkGreen);
+                    Game.Function.ObjRender(slime[i].X, slime[i].Y, "S", ConsoleColor.Blue);
                 }
             }
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectJK
 {
-    public enum StageKind
+    public enum StageNum
     {
         Stage00,
         Stage01,
@@ -19,8 +19,8 @@ namespace ProjectJK
     public static class Stage
     {
 
-        private static StageKind _currentStage = StageKind.Stage00;
-        public static StageKind GetCurrentStage()
+        private static StageNum _currentStage = StageNum.Stage00;
+        public static StageNum GetCurrentStage()
         {
             return _currentStage;
         }
@@ -29,8 +29,8 @@ namespace ProjectJK
         {
             return _isStageChange;
         }
-        private static StageKind _nextStage;
-        public static void SetNextStage(StageKind nextStage)
+        private static StageNum _nextStage;
+        public static void SetNextStage(StageNum nextStage)
         {
             _nextStage = nextStage;
             _isStageChange = true;
@@ -53,9 +53,9 @@ namespace ProjectJK
         {
 
         }
-        public static string[] LoadStage(StageKind stageKind)
+        public static string[] LoadStage(StageNum stageNum)
         {
-            string stageFilePath = Path.Combine("..\\..\\..\\Assets", "Stage", $"Stage{(int)stageKind:D2}.txt");
+            string stageFilePath = Path.Combine("..\\..\\..\\Assets", "Stage", $"Stage{(int)stageNum:D2}.txt");
             if (false == File.Exists(stageFilePath))
             {
                 Game.Function.ExitWithError($"스테이지 파일 로드 오류{stageFilePath}");
@@ -63,7 +63,7 @@ namespace ProjectJK
             return File.ReadAllLines(stageFilePath);
         }
         public static void ParseStage(string[] stage, out Wall[] walls, out VillageChief villageChief, out StageUpPortal stageUpPortal, out StageDownPortal stageDownPortal,
-                                        out Dialog1[] dialog1, out Dialog2[] dialog2, out Dialog3[] dialog3, out Dialog4[] dialog4, out Dialog5[] dialog5, out Dialog6[] dialog6, out Dialog7 dialog7, out Dialog8 dialog8, out Dialog9 dialog9, out Dialog10 dialog10,
+                                        out UI.Dialog.FrameUI0[] dialog1, out FrameUI1[] dialog2, out FrameUI2[] dialog3, out FrameUI3[] dialog4, out FrameUI4[] dialog5, out FrameUI5[] dialog6, out FrameUI6 dialog7, out FrameUI7 dialog8, out FrameUI8 dialog9, out FrameUI9 dialog10,
                                         out Slime[] slime, out Fox[] fox, out Goblin[] goblin,
                                         out VillageRecoveringMerchant villageRecoveringMerchant, out VillageMaxHPMerchant villageMaxHPMerchant, out VillageATKMerchant villageATKMerchant, out VillageDEFMerchant villageDEFMerchant)
         {
@@ -73,17 +73,17 @@ namespace ProjectJK
             villageChief = default;
             stageUpPortal = default;
             stageDownPortal = default;
-            dialog1 = new Dialog1[int.Parse(stageMetaData[1])];
+            dialog1 = new UI.Dialog.FrameUI0[int.Parse(stageMetaData[1])];
             int dialog1Index = 0;
-            dialog2 = new Dialog2[int.Parse(stageMetaData[2])];
+            dialog2 = new FrameUI1[int.Parse(stageMetaData[2])];
             int dialog2Index = 0;
-            dialog3 = new Dialog3[int.Parse(stageMetaData[3])];
+            dialog3 = new FrameUI2[int.Parse(stageMetaData[3])];
             int dialog3Index = 0;
-            dialog4 = new Dialog4[int.Parse(stageMetaData[4])];
+            dialog4 = new FrameUI3[int.Parse(stageMetaData[4])];
             int dialog4Index = 0;
-            dialog5 = new Dialog5[int.Parse(stageMetaData[5])];
+            dialog5 = new FrameUI4[int.Parse(stageMetaData[5])];
             int dialog5Index = 0;
-            dialog6 = new Dialog6[int.Parse(stageMetaData[6])];
+            dialog6 = new FrameUI5[int.Parse(stageMetaData[6])];
             int dialog6Index = 0;
             dialog7 = default;
             dialog8 = default;
@@ -125,40 +125,40 @@ namespace ProjectJK
                             stageDownPortal = new StageDownPortal { X = x, Y = y };
                             break;
                         case '┃':
-                            dialog1[dialog1Index] = new Dialog1 { X = x, Y = y };
+                            dialog1[dialog1Index] = new UI.Dialog.FrameUI0 { X = x, Y = y };
                             ++dialog1Index;
                             break;
                         case '━':
-                            dialog2[dialog2Index] = new Dialog2 { X = x, Y = y };
+                            dialog2[dialog2Index] = new FrameUI1 { X = x, Y = y };
                             ++dialog2Index;
                             break;
                         case '┏':
-                            dialog3[dialog3Index] = new Dialog3 { X = x, Y = y };
+                            dialog3[dialog3Index] = new FrameUI2 { X = x, Y = y };
                             ++dialog3Index;
                             break;
                         case '┓':
-                            dialog4[dialog4Index] = new Dialog4 { X = x, Y = y };
+                            dialog4[dialog4Index] = new FrameUI3 { X = x, Y = y };
                             ++dialog4Index;
                             break;
                         case '┗':
-                            dialog5[dialog5Index] = new Dialog5 { X = x, Y = y };
+                            dialog5[dialog5Index] = new FrameUI4 { X = x, Y = y };
                             ++dialog5Index;
                             break;
                         case '┛':
-                            dialog6[dialog6Index] = new Dialog6 { X = x, Y = y };
+                            dialog6[dialog6Index] = new FrameUI5 { X = x, Y = y };
                             ++dialog6Index;
                             break;
                         case '┳':
-                            dialog7 = new Dialog7 { X = x, Y = y };
+                            dialog7 = new FrameUI6 { X = x, Y = y };
                             break;
                         case '┣':
-                            dialog8 = new Dialog8 { X = x, Y = y };
+                            dialog8 = new FrameUI7 { X = x, Y = y };
                             break;
                         case '┫':
-                            dialog9 = new Dialog9 { X = x, Y = y };
+                            dialog9 = new FrameUI8 { X = x, Y = y };
                             break;
                         case '┻':
-                            dialog10 = new Dialog10 { X = x, Y = y };
+                            dialog10 = new FrameUI9 { X = x, Y = y };
                             break;
                         case 'S':
                             slime[slimeIndex] = new Slime { X = x, Y = y, MaxHP = 10, ATK = 0, DEF = 0, Money = 10, EXP = 1, Alive = true };
@@ -198,12 +198,12 @@ namespace ProjectJK
         {
             switch (_currentStage)
             {
-                case StageKind.Stage00:
+                case StageNum.Stage00:
                     RenderStage00();
 
                     break;
 
-                case StageKind.Stage01:
+                case StageNum.Stage01:
                     RenderStage01();
 
                     break;
@@ -224,10 +224,10 @@ namespace ProjectJK
         {
             switch (_currentStage)
             {
-                case StageKind.Stage00:
+                case StageNum.Stage00:
                     UpdateStage00();
                     break;
-                case StageKind.Stage01:
+                case StageNum.Stage01:
                     UpdateStage01();
                     break;
             }

@@ -42,11 +42,28 @@ namespace ProjectJK
         {
             Console.Clear();
         }
+        private static string[] LoadScene(SceneKind sceneKind)
+        {
+            string sceneFilePath = Path.Combine("..\\..\\..\\Assets", "Scene", $"Scene{(int)sceneKind:D2}.txt");
+            if (false == File.Exists(sceneFilePath))
+            {
+                Game.Function.ExitWithError($"신 파일 로드 오류{sceneFilePath}");
+            }
+            return File.ReadAllLines(sceneFilePath);
+        }
+        private static string[] _lines = LoadScene(SceneKind.Title);
+        private static void ParseScene(string[] lines)
+        {
+            for(int i = 0; i < lines.Length; ++i)
+            {
+                Console.WriteLine(lines[i]);
+            }
+        }
         private static void RenderTitle()
         {
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.SetCursorPosition(0, 0);
-            Console.Write("Title");
+            LoadScene(SceneKind.Title);
+            ParseScene(_lines);
             Console.ForegroundColor = ConsoleColor.White;
         }
         private static void UpdateTitle()

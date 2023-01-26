@@ -15,7 +15,7 @@ namespace ProjectJK.Objects
         {
             public static void Render(StageUpPortal stageUpPortal)
             {
-                Game.Function.ObjRender(stageUpPortal.X, stageUpPortal.Y, "↑", ConsoleColor.Black);
+                Game.Function.ObjRender(stageUpPortal.X, stageUpPortal.Y, "Ω", ConsoleColor.Black);
             }
             
         }

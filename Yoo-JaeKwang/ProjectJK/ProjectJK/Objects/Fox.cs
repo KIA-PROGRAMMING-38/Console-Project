@@ -41,7 +41,7 @@ namespace ProjectJK.Objects
             {
                 if (fox[i].Alive)
                 {
-                    Game.Function.ObjRender(fox[i].X, fox[i].Y, "F", ConsoleColor.DarkGreen);
+                    Game.Function.ObjRender(fox[i].X, fox[i].Y, "F", ConsoleColor.DarkGray);
                 }
             }
         }

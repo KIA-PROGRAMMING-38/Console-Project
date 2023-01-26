@@ -22,9 +22,8 @@ namespace ProjectJK
             {
                 X = 15,
                 Y = 18,
-                PastY = 0,
             };
-            Dialog dialog = new Dialog
+            FrameUI frameUI = new FrameUI
             {
                 X = 2,
                 Y = 15
@@ -61,16 +60,16 @@ namespace ProjectJK
             VillageDEFMerchant villageDEFMerchant = default;
             StageUpPortal stageUpPortal = default;
             StageDownPortal stageDownPortal = default;
-            Dialog1[] dialog1 = default;
-            Dialog2[] dialog2 = default;
-            Dialog3[] dialog3 = default;
-            Dialog4[] dialog4 = default;
-            Dialog5[] dialog5 = default;
-            Dialog6[] dialog6 = default;
-            Dialog7 dialog7 = default;
-            Dialog8 dialog8 = default;
-            Dialog9 dialog9 = default;
-            Dialog10 dialog10 = default;
+            UI.Dialog.FrameUI0[] frameUI0 = default;
+            FrameUI1[] frameUI1 = default;
+            FrameUI2[] frameUI2 = default;
+            FrameUI3[] frameUI3 = default;
+            FrameUI4[] frameUI4 = default;
+            FrameUI5[] frameUI5 = default;
+            FrameUI6 frameUI6 = default;
+            FrameUI7 frameUI7 = default;
+            FrameUI8 frameUI8 = default;
+            FrameUI9 frameUI9 = default;
             Slime[] slime = default;
             Fox[] fox = default;
             Goblin[] goblin = default;
@@ -164,28 +163,7 @@ namespace ProjectJK
 
             void InitTitle()
             {
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine($"");
-                Console.WriteLine($"  @@@@@@@      @@@@@@         @@@@@     ");
-                Console.WriteLine($"  @@@@@@@@@    @@@@@@@@     @@@@@@@@    ");
-                Console.WriteLine($"  @@     @@    @@    @@@   @@@     @@   ");
-                Console.WriteLine($"  @@      @@   @@     @@   @@      @@   ");
-                Console.WriteLine($"  @@      @@   @@     @@   @@           ");
-                Console.WriteLine($"  @@     @@    @@    @@@  @@            ");
-                Console.WriteLine($"  @@@@@@@@     @@@@@@@@   @@     @@@@@  ");
-                Console.WriteLine($"  @@@@@@@      @@@@@@@    @@     @@@@@  ");
-                Console.WriteLine($"  @@   @@@     @@         @@@       @@  ");
-                Console.WriteLine($"  @@    @@     @@          @@       @@  ");
-                Console.WriteLine($"  @@     @@    @@          @@@     @@@  ");
-                Console.WriteLine($"  @@      @@   @@           @@@@@@@@@   ");
-                Console.WriteLine($"  @@      @@@  @@             @@@@@     ");
-                Console.WriteLine($"");
-                Console.WriteLine($"");
-                Console.WriteLine($"");
-                Console.WriteLine($"");
-                Console.WriteLine($"                 Start");
-                Console.WriteLine($"                 Exit");
-                Console.ForegroundColor = ConsoleColor.White;
+                Scene.Render();
             }
             void RenderTitle()
             {
@@ -215,9 +193,9 @@ namespace ProjectJK
             void InitStage00()
             {
                 Console.Clear();
-                string[] lines = Stage.LoadStage(StageKind.Stage00);
+                string[] lines = Stage.LoadStage(StageNum.Stage00);
                 Stage.ParseStage(lines, out walls, out villageChief, out stageUpPortal, out stageDownPortal,
-                                out dialog1, out dialog2, out dialog3, out dialog4, out dialog5, out dialog6, out dialog7, out dialog8, out dialog9, out dialog10,
+                                out frameUI0, out frameUI1, out frameUI2, out frameUI3, out frameUI4, out frameUI5, out frameUI6, out frameUI7, out frameUI8, out frameUI9,
                                 out slime, out fox, out goblin,
                                 out villageRecoveringMerchant, out villageMaxHPMerchant, out villageATKMerchant, out villageDEFMerchant);
                 Wall.Function.Render(walls);
@@ -227,7 +205,7 @@ namespace ProjectJK
                 VillageATKMerchant.Render(villageATKMerchant);
                 VillageDEFMerchant.Render(villageDEFMerchant);
                 StageUpPortal.Function.Render(stageUpPortal);
-                Dialog.Render(dialog1, dialog2, dialog3, dialog4, dialog5, dialog6, dialog7, dialog8, dialog9, dialog10);
+                FrameUI.Render(frameUI0, frameUI1, frameUI2, frameUI3, frameUI4, frameUI5, frameUI6, frameUI7, frameUI8, frameUI9);
                 UIName.Render();
                 player.CanMove = true;
                 selectCursor.X = Game.DialogCursor_X;
@@ -276,15 +254,15 @@ namespace ProjectJK
             void InitStage01()
             {
                 Console.Clear();
-                string[] lines = Stage.LoadStage(StageKind.Stage01);
+                string[] lines = Stage.LoadStage(StageNum.Stage01);
                 Stage.ParseStage(lines, out walls, out villageChief, out stageUpPortal, out stageDownPortal,
-                                out dialog1, out dialog2, out dialog3, out dialog4, out dialog5, out dialog6, out dialog7, out dialog8, out dialog9, out dialog10,
+                                out frameUI0, out frameUI1, out frameUI2, out frameUI3, out frameUI4, out frameUI5, out frameUI6, out frameUI7, out frameUI8, out frameUI9,
                                 out slime, out fox, out goblin,
                                 out villageRecoveringMerchant, out villageMaxHPMerchant, out villageATKMerchant, out villageDEFMerchant);
                 Wall.Function.Render(walls);
                 StageUpPortal.Function.Render(stageUpPortal);
                 StageDownPortal.Function.Render(stageDownPortal);
-                Dialog.Render(dialog1, dialog2, dialog3, dialog4, dialog5, dialog6, dialog7, dialog8, dialog9, dialog10);
+                FrameUI.Render(frameUI0, frameUI1, frameUI2, frameUI3, frameUI4, frameUI5, frameUI6, frameUI7, frameUI8, frameUI9);
                 UIName.Render();
                 Slime.InitSlimeRender(slime);
             }
@@ -370,15 +348,15 @@ namespace ProjectJK
             void InitStage02()
             {
                 Console.Clear();
-                string[] lines = Stage.LoadStage(StageKind.Stage02);
+                string[] lines = Stage.LoadStage(StageNum.Stage02);
                 Stage.ParseStage(lines, out walls, out villageChief, out stageUpPortal, out stageDownPortal,
-                                out dialog1, out dialog2, out dialog3, out dialog4, out dialog5, out dialog6, out dialog7, out dialog8, out dialog9, out dialog10,
+                                out frameUI0, out frameUI1, out frameUI2, out frameUI3, out frameUI4, out frameUI5, out frameUI6, out frameUI7, out frameUI8, out frameUI9,
                                 out slime, out fox, out goblin,
                                 out villageRecoveringMerchant, out villageMaxHPMerchant, out villageATKMerchant, out villageDEFMerchant);
                 Wall.Function.Render(walls);
                 StageUpPortal.Function.Render(stageUpPortal);
                 StageDownPortal.Function.Render(stageDownPortal);
-                Dialog.Render(dialog1, dialog2, dialog3, dialog4, dialog5, dialog6, dialog7, dialog8, dialog9, dialog10);
+                FrameUI.Render(frameUI0, frameUI1, frameUI2, frameUI3, frameUI4, frameUI5, frameUI6, frameUI7, frameUI8, frameUI9);
                 UIName.Render();
                 Fox.InitFoxRender(fox);
             }
@@ -464,15 +442,15 @@ namespace ProjectJK
             void InitStage03()
             {
                 Console.Clear();
-                string[] lines = Stage.LoadStage(StageKind.Stage03);
+                string[] lines = Stage.LoadStage(StageNum.Stage03);
                 Stage.ParseStage(lines, out walls, out villageChief, out stageUpPortal, out stageDownPortal,
-                                out dialog1, out dialog2, out dialog3, out dialog4, out dialog5, out dialog6, out dialog7, out dialog8, out dialog9, out dialog10,
+                                out frameUI0, out frameUI1, out frameUI2, out frameUI3, out frameUI4, out frameUI5, out frameUI6, out frameUI7, out frameUI8, out frameUI9,
                                 out slime, out fox, out goblin,
                                 out villageRecoveringMerchant, out villageMaxHPMerchant, out villageATKMerchant, out villageDEFMerchant);
                 Wall.Function.Render(walls);
                 StageUpPortal.Function.Render(stageUpPortal);
                 StageDownPortal.Function.Render(stageDownPortal);
-                Dialog.Render(dialog1, dialog2, dialog3, dialog4, dialog5, dialog6, dialog7, dialog8, dialog9, dialog10);
+                FrameUI.Render(frameUI0, frameUI1, frameUI2, frameUI3, frameUI4, frameUI5, frameUI6, frameUI7, frameUI8, frameUI9);
                 UIName.Render();
                 Goblin.InitGoblinRender(goblin);
             }
@@ -558,14 +536,14 @@ namespace ProjectJK
             void InitStage04()
             {
                 Console.Clear();
-                string[] lines = Stage.LoadStage(StageKind.Stage04);
+                string[] lines = Stage.LoadStage(StageNum.Stage04);
                 Stage.ParseStage(lines, out walls, out villageChief, out stageUpPortal, out stageDownPortal,
-                                out dialog1, out dialog2, out dialog3, out dialog4, out dialog5, out dialog6, out dialog7, out dialog8, out dialog9, out dialog10,
+                                out frameUI0, out frameUI1, out frameUI2, out frameUI3, out frameUI4, out frameUI5, out frameUI6, out frameUI7, out frameUI8, out frameUI9,
                                 out slime, out fox, out goblin,
                                 out villageRecoveringMerchant, out villageMaxHPMerchant, out villageATKMerchant, out villageDEFMerchant);
                 Wall.Function.Render(walls);
                 StageDownPortal.Function.Render(stageDownPortal);
-                Dialog.Render(dialog1, dialog2, dialog3, dialog4, dialog5, dialog6, dialog7, dialog8, dialog9, dialog10);
+                FrameUI.Render(frameUI0, frameUI1, frameUI2, frameUI3, frameUI4, frameUI5, frameUI6, frameUI7, frameUI8, frameUI9);
                 UIName.Render();
                 KingSlime.InitKingSlimeRender(kingSlime);
             }

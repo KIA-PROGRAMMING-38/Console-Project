@@ -41,11 +41,11 @@ namespace ProjectJK.Objects
         {
             public static void RenderPast(Player player)
             {
-                Game.Function.ObjRender(player.PastX, player.PastY, "P", ConsoleColor.White);
+                Game.Function.ObjRender(player.PastX, player.PastY, "☺", ConsoleColor.White);
             }
             public static void RenderNow(Player player)
             {
-                Game.Function.ObjRender(player.X, player.Y, "P", ConsoleColor.Black);
+                Game.Function.ObjRender(player.X, player.Y, "☺", ConsoleColor.Black);
             }
             public static void Move(Player player)
             {
