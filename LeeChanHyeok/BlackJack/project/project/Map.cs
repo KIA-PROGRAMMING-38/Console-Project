@@ -8,6 +8,15 @@ namespace project
 {
     class Map
     {
+        public void MapRender()
+        {
+            MapDrow();
+        }
+        private void MapExtent(int x, int y, string mapObject)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write(mapObject);
+        }
         //메뉴 선택
         public int playerX = 123;
         public int playerY = 12;
@@ -16,7 +25,7 @@ namespace project
         public int MIN_Y = 12;
         public int MAX_Y = 21;
         //소지금
-        public int[] money = { 1000000 };
+        public int money = 1000000;
 
         //메뉴
         public Menu[] menu = new Menu[]
@@ -31,17 +40,7 @@ namespace project
         public int[] mapX = { 30, 155, 119, 153, 120, 36, 50, 65, 80, 62, 77, 92 };
         public int[] mapY = { 4, 38, 5, 7, 6, 10, 20, 8, 16, 23, 31 };
         #endregion
-        public void MapRender()
-        {
-            MapDrow();
-        }
-
-        private void MapExtent(int x, int y, string mapObject)
-        {
-            Console.SetCursorPosition(x, y);
-            Console.Write(mapObject);
-        }
-
+        
         void MapDrow()
         {
             #region 맵 카운트
@@ -85,7 +84,7 @@ namespace project
             }
             #endregion
             #region 소지금 테두리
-            MapExtent(mapX[4], mapY[4], $"소지금 : {money[0]:C}");
+            MapExtent(mapX[4], mapY[4], $"소지금 : {money:C}  ");
             #endregion
             #region 메뉴 테두리
             for (int menuId = 0; menuId < MENU_MAPX_COUNT; ++menuId)
@@ -133,7 +132,7 @@ namespace project
             #region 플레이어 카드 테두리
             for (int playerId = 0; playerId < PLAYER_MAPX_COUNT; ++playerId)
             {
-                MapExtent(mapX[5], mapY[9], "< player >");
+                MapExtent(mapX[5], mapY[9], "< Player >");
                 MapExtent(mapX[6] + playerId, mapY[9], "-");
                 MapExtent(mapX[6] + playerId, mapY[10], "-");
                 MapExtent(mapX[7] + playerId, mapY[9], "-");

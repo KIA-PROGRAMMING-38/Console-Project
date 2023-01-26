@@ -9,11 +9,7 @@ namespace project
 {
     class Title
     {
-        public void TitleMain()
-        {
-            TitleSceen();
-        }
-        private void TitleSceen()
+        public void TitleSceen()
         {
             Console.Title = "블랙잭";
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
@@ -46,11 +42,7 @@ namespace project
                         Environment.Exit(0);
                         break;
                 }
-
             }
-
-
-
         }
 
         private void TitleRender(int x, int y, string titleObject)

@@ -18,6 +18,8 @@ namespace project
             {
                 key = Console.ReadKey().Key;
             }
+           
         }
+
     }
 }
