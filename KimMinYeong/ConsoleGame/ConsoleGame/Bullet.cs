@@ -120,9 +120,9 @@ namespace ConsoleGame
                     if (_x[bulletId] == targetX[targetId] && _y[bulletId] == targetY[targetId])
                     {
                         _preY[bulletId] = _y[bulletId];
+                        Target.Hurt(targetId, _isAvailable[bulletId]);
                         _isAvailable[bulletId] = false;
-                        // 그 타겟의 hp 깎는 함수
-                        break;
+                        continue;
                     }
                 }
             }

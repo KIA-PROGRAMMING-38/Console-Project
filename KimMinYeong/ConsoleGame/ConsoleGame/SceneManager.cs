@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
@@ -21,8 +22,6 @@ namespace ConsoleGame
 
         public static Thread obstacleCreate = new Thread(() => Obstacle.Create());
         public static Thread obstacleFly = new Thread(() => Obstacle.Fly());
-        public static Thread targetCreate = new Thread(() => Target.Create());
-        public static Thread targetFly = new Thread(() => Target.Fly());
 
         public static bool IsSceneChange()
         {
@@ -165,23 +164,26 @@ namespace ConsoleGame
             }
         }
 
+        public static Stopwatch createTargetWatch = new Stopwatch();
+        public static Stopwatch flyTargetWatch = new Stopwatch();
+        public static Stopwatch bulletWatch = new Stopwatch();
         public static void InitInGame()
         {
             Console.SetWindowSize(50, 30);
             obstacleCreate.Start();
             obstacleFly.Start();
-            targetCreate.Start();
-            targetFly.Start();
-        }
+            //targetCreate.Start();
+            //targetFly.Start();
 
-        public static void RenderInGame()
-        {
-            // 게임 진행 화면 렌더 구현
-            Bullet.Render();
-            Target.Render();
-            Obstacle.Render();
-            Player.Render();
-
+            // 스탑워치 start 여기서 해야할듯?
+            createTargetWatch.Restart();
+            flyTargetWatch.Restart();
+            bulletWatch.Restart();
+            Target.Create();
+            Target.Fly();
+            Bullet.Shoot();
+            Bullet.Fly();
+            Bullet.IsCollisionWithSomething();
         }
 
         public static void UpdateInGame()
@@ -198,9 +200,37 @@ namespace ConsoleGame
                     Player.Move();
                     break;
             }
-            Bullet.Shoot();
-            Bullet.Fly();
-            Bullet.IsCollisionWithSomething();
+
+            if(createTargetWatch.ElapsedMilliseconds > 5000)
+            {
+                Target.Create();
+                createTargetWatch.Restart();
+            }
+
+            if(flyTargetWatch.ElapsedMilliseconds > 500)
+            {
+                Target.Fly();
+                flyTargetWatch.Restart();
+            }
+
+            if(bulletWatch.ElapsedMilliseconds > 300)
+            {
+                Bullet.Shoot();
+                Bullet.Fly();
+                Bullet.IsCollisionWithSomething();
+                bulletWatch.Restart();
+            }
+
+            Target.IsEnoughDeadNumber();
+        }
+
+        public static void RenderInGame()
+        {
+            // 게임 진행 화면 렌더 구현
+            Bullet.Render();
+            Target.Render();
+            Obstacle.Render();
+            Player.Render();
         }
 
         public static void InitGameInfo()
@@ -226,16 +256,18 @@ namespace ConsoleGame
             }
         }
 
+        public static Random random = new Random();
+        public static int _selectedGift;
         public static void InitEnding()
         {
-
+            _selectedGift = random.Next(SceneData.gifts.Length);
         }
 
         public static void RenderEnding()
         {
             // 결과 화면 렌더 구현
             Console.Clear();
-            Console.WriteLine("결과 화면 입니다.");
+            Console.WriteLine(SceneData.gifts[_selectedGift]);
             Thread.Sleep(1000);
         }
     }

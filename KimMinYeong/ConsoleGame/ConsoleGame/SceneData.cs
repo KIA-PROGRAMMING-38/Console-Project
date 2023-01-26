@@ -15,7 +15,6 @@ namespace ConsoleGame
         public static string titleOption3 = "3. 게임 종료";
         public static string cursorIcon = "▶";
 
-
         public const int titleOptionsX = 54;
         public const int titleOption1Y = 15;
         public const int titleOption2Y = 17;
@@ -32,5 +31,10 @@ namespace ConsoleGame
         public const int MAX_OF_INGAME_X = 48;
         public const int MIN_OF_INGAME_Y = 0;
         public const int MAX_OF_INGAME_Y = 19;
+        public const int X_OF_DEADCOUNT = 1;
+        public const int Y_OF_DEADCOUNT = 25;
+
+        // Ending Data
+        public static string[] gifts = { "선물1", "선물2" };
     }
 }

@@ -11,10 +11,12 @@ namespace ConsoleGame
         private static int[] _x = new int[5];
         private static int[] _preY = new int[5];
         private static int[] _y = new int[5];
-
-        private static int _icon = 9;
+        private static bool[] _isDead = new bool[5];
+        private static int _maxHp = 9;
+        private static int[] _hp = new int[5];
         private static int _index = 0;
         private static bool _isAvailableCreateNewTarget = true;
+        private static int _countDeadTarget;
 
         private static Random random = new Random();
 
@@ -28,29 +30,34 @@ namespace ConsoleGame
             return _y;
         }
 
+        public static void IsEnoughDeadNumber()
+        {
+            if (_countDeadTarget == 3)
+            {
+                SceneManager._currentScene = SceneKind.Ending;
+            }
+        }
+
         public static void Create()
         {
-            while (true)
+            if (_isAvailableCreateNewTarget)
             {
-                Thread.Sleep(3500);
-                
-                if (_isAvailableCreateNewTarget)
+                _x[_index] = random.Next(SceneData.MIN_OF_INGAME_X, SceneData.MAX_OF_INGAME_X);
+                _y[_index] = SceneData.MIN_OF_INGAME_Y + 1;
+                _hp[_index] = _maxHp;
+                _isDead[_index] = false;
+
+                if (_index == 3)  // 한 화면에 동시에 존재할 수 있는 목표물의 개수
                 {
-                    _x[_index] = random.Next(SceneData.MIN_OF_INGAME_X, SceneData.MAX_OF_INGAME_X);
-                    _y[_index] = SceneData.MIN_OF_INGAME_Y + 1;
-
-                    if (_index == 3)  // 한 화면에 동시에 존재할 수 있는 목표물의 개수
-                    {
-                        _index = 0;
-                    }
-                    else
-                    {
-                        ++_index;
-                    }
+                    _index = 0;
                 }
-
-                CheckAvailableCreateNewTarget();
+                else
+                {
+                    ++_index;
+                }
             }
+
+            CheckAvailableCreateNewTarget();
         }
 
         public static void CheckAvailableCreateNewTarget()
@@ -69,25 +76,20 @@ namespace ConsoleGame
 
         public static void Fly()
         {
-            while (true)
+            for (int targetId = 0; targetId < _x.Length; ++targetId)
             {
-                for (int targetId = 0; targetId < _x.Length; ++targetId)
+                if (_y[targetId] == 0)
                 {
-                    if (_y[targetId] == 0)
-                    {
-                        continue;
-                    }
-
-                    _preY[targetId] = _y[targetId];
-                    _y[targetId] += 1;
-
-                    if (_y[targetId] == SceneData.MAX_OF_INGAME_Y)
-                    {
-                        _y[targetId] = 0;
-                    }
+                    continue;
                 }
 
-                Thread.Sleep(300);
+                _preY[targetId] = _y[targetId];
+                _y[targetId] += 1;
+
+                if (_y[targetId] == SceneData.MAX_OF_INGAME_Y || _isDead[targetId] == true)
+                {
+                    _y[targetId] = 0;
+                }
             }
         }
 
@@ -103,12 +105,37 @@ namespace ConsoleGame
                     continue;
                 }
 
-                if (_y[targetId] != SceneData.MAX_OF_INGAME_Y)
+                if (_y[targetId] != SceneData.MAX_OF_INGAME_Y && _isDead[targetId] != true)
                 {
                     Console.SetCursorPosition(_x[targetId], _y[targetId]);
-                    Console.Write(_icon);
+                    Console.Write(_hp[targetId]);
                 }
             }
+
+            Console.SetCursorPosition(SceneData.X_OF_DEADCOUNT, SceneData.Y_OF_DEADCOUNT);
+            Console.WriteLine();
+            Console.WriteLine($"죽인 타겟의 수: {_countDeadTarget}");
+        }
+
+
+        public static void Hurt(int index, bool isAvailable)
+        {
+            if (isAvailable)
+            {
+                _hp[index] -= 1;
+            }
+
+            if (_isDead[index] == false && _hp[index] <= 0)
+            {
+                IncreaseDeadCount();
+                _y[index] = 0;
+                _isDead[index] = true;
+            }
+        }
+
+        public static void IncreaseDeadCount()
+        {
+            ++_countDeadTarget;
         }
     }
 }
