@@ -2,6 +2,7 @@
 using System.Dynamic;
 using System.Text;
 using System.Media;
+using System.Drawing;
 
 namespace Way_back_home
 {
@@ -26,6 +27,8 @@ namespace Way_back_home
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.Clear();
+            SoundPlayer BGM = new SoundPlayer(@"Music\히로시의회상.wav");
+            BGM.PlayLooping();
 
 
             // 기호 상수 정의
@@ -89,14 +92,22 @@ namespace Way_back_home
                 Console.Write("This stroy is about a Strong Cat named ...");
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.SetCursorPosition(33, 20);
+
                 Console.Write("▶ Press ENTER to see the manual");
+                
                 ConsoleKey Key = Console.ReadKey().Key;
+                
+
                 if (Key == ConsoleKey.Enter)
                 {
+                    
                     Console.Clear();
+                    
                     break; 
                 }
+                
             }
+
 
             while (true)
             {
@@ -119,6 +130,9 @@ namespace Way_back_home
 
                 Console.SetCursorPosition(39, 20);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
+
+                //SoundPlayer Toryvoice = new SoundPlayer(@"Music\송토리목소리.wav");
+               // Toryvoice.PlayLooping();
                 Console.Write("▶ Press ENTER to start");
                 ConsoleKey Key = Console.ReadKey().Key;
                 if (Key == ConsoleKey.Enter)
@@ -127,7 +141,7 @@ namespace Way_back_home
                     
                     break;
                 }
-
+                //Toryvoice.Stop();
             }
 
 
@@ -471,9 +485,12 @@ namespace Way_back_home
 
                     }
                 }
+                
 
                 if (boxOnGoalCount == GOAL_COUNT)
                 {
+                    BGM.Stop();
+                    
                     Console.Clear();
                     Console.SetCursorPosition(1, 1);
                     Console.WriteLine(" ");
@@ -496,6 +513,8 @@ namespace Way_back_home
                     Console.WriteLine(" ");
                     Thread.Sleep(000);
 
+                    SoundPlayer HappyBGM = new SoundPlayer(@"Music\벚꽃.wav");
+                    HappyBGM.PlayLooping();
                     Console.SetCursorPosition(1, 6); //3
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine("....");
@@ -586,15 +605,17 @@ namespace Way_back_home
                     Console.WriteLine(" ");
                     Thread.Sleep(000);
 
-                    // Toryvoice.PlayLooping();
+                    HappyBGM.Stop();
+
+
                     SoundPlayer Toryvoice = new SoundPlayer(@"Music\송토리목소리.wav");
                     Toryvoice.PlayLooping();
-
                     Console.SetCursorPosition(1, 25); //12
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\"Meaw~\"");
                     Thread.Sleep(1000);
                     Toryvoice.Stop();
+
 
                     Console.SetCursorPosition(1, 26);
                     Console.WriteLine(" ");
@@ -604,8 +625,6 @@ namespace Way_back_home
                     Console.WriteLine(" ");
                     Thread.Sleep(1000);
 
-
-
                     Console.Clear();
 
                     while (true)
@@ -614,11 +633,14 @@ namespace Way_back_home
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write("This stroy is about a Strong Cat named ...");
                         Thread.Sleep(3000);
-
+                        
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.SetCursorPosition(47, 17);
+                        SoundPlayer Toryvoice2 = new SoundPlayer(@"Music\송토리목소리.wav");
+                        Toryvoice.PlayLooping();
                         Console.Write("Tory");
                         Thread.Sleep(1000);
+                        Toryvoice2.Stop();
 
                         Console.SetCursorPosition(47, 18);
                         Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -635,13 +657,16 @@ namespace Way_back_home
                         Console.Write(" ");
                         Thread.Sleep(1000);
 
+                        
                         return;
+                        
                     }
                     
                 }
 
             }
 
+            
         }
     }
 
