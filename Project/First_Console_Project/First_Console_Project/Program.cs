@@ -20,7 +20,7 @@ namespace Way_back_home
         {
             Console.ResetColor();
             Console.CursorVisible = false;
-            //Console.SetWindowSize(110, 40);  ------------------------------------------------------------------------------------------------ 재호야... 도와줘....ㅠㅜ
+            Console.SetWindowSize(105, 35); 
             Console.Title = "Way back home";
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -29,7 +29,7 @@ namespace Way_back_home
 
             // 기호 상수 정의
             const int GOAL_COUNT = 9; //----------------------------------------------------------------------------------------
-            const int WALL_COUNT = 4;
+            const int WALL_COUNT = 187;
             const int BOX_COUNT = GOAL_COUNT;
 
             // 플레이어 위치를 저장하기 위한 변수
@@ -47,8 +47,8 @@ namespace Way_back_home
             int[] boxPositionsY = { 15, 6, 11, 2, 18, 3, 9, 15, 7 };
 
             // 벽 위치를 저장하기 위한 변수
-            int[] wallPositionX = { 4, 10, 2, 4};
-            int[] wallPositionY = { 3, 8, 5, 8 };
+            int[] wallPositionX = { 4, 12, 2, 4, 2, 0 ,14, 6, 8, 10, 12, 12, 12, 12, 12, 4, 4, 4, 4, 2, 2, 6, 8, 10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,16,16,16,18,20,22,24,26,28,30,32,34,36,38,38,38,38,40,42,44,46,48,50,52,52,52,52,52,52,54,56,58,60,62,64,66,68,68,68,68,68,68,70,72,74,76,76,76,76,76,76,76,76,76,74,72,70,70,72,74,76,78,80,82,84,86,88,90,90,86,88,90,92,94,96,98,100,86,86,86,86,86,86,86,86,86,86,86,86,84,82,80,78,76,74,72,70,68,66,64,62,60,58,58,58,58,58,58,58,58,58,58,58,56,54,52,50,48,46,46,46,46,46,46,46,46,44,42,40,38,36,34,32,30,28,26,24,22,20,18,16,16,16,16,16,16,16,16};
+            int[] wallPositionY = { 3,  8, 5, 5, 3, 4,  8, 3, 3,  3,  3,  4,  5,  6,  7, 6, 7, 8,11, 9,10,11,11, 11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11, 8, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 4, 2, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 9,10,11,12,12,12,12,12,11,10, 9, 8, 7, 6, 5, 4, 4, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 4, 4, 4, 4, 4, 4, 4,  4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,17,17,17,17,17,17,17,17,17,17,17,17,17,16,15,14,13,12,11,18,19,20,21,22,22,22,22,22,21,20,19,18,17,16,15,14,20,20,20,20,20,20,20,20,20,20,20,20,20,20,19,18,17,16,15,14,13,12};
 
             // 골 위치를 저장하기 위한 변수
             int[] goalPositionX = { 4, 44, 2, 20, 74, 64, 52, 38, 18 }; //--------------------------------------------------------------------
@@ -56,22 +56,73 @@ namespace Way_back_home
 
             // 골에 몇번 박스가 들어가 있는지 저장하기 위한 변수
             bool[] isBoxOnGoal = new bool[BOX_COUNT];
+            bool[] isBoxInGoal = new bool[BOX_COUNT];
+            
+
+            // 대사 하나씩 변경
+            string[] dialogs = new string[GOAL_COUNT + 1]
+                { " ",
+                 "Mommy..? I Love you too~",
+                 "Mommy. Mommy..? Mo..m..m..y..... Where are you..",
+                 "Why? It's not my fault! No! Stop!! Don't hurt me..! No!!!",
+                 "It's so dark and cold here.. I'm hungry.. Please let me out of here.. please...plea..se..",
+                 "Mommy....?! Nooooooo!!! Don't!!!!!!! Kaaaaaaaaaaaaaaaa!!!! Don't you dare touch me!!!",
+                 "It's not my fault.. Please don't blame me.. Stop....please stop... ",
+                 "Get away from me!!!! Your not my Mommy anymore! Your an evil",
+                 "Somebody Help me.. Please...",
+                 " "
+                };
+
 
             // 가로 100 세로 30
             // 게임 루프 == 프레임(Freame)
             while (true)
             {
-                Console.SetCursorPosition(30, 10);
+                Console.SetCursorPosition(30, 13);
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("This stroy is about a Strong Cat named ...");
-                Console.
-                Console.Write("")
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.SetCursorPosition(33, 20);
+                Console.Write("▶ Press ENTER to see the manual");
+                ConsoleKey Key = Console.ReadKey().Key;
+                if (Key == ConsoleKey.Enter)
+                {
+                    Console.Clear();
+                    break; 
+                }
+            }
+
+            while (true)
+            {
+
+                Console.SetCursorPosition(42, 9);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("-- M A N U A L --");
+                Thread.Sleep(000);
+
+                Console.SetCursorPosition(32, 13);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("Move the broken hearts to empty hearts.");
+                Thread.Sleep(000);
+
+                Console.SetCursorPosition(37, 15);
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.Write("To find the true happiness.");
+                Thread.Sleep(000);
+
+                Console.SetCursorPosition(39, 20);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("▶ Press ENTER to start");
                 ConsoleKey Key = Console.ReadKey().Key;
                 if (Key == ConsoleKey.Enter)
                 {
                     break;
-                }    
+                }
+
 
             }
+
+
             while (true)
             {
                 // 이전 프레임을 지운다.
@@ -89,7 +140,7 @@ namespace Way_back_home
                     int boxY = boxPositionsY[i];
 
                     Console.SetCursorPosition(boxX, boxY);
-                    Console.Write("💚");
+                    Console.Write("💔");
 
                 }
 
@@ -100,15 +151,32 @@ namespace Way_back_home
                     int goalY = goalPositionY[goalId];
 
                     Console.SetCursorPosition(goalX, goalY);
+                   
                     if (isBoxOnGoal[goalId] == true)
                     {
+                        //Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.Write("☘️");
+                        
                     }
                     else
                     {
-                        Console.Write("💔");
+                        Console.Write("💚");
+                    }
+                                        
+                }
+
+                int goalCount = 0;
+                for (int dialogId = 0; dialogId < GOAL_COUNT; ++dialogId)
+                {
+                    if (isBoxOnGoal[dialogId] == true)
+                    {
+                        ++goalCount;
+                        
                     }
                 }
+
+                Console.SetCursorPosition(7, 27);
+                Console.Write(dialogs[goalCount]);
 
                 // 벽 출력하기
                 for (int i = 0; i < WALL_COUNT; i++)
@@ -119,7 +187,6 @@ namespace Way_back_home
                     Console.SetCursorPosition(wallX, wallY);
                     Console.Write("🧱");
                 }
-
 
 
                 // --------------------------------------------------ProcessINput--------------------------------------------------
@@ -171,10 +238,10 @@ namespace Way_back_home
                                 playerX = wallX - 2;
                                 break;
                             case Direction.Up: // ↑
-                                playerY = wallY + 2;
+                                playerY = wallY + 1;
                                 break;
                             case Direction.Down: // ↓
-                                playerY = wallY - 2;
+                                playerY = wallY - 1;
                                 break;
                             default:
                                 Console.Clear();
@@ -186,7 +253,7 @@ namespace Way_back_home
 
                 }
 
-
+                 
                 // 박스 업데이트               
                 //플레이어가 이동한 후
                 for (int i = 0; i < BOX_COUNT; ++i)
@@ -196,33 +263,60 @@ namespace Way_back_home
 
                     if (playerX == boxX && playerY == boxY) // 플레이어가 이동하고나니 박스가 있네?
                     {
-                        // 박스를 움직여주면 됨
-                        switch (playerMoveDirection)
+                        if (isBoxInGoal[i] == true) // 골에 들어갔는데 박스가 고정된다
                         {
-                            case Direction.Left:  // ← 왼쪽으로 이동 중
-                                boxX = Math.Max(0, boxX - 2);
-                                playerX = boxX + 2;
-                                break;
-                            case Direction.Right:  // → 오른쪽으로 이동 중
-                                boxX = Math.Min(boxX + 2, 100);
-                                playerX = boxX - 2;
-                                break;
-                            case Direction.Up:  // ↑ 위로 이동 중
-                                boxY = Math.Max(0, boxY - 1);
-                                playerY = boxY + 1;
-                                break;
-                            case Direction.Down:  // ↓ 밑으로 이동 중
-                                boxY = Math.Min(boxY + 1, 30);
-                                playerY = boxY - 1;
-                                break;
-                            default:
-                                Console.Clear();
-                                Console.WriteLine($"[Error] 플레이어의 이동 방향이 잘못되었습니다. {playerMoveDirection}");
+                            switch (playerMoveDirection)
+                            {
+                                case Direction.Left: // ←
+                                    playerX = boxX + 2;
+                                    break;
+                                case Direction.Right: // →
+                                    playerX = boxX - 2;
+                                    break;
+                                case Direction.Up: // ↑
+                                    playerY = boxY + 1;
+                                    break;
+                                case Direction.Down: // ↓
+                                    playerY = boxY - 1;
+                                    break;
+                                default:
+                                    Console.Clear();
+                                    Console.WriteLine($"[Error] 플레이어의 이동 방향이 잘못되었습니다. : {playerMoveDirection}");
 
-                                return;
-
+                                    return;
+                            }
                         }
-                        pushedBoxId = i;
+
+                        else // 하지만 
+                        {
+                            // 박스를 움직여주면 됨
+                            switch (playerMoveDirection)
+                            {
+                                case Direction.Left:  // ← 왼쪽으로 이동 중
+                                    boxX = Math.Max(0, boxX - 2);
+                                    playerX = boxX + 2;
+                                    break;
+                                case Direction.Right:  // → 오른쪽으로 이동 중
+                                    boxX = Math.Min(boxX + 2, 100);
+                                    playerX = boxX - 2;
+                                    break;
+                                case Direction.Up:  // ↑ 위로 이동 중
+                                    boxY = Math.Max(0, boxY - 1);
+                                    playerY = boxY + 1;
+                                    break;
+                                case Direction.Down:  // ↓ 밑으로 이동 중
+                                    boxY = Math.Min(boxY + 1, 30);
+                                    playerY = boxY - 1;
+                                    break;
+                                default:
+                                    Console.Clear();
+                                    Console.WriteLine($"[Error] 플레이어의 이동 방향이 잘못되었습니다. {playerMoveDirection}");
+
+                                    return;
+                            }
+                            pushedBoxId = i;
+                        }
+                       
                     }
                     boxPositionsX[i] = boxX;
                     boxPositionsY[i] = boxY;
@@ -339,16 +433,43 @@ namespace Way_back_home
 
                             ++boxOnGoalCount;
                             isBoxOnGoal[goalId] = true;
-                            Console.SetCursorPosition(10, 25);
-                            Console.WriteLine("Help me");
-                            //------------------------------------------------------------------------------------------------------------------- 재호야.......자니....?
-
+                            isBoxInGoal[boxId] = true;
                             break; // goal하나에 박스 하나만 올라가 있기 때문에
-
                         }
+
                     }
                 }
 
+                //int boxInGoalCount = 0;
+                //for (int goalId2 = 0; goalId2 < GOAL_COUNT; goalId2 ++)
+                //{
+                //    isBoxInGoal[goalId2] = true;
+
+                //    for (int boxId = 0; boxId < BOX_COUNT; boxId ++)
+                //    {
+                //        if (goalPositionX[goalId2] == boxPositionsX[boxId] && goalPositionY[goalId2] == boxPositionsY[boxId])
+                //        {
+
+                //            ++ boxInGoalCount;
+                //            isBoxInGoal[goalId2] = false;
+
+                //            break; // goal하나에 박스 하나만 올라가 있기 때문에 멈춤
+                //        }
+
+                //    }
+                //}
+
+
+                if (boxOnGoalCount == 1)
+                {
+                    Console.SetCursorPosition(20, 25);
+                    Console.Write("텍스트1");
+                }
+                if (boxOnGoalCount == 2)
+                {
+                    Console.SetCursorPosition(20, 26);
+                    Console.Write("텍스트2");
+                }
 
                 if (boxOnGoalCount == GOAL_COUNT)
                 {
@@ -385,7 +506,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 8); //4
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("\"HaHa~ Tory~\" ");
+                    Console.WriteLine("\"HaHa~ ..o..y~\" ");
                     Thread.Sleep(2000);
 
                     Console.SetCursorPosition(1, 9);
@@ -393,7 +514,7 @@ namespace Way_back_home
                     Thread.Sleep(1000);
 
                     Console.SetCursorPosition(1, 10); //5
-                    Console.WriteLine("\"It's already morning~!! Wake up~~\"");
+                    Console.WriteLine("\"It's morning~!! Wake up~~\"");
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Thread.Sleep(2000);
 
@@ -403,7 +524,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 12); //6
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine("....");
+                    Console.WriteLine(".......");
                     Thread.Sleep(2000);
 
                     Console.SetCursorPosition(1, 13);
@@ -412,7 +533,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 14); //7
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine("Ah...");
+                    Console.WriteLine("Ah....");
                     Thread.Sleep(2000);
 
                     Console.SetCursorPosition(1, 15);
@@ -421,7 +542,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 16); //8
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("\"Tory~\"");
+                    Console.WriteLine("\"...y~~\"");
                     Thread.Sleep(2000);
 
                     Console.SetCursorPosition(1, 17);
@@ -439,7 +560,7 @@ namespace Way_back_home
 
                     Console.SetCursorPosition(1, 20); //10
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("\"Tory...?\"");
+                    Console.WriteLine("\"..ory...?\"");
                     Thread.Sleep(2000);
 
                     Console.SetCursorPosition(1, 21);
@@ -469,16 +590,38 @@ namespace Way_back_home
                     Console.WriteLine("\"Meaw~\"");
                     Thread.Sleep(4000);
 
-                    Console.SetCursorPosition(1, 26);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine(" ");
-                    Thread.Sleep(1000);
+                    Console.Clear();
 
-                    Console.SetCursorPosition(1, 27);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine(" ");
-                    Thread.Sleep(1000);
-                    return;
+                    while (true)
+                    {
+                        Console.SetCursorPosition(30, 13);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("This stroy is about a Strong Cat named ...");
+                        Thread.Sleep(3000);
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.SetCursorPosition(47, 17);
+                        Console.Write("Tory");
+                        Thread.Sleep(1000);
+
+                        Console.SetCursorPosition(47, 18);
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write(" ");
+                        Thread.Sleep(1000);
+
+                        Console.SetCursorPosition(47, 19);
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write(" ");
+                        Thread.Sleep(1000);
+
+                        Console.SetCursorPosition(47, 20);
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write(" ");
+                        Thread.Sleep(1000);
+
+                        return;
+                    }
+                    
                 }
 
             }
