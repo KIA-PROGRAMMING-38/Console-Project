@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Media;
 using System.Reflection.Metadata.Ecma335;
@@ -82,18 +82,18 @@ namespace Moon_Taker
                     {
                         Console.WriteLine(Stage[StageSettings.currentStage][stageId]);
                     }
-                    
-                    Functions.ParseStage(Stage[StageSettings.currentStage], out player, out previousPlayer, out walls, 
+
+                    Functions.ParseStage(Stage[StageSettings.currentStage], out player, out previousPlayer, out walls,
                         out enemies, out previousEnemies, out blocks, out previousBlocks, out traps, out key, out door, out moon, out mapSize);
 
                     Functions.ResetStageSetting(StageSettings.doesKeyExist, StageSettings.stageMovePoint);
                 }
-                
+
                 if (false == Actions.IsCollided(player.x, player.y, previousPlayer.x, previousPlayer.y))
                 {
                     Functions.ClearObject(previousPlayer.x, previousPlayer.y);
                 }
-                
+
                 for (int enemyId = 0; enemyId < enemies.Length; enemyId++)
                 {
                     if (Actions.IsCollided(enemies[enemyId].x, enemies[enemyId].y, previousEnemies[enemyId].x, previousEnemies[enemyId].y))
@@ -195,28 +195,28 @@ namespace Moon_Taker
                 Functions.Render(player.x, player.y, Constants.player, Constants.playerColor);
 
 
-                    for (int i = 0; i < LookUpTable.controlHelp.Length; ++i)
+                for (int i = 0; i < LookUpTable.controlHelp.Length; ++i)
+                {
+                    Functions.Render(Stage[StageSettings.currentStage][0].Length + 4, i, LookUpTable.controlHelp[i]);
+                }
+                Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.controlHelp.Length + 2, "/------------------------------\\");
+                for (int i = 0; i < LookUpTable.objectDescription.Length; ++i)
+                {
+                    if (i % 2 == 0)
                     {
-                        Functions.Render(Stage[StageSettings.currentStage][0].Length + 4, i, LookUpTable.controlHelp[i]);
+                        Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, (i / 2) + LookUpTable.controlHelp.Length + 3, "|");
+                        Functions.Render(Stage[StageSettings.currentStage][0].Length + 4, (i / 2) + LookUpTable.controlHelp.Length + 3, LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
                     }
-                    Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.controlHelp.Length + 2, "/------------------------------\\");
-                    for (int i = 0; i < LookUpTable.objectDescription.Length; ++i)
+                    else
                     {
-                        if (i % 2 == 0)
-                        {
-                            Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, (i / 2) + LookUpTable.controlHelp.Length + 3, "|");
-                            Functions.Render(Stage[StageSettings.currentStage][0].Length + 4, (i / 2) + LookUpTable.controlHelp.Length + 3, LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
-                        }
-                        else
-                        {
-                            Functions.Render(LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
-                            Functions.Render("|");
-                        }
+                        Functions.Render(LookUpTable.objectDescription[i], LookUpTable.objectColor[i]);
+                        Functions.Render("|");
                     }
-                    Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.objectDescription.Length + 2, "\\------------------------------/");
-                    Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.objectDescription.Length + 4, "남은 ");
-                    Functions.Render("행동 점수", Constants.movePointColor);
-                    Functions.Render($" : {ObjectStatus.playerMovePoint}".PadLeft(2, ' '));
+                }
+                Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.objectDescription.Length + 2, "\\------------------------------/");
+                Functions.Render(Stage[StageSettings.currentStage][0].Length + 3, LookUpTable.objectDescription.Length + 4, "남은 ");
+                Functions.Render("행동 점수", Constants.movePointColor);
+                Functions.Render($" : {ObjectStatus.playerMovePoint}".PadLeft(2, ' '));
 
 
                 if (ObjectStatus.isAdviceToggled)
@@ -241,7 +241,7 @@ namespace Moon_Taker
                 Functions.SavePreviousObject(out previousPlayer.x, out previousPlayer.y, player.x, player.y);
                 for (int enemyId = 0; enemyId < enemies.Length; enemyId++)
                 {
-                    Functions.SavePreviousObject(out previousEnemies[enemyId].x , out previousEnemies[enemyId].y, 
+                    Functions.SavePreviousObject(out previousEnemies[enemyId].x, out previousEnemies[enemyId].y,
                         enemies[enemyId].x, enemies[enemyId].y);
                 }
                 for (int blockId = 0; blockId < blocks.Length; blockId++)
@@ -321,7 +321,7 @@ namespace Moon_Taker
                         continue;
                     }
                     ObjectStatus.pushedBlockId = blockId;
-                    
+
                     switch (Input)
                     {
                         case ConsoleKey.RightArrow:
@@ -468,6 +468,32 @@ namespace Moon_Taker
                     };
                 }
 
+                for (int enemyId = 0; enemyId < enemies.Length; ++enemyId)
+                {
+                    if (blocks.Length == 0)
+                    {
+                        break;
+                    }
+                    if (Actions.IsCollided(blocks[ObjectStatus.pushedBlockId].x, blocks[ObjectStatus.pushedBlockId].y, enemies[enemyId].x, enemies[enemyId].y))
+                    {
+                        switch (Input)
+                        {
+                            case ConsoleKey.RightArrow:
+                                Actions.CollidSolidOnLeft(ref blocks[ObjectStatus.pushedBlockId].x);
+                                break;
+                            case ConsoleKey.LeftArrow:
+                                Actions.CollidSolidOnRight(ref blocks[ObjectStatus.pushedBlockId].x);
+                                break;
+                            case ConsoleKey.DownArrow:
+                                Actions.CollidSolidOnUp(ref blocks[ObjectStatus.pushedBlockId].y);
+                                break;
+                            case ConsoleKey.UpArrow:
+                                Actions.CollidSolidOnDown(ref blocks[ObjectStatus.pushedBlockId].y);
+                                break;
+                        }
+                    };
+                }
+
                 for (int trapId = 0; trapId < traps.Length; ++trapId)
                 {
                     if (traps[trapId].isActivated == true && Actions.IsCollided(traps[trapId].x, traps[trapId].y, player.x, player.y))
@@ -483,7 +509,6 @@ namespace Moon_Taker
                     {
                         ObjectStatus.hasKey = true;
                     }
-
                     if (Actions.IsCollided(player.x, player.y, door.x, door.y))
                     {
                         if (false == ObjectStatus.hasKey)
@@ -509,37 +534,62 @@ namespace Moon_Taker
                             ObjectStatus.isDoorOpened = true;
                         }
                     }
+                    if (enemies.Length != 0 && Actions.IsCollided(enemies[ObjectStatus.pushedEnemyId].x, enemies[ObjectStatus.pushedEnemyId].y, door.x, door.y) && false == ObjectStatus.hasKey)
+                    {
+                        enemies[ObjectStatus.pushedEnemyId].x = 0;
+                        enemies[ObjectStatus.pushedEnemyId].y = 0;
+                        enemies[ObjectStatus.pushedEnemyId].isAlive = false;
+                        Console.Beep();
+                    }                  
+                    if (blocks.Length != 0 && Actions.IsCollided(blocks[ObjectStatus.pushedBlockId].x, blocks[ObjectStatus.pushedBlockId].y, door.x, door.y) && false == ObjectStatus.hasKey)
+                    {
+                        switch (Input)
+                        {
+                            case ConsoleKey.RightArrow:
+                                Actions.CollidSolidOnLeft(ref blocks[ObjectStatus.pushedBlockId].x);
+                                break;
+                            case ConsoleKey.LeftArrow:
+                                Actions.CollidSolidOnRight(ref blocks[ObjectStatus.pushedBlockId].x);
+                                break;
+                            case ConsoleKey.DownArrow:
+                                Actions.CollidSolidOnUp(ref blocks[ObjectStatus.pushedBlockId].y);
+                                break;
+                            case ConsoleKey.UpArrow:
+                                Actions.CollidSolidOnDown(ref blocks[ObjectStatus.pushedBlockId].y);
+                                break;
+                        }
+                    }
                 }
-
                 if (Actions.IsCollided(player.x, player.y, moon.x, moon.y))
                 {
-                        bool isYes = true;
-                        Scene.EnterFoundTraceScene(traces);
-                        while (false == StageSettings.isStageCleared)
+                    bool isYes = true;
+                    Scene.EnterFoundTraceScene(traces);
+
+                    while (false == StageSettings.isStageCleared)
+                    {
+                        Console.SetCursorPosition(0, 5);
+                        ConsoleKey yesOrNo = Console.ReadKey().Key;
+                        Console.Write("\b \b");
+                        Functions.ChooseOX(yesOrNo, ref isYes);
+                        if (yesOrNo == ConsoleKey.E)
                         {
-                            Console.SetCursorPosition(0, 5);
-                            ConsoleKey yesOrNo = Console.ReadKey().Key;
-                            Console.Write("\b \b");
-                            Functions.ChooseOX(yesOrNo,ref isYes);
-                            if (yesOrNo == ConsoleKey.E)
+                            if (isYes ^ traces[StageSettings.currentStage - 1].isUseful)
                             {
-                                if (isYes ^ traces[StageSettings.currentStage - 1].isUseful)
-                                {
-                                    Scene.EnterBadChoiceScene(traces);
-                                    break;
-                                }
-                                if (StageSettings.currentStage < GameSettings.stageNumber)
-                                {
-                                    Scene.EnterStageClearScene(traces);
-                                    break;
-                                }
-                                else if (StageSettings.currentStage == GameSettings.stageNumber)
-                                {
-                                    Scene.EnterGameClearScene(traces);
-                                }
+                                Scene.EnterBadChoiceScene(traces);
+                                break;
+                            }
+                            if (StageSettings.currentStage < GameSettings.stageNumber)
+                            {
+                                Scene.EnterStageClearScene(traces);
+                                break;
+                            }
+                            else if (StageSettings.currentStage == GameSettings.stageNumber)
+                            {
+                                Scene.EnterGameClearScene(traces);
                             }
                         }
-                        continue;
+                    }
+                    continue;
                 }
 
                 if (ObjectStatus.playerMovePoint <= 0)
@@ -548,6 +598,7 @@ namespace Moon_Taker
                 }
             LoopEnd:;
             }
+
         }
     }
 }
