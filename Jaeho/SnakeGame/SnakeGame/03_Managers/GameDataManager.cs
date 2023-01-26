@@ -25,7 +25,7 @@ namespace SnakeGame
         public const char SNAKEBODY_ICON = '▢';
 
         //▮ ▢ ◯▮
-        public  const char WALL_ICON = 'ꔮ';
+        public  const char WALL_ICON = '▮';
         public  const char FEED_ICON = '☺';
         public  static readonly string ResourcePath = Path.Combine(@"..\..\..\","07_Assets");
 
@@ -37,8 +37,8 @@ namespace SnakeGame
 
         public const ConsoleColor DEFAULT_FOREGROUND_COLOR = ConsoleColor.White;
 
-        public const int SCREEN_WIDTH = 120;
-        public const int SCREEN_HEIGHT = 34;
+        public const int DEFAULT_SCREEN_WIDTH = 120;
+        public const int DEFAULT_SCREEN_HEIGHT = 34;
 
         public static int _mapMinX = 0;
         public static int _mapMinY = 0;
@@ -119,13 +119,16 @@ namespace SnakeGame
                 MapInfo mapInfo = new MapInfo();
                 mapInfo.NeedFeedCount = int.Parse(textMapDataReader.ReadLine().Split()[1]);
                 mapInfo.SpawnInterval= int.Parse(textMapDataReader.ReadLine().Split()[1]);
-                int currentX = 0;
                 int currentY = 0;
                 List<Vector2> wallPositions = new List<Vector2>();
+
+                int maxX = int.MinValue;
+
                 while (!textMapDataReader.EndOfStream)
                 {
                     string line = textMapDataReader.ReadLine();
-                    for (currentX = 0; currentX < line.Length; currentX++)
+                    maxX = Math.Max(maxX, line.Length);
+                    for (int currentX = 0; currentX < line.Length; currentX++)
                     {
                         if ('P' == line[currentX])
                         {
@@ -139,14 +142,15 @@ namespace SnakeGame
                     currentY++;
                 }
 
-                mapInfo.Max_X = currentX;
+                //mapInfo.Max_X = currentX;
+                mapInfo.Max_X = maxX;
                 mapInfo.Max_Y = currentY;
                 mapInfo.WallPosisions = wallPositions.ToArray();
-                mapInfo.MapSpawnableTable = new bool[currentY, currentX];
+                mapInfo.MapSpawnableTable = new bool[currentY, maxX];
 
                 for (int i = 0; i < currentY; ++i)
                 {
-                    for (int j = 0; j < currentX; ++j)
+                    for (int j = 0; j < maxX; ++j)
                     {
                         mapInfo.MapSpawnableTable[i, j] = true;
                     }

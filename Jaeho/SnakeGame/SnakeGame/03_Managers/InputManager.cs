@@ -10,7 +10,7 @@ namespace SnakeGame
     {
         public InputManager()
         {
-            ProcessInputAsync();
+            // ProcessInputAsync();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace SnakeGame
         {
             if(Console.KeyAvailable)
             {
-                _key = Console.ReadKey().Key;
+                _key = Console.ReadKey().Key;     
             }
         }
 

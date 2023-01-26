@@ -84,6 +84,9 @@ namespace SnakeGame
             return result;
         }
 
+        /// <summary>
+        ///  추가된 컴포넌트들 Start실행
+        /// </summary>
         protected void StartComponents()
         {
             foreach (KeyValuePair<string, Component> comp in _components)
@@ -91,6 +94,10 @@ namespace SnakeGame
                 comp.Value.Start();
             }
         }
+
+        /// <summary>
+        /// 추가된 컴포넌트들 Update실행
+        /// </summary>
         protected void UpdateComponents()
         {
             foreach (KeyValuePair<string, Component> comp in _components)

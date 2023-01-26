@@ -5,22 +5,22 @@ namespace SnakeGame
     public class TimeManager : LazySingleton<TimeManager>
     {
         public TimeManager() {
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
+            _stopwatch = new Stopwatch();
+            _stopwatch.Start();
         }
 
         private static int _timeScale = 1;
-        public static int FPS = 5;
-        public static int MS_PER_FRAME = 1000 / (FPS * _timeScale);
+        public  static int FPS = 5;
+        public  static int MS_PER_FRAME = 1000 / (FPS * _timeScale);
 
-        public static int TimeScale { get { return _timeScale; }
+        public  static int TimeScale { get { return _timeScale; }
             set
             {
                 _timeScale = value;
                 MS_PER_FRAME = 1000 / (FPS * _timeScale);
             } }
 
-        private Stopwatch stopwatch;
+        private Stopwatch _stopwatch;
         private long _currentMs = 0;
         private long _elapsed = 0;
 
@@ -33,13 +33,13 @@ namespace SnakeGame
 
         public void Update()
         {
-            _elapsed = stopwatch.ElapsedMilliseconds - _currentMs;
-            _currentMs = stopwatch.ElapsedMilliseconds;
+            _elapsed = _stopwatch.ElapsedMilliseconds - _currentMs;
+            _currentMs = _stopwatch.ElapsedMilliseconds;
         }
 
         public void Release()
         {
-            stopwatch.Stop();
+            _stopwatch.Stop();
         }
     }
 }

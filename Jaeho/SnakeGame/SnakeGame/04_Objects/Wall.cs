@@ -2,12 +2,12 @@
 {
     public class Wall : GameObject
     {
-        private bool _isRendered = false;
         private Renderer renderer;
+
         public override void Start()
         {
             AddComponent(new Collider());
-            AddComponent(new Renderer(GameDataManager.WALL_ICON, 1));
+            AddComponent(new Renderer(GameDataManager.WALL_ICON, 1, ConsoleColor.DarkGray));
             renderer = GetComponent<Renderer>();
 
             StartComponents();
@@ -17,12 +17,8 @@
 
         public override void Render()
         {
-            //if (_isRendered) return;
-
             Console.SetCursorPosition(Position.X, Position.Y);
             Console.Write(renderer.OwnerIcon);
-
-            _isRendered = true;
         }
     }
 }

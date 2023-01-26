@@ -13,10 +13,12 @@ namespace SnakeGame
             _nextScene = string.Empty;
         }
 
-        private  bool    _changeFlag;
-        public bool ChangeFlag { get { return _changeFlag; } }
-        public  string  _nextScene;
+        private bool    _changeFlag;
+        private string  _nextScene;
         private Scene   _currentScene;
+
+        public  bool    ChangeFlag { get { return _changeFlag; } }
+        
 
         public readonly Dictionary<string, Scene> Scenes = new Dictionary<string, Scene>();
 
@@ -34,7 +36,8 @@ namespace SnakeGame
             AddScene(sceneName: "Stage_1",      nextSceneName: "Stage_2",       soundName: "Stage_1_bgm",   new Stage());
             AddScene(sceneName: "Stage_2",      nextSceneName: "Stage_3",       soundName: "Stage_2_bgm",   new Stage());
             AddScene(sceneName: "Stage_3",      nextSceneName: "Stage_4",       soundName: "Stage_3_bgm",   new Stage());
-            AddScene(sceneName: "Stage_4",      nextSceneName: "TitleScene",    soundName: "Stage_4_bgm",   new Stage());
+            AddScene(sceneName: "Stage_4",      nextSceneName: "Stage_5",       soundName: "Stage_4_bgm",   new Stage());
+            AddScene(sceneName: "Stage_5",      nextSceneName: "EndingScene",   soundName: "Stage_5_bgm",   new Stage(), windowWidth: 120, windowHeight: 40);
         }
 
         /// <summary>
@@ -76,10 +79,12 @@ namespace SnakeGame
             {
                 _currentScene.ClearScene();
             }
+
             TimeManager.Instance.ResetTimeScale();
             Scene Scene;
             isSuccess = Scenes.TryGetValue(sceneName, out Scene);
             Debug.Assert(isSuccess, "Cant Find Scene ");
+
             Console.ResetColor();
             Console.Clear();
             _changeFlag = false;
@@ -96,14 +101,15 @@ namespace SnakeGame
         /// <param name="sceneName">추가하려는 Scene의 이름</param>
         /// <param name="nextSceneName">다음 Scene의 이름</param>
         /// <param name="scene">씬</param>
-        public void AddScene(string sceneName,string nextSceneName, string soundName, Scene scene)
-        {
 
+        public void AddScene(string sceneName, string nextSceneName, string soundName, Scene scene, int windowWidth = GameDataManager.DEFAULT_SCREEN_WIDTH, int windowHeight = GameDataManager.DEFAULT_SCREEN_HEIGHT)
+        {
             bool isSucces = Scenes.TryAdd(sceneName, scene);
             Debug.Assert(isSucces, $"Already Contains Key SceneName: {sceneName}");
             scene.SetSceneName(sceneName);
             scene.SetSoundName(soundName);
             scene.SetNextSceneName(nextSceneName);
+            scene.SetScreenSize(windowWidth, windowHeight);
             SoundManager.Instance.AddSound(soundName, new SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", soundName + ".wav")));
         }
 

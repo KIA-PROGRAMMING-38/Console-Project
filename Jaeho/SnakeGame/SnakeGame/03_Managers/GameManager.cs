@@ -16,9 +16,6 @@ namespace SnakeGame
         public void Initialize()
         {
 
-            Console.SetWindowSize(GameDataManager.SCREEN_WIDTH, GameDataManager.SCREEN_HEIGHT);
-            Console.SetWindowPosition(0, 0);
-
             Console.OutputEncoding = Encoding.UTF8;         
             Console.CursorVisible = false;
 
@@ -34,7 +31,7 @@ namespace SnakeGame
             // 3. 사운드 로드
             SoundManager.Instance.Load();
             SoundManager.Instance.AddSound("CollisionSound", new System.Media.SoundPlayer(Path.Combine(GameDataManager.ResourcePath, "Sound", "CollisionSound.wav")));
-
+            
             // 시작 씬 설정
             SceneManager.Instance.SetStartScene("TitleScene");
         }
@@ -48,6 +45,7 @@ namespace SnakeGame
             {
                 TimeManager.Instance.Update();
                 InputManager.Instance.Update();
+
                 if (IsGameSet == true)
                 {
                     break;
@@ -55,7 +53,7 @@ namespace SnakeGame
 
                 SceneManager.Instance.Update();
                 SceneManager.Instance.Render();
-
+                GameObjectManager.Instance.RemovePendingList();
                 Thread.Sleep(TimeManager.MS_PER_FRAME);
             }
         }

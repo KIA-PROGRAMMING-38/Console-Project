@@ -17,7 +17,8 @@ namespace SnakeGame
             AddComponent(new Renderer(GameDataManager.PLAYER_ICON, 5, ConsoleColor.Yellow));
             PrevPos = Position;
             _renderer = GetComponent<Renderer>();
-
+            _head = _tail = null;
+            
             StartComponents();
         }
 
@@ -83,7 +84,14 @@ namespace SnakeGame
             
         }
 
-        public Vector2 AddPositionCalc(Vector2 pos)
+        #region SnakeBody 관련
+
+        /// <summary>
+        /// 다음 뱀 몸의 위치를 계산해준다
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public Vector2 GetNextSnakeBodyPosition(Vector2 pos)
         {
             Vector2 result = pos;
 
@@ -106,25 +114,30 @@ namespace SnakeGame
             return result;
         }
 
-        #region body 관련
+        /// <summary>
+        /// 몸통 추가
+        /// </summary>
         public void AddBody()
         {
             if(_head == null)
             {
                 _head = new SnakeBody();
-                _head.SetPosition(AddPositionCalc(PrevPos));
+                _head.SetPosition(GetNextSnakeBodyPosition(PrevPos));
                 _tail = _head;
                 return;
             }
 
             SnakeBody newBody = new SnakeBody();
-            newBody.SetPosition(AddPositionCalc(_tail.PrevPosition));
+            newBody.SetPosition(GetNextSnakeBodyPosition(_tail.PrevPosition));
             _tail.Next = newBody;
             newBody.Parent = _tail;
             _tail = newBody;
 
         }
 
+        /// <summary>
+        /// 몸통위치 업데이트
+        /// </summary>
         public void BodyUpdate()
         {
             if (_head == null) return;
@@ -141,12 +154,16 @@ namespace SnakeGame
             }
         }
 
-        public void TailPrintRemove()
+        /// <summary>
+        /// 이전 몸통위치 렌더되어있는거 지우기
+        /// </summary>
+        public void RemoveTailPrint()
         {
             if (_head == null) return;
             Console.SetCursorPosition(_tail.PrevPosition.X, _tail.PrevPosition.Y);
             Console.Write(" ");
         }
+
         #endregion
 
         public override void Update()
@@ -160,7 +177,7 @@ namespace SnakeGame
 
         public override void Render()
         {
-            TailPrintRemove();
+            RemoveTailPrint();
             if (_head == null)
             {
                 Console.SetCursorPosition(PrevPos.X, PrevPos.Y);

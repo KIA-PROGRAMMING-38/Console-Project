@@ -2,10 +2,10 @@
 {
     public class MapShaker : LazySingleton<MapShaker>
     {
-        private bool _shakeFlagOn = false;
-        private long _millsecond = 0;
-        private int _shakePowerX = 0;
-        private int _shakePowerY = 0;
+        private bool    _shakeFlagOn = false;
+        private long    _millsecond = 0;
+        private int     _shakePowerX = 0;
+        private int     _shakePowerY = 0;
 
         /// <summary>
         /// 맵을 흔드는 플래그를 켜주는 함수

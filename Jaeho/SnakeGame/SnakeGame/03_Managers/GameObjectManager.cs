@@ -6,9 +6,9 @@ namespace SnakeGame
     {
         public int GameObjectCount { get { return _gameObjects.Count; } }
 
-        private List<GameObject> _gameObjects = new List<GameObject>();
+        private List<GameObject>    _gameObjects = new List<GameObject>();
         private HashSet<GameObject> _removePendingList;
-        
+
         /// <summary>
         /// 게임오브젝트리스트에 게임오브젝트를 추가해줍니다.
         /// </summary>
@@ -46,14 +46,18 @@ namespace SnakeGame
             _removePendingList.Add(gameObject);
         }
 
+        public void RemovePendingList()
+        {
+            _gameObjects.RemoveAll(_removePendingList.Contains);
+            _removePendingList.Clear();
+        }
+
         public void Update()
         {
             for(int i = 0;i <_gameObjects.Count; ++i)
             {
                 _gameObjects[i].Update();
             }
-            _gameObjects.RemoveAll(_removePendingList.Contains);
-            _removePendingList.Clear();
         }
 
         /// <summary>

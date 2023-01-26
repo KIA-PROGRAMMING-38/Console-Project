@@ -14,6 +14,7 @@ namespace SnakeGame
 
         public override void Start()
         {
+            base.Start();
             _titleAnimationindex = 0;
             _TitleAnimTimer = 0;
             _startButtontimer = 0;

@@ -9,8 +9,10 @@ namespace SnakeGame
         protected GameObject _player;
         protected Menu _menu;
 
+
         public override void Start()
         {
+            base.Start();
             // Load MapData
             _mapInfo = GameDataManager.Instance.GetMapData(_sceneName);
 

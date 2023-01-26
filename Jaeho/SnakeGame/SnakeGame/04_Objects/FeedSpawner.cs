@@ -4,11 +4,11 @@ namespace SnakeGame
 {
     public class FeedSpawner : LazySingleton<FeedSpawner>
     {
-        private List<Feed> _feedList = new List<Feed>();
-        private HashSet<Feed> _removePendingList = new HashSet<Feed>();
-        private bool[,] _currentSpawnAbleArea;
-        private int _spawnInterval;
-        private long _time = 0;
+        private List<Feed>      _feedList = new List<Feed>();
+        private HashSet<Feed>   _removePendingList = new HashSet<Feed>();
+        private bool[,]         _currentSpawnAbleArea = null;
+        private int             _spawnInterval = 0;
+        private long            _time = 0;
 
         /// <summary>
         /// Feed를 스폰해주는 함수
