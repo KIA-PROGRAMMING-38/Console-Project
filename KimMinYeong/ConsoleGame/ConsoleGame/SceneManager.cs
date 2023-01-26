@@ -173,6 +173,7 @@ namespace ConsoleGame
             Console.SetWindowSize(50, 30);
             Target.InitTargetData();
             Obstacle.InitObstData();
+            Bullet.InitBulletData();
             Player._currentX = 0;
 
             // 스탑워치 start

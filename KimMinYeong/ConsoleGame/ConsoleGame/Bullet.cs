@@ -15,14 +15,15 @@ namespace ConsoleGame
         private static string _icon = "*";
         private static int _bulletIndex;
 
-        public static void Shooting()
+        public static void InitBulletData()
         {
-            while (true)
+            for(int index = 0; index < _x.Length; ++index)
             {
-                Shoot();
-                Fly();
-                Thread.Sleep(200);
+                _x[index] = 0;
+                _y[index] = 0;
+                _isAvailable[index] = false;
             }
+            _bulletIndex = 0;
         }
 
         public static void Shoot()
