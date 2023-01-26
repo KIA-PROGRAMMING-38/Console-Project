@@ -138,20 +138,22 @@ namespace Way_back_home
                 Console.OutputEncoding = Encoding.UTF8;
                 // -------------------------------------------------------------Render-------------------------------------------------------------
                 // 플레이어 출력하기
-                //for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
-                //{
-                //    if (playerprex == goalPositionX[goalId] && playerprey == goalPositionY[goalId])
-                //    {
-                //        // 아무것도 안해주고
-                //    }
-                //    else
-                //    {
-                //        Console.SetCursorPosition(playerprex, playerprey);
-                //        Console.Write("  ");
-                //        Console.SetCursorPosition(playerX, playerY);
-                //        Console.Write("🐈");
-                //    }
-                //}
+                for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
+                {
+                    if (playerprex == goalPositionX[goalId] && playerprey == goalPositionY[goalId])
+                    {
+                        // 아무것도 안해주고
+                    }
+                    else
+                    {
+
+                        Console.SetCursorPosition(playerprex, playerprey);
+                        Console.Write("  ");
+                        Console.SetCursorPosition(playerX, playerY);
+                        Console.Write("🐈");
+
+                    }
+                }
 
 
                 // 박스 출력하기 
@@ -164,27 +166,6 @@ namespace Way_back_home
                     Console.Write("💔");
 
                 }
-
-                // 골인 출력하기
-              
-
-                for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
-                {
-                    if (playerprex == goalPositionX[goalId] && playerprey == goalPositionY[goalId])
-                    {
-                        // 아무것도 안해주고
-                    }
-                    else
-                    {
-                        
-                        Console.SetCursorPosition(playerprex, playerprey);
-                        Console.Write("  ");
-                        Console.SetCursorPosition(playerX, playerY);
-                        Console.Write("🐈");
-
-                    }
-                }
-
 
                 for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
                 {
@@ -208,7 +189,7 @@ namespace Way_back_home
 
                 }
 
-
+                // 골인 출력하기
                 int goalCount = 0;
                 for (int goalId = 0; goalId < GOAL_COUNT; ++goalId)
                 {
