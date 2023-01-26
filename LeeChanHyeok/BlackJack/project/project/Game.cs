@@ -305,7 +305,7 @@ namespace project
                 }
                 else
                 {
-                    mapRender.money += backGroundMoney;
+                    mapRender.money += backGroundMoney * cardDealer.cardIndex;
                 }
                 saveDealer = 0;
                 saveUser = 0;
