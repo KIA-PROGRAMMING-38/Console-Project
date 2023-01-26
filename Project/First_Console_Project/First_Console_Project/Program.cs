@@ -112,7 +112,6 @@ namespace Way_back_home
             while (true)
             {
 
-                
                 Console.SetCursorPosition(42, 9);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.Write("-- M A N U A L --");
@@ -131,8 +130,6 @@ namespace Way_back_home
                 Console.SetCursorPosition(39, 20);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
 
-                //SoundPlayer Toryvoice = new SoundPlayer(@"Music\송토리목소리.wav");
-               // Toryvoice.PlayLooping();
                 Console.Write("▶ Press ENTER to start");
                 ConsoleKey Key = Console.ReadKey().Key;
                 if (Key == ConsoleKey.Enter)
@@ -141,7 +138,7 @@ namespace Way_back_home
                     
                     break;
                 }
-                //Toryvoice.Stop();
+             
             }
 
 
