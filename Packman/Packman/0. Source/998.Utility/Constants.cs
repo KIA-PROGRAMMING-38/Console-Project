@@ -42,7 +42,7 @@ namespace Packman
         //public const string GOLD_IMAGE = "⊙";
         //public const string GOLD_IMAGE = "☹";
         //public const string GOLD_IMAGE = "⊙";
-        public const string GOLD_IMAGE = "G";
+        public const string GOLD_IMAGE = "*";
         // 아이템 관련 이미지..
         public const string TRAP_IMAGE = ":";
         // 투사체 관련 이미지..

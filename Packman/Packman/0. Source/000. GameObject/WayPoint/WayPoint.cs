@@ -20,7 +20,7 @@ namespace Packman
         }
 
         public WayPoint( int x, int y, int renderOrder )
-            : base( x, y, renderOrder )
+            : base( x, y, ":", ConsoleColor.Magenta, renderOrder )
         {
 
         }

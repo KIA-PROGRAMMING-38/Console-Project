@@ -59,6 +59,8 @@ namespace Packman
         // 타겟 인식 범위..
         private int _targetRecognizeRange = 5;
         private int _targetRecognizeMaxRange = 8;
+        //private int _targetRecognizeRange = 20;
+        //private int _targetRecognizeMaxRange = 23;
 
         private float _startWaitTime = 0;
 

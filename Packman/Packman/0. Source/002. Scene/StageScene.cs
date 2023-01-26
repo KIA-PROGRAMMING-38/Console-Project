@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +41,16 @@ namespace Packman
                 base.Update();
 
                 _collisionManager.Update();
+            }
+
+            if(InputManager.Instance.IsKeyDown(ConsoleKey.V))
+            {
+                StageManager.Instance.SetPauseGame( !StageManager.Instance.IsPauseGame );
+                if( StageManager.Instance.IsPauseGame )
+                {
+                    WayPointGroup wayPointGroup = _objectManager.GetGameObject<WayPointGroup>();
+                    wayPointGroup.Render();
+                }
             }
 
             _stageManager.Update();

@@ -33,6 +33,21 @@ namespace Packman
             ConnectWayPoint();
         }
 
+        public override void Update()
+        {
+            //base.Update();
+        }
+
+        public override void Render()
+        {
+            //base.Render();
+
+            foreach ( WayPoint wayPoint in _wayPoints )
+            {
+                wayPoint.Render();
+            }
+        }
+
         public WayPoint FindNearWayPoint( in GameObject gameobject )
         {
             Debug.Assert( null != gameobject );
