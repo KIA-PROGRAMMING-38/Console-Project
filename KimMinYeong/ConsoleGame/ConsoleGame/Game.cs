@@ -15,6 +15,7 @@ namespace ConsoleGame
         {
             Console.SetWindowSize(118, 30);
             Console.CursorVisible = false;
+            Console.Title = "Shoot";
         }
 
         /// <summary>

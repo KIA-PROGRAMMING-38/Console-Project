@@ -97,7 +97,7 @@ namespace ConsoleGame
             // 타이틀 씬 렌더 구현
             for(int i = 0; i < SceneData.gameTitle.Length; ++i)
             {
-                Console.SetCursorPosition(30, i + 3);
+                Console.SetCursorPosition(45, i + 4);
                 Console.WriteLine(SceneData.gameTitle[i]);
             }
 
