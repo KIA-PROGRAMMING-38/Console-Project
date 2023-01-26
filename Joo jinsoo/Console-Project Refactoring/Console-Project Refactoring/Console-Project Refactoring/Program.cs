@@ -72,16 +72,6 @@ namespace Console_Project_Refactoring
             LivingroomDoor_First[] firstLRDoor = null;
             LivingroomDoor_Second[] secondLRDoor = null;
             LivingroomDoor_Third[] thirdLRDoor = null;
-            ExceptionObj_01[] exceptionObj_01;
-            ExceptionObj_02[] exceptionObj_02;
-            ExceptionObj_03[] exceptionObj_03;
-            ExceptionObj_04[] exceptionObj_04;
-            ExceptionObj_05[] exceptionObj_05;
-            ExceptionObj_06[] exceptionObj_06;
-            ExceptionObj_07[] exceptionObj_07;
-            ExceptionObj_08[] exceptionObj_08;
-            ExceptionObj_09[] exceptionObj_09;
-            ExceptionObj_10[] exceptionObj_10;
             Interactive_A[] interactiveFieldA;
             Interactive_B[] interactiveFieldB;
             Interactive_C[] interactiveFieldC;
@@ -135,9 +125,7 @@ namespace Console_Project_Refactoring
             // 초기 스테이지 룩업테이블 구성
             currentScene = Stage.Livingroom;
             string[] lines = StageFormat.LoadStageFormat((int)currentScene);
-            StageFormat.ParseStage(lines, out walls, out exceptionObj_01, out exceptionObj_02,
-                out exceptionObj_03, out exceptionObj_04, out exceptionObj_05, out exceptionObj_06,
-                out exceptionObj_07, out exceptionObj_08, out exceptionObj_09, out exceptionObj_10);
+            StageFormat.ParseStage(lines, out walls);
             string[] dividedRoomDoor = InteractedObject.LoadDividedroomDoor();
             InteractedObject.ParseStageDoorID(dividedRoomDoor, out bedroomDoor, out toiletDoor,
                 out utilityroomDoor, out frontDoor);
@@ -172,9 +160,7 @@ namespace Console_Project_Refactoring
                     interactiveFieldJ, interactiveFieldK, interactiveFieldL);
 
                     lines = StageFormat.LoadStageFormat((int)currentScene);
-                    StageFormat.ParseStage(lines, out walls, out exceptionObj_01, out exceptionObj_02,
-                out exceptionObj_03, out exceptionObj_04, out exceptionObj_05, out exceptionObj_06,
-                out exceptionObj_07, out exceptionObj_08, out exceptionObj_09, out exceptionObj_10);
+                    StageFormat.ParseStage(lines, out walls);
                     interactionFields = InteractedObject.LoadInteractionStage((int)currentScene);
                     InteractedObject.ParseInteractionID(interactionFields, out interactiveFieldA,
                         out interactiveFieldB, out interactiveFieldC, out interactiveFieldD,
@@ -199,6 +185,8 @@ namespace Console_Project_Refactoring
 
                 Console.Clear();
 
+                GameSystem.BeforeRender(currentScene);
+
                 answerCount = 0;
                 captureScene = currentScene;
                 player.pastX = player.X;
@@ -207,9 +195,7 @@ namespace Console_Project_Refactoring
                 GameSystem.StageStatus();
                 GameSystem.Render(currentScene, player, walls, utilityroomDoor,
                     toiletDoor, bedroomDoor, frontDoor, firstLRDoor, 
-                    secondLRDoor, thirdLRDoor, exceptionObj_01, exceptionObj_02,
-                    exceptionObj_03, exceptionObj_04, exceptionObj_05, exceptionObj_06,
-                    exceptionObj_07, exceptionObj_08, exceptionObj_09, exceptionObj_10,
+                    secondLRDoor, thirdLRDoor,
                     alreadySearchHint, mixedHintString, GameClear.answerOpportunity, addHintString);
 
                 key = Console.ReadKey().Key;
@@ -225,8 +211,6 @@ namespace Console_Project_Refactoring
 
                 GameClear.InputAnswer(player, frontDoor, corretAnswerMurderer[0],
                     corretAnswerWeapon[0], corretAnswerMotive[0], answerCount, key);
-
-                
 
             }
         }

@@ -53,17 +53,6 @@ namespace Console_Project_Refactoring
         public const char player = 'P';
 
         public const char wall = '#';
-        public const char exceptionObj_01 = '-';
-        public const char exceptionObj_02 = '|';
-        public const char exceptionObj_03 = '*';
-        public const char exceptionObj_04 = '@';
-        public const char exceptionObj_05 = '=';
-        public const char exceptionObj_06 = '&';
-        public const char exceptionObj_07 = '+';
-        public const char exceptionObj_08 = '/';
-        public const char exceptionObj_09 = '\\';
-        public const char exceptionObj_10 = '_';
-
         public const char utilityroomDoor = 'U';
         public const char bedroomDoor = 'B';
         public const char toiletDoor = 'T';
@@ -213,72 +202,31 @@ namespace Console_Project_Refactoring
             return returnNumber;
         }
 
+        public static void BeforeRender(Stage currentScene)
+        {
+            string[] temp = default;
+
+            Console.ForegroundColor = ConsoleColor.White;
+            temp = StageFormat.LoadDrawStage((int)currentScene);
+            for (int i = 0; i < temp.Length; ++i)
+            {
+                Console.WriteLine(temp[i]);
+            }
+
+
+        }
 
         public static void Render(Stage currentScene, Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
             Toilet[] toiletDoor, Bedroom[] bedroomDoor, Frontdoor[] frontDoor,
             LivingroomDoor_First[] firstLRDoor, LivingroomDoor_Second[] secondLRDoor,
-            LivingroomDoor_Third[] thirdLRDoor, ExceptionObj_01[] exceptionObj_01,
-            ExceptionObj_02[] exceptionObj_02, ExceptionObj_03[] exceptionObj_03,
-            ExceptionObj_04[] exceptionObj_04, ExceptionObj_05[] exceptionObj_05,
-            ExceptionObj_06[] exceptionObj_06, ExceptionObj_07[] exceptionObj_07,
-            ExceptionObj_08[] exceptionObj_08, ExceptionObj_09[] exceptionObj_09,
-            ExceptionObj_10[] exceptionObj_10, bool[] alreadySearchHint,
+            LivingroomDoor_Third[] thirdLRDoor, bool[] alreadySearchHint,
             string[] mixedHintString, bool[] answerOpportunity,
             string[] addHintString)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_01.Length; ++i)
-            {
-                ObjectRender(exceptionObj_01[i].X, exceptionObj_01[i].Y, "-");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_02.Length; ++i)
-            {
-                ObjectRender(exceptionObj_02[i].X, exceptionObj_02[i].Y, "|");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_03.Length; ++i)
-            {
-                ObjectRender(exceptionObj_03[i].X, exceptionObj_03[i].Y, "*");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_04.Length; ++i)
-            {
-                ObjectRender(exceptionObj_04[i].X, exceptionObj_04[i].Y, "@");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_05.Length; ++i)
-            {
-                ObjectRender(exceptionObj_05[i].X, exceptionObj_05[i].Y, "=");
-            }
-            Console.ForegroundColor = ConsoleColor.Red;
-            for (int i = 0; i < exceptionObj_06.Length; ++i)
-            {
-                ObjectRender(exceptionObj_06[i].X, exceptionObj_06[i].Y, "&");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_07.Length; ++i)
-            {
-                ObjectRender(exceptionObj_07[i].X, exceptionObj_07[i].Y, "+");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_08.Length; ++i)
-            {
-                ObjectRender(exceptionObj_08[i].X, exceptionObj_08[i].Y, "/");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_09.Length; ++i)
-            {
-                ObjectRender(exceptionObj_09[i].X, exceptionObj_09[i].Y, "\\");
-            }
-            Console.ForegroundColor = ConsoleColor.White;
-            for (int i = 0; i < exceptionObj_10.Length; ++i)
-            {
-                ObjectRender(exceptionObj_10[i].X, exceptionObj_10[i].Y, "_");
-            }
-
             if (currentScene == Stage.Livingroom)
             {
+                
+
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_OFFSET_X, 1, "거실");
 
@@ -300,6 +248,7 @@ namespace Console_Project_Refactoring
 
             if (currentScene == Stage.Utilityroom)
             {
+
                 Console.ForegroundColor = ConsoleColor.White;
                 ObjectRender(MAP_OFFSET_X, 1, "다용도실");
 
@@ -819,7 +768,6 @@ namespace Console_Project_Refactoring
                         break;
                 }
             }
-
         }
 
         public static void AppearMessage(string[] str, InteractionObject someCoordinate,
