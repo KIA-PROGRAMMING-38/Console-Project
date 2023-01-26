@@ -301,7 +301,7 @@ namespace ProjectJK.Objects
                         Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 촌장 ", ConsoleColor.Black);
                         if (false == player.BeginnerSupport)
                         {
-                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"초보자 지원 물품을 가져가게나.", ConsoleColor.Black);
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"지원 물품을 가져가게나", ConsoleColor.Black);
                         }
                         else if (player.GameClear)
                         {
@@ -310,7 +310,7 @@ namespace ProjectJK.Objects
                         }
                         else
                         {
-                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"뭐", ConsoleColor.Black);
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"킹 슬라임을 처치하고 돌아와 주게", ConsoleColor.Black);
                         }
                     }
                     if (IsFront(player, villageNPCs[1].X, villageNPCs[1].Y))
