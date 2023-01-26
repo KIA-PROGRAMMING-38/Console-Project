@@ -9,8 +9,6 @@ namespace Console_Project_Refactoring
 {
     class GameClear
     {
-
-
         public static int opportunityCount = 0;
 
         public static bool[] answerOpportunity = new bool[4];

@@ -65,18 +65,11 @@ namespace Console_Project_Refactoring
         public const char interactiveA = 'a'; // 1
         public const char interactiveB = 'b'; // 2
         public const char interactiveC = 'c'; // 3
-        public const char interactiveD = 'd'; // 4
-        public const char interactiveE = 'e'; // 5
-        public const char interactiveF = 'f'; // 6
-        public const char interactiveG = 'g'; // 7
-        public const char interactiveH = 'h'; // 8
-        public const char interactiveI = 'i'; // 9
-        public const char interactiveJ = 'j'; // 10 
-        public const char interactiveK = 'k'; // 11
-        public const char interactiveL = 'l'; // 12
+
     }
     static class GameSystem
     {
+
         public const int MAP_OFFSET_X = 10;
         public const int MAP_OFFSET_Y = 3;
         public const int MAP_MAX_X = 24;
@@ -244,8 +237,6 @@ namespace Console_Project_Refactoring
                 ObjectRender(frontDoor[1].X, frontDoor[1].Y, "F");
             }
 
-            
-
             if (currentScene == Stage.Utilityroom)
             {
 
@@ -337,9 +328,8 @@ namespace Console_Project_Refactoring
                 ObjectRender(MAP_OFFSET_X * 3 + 4, 1, "@");
             }
 
-            
-
         }
+
         public static void ObjectRender(int x, int y, string icon)
         {
             Console.SetCursorPosition(x, y);
@@ -481,7 +471,7 @@ namespace Console_Project_Refactoring
                 }
             }
         }
-
+        
         public static void AfterUpdate(ref Stage currentScene, Player player, Wall[] walls, Utilityroom[] utilityroomDoor,
             Toilet[] toiletDoor, Bedroom[] bedroomDoor, 
             LivingroomDoor_First[] firstLRDoor, LivingroomDoor_Second[] secondLRDoor,
