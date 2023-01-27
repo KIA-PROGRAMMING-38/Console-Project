@@ -1,0 +1,30 @@
+WWWWWWWWWWWWWWWWWW  WWWWWWWWWWWWWWWWWWWW                             QZZZZZZZZZZZZZZZZZZZZZZZZZZZZZP
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                  K               R   W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+W                                      W                             V                             V
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                             UZZZZZZZZZZZZZZZZZZZZZZZZZZZZZM
+
+QZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZP
+V                                      V
+V                                      V
+V                                      V
+V                                      V
+V                                      V
+UZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZM
+
+114 188 1 1
