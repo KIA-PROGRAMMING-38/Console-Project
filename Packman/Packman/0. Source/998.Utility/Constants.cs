@@ -74,7 +74,7 @@ namespace Packman
         public const ConsoleColor STUN_COLOR = ConsoleColor.Yellow;
         public const ConsoleColor PUNCH_COLOR = ConsoleColor.DarkRed;
         public const ConsoleColor MONSTER_KILL_PROJECTILE_COLOR = ConsoleColor.Red;
-        public const ConsoleColor COLLECT_GOLD_PROJECTILE_COLOR = ConsoleColor.DarkCyan;
+        public const ConsoleColor COLLECT_GOLD_PROJECTILE_COLOR = ConsoleColor.DarkGreen;
 
         // 시간과 관련된 상수들..
         public const int FRAME_PER_SECOND = 60;
