@@ -723,8 +723,8 @@ namespace ProjectJK.Objects
                         while (player.CurrentHP >= 0 && slimes[player.MonsterIndex].Alive)
                         {
                             Thread.Sleep(20);
-                            if (player.ATK == slimes[player.MonsterIndex].DEF &&
-                                player.DEF == slimes[player.MonsterIndex].ATK)
+                            if (player.ATK <= slimes[player.MonsterIndex].DEF &&
+                                player.DEF >= slimes[player.MonsterIndex].ATK)
                             {
                                 break;
                             }
@@ -782,8 +782,8 @@ namespace ProjectJK.Objects
                         while (player.CurrentHP >= 0 && foxes[player.MonsterIndex].Alive)
                         {
                             Thread.Sleep(20);
-                            if (player.ATK == foxes[player.MonsterIndex].DEF &&
-                                player.DEF == foxes[player.MonsterIndex].ATK)
+                            if (player.ATK <= foxes[player.MonsterIndex].DEF &&
+                                player.DEF >= foxes[player.MonsterIndex].ATK)
                             {
                                 break;
                             }
@@ -841,8 +841,8 @@ namespace ProjectJK.Objects
                         while (player.CurrentHP >= 0 && goblins[player.MonsterIndex].Alive)
                         {
                             Thread.Sleep(20);
-                            if (player.ATK == goblins[player.MonsterIndex].DEF &&
-                                player.DEF == goblins[player.MonsterIndex].ATK)
+                            if (player.ATK <= goblins[player.MonsterIndex].DEF &&
+                                player.DEF >= goblins[player.MonsterIndex].ATK)
                             {
                                 break;
                             }
@@ -900,8 +900,8 @@ namespace ProjectJK.Objects
                         while (player.CurrentHP >= 0 && kingSlime.Alive)
                         {
                             Thread.Sleep(20);
-                            if (player.ATK == kingSlime.DEF &&
-                                player.DEF == kingSlime.ATK)
+                            if (player.ATK <= kingSlime.DEF &&
+                                player.DEF >= kingSlime.ATK)
                             {
                                 break;
                             }
