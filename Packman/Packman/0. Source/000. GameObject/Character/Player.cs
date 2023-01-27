@@ -62,7 +62,7 @@ namespace Packman
 
             _skillComponent.SetSkillRemainUseCount( SkillKind.FireStungun, 100 );
             _skillComponent.SetSkillRemainUseCount( SkillKind.FirePunchMissile, 100 );
-            _skillComponent.SetSkillRemainUseCount( SkillKind.FireCollectGoldBullet, 5 );
+            _skillComponent.SetSkillRemainUseCount( SkillKind.FireCollectGoldBullet, 10 );
             _skillComponent.SetSkillRemainUseCount( SkillKind.FireKillMonsterBullet, 2 );
             //_skillComponent.SetSkillRemainUseCount( SkillKind.FireCollectGoldBullet, 100 );
             //_skillComponent.SetSkillRemainUseCount( SkillKind.FireKillMonsterBullet, 100 );

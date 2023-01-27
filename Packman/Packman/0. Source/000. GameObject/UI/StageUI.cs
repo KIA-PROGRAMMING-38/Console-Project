@@ -42,7 +42,7 @@ namespace Packman
             PlayerSkill playerSkillComponent = player.SkillComponent;
             int num = 2;
             _texts[num].Text = $"현재 남은 골드 개수 : {goldGroup.RemainGoldCount}개";
-            num += 3;
+            num += 4;
 
             _texts[num].Text = $"Player MP : {player.CurMP} / {player.MaxMP}";
             num += 2;
@@ -56,7 +56,7 @@ namespace Packman
             _texts[num].Text = $"골드 수집기 발사 : E 키( {playerSkillComponent.GetSkillRemainCount( PlayerSkill.SkillKind.FireCollectGoldBullet ):D2} 개)";
             num += 2;
 
-            _texts[13].Text = $"몬스터 죽이는 총알 발사 : R 키( {playerSkillComponent.GetSkillRemainCount( PlayerSkill.SkillKind.FireKillMonsterBullet ):D2} 개)";
+            _texts[num].Text = $"몬스터Kill 총알 : R 키( {playerSkillComponent.GetSkillRemainCount( PlayerSkill.SkillKind.FireKillMonsterBullet ):D2} 개)";
         }
 
         public override void Render()
@@ -94,6 +94,7 @@ namespace Packman
                 new TextInfo { Text = "현재 남은 골드 개수 : ", LineAlignmentCount = 2 },
 
                 new TextInfo { Text = "====== Player Info ======", LineAlignmentCount = 1 },
+                new TextInfo { Text = "이동 : 화살표키, 이동 정지 : Spacebar", LineAlignmentCount = 1 },
                 new TextInfo { Text = "                     ", LineAlignmentCount = 0 },
                 new TextInfo { Text = "Player MP : ", LineAlignmentCount = 1 },
                 new TextInfo { Text = "                                     ", LineAlignmentCount = 0 },
@@ -102,9 +103,8 @@ namespace Packman
                 new TextInfo { Text = "주먹 날리기 : W 키( 남은 개수 : )", LineAlignmentCount = 1 },
                 new TextInfo { Text = "                                      ", LineAlignmentCount = 0 },
                 new TextInfo { Text = "골드 수집기 발사 : E 키( 남은 개수 : )", LineAlignmentCount = 1 },
-                new TextInfo { Text = "                                          ", LineAlignmentCount = 0 },
-                new TextInfo { Text = "몬스터 죽이는 총알 발사 : R 키( 남은 개수 : )", LineAlignmentCount = 1 },
                 new TextInfo { Text = "                                       ", LineAlignmentCount = 0 },
+                new TextInfo { Text = "몬스터Kill 총알 : R 키( 남은 개수 : )", LineAlignmentCount = 1 },
                 new TextInfo { Text = "스텔스 모드(Toggle) : G 키( 마나를 사용 )", LineAlignmentCount = 1 },
 
 
