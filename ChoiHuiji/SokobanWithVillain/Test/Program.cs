@@ -60,6 +60,8 @@ class Program
             VillainDirection = Direction.Right
         };
 
+        Random random = new Random();
+
         //빌런 스레드 분기
         Thread villainThread = new Thread(VillainPlay);
         villainThread.Start();
@@ -313,6 +315,62 @@ class Program
             }
         }
 
+        
+        
+        void VillainPlay()
+        {
+
+            while(true)
+            {
+                //Render------------------------
+                Render();
+                Thread.Sleep(100);
+                //Update------------------------
+                MoveVillian(villain);
+
+                //빌런이 벽을 만나면 랜덤하게 움직인다.
+                for(int wallId = 0; wallId < walls.Length; ++wallId)
+                {
+                    if (false == IsCollided(villain.X, villain.Y, walls[wallId].X, walls[wallId].Y))
+                    {
+                        continue;
+                    }
+
+                    RandomDirection(ref villain.VillainDirection);
+                }                                
+            } 
+        }
+
+        //Direction을 랜덤하게 주는 함수.
+        Direction RandomDirection (ref Direction direction)
+        {
+            int randomInt = random.Next(0, 4);
+
+            switch(randomInt)
+            {
+                case 0:
+                    return direction = Direction.Left;
+                    break;
+
+                case 1:
+                    return direction = Direction.Right;
+                    break;
+
+                case 2:
+                    return direction = Direction.Up;
+                    break; 
+                           
+                case 3:    
+                    return direction = Direction.Down;
+                    break;
+
+                default:
+                    return direction = Direction.None;
+            }
+            
+        }
+
+        //빌런을 움직인다.
         void MoveVillian(Villain villain)
         {
             switch (villain.VillainDirection)
@@ -339,7 +397,7 @@ class Program
                         villain.X = MIN_X;
                         ++villain.Y;
 
-                        if(villain.Y == MAX_Y)
+                        if (villain.Y == MAX_Y)
                         {
                             villain.VillainDirection = Direction.Left;
                             villain.X = MAX_X;
@@ -352,49 +410,39 @@ class Program
                     break;
 
                 case Direction.Up:
-                    MoveToUpOfTarget(out villain.Y, in villain.Y);
+                    if (villain.Y == MIN_Y)
+                    {
+                        villain.Y = MAX_Y;
+                        --villain.X;
+
+                        if (villain.X == (MIN_X - 1))
+                        {
+                            villain.VillainDirection = Direction.Down;
+                            villain.Y = MIN_Y;
+                            ++villain.X;
+                        }
+                    }
+                    else MoveToUpOfTarget(out villain.Y, in villain.Y);
                     break;
 
                 case Direction.Down:
-                    MoveToDownOfTarget(out villain.Y, in villain.Y);
+                    if (villain.Y == MAX_Y)
+                    {
+                        villain.Y = MIN_Y;
+                        ++villain.X;
+
+                        if (villain.X == (MAX_X + 1))
+                        {
+                            villain.VillainDirection = Direction.Up;
+                            villain.Y = MAX_Y;
+                            --villain.X;
+                        }
+                    }
+                    else MoveToDownOfTarget(out villain.Y, in villain.Y);
                     break;
             }
         }
-        //빌런을 움직인다.
-        void VillainPlay()
-        {
 
-            while(true)
-            {
-                //Render------------------------
-                Render();
-                Thread.Sleep(100);
-                //Update------------------------
-                MoveVillian(villain);
-
-                //빌런이 벽을 만나면 반대로 움직인다.
-                for(int wallId = 0; wallId < walls.Length; ++wallId)
-                {
-                    if (false == IsCollided(villain.X, villain.Y, walls[wallId].X, walls[wallId].Y))
-                    {
-                        continue;
-                    }
-
-                    switch(villain.VillainDirection)
-                    {
-                        case Direction.Right:
-                            villain.VillainDirection = Direction.Left;
-                            MoveVillian(villain);
-                            break;
-
-                        case Direction.Left:
-                            villain.VillainDirection = Direction.Right;
-                            MoveVillian(villain);
-                            break;
-                    }
-                }                                
-            } 
-        }
 
         void Render()
         {
