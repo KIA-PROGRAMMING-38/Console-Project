@@ -38,6 +38,13 @@ namespace Packman
             base.Render();
         }
 
+        public override void Release()
+        {
+            base.Release();
+
+            InputManager.Instance.OnPressInput -= OnPressKey;
+        }
+
         private void OnPressKey(ConsoleKey key, ConsoleModifiers modifiers)
         {
             Console.Clear();
