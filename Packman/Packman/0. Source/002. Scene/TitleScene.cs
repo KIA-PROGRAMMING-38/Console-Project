@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Packman
 {
@@ -22,7 +23,9 @@ namespace Packman
 
             SoundManager.Instance.Play( "Title Background", true );
 
-			return true;
+            InputManager.Instance.OnPressInput += OnPressKey;
+
+            return true;
         }
 
         public override void Update()
@@ -33,6 +36,11 @@ namespace Packman
         public override void Render()
         {
             base.Render();
+        }
+
+        private void OnPressKey(ConsoleKey key, ConsoleModifiers modifiers)
+        {
+            Console.Clear();
         }
 
         private bool InitializeTitleText()
