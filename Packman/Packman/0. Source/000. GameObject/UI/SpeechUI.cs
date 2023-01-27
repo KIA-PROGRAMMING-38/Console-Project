@@ -49,6 +49,7 @@ namespace Packman
             : base( x, y, 1500 )
         {
             EventManager.Instance.AddInputEvent( ConsoleKey.Spacebar, OnPressEnterKey );
+            EventManager.Instance.AddInputEvent( ConsoleKey.Enter, OnPressEnterKey );
 
             _speechs = new SpeechInfo[speechs.Length];
             for ( int i = 0; i < speechs.Length; ++i )
@@ -76,6 +77,7 @@ namespace Packman
             base.Release();
 
             EventManager.Instance.RemoveInputEvent( ConsoleKey.Spacebar, OnPressEnterKey );
+            EventManager.Instance.RemoveInputEvent( ConsoleKey.Enter, OnPressEnterKey );
         }
 
         public override void Update()
