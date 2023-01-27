@@ -210,25 +210,25 @@ namespace ProjectJK.Objects
             }
             public static void WithVillageNPC(Player player, VillageNPC[] villageNPCs)
             {
-                if (isCollision(player, villageNPCs[0].X, villageNPCs[0].Y))
+                if (isCollision(player, villageNPCs[(int)NPCKind.Chief].X, villageNPCs[(int)NPCKind.Chief].Y))
                 {
-                    Back(player, villageNPCs[0].X, villageNPCs[0].Y);
+                    Back(player, villageNPCs[(int)NPCKind.Chief].X, villageNPCs[(int)NPCKind.Chief].Y);
                 }
-                if (isCollision(player, villageNPCs[1].X, villageNPCs[1].Y))
+                if (isCollision(player, villageNPCs[(int)NPCKind.RecoveringMerchant].X, villageNPCs[(int)NPCKind.RecoveringMerchant].Y))
                 {
-                    Back(player, villageNPCs[1].X, villageNPCs[1].Y);
+                    Back(player, villageNPCs[(int)NPCKind.RecoveringMerchant].X, villageNPCs[(int)NPCKind.RecoveringMerchant].Y);
                 }
-                if (isCollision(player, villageNPCs[2].X, villageNPCs[2].Y))
+                if (isCollision(player, villageNPCs[(int)NPCKind.MaxHPMerchant].X, villageNPCs[(int)NPCKind.MaxHPMerchant].Y))
                 {
-                    Back(player, villageNPCs[2].X, villageNPCs[2].Y);
+                    Back(player, villageNPCs[(int)NPCKind.MaxHPMerchant].X, villageNPCs[(int)NPCKind.MaxHPMerchant].Y);
                 }
-                if (isCollision(player, villageNPCs[3].X, villageNPCs[3].Y))
+                if (isCollision(player, villageNPCs[(int)NPCKind.ATKMerchant].X, villageNPCs[(int)NPCKind.ATKMerchant].Y))
                 {
-                    Back(player, villageNPCs[3].X, villageNPCs[3].Y);
+                    Back(player, villageNPCs[(int)NPCKind.ATKMerchant].X, villageNPCs[(int)NPCKind.ATKMerchant].Y);
                 }
-                if (isCollision(player, villageNPCs[4].X, villageNPCs[4].Y))
+                if (isCollision(player, villageNPCs[(int)NPCKind.DEFMerchant].X, villageNPCs[(int)NPCKind.DEFMerchant].Y))
                 {
-                    Back(player, villageNPCs[4].X, villageNPCs[4].Y);
+                    Back(player, villageNPCs[(int)NPCKind.DEFMerchant].X, villageNPCs[(int)NPCKind.DEFMerchant].Y);
                 }
             }
             public static void WithStageUpPortal(Player player, StageUpPortal stageUpPortal)
@@ -295,80 +295,6 @@ namespace ProjectJK.Objects
         }
         public static class Interaction
         {
-            public static void RenderVillageNPC(Player player, VillageNPC[] villageNPCs)
-            {
-                if (false == player.CanMove)
-                {
-                    if (IsFront(player, villageNPCs[0].X, villageNPCs[0].Y))
-                    {
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 촌장 ", ConsoleColor.Black);
-                        if (false == player.BeginnerSupport)
-                        {
-                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"지원 물품을 가져가게나", ConsoleColor.Black);
-                        }
-                        else if (player.GameClear)
-                        {
-                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"자네는 마을의 영웅일세 고맙네", ConsoleColor.Black);
-                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"더 넓은 세상으로 가겠는가?", ConsoleColor.Black);
-                        }
-                        else
-                        {
-                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"킹 슬라임을 처치하고 돌아와 주게", ConsoleColor.Black);
-                        }
-                    }
-                    if (IsFront(player, villageNPCs[1].X, villageNPCs[1].Y))
-                    {
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 회복상인 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 회복량: 100 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 10 ", ConsoleColor.Black);
-                    }
-                    if (IsFront(player, villageNPCs[2].X, villageNPCs[2].Y))
-                    {
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 체력강화상인 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 10 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 20 ", ConsoleColor.Black);
-                    }
-                    if (IsFront(player, villageNPCs[3].X, villageNPCs[3].Y))
-                    {
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 공격강화상인 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
-                    }
-                    if (IsFront(player, villageNPCs[4].X, villageNPCs[4].Y))
-                    {
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 방어강화상인 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
-                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
-                    }
-                }
-            }
-
-            public static void RenderStageUpPortal(Player player, StageUpPortal stageUpPortal)
-            {
-                if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
-                {
-
-                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
-                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
-                }
-            }
-            public static void RenderStageDownPortal(Player player, StageDownPortal stageDownPortal)
-            {
-                if (false == player.CanMove && IsFront(player, stageDownPortal.X, stageDownPortal.Y))
-                {
-                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
-                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
-                }
-            }
-            public static void RenderRelease(Player player)
-            {
-                if (player.CanMove)
-                {
-                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $"━━━━━━━━━━━━━━━━━━━━━━━", ConsoleColor.Black);
-                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"                                         ", ConsoleColor.White);
-                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"                                         ", ConsoleColor.White);
-                }
-            }
             public static bool IsFront(Player player, int objX, int objY)
             {
                 if (player.X + 1 == objX && player.Y == objY)
@@ -390,6 +316,188 @@ namespace ProjectJK.Objects
                 else
                 {
                     return false;
+                }
+            }
+            public static void WithVillageNPC(Player player, SelectCursor selectCursor, VillageNPC[] villageNPCs)
+            {
+                if (IsFront(player, villageNPCs[(int)NPCKind.Chief].X, villageNPCs[(int)NPCKind.Chief].Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove)
+                    {
+                        if (false == player.BeginnerSupport)
+                        {
+                            if (SelectCursor.SelectYes(selectCursor))
+                            {
+                                player.BeginnerSupport = true;
+                                VillageNPC.GetBeginnerSupport(player);
+                                player.CanMove = true;
+                            }
+                            if (SelectCursor.SelectNo(selectCursor))
+                            {
+                                player.CanMove = true;
+                            }
+                        }
+                        else if (player.GameClear)
+                        {
+                            if (SelectCursor.SelectYes(selectCursor))
+                            {
+                                Game.GameClear();
+                            }
+                            if (SelectCursor.SelectNo(selectCursor))
+                            {
+                                player.CanMove = true;
+                            }
+                        }
+                        else
+                        {
+
+                            if (SelectCursor.SelectYes(selectCursor))
+                            {
+                                player.CanMove = true;
+                            }
+                            if (SelectCursor.SelectNo(selectCursor))
+                            {
+                                player.CanMove = true;
+                            }
+                        }
+                    }
+                }
+                if (IsFront(player, villageNPCs[(int)NPCKind.RecoveringMerchant].X, villageNPCs[(int)NPCKind.RecoveringMerchant].Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove)
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            VillageNPC.BuyRecovering(player);
+                            player.CanMove = true;
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+                if (IsFront(player, villageNPCs[(int)NPCKind.MaxHPMerchant].X, villageNPCs[(int)NPCKind.MaxHPMerchant].Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove)
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            VillageNPC.BuyMaxHP(player);
+                            player.CanMove = true;
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+                if (IsFront(player, villageNPCs[(int)NPCKind.ATKMerchant].X, villageNPCs[(int)NPCKind.ATKMerchant].Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove)
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            VillageNPC.BuyATK(player);
+                            player.CanMove = true;
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+                if (IsFront(player, villageNPCs[(int)NPCKind.DEFMerchant].X, villageNPCs[(int)NPCKind.DEFMerchant].Y))
+                {
+                    if (Input.IsKeyDown(ConsoleKey.E))
+                    {
+                        player.CanMove = false;
+                    }
+                    if (false == player.CanMove)
+                    {
+                        if (SelectCursor.SelectYes(selectCursor))
+                        {
+                            VillageNPC.BuyDEF(player);
+                            player.CanMove = true;
+                        }
+                        if (SelectCursor.SelectNo(selectCursor))
+                        {
+                            player.CanMove = true;
+                        }
+                    }
+                }
+            }
+            public static void RenderVillageNPC(Player player, VillageNPC[] villageNPCs)
+            {
+                if (false == player.CanMove)
+                {
+                    if (IsFront(player, villageNPCs[(int)NPCKind.Chief].X, villageNPCs[(int)NPCKind.Chief].Y))
+                    {
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 촌장 ", ConsoleColor.Black);
+                        if (false == player.BeginnerSupport)
+                        {
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"지원 물품을 가져가게나", ConsoleColor.Black);
+                        }
+                        else if (player.GameClear)
+                        {
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"자네는 마을의 영웅일세 고맙네", ConsoleColor.Black);
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"더 넓은 세상으로 가겠는가?", ConsoleColor.Black);
+                        }
+                        else
+                        {
+                            Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"킹 슬라임을 처치하고 돌아와 주게", ConsoleColor.Black);
+                        }
+                    }
+                    if (IsFront(player, villageNPCs[(int)NPCKind.RecoveringMerchant].X, villageNPCs[(int)NPCKind.RecoveringMerchant].Y))
+                    {
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 회복상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 회복량: 100 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 10 ", ConsoleColor.Black);
+                    }
+                    if (IsFront(player, villageNPCs[(int)NPCKind.MaxHPMerchant].X, villageNPCs[(int)NPCKind.MaxHPMerchant].Y))
+                    {
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 체력강화상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 10 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 20 ", ConsoleColor.Black);
+                    }
+                    if (IsFront(player, villageNPCs[(int)NPCKind.ATKMerchant].X, villageNPCs[(int)NPCKind.ATKMerchant].Y))
+                    {
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 공격강화상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
+                    }
+                    if (IsFront(player, villageNPCs[(int)NPCKind.DEFMerchant].X, villageNPCs[(int)NPCKind.DEFMerchant].Y))
+                    {
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 방어강화상인 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $" 증가량: 1 ", ConsoleColor.Black);
+                        Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $" 비용: 50 ", ConsoleColor.Black);
+                    }
+                }
+            }
+
+            public static void RenderRelease(Player player)
+            {
+                if (player.CanMove)
+                {
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $"━━━━━━━━━━━━━━━━━━━━━━━", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"                                         ", ConsoleColor.White);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 2, $"                                         ", ConsoleColor.White);
                 }
             }
             public static void WithStageUpPortal00(Player player, StageUpPortal stageUpPortal, SelectCursor selectCursor)
@@ -481,6 +589,15 @@ namespace ProjectJK.Objects
                             player.CanMove = true;
                         }
                     }
+                }
+            }
+            public static void RenderStageUpPortal(Player player, StageUpPortal stageUpPortal)
+            {
+                if (false == player.CanMove && IsFront(player, stageUpPortal.X, stageUpPortal.Y))
+                {
+
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
                 }
             }
             public static void WithStageDownPortal01(Player player, StageDownPortal stageDownPortal, SelectCursor selectCursor)
@@ -579,129 +696,12 @@ namespace ProjectJK.Objects
                 }
 
             }
-            public static void WithVillageNPC(Player player, SelectCursor selectCursor, VillageNPC[] villageNPCs)
+            public static void RenderStageDownPortal(Player player, StageDownPortal stageDownPortal)
             {
-                if (IsFront(player, villageNPCs[0].X, villageNPCs[0].Y))
+                if (false == player.CanMove && IsFront(player, stageDownPortal.X, stageDownPortal.Y))
                 {
-                    if (Input.IsKeyDown(ConsoleKey.E))
-                    {
-                        player.CanMove = false;
-                    }
-                    if (false == player.CanMove)
-                    {
-                        if (false == player.BeginnerSupport)
-                        {
-                            if (SelectCursor.SelectYes(selectCursor))
-                            {
-                                player.BeginnerSupport = true;
-                                VillageNPC.GetBeginnerSupport(player);
-                                player.CanMove = true;
-                            }
-                            if (SelectCursor.SelectNo(selectCursor))
-                            {
-                                player.CanMove = true;
-                            }
-                        }
-                        else if (player.GameClear)
-                        {
-                            if (SelectCursor.SelectYes(selectCursor))
-                            {
-                                Game.GameClear();
-                            }
-                            if (SelectCursor.SelectNo(selectCursor))
-                            {
-                                player.CanMove = true;
-                            }
-                        }
-                        else
-                        {
-
-                            if (SelectCursor.SelectYes(selectCursor))
-                            {
-                                player.CanMove = true;
-                            }
-                            if (SelectCursor.SelectNo(selectCursor))
-                            {
-                                player.CanMove = true;
-                            }
-                        }
-                    }
-                }
-                if (IsFront(player, villageNPCs[1].X, villageNPCs[1].Y))
-                {
-                    if (Input.IsKeyDown(ConsoleKey.E))
-                    {
-                        player.CanMove = false;
-                    }
-                    if (false == player.CanMove)
-                    {
-                        if (SelectCursor.SelectYes(selectCursor))
-                        {
-                            VillageNPC.BuyRecovering(player);
-                            player.CanMove = true;
-                        }
-                        if (SelectCursor.SelectNo(selectCursor))
-                        {
-                            player.CanMove = true;
-                        }
-                    }
-                }
-                if (IsFront(player, villageNPCs[2].X, villageNPCs[2].Y))
-                {
-                    if (Input.IsKeyDown(ConsoleKey.E))
-                    {
-                        player.CanMove = false;
-                    }
-                    if (false == player.CanMove)
-                    {
-                        if (SelectCursor.SelectYes(selectCursor))
-                        {
-                            VillageNPC.BuyMaxHP(player);
-                            player.CanMove = true;
-                        }
-                        if (SelectCursor.SelectNo(selectCursor))
-                        {
-                            player.CanMove = true;
-                        }
-                    }
-                }
-                if (IsFront(player, villageNPCs[3].X, villageNPCs[3].Y))
-                {
-                    if (Input.IsKeyDown(ConsoleKey.E))
-                    {
-                        player.CanMove = false;
-                    }
-                    if (false == player.CanMove)
-                    {
-                        if (SelectCursor.SelectYes(selectCursor))
-                        {
-                            VillageNPC.BuyATK(player);
-                            player.CanMove = true;
-                        }
-                        if (SelectCursor.SelectNo(selectCursor))
-                        {
-                            player.CanMove = true;
-                        }
-                    }
-                }
-                if (IsFront(player, villageNPCs[4].X, villageNPCs[4].Y))
-                {
-                    if (Input.IsKeyDown(ConsoleKey.E))
-                    {
-                        player.CanMove = false;
-                    }
-                    if (false == player.CanMove)
-                    {
-                        if (SelectCursor.SelectYes(selectCursor))
-                        {
-                            VillageNPC.BuyDEF(player);
-                            player.CanMove = true;
-                        }
-                        if (SelectCursor.SelectNo(selectCursor))
-                        {
-                            player.CanMove = true;
-                        }
-                    }
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 4, $" 포탈 ", ConsoleColor.Black);
+                    Game.ObjRender(Game.DialogCursor_X, Game.DialogCursor_Y - 3, $"이동하시겠습니까?", ConsoleColor.Black);
                 }
             }
         }

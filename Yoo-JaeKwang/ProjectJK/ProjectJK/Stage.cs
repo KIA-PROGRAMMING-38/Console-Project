@@ -194,19 +194,19 @@ namespace ProjectJK
                             ++wallIndex;
                             break;
                         case '0':
-                            villageNPCs[0] = new VillageNPC { X = x, Y = y };
+                            villageNPCs[(int)NPCKind.Chief] = new VillageNPC { X = x, Y = y };
                             break;
                         case '1':
-                            villageNPCs[1] = new VillageNPC { X = x, Y = y };
+                            villageNPCs[(int)NPCKind.RecoveringMerchant] = new VillageNPC { X = x, Y = y };
                             break;
                         case '2':
-                            villageNPCs[2] = new VillageNPC { X = x, Y = y };
+                            villageNPCs[(int)NPCKind.MaxHPMerchant] = new VillageNPC { X = x, Y = y };
                             break;
                         case '3':
-                            villageNPCs[3] = new VillageNPC { X = x, Y = y };
+                            villageNPCs[(int)NPCKind.ATKMerchant] = new VillageNPC { X = x, Y = y };
                             break;
                         case '4':
-                            villageNPCs[4] = new VillageNPC { X = x, Y = y };
+                            villageNPCs[(int)NPCKind.DEFMerchant] = new VillageNPC { X = x, Y = y };
                             break;
                         case '↑':
                             stageUpPortal = new StageUpPortal { X = x, Y = y };
