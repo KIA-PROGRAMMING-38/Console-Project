@@ -3,6 +3,7 @@
 namespace Sokoban_Huiji; //namespace가 같아야 class를 쓸 수 있다.
 
 
+
 class Program
 {
     static void Main(string[] args)
@@ -349,20 +350,16 @@ class Program
             switch(randomInt)
             {
                 case 0:
-                    return direction = Direction.Left;
-                    break;
+                    return direction = Direction.Left;                    
 
                 case 1:
-                    return direction = Direction.Right;
-                    break;
+                    return direction = Direction.Right;                    
 
                 case 2:
-                    return direction = Direction.Up;
-                    break; 
+                    return direction = Direction.Up;                    
                            
                 case 3:    
-                    return direction = Direction.Down;
-                    break;
+                    return direction = Direction.Down;                    
 
                 default:
                     return direction = Direction.None;
