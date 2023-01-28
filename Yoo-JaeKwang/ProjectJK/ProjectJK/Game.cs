@@ -28,6 +28,8 @@ namespace ProjectJK
         public const int DialogCursor_Y = 18;
         public const int BattleCursor_X = 63;
         public const int BattleCursor_Y = 10;
+        public const int Center_X = 12;
+        public const int Center_Y = 6;
                
         public static void Initializing()
         {

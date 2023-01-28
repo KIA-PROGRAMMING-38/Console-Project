@@ -14,8 +14,8 @@ namespace ProjectJK
             };
             Player player = new Player
             {
-                X = 12,
-                Y = 7,
+                X = Game.Center_X,
+                Y = Game.Center_Y,
                 Level = 1,
                 MaxEXP = 10,
                 MaxHP = 10,

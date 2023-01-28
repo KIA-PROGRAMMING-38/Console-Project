@@ -87,6 +87,11 @@ namespace ProjectJK.Objects
                     player.MoveDirection = Direction.Down;
                 }
             }
+            else
+            {
+                player.PastX = 0;
+                player.PastY = 0;
+            }
         }
 
         public static void LevelUp(Player player)
@@ -143,8 +148,8 @@ namespace ProjectJK.Objects
             {
                 player.CurrentEXP = 0;
                 player.CurrentHP = player.MaxHP;
-                player.X = 12;
-                player.Y = 7;
+                player.X = Game.Center_X;
+                player.Y = Game.Center_Y;
                 player.PastX = 0;
                 player.PastY = 0;
                 player.Money -= player.Level * 100;
@@ -758,8 +763,8 @@ namespace ProjectJK.Objects
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;
-                        player.X = player.PastX;
-                        player.Y = player.PastY;
+                        player.X = Game.Center_X;
+                        player.Y = Game.Center_Y;
                         selectCursor.X = Game.DialogCursor_X;
                         selectCursor.Y = Game.DialogCursor_Y;
                         selectCursor.PastY = Game.DialogCursor_Y;
@@ -817,8 +822,8 @@ namespace ProjectJK.Objects
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;
-                        player.X = player.PastX;
-                        player.Y = player.PastY;
+                        player.X = Game.Center_X;
+                        player.Y = Game.Center_Y;
                         selectCursor.X = Game.DialogCursor_X;
                         selectCursor.Y = Game.DialogCursor_Y;
                         selectCursor.PastY = Game.DialogCursor_Y;
@@ -876,8 +881,8 @@ namespace ProjectJK.Objects
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;
-                        player.X = player.PastX;
-                        player.Y = player.PastY;
+                        player.X = Game.Center_X;
+                        player.Y = Game.Center_Y;
                         selectCursor.X = Game.DialogCursor_X;
                         selectCursor.Y = Game.DialogCursor_Y;
                         selectCursor.PastY = Game.DialogCursor_Y;
@@ -936,8 +941,8 @@ namespace ProjectJK.Objects
                     {
                         player.CanMove = true;
                         player.IsOnBattle = false;
-                        player.X = player.PastX;
-                        player.Y = player.PastY;
+                        player.X = Game.Center_X;
+                        player.Y = Game.Center_Y;
                         selectCursor.X = Game.DialogCursor_X;
                         selectCursor.Y = Game.DialogCursor_Y;
                         selectCursor.PastY = Game.DialogCursor_Y;
