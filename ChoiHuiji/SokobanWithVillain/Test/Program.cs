@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Sokoban_Huiji; //namespace가 같아야 class를 쓸 수 있다.
 
@@ -8,13 +9,16 @@ class Program
 {
     static void Main(string[] args)
     {
+
         // 초기 세팅
         Console.ResetColor();                               // 컬러를 초기화한다.
         Console.CursorVisible = false;                      // 커서를 숨긴다.
         Console.Title = "My Sokoban";                       // 타이틀을 설정한다.
-        Console.BackgroundColor = ConsoleColor.DarkBlue;    // 배경색을 설정한다.
-        Console.ForegroundColor = ConsoleColor.Gray;        // 글꼴색을 설정한다.
+        //Console.BackgroundColor = ConsoleColor.DarkBlue;    // 배경색을 설정한다.
+        Console.ForegroundColor = ConsoleColor.Yellow;        // 글꼴색을 설정한다.
+        Console.OutputEncoding = Encoding.UTF8;
         Console.Clear();                                    // 콘솔 창에 출력된 내용을 모두 지운다.
+        
 
         // 기호 상수 정의
         const int MIN_X = 0;
@@ -22,36 +26,38 @@ class Program
         const int MIN_Y = 0;
         const int MAX_Y = 8;
 
+        //
+        
         // 플레이어 생성
-        Player player = new Player()
-        {
-            X = 0,
-            Y = 0,
-            PlayerDirection = Direction.None,
-            PushedBoxIndex = 0
-        };
+        //Player player = new Player()
+        //{
+        //    X = 0,
+        //    Y = 0,
+        //    PlayerDirection = Direction.None,
+        //    PushedBoxIndex = 0
+        //};
 
-        // 박스 생성
-        Box[] boxes = new Box[]
-        {
-            new Box { X = 10, Y = 2, IsOnGoal = false},
-            new Box { X = 13, Y = 3, IsOnGoal = false},
-        };
+        //// 박스 생성
+        //Box[] boxes = new Box[]
+        //{
+        //    new Box { X = 10, Y = 2, IsOnGoal = false},
+        //    new Box { X = 13, Y = 3, IsOnGoal = false},
+        //};
 
 
-        // 벽 생성
-        Wall[] walls = new Wall[]
-        {
-            new Wall { X = 7, Y = 7},
-            new Wall { X = 11, Y = 5}
-        };
+        //// 벽 생성
+        //Wall[] walls = new Wall[]
+        //{
+        //    new Wall { X = 7, Y = 7},
+        //    new Wall { X = 11, Y = 5}
+        //};
 
-        // 골 생성
-        Goal[] goals = new Goal[]
-        {
-            new Goal { X = 10, Y = 10},
-            new Goal { X = 3, Y = 6}
-        };
+        //// 골 생성
+        //Goal[] goals = new Goal[]
+        //{
+        //    new Goal { X = 10, Y = 10},
+        //    new Goal { X = 3, Y = 6}
+        //};
 
         // 빌런 생성
         Villain villain = new Villain
@@ -60,6 +66,21 @@ class Program
             Y = 3,
             VillainDirection = Direction.Right
         };
+
+        //전체 게임의 흐름
+        //1. 스테이지 파일 불러오기
+        string[] lines = Game.LoadStage(2);
+        for(int i = 0; i < lines.Length; ++i)
+        {
+            Console.WriteLine(lines[i]);
+        }
+
+        //2. 스테이지 파일 파싱(Parsing)하여 초기 데이터 구성
+        Player player;
+        Box[] boxes;
+        Wall[] walls;
+        Goal[] goals;
+        Game.ParseStage(lines, out player, out boxes, out walls, out goals);
 
         Random random = new Random();
 
@@ -444,6 +465,7 @@ class Program
         void Render()
         {
             Console.Clear();
+            
 
             // 플레이어를 그린다
             RenderObject(player.X, player.Y, "☻");
