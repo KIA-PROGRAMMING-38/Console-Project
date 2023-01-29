@@ -22,9 +22,9 @@ class Program
 
         // 기호 상수 정의
         const int MIN_X = 0;
-        const int MAX_X = 15;
+        const int MAX_X = 20;
         const int MIN_Y = 0;
-        const int MAX_Y = 8;
+        const int MAX_Y = 10;
 
         //
         
@@ -60,12 +60,12 @@ class Program
         //};
 
         // 빌런 생성
-        Villain villain = new Villain
-        {
-            X = 3,
-            Y = 3,
-            VillainDirection = Direction.Right
-        };
+        //Villain villain = new Villain
+        //{
+        //    X = 3,
+        //    Y = 3,
+        //    VillainDirection = Direction.Right
+        //};
 
         //전체 게임의 흐름
         //1. 스테이지 파일 불러오기
@@ -80,7 +80,8 @@ class Program
         Box[] boxes;
         Wall[] walls;
         Goal[] goals;
-        Game.ParseStage(lines, out player, out boxes, out walls, out goals);
+        Villain villain;
+        Game.ParseStage(lines, out player, out boxes, out walls, out goals, out villain);
 
         Random random = new Random();
 
@@ -358,13 +359,13 @@ class Program
                         continue;
                     }
 
-                    RandomDirection(ref villain.VillainDirection);
+                    RandomDirection(out villain.VillainDirection);
                 }                                
             } 
         }
 
         //Direction을 랜덤하게 주는 함수.
-        Direction RandomDirection (ref Direction direction)
+        Direction RandomDirection (out Direction direction)
         {
             int randomInt = random.Next(0, 4);
 
@@ -485,12 +486,12 @@ class Program
                 RenderObject(boxes[i].X, boxes[i].Y, boxIcon);
             }
 
-            // 벽을 그린다
-            int wallCount = walls.Length;
-            for (int i = 0; i < wallCount; ++i)
-            {
-                RenderObject(walls[i].X, walls[i].Y, "⎕");
-            }
+            //// 벽을 그린다
+            //int wallCount = walls.Length;
+            //for (int i = 0; i < wallCount; ++i)
+            //{
+            //    RenderObject(walls[i].X, walls[i].Y, "⎕");
+            //}
 
             // 빌런을 그린다.
             RenderObject(villain.X, villain.Y, "✦");

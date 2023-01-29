@@ -5,7 +5,7 @@ namespace Sokoban_Huiji
 	{
 		public int X;
 		public int Y;
-		public Direction VillainDirection;
+		public Direction VillainDirection = Direction.Right;
 	}
 }
 
