@@ -16,6 +16,9 @@ namespace ConsoleGame
             Console.SetWindowSize(118, 30);
             Console.CursorVisible = false;
             Console.Title = "Shoot";
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Clear();
         }
 
         /// <summary>
