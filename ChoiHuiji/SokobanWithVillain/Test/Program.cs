@@ -69,7 +69,7 @@ class Program
 
         //전체 게임의 흐름
         //1. 스테이지 파일 불러오기
-        string[] lines = Game.LoadStage(2);
+        string[] lines = Game.LoadStage(1);
         for(int i = 0; i < lines.Length; ++i)
         {
             Console.WriteLine(lines[i]);
@@ -359,8 +359,34 @@ class Program
                         continue;
                     }
 
+                    switch(villain.VillainDirection)
+                    {
+                        case Direction.Left:
+                            MoveToRightOfTarget(out villain.X, in walls[wallId].X);
+                            break;
+
+                        case Direction.Right:
+                            MoveToLeftOfTarget(out villain.X, in walls[wallId].X);
+                            break;
+
+                        case Direction.Up:
+                            MoveToDownOfTarget(out villain.Y, in walls[wallId].Y);
+                            break;
+
+                        case Direction.Down:
+                            MoveToUpOfTarget(out villain.Y, in walls[wallId].Y);
+                            break;
+                    }
+
                     RandomDirection(out villain.VillainDirection);
-                }                                
+                }
+
+                int boxOnGoalCount = CountBoxOnGoal(boxes, goals);
+
+                if (boxOnGoalCount == goals.Length)
+                {
+                    break;
+                }
             } 
         }
 
@@ -486,12 +512,12 @@ class Program
                 RenderObject(boxes[i].X, boxes[i].Y, boxIcon);
             }
 
-            //// 벽을 그린다
-            //int wallCount = walls.Length;
-            //for (int i = 0; i < wallCount; ++i)
-            //{
-            //    RenderObject(walls[i].X, walls[i].Y, "⎕");
-            //}
+            // 벽을 그린다
+            int wallCount = walls.Length;
+            for (int i = 0; i < wallCount; ++i)
+            {
+                RenderObject(walls[i].X, walls[i].Y, "⎕");
+            }
 
             // 빌런을 그린다.
             RenderObject(villain.X, villain.Y, "✦");

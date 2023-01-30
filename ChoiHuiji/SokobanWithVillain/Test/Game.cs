@@ -8,7 +8,7 @@ namespace Sokoban_Huiji
         public static string[] LoadStage(int stageNumber)
         {
             //경로 구성하기
-            string stageFilePath = Path.Combine("Assets", "Stage", $"Stage{stageNumber:D2}.tt");            
+            string stageFilePath = Path.Combine(@"../../../Assets", "Stage", $"Stage{stageNumber:D2}.tt");            
 
             //파일 있는지 확인하기
             if(false == File.Exists(stageFilePath))
@@ -30,7 +30,7 @@ namespace Sokoban_Huiji
             string[] stageMetadata = stage[stage.Length - 1].Split(" ");
             player = null;
             villain = null;
-            walls = new Wall[100];
+            walls = new Wall[int.Parse(stageMetadata[0])];
             boxes = new Box[int.Parse(stageMetadata[1])];
             goals = new Goal[int.Parse(stageMetadata[2])];
 

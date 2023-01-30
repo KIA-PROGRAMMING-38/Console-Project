@@ -12,10 +12,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Stage02.cs</LastGenOutput>
     </None>
+    <None Update="Stage01.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Stage01.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Stage02.cs">
       <DependentUpon>Stage02.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Stage01.cs">
+      <DependentUpon>Stage01.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>
