@@ -4,6 +4,8 @@ namespace Sokoban_Huiji
 {
 	public class Game
 	{
+
+
         //Load 함수
         public static string[] LoadStage(int stageNumber)
         {

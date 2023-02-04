@@ -101,7 +101,7 @@ class Program
             ConsoleKey key = keyInfo.Key;   // 실제 키는 ConsoleKeyInfo에 Key에 있다 
 
             // ======================= Update =======================
-            MovePlayer(key, ref player.X, ref player.Y, ref player.PlayerDirection);
+            MovePlayer(key, player);
 
             // 플레이어와 벽의 충돌 처리
             for (int i = 0; i < walls.Length; ++i)
@@ -114,7 +114,7 @@ class Program
                 OnCollision(() =>
                 {
                     // target에서 반대로 움직이는 코드
-                    PushOut(player.PlayerDirection, ref player.X, ref player.Y, in walls[i].X, in walls[i].Y);
+                    PushOut(player.PlayerDirection, player.X, player.Y, in walls[i].X, in walls[i].Y);
                 });
             }
 
@@ -156,10 +156,10 @@ class Program
 
                 OnCollision(() =>
                 {
-                    PushOut(player.PlayerDirection, ref boxes[player.PushedBoxIndex].X, ref boxes[player.PushedBoxIndex].Y,
+                    PushOut(player.PlayerDirection, boxes[player.PushedBoxIndex].X, boxes[player.PushedBoxIndex].Y,
                             boxes[i].X, boxes[i].Y); //in은 인자로 줄때 안써줘도 됨. out은 써줘야함.
 
-                    PushOut(player.PlayerDirection, ref player.X, ref player.Y,
+                    PushOut(player.PlayerDirection, player.X, player.Y,
                             boxes[player.PushedBoxIndex].X, boxes[player.PushedBoxIndex].Y);
                 });
             }
@@ -175,9 +175,9 @@ class Program
 
                 OnCollision(() =>
                 {
-                    PushOut(player.PlayerDirection, ref boxes[player.PushedBoxIndex].X, ref boxes[player.PushedBoxIndex].Y,
+                    PushOut(player.PlayerDirection, boxes[player.PushedBoxIndex].X, boxes[player.PushedBoxIndex].Y,
                             walls[i].X, walls[i].Y);
-                    PushOut(player.PlayerDirection, ref player.X, ref player.Y,
+                    PushOut(player.PlayerDirection, player.X, player.Y,
                             boxes[player.PushedBoxIndex].X, boxes[player.PushedBoxIndex].Y);
                 });
                 //OnCollision(player.PlayerDirection,
@@ -243,37 +243,37 @@ class Program
         }
 
         // target 근처로 이동시킨다 
-        void MoveToLeftOfTarget(out int x, in int target) => x = Math.Max(MIN_X, target - 1);
-        void MoveToRightOfTarget(out int x, in int target) => x = Math.Min(target + 1, MAX_X);
-        void MoveToUpOfTarget(out int y, in int target) => y = Math.Max(MIN_Y, target - 1);
-        void MoveToDownOfTarget(out int y, in int target) => y = Math.Min(target + 1, MAX_Y);
+        void MoveToLeftOfTarget(int x, in int target) => x = Math.Max(MIN_X, target - 1);
+        void MoveToRightOfTarget(int x, in int target) => x = Math.Min(target + 1, MAX_X);
+        void MoveToUpOfTarget(int y, in int target) => y = Math.Max(MIN_Y, target - 1);
+        void MoveToDownOfTarget(int y, in int target) => y = Math.Min(target + 1, MAX_Y);
 
         // 플레이어를 움직인다
         // 여기도 마찬가지로 Player player로 바꿔주자.
-        void MovePlayer(ConsoleKey key, ref int x, ref int y, ref Direction moveDirection)
+        void MovePlayer(ConsoleKey key, Player player)
         {
             if (key == ConsoleKey.LeftArrow)
             {
-                MoveToLeftOfTarget(out x, in x);
-                moveDirection = Direction.Left;
+                MoveToLeftOfTarget(player.X, player.X);
+                player.PlayerDirection = Direction.Left;
             }
 
             if (key == ConsoleKey.RightArrow)
             {
-                MoveToRightOfTarget(out x, in x);
-                moveDirection = Direction.Right;
+                MoveToRightOfTarget(player.X, player.X);
+                player.PlayerDirection = Direction.Right;
             }
 
             if (key == ConsoleKey.UpArrow)
             {
-                MoveToUpOfTarget(out y, in y);
-                moveDirection = Direction.Up;
+                MoveToUpOfTarget(player.Y, player.Y);
+                player.PlayerDirection = Direction.Up;
             }
 
             if (key == ConsoleKey.DownArrow)
             {
-                MoveToDownOfTarget(out y, in y);
-                moveDirection = Direction.Down;
+                MoveToDownOfTarget(player.Y, player.Y);
+                player.PlayerDirection = Direction.Down;
             }
         }
 
@@ -286,7 +286,7 @@ class Program
         //충돌을 처리한다.
         //움직이는 물체의 좌표를 바꿔준다.
         //충돌한 물체는 가만히 둔다.
-        void PushOut(Direction playerMoveDirection, ref int objX, ref int objY,
+        void PushOut(Direction playerMoveDirection, int objX,int objY,
                     in int collidedObjX, in int collidedObjY)
         {
             switch (playerMoveDirection)
@@ -294,20 +294,20 @@ class Program
                 //플레이어가 왼쪽으로 오고 있을때 충돌한 물체를 만났다면
                 case Direction.Left:
                     //충돌한 물체를 Target으로 두고 움직이는 물체를 오른쪽에 둔다.
-                    MoveToRightOfTarget(out objX, in collidedObjX);
+                    MoveToRightOfTarget(objX, in collidedObjX);
 
                     break;
                 //플레이어가 오른쪽으로 오고 있을때 충돌한 물체를 만났다면
                 case Direction.Right:
-                    MoveToLeftOfTarget(out objX, in collidedObjX);
+                    MoveToLeftOfTarget(objX, in collidedObjX);
 
                     break;
                 case Direction.Up:
-                    MoveToDownOfTarget(out objY, in collidedObjY);
+                    MoveToDownOfTarget(objY, in collidedObjY);
 
                     break;
                 case Direction.Down:
-                    MoveToUpOfTarget(out objY, in collidedObjY);
+                    MoveToUpOfTarget(objY, in collidedObjY);
 
                     break;
             }
@@ -321,19 +321,19 @@ class Program
             switch (playerMoveDirection)
             {
                 case Direction.Left:
-                    MoveToLeftOfTarget(out boxX, in playerX);
+                    MoveToLeftOfTarget(boxX, in playerX);
                     break;
 
                 case Direction.Right:
-                    MoveToRightOfTarget(out boxX, in playerX);
+                    MoveToRightOfTarget(boxX, in playerX);
                     break;
 
                 case Direction.Up:
-                    MoveToUpOfTarget(out boxY, in playerY);
+                    MoveToUpOfTarget(boxY, in playerY);
                     break;
 
                 case Direction.Down:
-                    MoveToDownOfTarget(out boxY, in playerY);
+                    MoveToDownOfTarget(boxY, in playerY);
                     break;
             }
         }
@@ -362,19 +362,19 @@ class Program
                     switch(villain.VillainDirection)
                     {
                         case Direction.Left:
-                            MoveToRightOfTarget(out villain.X, in walls[wallId].X);
+                            MoveToRightOfTarget(villain.X, in walls[wallId].X);
                             break;
 
                         case Direction.Right:
-                            MoveToLeftOfTarget(out villain.X, in walls[wallId].X);
+                            MoveToLeftOfTarget(villain.X, in walls[wallId].X);
                             break;
 
                         case Direction.Up:
-                            MoveToDownOfTarget(out villain.Y, in walls[wallId].Y);
+                            MoveToDownOfTarget(villain.Y, in walls[wallId].Y);
                             break;
 
                         case Direction.Down:
-                            MoveToUpOfTarget(out villain.Y, in walls[wallId].Y);
+                            MoveToUpOfTarget(villain.Y, in walls[wallId].Y);
                             break;
                     }
 
@@ -433,7 +433,7 @@ class Program
                             ++villain.Y;
                         }
                     }
-                    else MoveToLeftOfTarget(out villain.X, in villain.X);
+                    else MoveToLeftOfTarget(villain.X, in villain.X);
                     break;
 
                 case Direction.Right:
@@ -451,7 +451,7 @@ class Program
                     }
                     // else하지않으면 위의 if문에서 빠져나온 뒤에도 실행된 다음에 랜더함으로 1부터 시작하게 된다.
                     // 0부터 시작하게 할려면 else해줘야 함.
-                    else MoveToRightOfTarget(out villain.X, in villain.X);
+                    else MoveToRightOfTarget(villain.X, in villain.X);
                     break;
 
                 case Direction.Up:
@@ -467,7 +467,7 @@ class Program
                             ++villain.X;
                         }
                     }
-                    else MoveToUpOfTarget(out villain.Y, in villain.Y);
+                    else MoveToUpOfTarget(villain.Y, in villain.Y);
                     break;
 
                 case Direction.Down:
@@ -483,7 +483,7 @@ class Program
                             --villain.X;
                         }
                     }
-                    else MoveToDownOfTarget(out villain.Y, in villain.Y);
+                    else MoveToDownOfTarget(villain.Y, in villain.Y);
                     break;
             }
         }
